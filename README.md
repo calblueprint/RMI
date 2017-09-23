@@ -8,13 +8,13 @@ Details about the project:
 
 * Rails version: 5.1.0
 
-* Config:
-** create a file: config/secrets.yml. Copy paste this into your file:
+Config:
+* create a file: config/secrets.yml. Copy paste this into your file:
 
 development:
   secret_key_base: "secret_key_1_placeholder"
 test:
   secret_key_base: "secret_key_2_placeholder"
 
-** then run: "rake secret" twice and replace the above placeholders with these keys.
+* then run: "rake secret" twice and replace the above placeholders with these keys.
 
