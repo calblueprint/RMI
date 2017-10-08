@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004035031) do
+ActiveRecord::Schema.define(version: 20171008225915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,40 @@ ActiveRecord::Schema.define(version: 20171004035031) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "dropdown_options", force: :cascade do |t|
+    t.string "text"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_dropdown_options_on_question_id"
+  end
+
   create_table "questions", force: :cascade do |t|
-    t.string "type"
+    t.integer "type"
+    t.bigint "building_type_id"
+    t.string "parent_option_type"
+    t.bigint "parent_option_id"
+    t.bigint "category_id"
     t.string "text"
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["building_type_id"], name: "index_questions_on_building_type_id"
+    t.index ["category_id"], name: "index_questions_on_category_id"
+    t.index ["parent_option_type", "parent_option_id"], name: "index_questions_on_parent_option_type_and_parent_option_id"
   end
 
+  create_table "range_options", force: :cascade do |t|
+    t.integer "min"
+    t.integer "max"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_range_options_on_question_id"
+  end
+
+  add_foreign_key "dropdown_options", "questions"
+  add_foreign_key "questions", "building_types"
+  add_foreign_key "questions", "categories"
+  add_foreign_key "range_options", "questions"
 end
