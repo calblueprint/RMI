@@ -5,4 +5,5 @@ class Question < ApplicationRecord
   belongs_to :parent_option, polymorphic: true
   belongs_to :category
   has_many :answers
+  validates :text, presence: true
 end
