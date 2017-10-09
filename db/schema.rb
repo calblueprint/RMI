@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20171008225915) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.integer "type"
+    t.integer "question_type"
     t.bigint "building_type_id"
     t.string "parent_option_type"
     t.bigint "parent_option_id"
