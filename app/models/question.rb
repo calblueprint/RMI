@@ -1,6 +1,4 @@
 class Question < ApplicationRecord
-  validates :text, presence: true
-
   enum question_type: [ :dropdown, :free, :range ]
   enum status: [ :draft, :published ]
 
@@ -10,4 +8,6 @@ class Question < ApplicationRecord
   has_many :answers
   has_many :dropdown_options
   has_many :range_options
+
+  validates :text, presence: true
 end
