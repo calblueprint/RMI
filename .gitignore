@@ -48,3 +48,6 @@ bower.json
 /public/packs
 /public/packs-test
 /node_modules
+
+#Ignore RubyMine
+.idea/
