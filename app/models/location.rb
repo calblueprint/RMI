@@ -1,5 +1,4 @@
 class Location < ApplicationRecord
-  belongs_to :building
   enum state: [
       :Alabama,
       :Alaska,
@@ -58,5 +57,8 @@ class Location < ApplicationRecord
       :Virgin_Islands,
       :Northern_Mariana_Islands
   ]
+
+  belongs_to :building
+
   validates :address, :state, :zip, presence: true
 end
