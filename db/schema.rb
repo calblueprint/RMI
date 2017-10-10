@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171008231915) do
+ActiveRecord::Schema.define(version: 20171010181113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answers", force: :cascade do |t|
+    t.text "text"
+    t.bigint "building_id"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["building_id"], name: "index_answers_on_building_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
 
   create_table "asset_managers", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -146,6 +156,8 @@ ActiveRecord::Schema.define(version: 20171008231915) do
     t.index ["reset_password_token"], name: "index_rmi_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "answers", "buildings"
+  add_foreign_key "answers", "questions"
   add_foreign_key "buildings", "portfolios"
   add_foreign_key "dropdown_options", "questions"
   add_foreign_key "locations", "buildings"
