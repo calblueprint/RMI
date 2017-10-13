@@ -5,7 +5,7 @@ class Question < ApplicationRecord
   belongs_to :building_type
   belongs_to :category
   belongs_to :parent_option, polymorphic: true, optional: true
-  has_many :answers
+  has_one :answers
   has_many :dropdown_options
   has_many :range_options
 
