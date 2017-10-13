@@ -123,7 +123,7 @@ def generate_question(question, building_type, parent_option=nil)
   if q_type.equal? :range
     q = Question.create({
       question_type: :range,
-      status: :published,
+      status: :published, 
       text: q_text,
       building_type: building_type,
       parent_option: parent_option
@@ -142,4 +142,30 @@ def generate_question(question, building_type, parent_option=nil)
   end
 end
 
+large_cube_retail_questions.each { |q| generate_question(q, large_cube_retail) }
+rockclimbing_eggyolk_inc_questions.each { |q| generate_question(q, rockclimbing_eggyolk_inc) }
+
+# Locations
+# -----
+# FORMAT
+# [<name>, <address>, <city>, <state>, <zip>]
+addresses = [
+  ['Unit 1', '2650 Durant Ave', 'Berkeley', :California, 94704],
+  ['Northside Cafe', '1878 Euclid Ave', 'Berkeley', :California, 94709],
+  ['MLK Student Union', '2560 Bancroft Way', 'Berkeley', :California, 94704],
+  ['SMCHS', '22062 Antonio Pkwy', 'Rancho Santa Margarita', :California, 92688],
+  ['Monta Vista HS', '21840 McClellan Rd', 'Cupertino', :California, 95014],
+  ['Archbishop Mitty', '5000 Mitty Way', 'San Jose', :California, 95129],
+  ['The House', '2495 Bancroft Way', 'Berkeley', :California, 94720],
+  ['Googleplex', '1600 Amphitheatre Pkwy', 'Mountain View', :California, 94043],
+  ['Apple Park', '1 Apple Park Way', 'Cupertino', :California, 95014],
+  ['Facebook HQ', '1 Hacker Way', 'Menlo Park', :California, 94025],
+  ['Mozilla HQ', '2 Harrison St', 'San Francisco', :California, 94105],
+  ['Horizons HQ', '450 9th St', 'San Francisco', :California, 94103],
+  ['Little Gem Belgian Waffles', '2468 Telegraph Ave A', 'Berkeley', :California, 94704],
+  ['Gypsy\'s Trattoria Italiana', '2519 Durant Ave', 'Berkeley', :California, 94704],
+]
+
+
+# Buildings
 
