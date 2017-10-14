@@ -1,18 +1,23 @@
 class BuildingsController < ApplicationController
   def create
+    # should always create buildings with a portfolio
     @portfolio = Portfolio.find(params[:portfolio_id])
     @building = @portfolio.buildings.create(building_params)
   end
 
   def update
-    @portfolio = Portfolio.find(params[:portfolio_id])
-    @building = @portfolio.buildings.find(params[:id])
+    # this is for when we set up the request to send a speific portfolio
+    # @portfolio = Portfolio.find(params[:portfolio_id])
+    # @building = @portfolio.buildings.find(params[:id])
+    @building = Building.find(params[:id])
     @building.update(building_params)
   end
 
   def show
-    @portfolio = Portfolio.find(params[:portfolio_id])
-    @building = @portfolio.buildings.find(params[:id])
+    # this is for when we set up the request to send a specific portfolio
+    # @portfolio = Portfolio.find(params[:portfolio_id])
+    # @building = @portfolio.buildings.find(params[:id])
+    @building = Building.find(params[:id])
     render json: @building
   end
 
