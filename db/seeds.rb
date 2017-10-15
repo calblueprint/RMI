@@ -1,14 +1,14 @@
 ## BuildingTypes
 
-large_cube_retail = BuildingType.create!({ name: 'Large Cube Retail' })
-rockclimbing_eggyolk_inc = BuildingType.create!({ name: 'REI' })
+large_cube_retail = BuildingType.create!(name: 'Large Cube Retail')
+rockclimbing_eggyolk_inc = BuildingType.create!(name: 'REI')
 
 # Categories
-other = Category.create!({ name: 'Miscellaneous' })
-cube_facts = Category.create!({ name: 'Basic Information' })
-cube_care = Category.create!({ name: 'Caring for Your Cube' })
-rockclimbing_skill = Category.create!({ name: 'Skill Evaluation' })
-eggyolk_information = Category.create!({ name: 'Personal Information' })
+other = Category.create!(name: 'Miscellaneous')
+cube_facts = Category.create!(name: 'Basic Information')
+cube_care = Category.create!(name: 'Caring for Your Cube')
+rockclimbing_skill = Category.create!(name: 'Skill Evaluation')
+eggyolk_information = Category.create!(name: 'Personal Information')
 
 
 # Questions
@@ -17,14 +17,14 @@ eggyolk_information = Category.create!({ name: 'Personal Information' })
 # [<text>, <category>, <type>, <array of options>, <array of dependents (or nils)>]
 
 no_dependents = Array.new(3, nil);
-safe_maximum = 2 ** 31 - 1
+safe_maximum = 2**31 - 1
 
 large_cube_retail_questions = [
   ['Describe the kind of cubes you enjoy most.', cube_facts, :free],
   ['How many cubes do you currently have in your building?', cube_facts, :free],
   ['Please provide your three desired cube colors.', cube_facts, :free],
   ['Who manufactures your cubes?', cube_facts, :dropdown, 
-    ['Apple', 'Google', 'Samsung'], no_dependents],
+    %w(Apple Google Samsung), no_dependents],
   ['During which time slot are you available for a cube inspection?', cube_facts, :dropdown,
     ['12:00-1:00 PM', '1:00-2:00 PM', '2:00-3:00 PM'], no_dependents],
   ['What model are your cubes?', cube_facts, :dropdown,
@@ -110,7 +110,7 @@ def generate_question(question, building_type, parent_option=nil)
     text: q_text,
     building_type: building_type,
     category: q_category
-    })
+  })
 
   unless parent_option.nil?
     q.parent_option = parent_option
@@ -128,7 +128,7 @@ def generate_question(question, building_type, parent_option=nil)
       DropdownOption.create!({
         text: option,
         question: q
-        })
+      })
     end
   end
   if q_type.equal? :range
@@ -137,7 +137,7 @@ def generate_question(question, building_type, parent_option=nil)
         min: option[0],
         max: option[1],
         question: q
-        })
+      })
     end
   end
 
@@ -151,54 +151,54 @@ rockclimbing_eggyolk_inc_questions.each { |q| generate_question(q, rockclimbing_
 
 # RMI Users
 people = [
-["Eleanore", "Donnelly", "raleigh.hammes@berkeley.edu", "16877036527", "^Vbf=Dt'st("],
-["Orland", "Johns", "laurence.spence@berkeley.edu", "18451135957", "}jylKd71Z4n-^Gh"],
-["Miss", "Winifred", "qvolkman@berkeley.edu", "11706668976", "`j)L]$_~A];Qk"],
-["Jermey", "Klocko", "christiansen.vi@berkeley.edu", "18889991010", "ARpil]n|s%#2Kxs*r"],
-["Garrick", "Armstrong", "nat99@berkeley.edu", "18889991010", "Y.;1#f-UilR:D/"],
-["Prof.", "Golden", "schiller.vivien@berkeley.edu", "18889991010", "QZ`_42v#J;R91)s_x"],
-["Mr.", "Henri", "quinten59@berkeley.edu", "14328287160", ":BJ{KqA8$lNmMR[*/"],
-["Joanny", "Hansen", "barrows.erna@berkeley.edu", "18889991010", "mBqa%k6zL3+Pi+K7?"],
-["Alanis", "Rempel", "csatterfield@berkeley.edu", "18889991010", "1Bq]7nNk)*w5"],
-["Gennaro", "Simonis", "zmitchell@berkeley.edu", "114050090458", "fLN'-X_j[n'`9LnZz"],
-["Dr.", "Donato", "cory.rempel@berkeley.edu", "18889991010", "wwhox/8|_}HN"],
-["Dr.", "Brielle", "fredrick.kuhic@berkeley.edu", "11512248619", ")&syqTeJh]E"],
-["Lexi", "Berge", "johnny33@berkeley.edu", "110895664254", "'9VHZ3+0a)S%]"],
-["Dr.", "Adrain", "uhoppe@berkeley.edu", "111846821714", "IOAI*=5SXw0Y"],
-["Jarret", "Schuppe", "smarquardt@berkeley.edu", "13683518803", "ExZB1/N6_#-D7yK("],
-["Melba", "Moen", "goyette.dedric@berkeley.edu", "18889991010", "j!b]J_p8,OHHm"],
-["Elisha", "Kunde", "cristobal74@berkeley.edu", "15808548569", "AM+%fU*Z@jo~hMk"],
-["Leslie", "Rowe", "rhane@berkeley.edu", "18889991010", "]4tModt6hcU?"],
-["Karson", "Cronin", "chester25@berkeley.edu", "18889991010", "S5&mk]cglC|`S("],
-["Jerad", "Gulgowski", "drew99@berkeley.edu", "17906026970", "OLyu|iX7{~"],
-["Consuelo", "Schaden", "linnie90@berkeley.edu", "18889991010", "@PUuq}1m{22eEni,-H%"],
-["Osborne", "Lockman", "jensen.satterfi@berkeley.edu", "14708275094", "tmd(|$Z.9g$m9"],
-["Dr.", "Gust", "kamryn92@berkeley.edu", "16093469117", "4~;X|=P27G,HN*cC"],
-["Melvin", "Denesik", "deonte.rempel@berkeley.edu", "18889991010", "vg7$}D`e;j"],
-["Aliza", "Feil", "geichmann@berkeley.edu", "17632048530", "Y#1,tF+*E!O7k"],
-["Roslyn", "Bernhard", "kertzmann.terry@berkeley.edu", "12523656313", "Zjv~GsY5tU!&"],
-["Prof.", "Johnathon", "cgulgowski@berkeley.edu", "18889991010", "!7)w88p1gRmeqIci."],
-["Mrs.", "Kaya", "mariano.dickens@berkeley.edu", "18889991010", "~3ML9z7-W|k,3Eq]"],
-["Nelda", "Farrell", "emmanuelle98@berkeley.edu", "18889991010", "#+Z%15_gT?#==q@tlP@"],
-["Mr.", "Terrill", "conor.predovic@berkeley.edu", "17357877308", "dj}wdd:(m5pt;pRR"],
-["Albin", "Franecki", "gusikowski.camr@berkeley.edu", "18889991010", "r/{#7U]=_fxb^*g"],
-["Prof.", "Shayne", "derick.wilderma@berkeley.edu", "14497740519", "gySl11O@wDxr"],
-["Eleazar", "Paucek", "judy.howell@berkeley.edu", "14294080787", "XY6P.@(9SNAs"],
-["Madilyn", "Schoen", "delta.smith@berkeley.edu", "18889991010", "!dgz,^n$=MS|HFw8JP"],
-["Dr.", "Woodrow", "bogan.gisselle@berkeley.edu", "18889991010", "_AlwAS)Y4t;nU7Ue"],
-["Hortense", "Schaefer", "mayert.conor@berkeley.edu", "14848860229", "{''M,kIw)@PIoc"],
-["Larissa", "Thiel", "kristofer.carte@berkeley.edu", "17517074903", "gctu`b*Dt"],
-["Tierra", "Ziemann", "rodolfo.cruicks@berkeley.edu", "18889991010", "~d?EklM?:r;lHbhN"],
-["Nicole", "Fritsch", "annamarie58@berkeley.edu", "17921564776", "BZPTh'c0f$RA"],
-["Dexter", "Koelpin", "ycummerata@berkeley.edu", "15422438089", "*7[8}T&EZ{^|"],
-["Kara", "Johns", "nathaniel.sauer@berkeley.edu", "15875642877", "!O|t;@+b&gCh4O_O"],
-["Buck", "Boehm", "spinka.craig@berkeley.edu", "16883921783", "IhEgW$5*:kxMF$-3n#L0"],
-["Dr.", "Javonte", "xhane@berkeley.edu", "18889991010", "#m|x/;&XU"],
-["Kenyatta", "Lockman", "cklein@berkeley.edu", "18889991010", "KdZf^ibKX7[.WKm2tb5"],
-["Lewis", "Gutmann", "jerald31@berkeley.edu", "18889991010", "0g@]t$JMJ6Dvb&SR"],
-["August", "Trantow", "johnnie62@berkeley.edu", "18889991010", "3a)1E/%!Ov"],
-["Triston", "Rohan", "oconnell.jasper@berkeley.edu", "12907201773", "*wuq+3hd`eJ6I&=FwU"],
-["Merle", "Effertz", "barrows.ona@berkeley.edu", "18889991010", "CXl+`q6sEV3igp"]
+['Eleanore', 'Donnelly', 'raleigh.hammes@berkeley.edu', '16877036527', '^Vbf=Dtst('],
+['Orland', 'Johns', 'laurence.spence@berkeley.edu', '18451135957', '}jylKd71Z4n-^Gh'],
+['Miss', 'Winifred', 'qvolkman@berkeley.edu', '11706668976', '`j)L]$_~A];Qk'],
+['Jermey', 'Klocko', 'christiansen.vi@berkeley.edu', '18889991010', 'ARpil]n|s%#2Kxs*r'],
+['Garrick', 'Armstrong', 'nat99@berkeley.edu', '18889991010', 'Y.;1#f-UilR:D/'],
+['Prof.', 'Golden', 'schiller.vivien@berkeley.edu', '18889991010', 'QZ`_42v#J;R91)s_x'],
+['Mr.', 'Henri', 'quinten59@berkeley.edu', '14328287160', ':BJ{KqA8$lNmMR[*/'],
+['Joanny', 'Hansen', 'barrows.erna@berkeley.edu', '18889991010', 'mBqa%k6zL3+Pi+K7?'],
+['Alanis', 'Rempel', 'csatterfield@berkeley.edu', '18889991010', '1Bq]7nNk)*w5'],
+['Gennaro', 'Simonis', 'zmitchell@berkeley.edu', '114050090458', 'fLN-X_j[n`9LnZz'],
+['Dr.', 'Donato', 'cory.rempel@berkeley.edu', '18889991010', 'wwhox/8|_}HN'],
+['Dr.', 'Brielle', 'fredrick.kuhic@berkeley.edu', '11512248619', ')&syqTeJh]E'],
+['Lexi', 'Berge', 'johnny33@berkeley.edu', '110895664254', '9VHZ3+0a)S%]'],
+['Dr.', 'Adrain', 'uhoppe@berkeley.edu', '111846821714', 'IOAI*=5SXw0Y'],
+['Jarret', 'Schuppe', 'smarquardt@berkeley.edu', '13683518803', 'ExZB1/N6_#-D7yK('],
+['Melba', 'Moen', 'goyette.dedric@berkeley.edu', '18889991010', 'j!b]J_p8,OHHm'],
+['Elisha', 'Kunde', 'cristobal74@berkeley.edu', '15808548569', 'AM+%fU*Z@jo~hMk'],
+['Leslie', 'Rowe', 'rhane@berkeley.edu', '18889991010', ']4tModt6hcU?'],
+['Karson', 'Cronin', 'chester25@berkeley.edu', '18889991010', 'S5&mk]cglC|`S('],
+['Jerad', 'Gulgowski', 'drew99@berkeley.edu', '17906026970', 'OLyu|iX7{~'],
+['Consuelo', 'Schaden', 'linnie90@berkeley.edu', '18889991010', '@PUuq}1m{22eEni,-H%'],
+['Osborne', 'Lockman', 'jensen.satterfi@berkeley.edu', '14708275094', 'tmd(|$Z.9g$m9'],
+['Dr.', 'Gust', 'kamryn92@berkeley.edu', '16093469117', '4~;X|=P27G,HN*cC'],
+['Melvin', 'Denesik', 'deonte.rempel@berkeley.edu', '18889991010', 'vg7$}D`e;j'],
+['Aliza', 'Feil', 'geichmann@berkeley.edu', '17632048530', 'Y#1,tF+*E!O7k'],
+['Roslyn', 'Bernhard', 'kertzmann.terry@berkeley.edu', '12523656313', 'Zjv~GsY5tU!&'],
+['Prof.', 'Johnathon', 'cgulgowski@berkeley.edu', '18889991010', '!7)w88p1gRmeqIci.'],
+['Mrs.', 'Kaya', 'mariano.dickens@berkeley.edu', '18889991010', '~3ML9z7-W|k,3Eq]'],
+['Nelda', 'Farrell', 'emmanuelle98@berkeley.edu', '18889991010', '#+Z%15_gT?#==q@tlP@'],
+['Mr.', 'Terrill', 'conor.predovic@berkeley.edu', '17357877308', 'dj}wdd:(m5pt;pRR'],
+['Albin', 'Franecki', 'gusikowski.camr@berkeley.edu', '18889991010', 'r/{#7U]=_fxb^*g'],
+['Prof.', 'Shayne', 'derick.wilderma@berkeley.edu', '14497740519', 'gySl11O@wDxr'],
+['Eleazar', 'Paucek', 'judy.howell@berkeley.edu', '14294080787', 'XY6P.@(9SNAs'],
+['Madilyn', 'Schoen', 'delta.smith@berkeley.edu', '18889991010', '!dgz,^n$=MS|HFw8JP'],
+['Dr.', 'Woodrow', 'bogan.gisselle@berkeley.edu', '18889991010', '_AlwAS)Y4t;nU7Ue'],
+['Hortense', 'Schaefer', 'mayert.conor@berkeley.edu', '14848860229', '{''M,kIw)@PIoc'],
+['Larissa', 'Thiel', 'kristofer.carte@berkeley.edu', '17517074903', 'gctu`b*Dt'],
+['Tierra', 'Ziemann', 'rodolfo.cruicks@berkeley.edu', '18889991010', '~d?EklM?:r;lHbhN'],
+['Nicole', 'Fritsch', 'annamarie58@berkeley.edu', '17921564776', 'BZPThc0f$RA'],
+['Dexter', 'Koelpin', 'ycummerata@berkeley.edu', '15422438089', '*7[8}T&EZ{^|'],
+['Kara', 'Johns', 'nathaniel.sauer@berkeley.edu', '15875642877', '!O|t;@+b&gCh4O_O'],
+['Buck', 'Boehm', 'spinka.craig@berkeley.edu', '16883921783', 'IhEgW$5*:kxMF$-3n#L0'],
+['Dr.', 'Javonte', 'xhane@berkeley.edu', '18889991010', '#m|x/;&XU'],
+['Kenyatta', 'Lockman', 'cklein@berkeley.edu', '18889991010', 'KdZf^ibKX7[.WKm2tb5'],
+['Lewis', 'Gutmann', 'jerald31@berkeley.edu', '18889991010', '0g@]t$JMJ6Dvb&SR'],
+['August', 'Trantow', 'johnnie62@berkeley.edu', '18889991010', '3a)1E/%!Ov'],
+['Triston', 'Rohan', 'oconnell.jasper@berkeley.edu', '12907201773', '*wuq+3hd`eJ6I&=FwU'],
+['Merle', 'Effertz', 'barrows.ona@berkeley.edu', '18889991010', 'CXl+`q6sEV3igp']
 ]
 
 users_per_type = people.length / 3
@@ -210,7 +210,7 @@ def person(p)
     phone: p[3],
     password: p[4],
     password_confirmation: p[4]
-    }
+  }
 end
 
 rmi_users = people[0..1 * users_per_type].map do |p|
@@ -254,7 +254,7 @@ def location(l)
     address: l[1],
     state: l[3],
     zip: l[4]
-    }
+  }
 end
 
 # Portfolios
@@ -272,9 +272,9 @@ Array(0..portfolios.length).each do |i|
     building = Building.new({
       portfolio: portfolio,
       contact_email: asset_manager.email
-      })
+    })
 
-    if i % 2 == 0
+    if i.even?
       building.building_type = large_cube_retail
     else
       building.building_type = rockclimbing_eggyolk_inc
