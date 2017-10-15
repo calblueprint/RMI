@@ -251,7 +251,9 @@ addresses = [
 
 def location(l)
   {
+    name: l[0],
     address: l[1],
+    city: l[2],
     state: l[3],
     zip: l[4]
   }
@@ -268,10 +270,14 @@ Array(0..portfolios.length).each do |i|
   asset_manager = portfolio.asset_manager
 
   Array(0..addresses.length).each do |j|
-    building_location = addresses[j];
+    location = location(addresses[j]);
     building = Building.new({
       portfolio: portfolio,
-      contact_email: asset_manager.email
+      contact_email: asset_manager.email,
+      name: location.name,
+      address: location.city,
+      state: location.state,
+      zip: location.zip
     })
 
     if i.even?
@@ -280,11 +286,6 @@ Array(0..portfolios.length).each do |i|
       building.building_type = rockclimbing_eggyolk_inc
     end
 
-    building.name = building_location[0]
     building.save!
-
-    location = Location.new(location(building_location[j]))
-    location.building = building
-    location.save!
   end
 end
