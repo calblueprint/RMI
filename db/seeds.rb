@@ -249,7 +249,7 @@ addresses = [
   ['People\'s Park', '2556 Haste St', 'Berkeley', :California, 94704],
 ]
 
-def location(l)
+def generate_location(l)
   {
     name: l[0],
     address: l[1],
@@ -265,19 +265,19 @@ portfolios = asset_managers.map do |a|
 end
 
 # Buildings
-Array(0..portfolios.length).each do |i|
+Array(0...portfolios.length).each do |i|
   portfolio = portfolios[i]
   asset_manager = portfolio.asset_manager
 
-  Array(0..addresses.length).each do |j|
-    location = location(addresses[j]);
+  Array(0...addresses.length).each do |j|
+    location = generate_location(addresses[j])
     building = Building.new({
       portfolio: portfolio,
-      contact_email: asset_manager.email,
-      name: location.name,
-      address: location.city,
-      state: location.state,
-      zip: location.zip
+      name: location[:name],
+      address: location[:address],
+      city: location[:city],
+      state: location[:state],
+      zip: location[:zip]
     })
 
     if i.even?
