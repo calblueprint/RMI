@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  enum question_type: [ :dropdown, :free, :range ]
+  enum question_type: [ :free, :dropdown, :range ]
   enum status: [ :draft, :published ]
 
   belongs_to :building_type
