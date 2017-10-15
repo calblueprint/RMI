@@ -18,10 +18,10 @@ class BuildingsController < ApplicationController
     # @portfolio = Portfolio.find(params[:portfolio_id])
     # @building = @portfolio.buildings.find(params[:id])
     @building = Building.find(params[:id])
-    render json: @building
+    render 'show'
   end
 
   def building_params
-    params.require(:building).permit(:name, :contact_email, :activity)
+    params.require(:building).permit(:name, :contact_email, :portfolio_id)
   end
 end
