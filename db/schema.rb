@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 20171015221125) do
   create_table "building_assignments", id: false, force: :cascade do |t|
     t.bigint "building_id", null: false
     t.bigint "building_operator_id", null: false
+    t.index ["building_id", "building_operator_id"], name: "by_op_on_building"
+    t.index ["building_operator_id", "building_id"], name: "by_building_on_op"
   end
 
   create_table "building_operators", force: :cascade do |t|
