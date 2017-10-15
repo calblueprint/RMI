@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   root 'pages#home'
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: [:create, :update, :show, :index]
+    resources :asset_managers, only: [:create, :update, :show, :index]
   end
 end
