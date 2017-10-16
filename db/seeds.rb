@@ -117,8 +117,6 @@ def generate_question(question, building_type, parent_option=nil)
     q.save!
   end
 
-  print("creating\n", q_text, " ", parent_option, " ", q.parent_option_id, "\n--------------\n")
-
   if q_type.equal? :free
     return
   end
@@ -146,11 +144,25 @@ def generate_question(question, building_type, parent_option=nil)
   end
 end
 
-large_cube_retail_questions.each { |q| generate_question(q, large_cube_retail) }
-rockclimbing_eggyolk_inc_questions.each { |q| generate_question(q, rockclimbing_eggyolk_inc) }
+large_cube_retail_questions.each_with_index do |q, i|
+  print("\rCreating #{large_cube_retail.name}"\
+  " Question #{i + 1}/#{large_cube_retail_questions.length}...")
+  generate_question(q, large_cube_retail)
+end
+
+print("\n")
+
+rockclimbing_eggyolk_inc_questions.each_with_index do |q, i|
+  print("\rCreating #{rockclimbing_eggyolk_inc.name}"\
+  " Question #{i + 1}/#{rockclimbing_eggyolk_inc_questions.length}...")
+  generate_question(q, rockclimbing_eggyolk_inc)
+end
+
+print("\n")
 
 # RMI Users
 people = [
+['Test', 'RMI', 'rmi@test.com', '18005558888', 'password'],
 ['Eleanore', 'Donnelly', 'raleigh.hammes@berkeley.edu', '16877036527', '^Vbf=Dtst('],
 ['Orland', 'Johns', 'laurence.spence@berkeley.edu', '18451135957', '}jylKd71Z4n-^Gh'],
 ['Miss', 'Winifred', 'qvolkman@berkeley.edu', '11706668976', '`j)L]$_~A];Qk'],
@@ -167,6 +179,7 @@ people = [
 ['Dr.', 'Adrain', 'uhoppe@berkeley.edu', '111846821714', 'IOAI*=5SXw0Y'],
 ['Jarret', 'Schuppe', 'smarquardt@berkeley.edu', '13683518803', 'ExZB1/N6_#-D7yK('],
 ['Melba', 'Moen', 'goyette.dedric@berkeley.edu', '18889991010', 'j!b]J_p8,OHHm'],
+['Test', 'Asset Manager', 'ass@test.com', '18005558888', 'password'],
 ['Elisha', 'Kunde', 'cristobal74@berkeley.edu', '15808548569', 'AM+%fU*Z@jo~hMk'],
 ['Leslie', 'Rowe', 'rhane@berkeley.edu', '18889991010', ']4tModt6hcU?'],
 ['Karson', 'Cronin', 'chester25@berkeley.edu', '18889991010', 'S5&mk]cglC|`S('],
@@ -183,6 +196,7 @@ people = [
 ['Mr.', 'Terrill', 'conor.predovic@berkeley.edu', '17357877308', 'dj}wdd:(m5pt;pRR'],
 ['Albin', 'Franecki', 'gusikowski.camr@berkeley.edu', '18889991010', 'r/{#7U]=_fxb^*g'],
 ['Prof.', 'Shayne', 'derick.wilderma@berkeley.edu', '14497740519', 'gySl11O@wDxr'],
+['Test', 'Building Operator', 'op@test.com', '18005558888', 'password'],
 ['Eleazar', 'Paucek', 'judy.howell@berkeley.edu', '14294080787', 'XY6P.@(9SNAs'],
 ['Madilyn', 'Schoen', 'delta.smith@berkeley.edu', '18889991010', '!dgz,^n$=MS|HFw8JP'],
 ['Dr.', 'Woodrow', 'bogan.gisselle@berkeley.edu', '18889991010', '_AlwAS)Y4t;nU7Ue'],
@@ -213,17 +227,24 @@ def person(p)
   }
 end
 
-rmi_users = people[0..1 * users_per_type].map do |p|
+rmi_users = people[0..1 * users_per_type].each_with_index.map do |p, i|
+  print("\rCreating RMI User #{i}/#{users_per_type}...")
   RmiUser.create(person(p))
 end
 
+print("\n")
+
 # Asset Manager Users
-asset_managers = people[1 * users_per_type..2 * users_per_type].map do |p|
+asset_managers = people[1 * users_per_type..2 * users_per_type].each_with_index.map do |p, i|
+  print("\rCreating Asset Manager #{i}/#{users_per_type}...")
   AssetManager.create(person(p))
 end
 
+print("\n")
+
 # Building Operator Users
-building_operators = people[2 * users_per_type..3 * users_per_type].map do |p|
+building_operators = people[2 * users_per_type..3 * users_per_type].each_with_index.map do |p, i|
+  print("\rCreating Building Operator #{i}/#{users_per_type}...")
   BuildingOperator.create(person(p))
 end
 
@@ -265,11 +286,15 @@ portfolios = asset_managers.map do |a|
 end
 
 # Buildings
-Array(0...portfolios.length).each do |i|
+print("\n")
+Array(0...portfolios.length).each_with_index do |i, portfolio_index|
+  print("Creating Portfolio #{portfolio_index}/#{portfolios.length - 1}")
   portfolio = portfolios[i]
   asset_manager = portfolio.asset_manager
 
-  Array(0...addresses.length).each do |j|
+  print("\n")
+  Array(0...addresses.length).each_with_index do |j, building_index|
+    print("\r- Creating Building #{building_index}/#{addresses.length - 1}")
     location = generate_location(addresses[j])
     building = Building.new({
       portfolio: portfolio,
@@ -288,4 +313,5 @@ Array(0...portfolios.length).each do |i|
 
     building.save!
   end
+  print("\n")
 end
