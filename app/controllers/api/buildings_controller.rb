@@ -11,7 +11,7 @@ class Api::BuildingsController < ApplicationController
     @building = @portfolio.buildings.create(building_params)
 
     if @building.save
-      render_json_message(:ok, data: @building, message: 'Successful Creation and Save')
+      render_json_message(:ok, data: @building, message: "Building #{@building.id} successfuly created and saved")
     else
       render_json_message(:forbidden, errors: @building.errors.full_messages)
     end
@@ -20,7 +20,7 @@ class Api::BuildingsController < ApplicationController
   def update
     @building = Building.find(params[:id])
     if @building.update(building_params)
-      render_json_message(:ok, data: @building, message: 'Successful Update')
+      render_json_message(:ok, data: @building, message: "Building #{@building.id} successfuly updated")
     else
       render_json_message(:forbidden, errors: @building.errors.full_messages)
     end
