@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20171015221125) do
     t.index ["reset_password_token"], name: "index_asset_managers_on_reset_password_token", unique: true
   end
 
-  create_table "building_assignments", id: false, force: :cascade do |t|
+  create_table "building_operator_assignments", id: false, force: :cascade do |t|
     t.bigint "building_id", null: false
     t.bigint "building_operator_id", null: false
     t.index ["building_id", "building_operator_id"], name: "by_op_on_building"
