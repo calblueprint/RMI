@@ -94,7 +94,6 @@ end
 # -----
 # FORMAT
 # [<text>, <category>, <type>, <array of options>, <array of dependents (or nils)>]
-
 def generate_question(question, building_type, parent_option=nil)
   if question.nil?
     return

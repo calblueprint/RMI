@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171015204818) do
+ActiveRecord::Schema.define(version: 20171015221125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,13 @@ ActiveRecord::Schema.define(version: 20171015204818) do
     t.index ["reset_password_token"], name: "index_asset_managers_on_reset_password_token", unique: true
   end
 
+  create_table "building_operator_assignments", id: false, force: :cascade do |t|
+    t.bigint "building_id", null: false
+    t.bigint "building_operator_id", null: false
+    t.index ["building_id", "building_operator_id"], name: "by_op_on_building"
+    t.index ["building_operator_id", "building_id"], name: "by_building_on_op"
+  end
+
   create_table "building_operators", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -75,11 +82,14 @@ ActiveRecord::Schema.define(version: 20171015204818) do
 
   create_table "buildings", force: :cascade do |t|
     t.string "name"
-    t.string "contact_email"
     t.bigint "portfolio_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "building_type_id"
+    t.string "address"
+    t.string "city"
+    t.integer "state"
+    t.integer "zip"
     t.index ["building_type_id"], name: "index_buildings_on_building_type_id"
     t.index ["portfolio_id"], name: "index_buildings_on_portfolio_id"
   end
@@ -96,16 +106,6 @@ ActiveRecord::Schema.define(version: 20171015204818) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_dropdown_options_on_question_id"
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string "address"
-    t.integer "state"
-    t.integer "zip"
-    t.bigint "building_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["building_id"], name: "index_locations_on_building_id"
   end
 
   create_table "portfolios", force: :cascade do |t|
@@ -166,7 +166,6 @@ ActiveRecord::Schema.define(version: 20171015204818) do
   add_foreign_key "buildings", "building_types"
   add_foreign_key "buildings", "portfolios"
   add_foreign_key "dropdown_options", "questions"
-  add_foreign_key "locations", "buildings"
   add_foreign_key "portfolios", "asset_managers"
   add_foreign_key "questions", "building_types"
   add_foreign_key "questions", "categories"
