@@ -7,4 +7,5 @@ class Building < ApplicationRecord
   validates :name, :contact_email, presence: true
 
 
+
 end
