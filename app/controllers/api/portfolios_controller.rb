@@ -1,6 +1,4 @@
 class Api::PortfoliosController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def index
     portfolios = Portfolio.all
     render json: portfolios
