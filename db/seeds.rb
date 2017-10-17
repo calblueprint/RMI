@@ -1,97 +1,99 @@
 ## BuildingTypes
-
-large_cube_retail = BuildingType.create!(name: 'Large Cube Retail')
-rockclimbing_eggyolk_inc = BuildingType.create!(name: 'REI')
+def create_building_types
+  $large_cube_retail = BuildingType.create!(name: 'Large Cube Retail')
+  $rockclimbing_eggyolk_inc = BuildingType.create!(name: 'REI')
+end
 
 # Categories
-other = Category.create!(name: 'Miscellaneous')
-cube_facts = Category.create!(name: 'Basic Information')
-cube_care = Category.create!(name: 'Caring for Your Cube')
-rockclimbing_skill = Category.create!(name: 'Skill Evaluation')
-eggyolk_information = Category.create!(name: 'Personal Information')
+def create_categories
+  other = Category.create!(name: 'Miscellaneous')
+  cube_facts = Category.create!(name: 'Basic Information')
+  cube_care = Category.create!(name: 'Caring for Your Cube')
+  rockclimbing_skill = Category.create!(name: 'Skill Evaluation')
+  eggyolk_information = Category.create!(name: 'Personal Information')
 
+  no_dependents = Array.new(3, nil);
+  safe_maximum = 2**31 - 1
+
+  $large_cube_retail_questions = [
+    ['Describe the kind of cubes you enjoy most.', cube_facts, :free],
+    ['How many cubes do you currently have in your building?', cube_facts, :free],
+    ['Please provide your three desired cube colors.', cube_facts, :free],
+    ['Who manufactures your cubes?', cube_facts, :dropdown, 
+      %w(Apple Google Samsung), no_dependents],
+    ['During which time slot are you available for a cube inspection?', cube_facts, :dropdown,
+      ['12:00-1:00 PM', '1:00-2:00 PM', '2:00-3:00 PM'], no_dependents],
+    ['What model are your cubes?', cube_facts, :dropdown,
+      ['Model T', 'Corolla', 'Leaf'], no_dependents],
+    ['Please specify the amount of faces your cube has.', cube_facts, :range,
+      [[0, 6]], no_dependents],
+    ['How many corners does your cube have?', cube_facts, :range,
+      [[0, 8]], no_dependents],
+    ['Please evaluate your cube on a scale of 1-10: 1 = Strongly Disagree, 10 = Strongly Agree', cube_care, :range,
+      [[0, 10]], no_dependents],
+    [
+      'Do you love your cube?', cube_care, :dropdown,
+      ['Yes.', 'Not really'],
+      [[
+        'How many times a day do you tell your cube that you love it?', cube_care, :range,
+        [[0, 3], [4, 7], [8, 10]],
+        [
+          [ 'List some ways you can spend more time with your cube.', cube_care, :free ],
+          [ 'What has been your favorite reaction to affection shown towards your cube?', cube_care, :free ],
+          [ 'Does your cube enjoy the attention?', cube_care, :dropdown, ['Yes', 'No'], [nil, nil] ]
+        ]
+      ], nil]
+    ]
+  ]
+
+  $rockclimbing_eggyolk_inc_questions = [
+    ['Please provide the name of the rockclimbing gym of your eggyolk\'s choice.', rockclimbing_skill, :free],
+    [
+      'How many years has your eggyolk been rockclimbing?', rockclimbing_skill, :range,
+      [[0, 2], [3, 5], [6, safe_maximum]],
+      [
+        ['Has your eggyolk taken lessons?', rockclimbing_skill, :free],
+        [
+          'How does your egg prepare for rockclimbing?', rockclimbing_skill, :dropdown,
+          ['Hardboiled', 'Scrambled', 'Overeasy'], no_dependents
+        ],
+        [
+          'How many hours a day does your eggyolk spend rockclimbing?', rockclimbing_skill, :range,
+          [[0, 4], [5, 8], [0, 24]],
+          [
+            ['Describe your eggyolk\'s work-life balance.', rockclimbing_skill, :free],
+            ['Is your eggyolk often exhausted?', rockclimbing_skill, :dropdown, ['Yes', 'No'], no_dependents],
+            nil
+          ]
+        ]
+      ]
+    ],
+    [
+      'Does your eggyolk have any allergies?', eggyolk_information, :dropdown,
+      ['Yes', 'No'],
+      [['List any foods your eggyolk may be allergic to.', eggyolk_information, :free], nil] 
+    ],
+    ['What is your eggyolk\'s budget on rockclimbing?', eggyolk_information, :range,
+      [[0, 100], [101, 500], [501, safe_maximum]],
+      [nil, nil, ['Is your eggyolk employed?', eggyolk_information, :dropdown, ['Yes', 'No'], no_dependents]]
+    ],
+    ['Briefly describe how your eggyolk discovered rockclimbing.', eggyolk_information, :free],
+    ['Explain why your eggyolk enjoys rockclimbing, if applicable.', eggyolk_information, :free],
+    ['What kind of shoes does your eggyolk use when rockclimbing?', eggyolk_information, :dropdown,
+      ['Laces', 'Velcro', 'Slipper'], no_dependents
+    ],
+    ['Which kind of rockclimbing does your eggyolk engage in?', eggyolk_information, :dropdown,
+      ['Bouldering', 'Top Rope Climbing', 'Mountaineering'], no_dependents
+    ],
+    ['How many shoes does your eggyolk own?', eggyolk_information, :range, [[0, 10]], no_dependents],
+    ['What size shoe is your eggyolk?', eggyolk_information, :range, [[0, 20]], no_dependents]
+  ]
+end
 
 # Questions
 # -----
 # FORMAT
 # [<text>, <category>, <type>, <array of options>, <array of dependents (or nils)>]
-
-no_dependents = Array.new(3, nil);
-safe_maximum = 2**31 - 1
-
-large_cube_retail_questions = [
-  ['Describe the kind of cubes you enjoy most.', cube_facts, :free],
-  ['How many cubes do you currently have in your building?', cube_facts, :free],
-  ['Please provide your three desired cube colors.', cube_facts, :free],
-  ['Who manufactures your cubes?', cube_facts, :dropdown, 
-    %w(Apple Google Samsung), no_dependents],
-  ['During which time slot are you available for a cube inspection?', cube_facts, :dropdown,
-    ['12:00-1:00 PM', '1:00-2:00 PM', '2:00-3:00 PM'], no_dependents],
-  ['What model are your cubes?', cube_facts, :dropdown,
-    ['Model T', 'Corolla', 'Leaf'], no_dependents],
-  ['Please specify the amount of faces your cube has.', cube_facts, :range,
-    [[0, 6]], no_dependents],
-  ['How many corners does your cube have?', cube_facts, :range,
-    [[0, 8]], no_dependents],
-  ['Please evaluate your cube on a scale of 1-10: 1 = Strongly Disagree, 10 = Strongly Agree', cube_care, :range,
-    [[0, 10]], no_dependents],
-  [
-    'Do you love your cube?', cube_care, :dropdown,
-    ['Yes.', 'Not really'],
-    [[
-      'How many times a day do you tell your cube that you love it?', cube_care, :range,
-      [[0, 3], [4, 7], [8, 10]],
-      [
-        [ 'List some ways you can spend more time with your cube.', cube_care, :free ],
-        [ 'What has been your favorite reaction to affection shown towards your cube?', cube_care, :free ],
-        [ 'Does your cube enjoy the attention?', cube_care, :dropdown, ['Yes', 'No'], [nil, nil] ]
-      ]
-    ], nil]
-  ]
-]
-
-rockclimbing_eggyolk_inc_questions = [
-  ['Please provide the name of the rockclimbing gym of your eggyolk\'s choice.', rockclimbing_skill, :free],
-  [
-    'How many years has your eggyolk been rockclimbing?', rockclimbing_skill, :range,
-    [[0, 2], [3, 5], [6, safe_maximum]],
-    [
-      ['Has your eggyolk taken lessons?', rockclimbing_skill, :free],
-      [
-        'How does your egg prepare for rockclimbing?', rockclimbing_skill, :dropdown,
-        ['Hardboiled', 'Scrambled', 'Overeasy'], no_dependents
-      ],
-      [
-        'How many hours a day does your eggyolk spend rockclimbing?', rockclimbing_skill, :range,
-        [[0, 4], [5, 8], [0, 24]],
-        [
-          ['Describe your eggyolk\'s work-life balance.', rockclimbing_skill, :free],
-          ['Is your eggyolk often exhausted?', rockclimbing_skill, :dropdown, ['Yes', 'No'], no_dependents],
-          nil
-        ]
-      ]
-    ]
-  ],
-  [
-    'Does your eggyolk have any allergies?', eggyolk_information, :dropdown,
-    ['Yes', 'No'],
-    [['List any foods your eggyolk may be allergic to.', eggyolk_information, :free], nil] 
-  ],
-  ['What is your eggyolk\'s budget on rockclimbing?', eggyolk_information, :range,
-    [[0, 100], [101, 500], [501, safe_maximum]],
-    [nil, nil, ['Is your eggyolk employed?', eggyolk_information, :dropdown, ['Yes', 'No'], no_dependents]]
-  ],
-  ['Briefly describe how your eggyolk discovered rockclimbing.', eggyolk_information, :free],
-  ['Explain why your eggyolk enjoys rockclimbing, if applicable.', eggyolk_information, :free],
-  ['What kind of shoes does your eggyolk use when rockclimbing?', eggyolk_information, :dropdown,
-    ['Laces', 'Velcro', 'Slipper'], no_dependents
-  ],
-  ['Which kind of rockclimbing does your eggyolk engage in?', eggyolk_information, :dropdown,
-    ['Bouldering', 'Top Rope Climbing', 'Mountaineering'], no_dependents
-  ],
-  ['How many shoes does your eggyolk own?', eggyolk_information, :range, [[0, 10]], no_dependents],
-  ['What size shoe is your eggyolk?', eggyolk_information, :range, [[0, 20]], no_dependents]
-]
 
 def generate_question(question, building_type, parent_option=nil)
   if question.nil?
@@ -144,24 +146,25 @@ def generate_question(question, building_type, parent_option=nil)
   end
 end
 
-large_cube_retail_questions.each_with_index do |q, i|
-  print("\rCreating #{large_cube_retail.name}"\
-  " Question #{i + 1}/#{large_cube_retail_questions.length}...")
-  generate_question(q, large_cube_retail)
+def create_questions
+  $large_cube_retail_questions.each_with_index do |q, i|
+    print("\rCreating #{$large_cube_retail.name}"\
+    " Question #{i + 1}/#{$large_cube_retail_questions.length}...")
+    generate_question(q, $large_cube_retail)
+  end
+
+  print("\n")
+
+  $rockclimbing_eggyolk_inc_questions.each_with_index do |q, i|
+    print("\rCreating #{$rockclimbing_eggyolk_inc.name}"\
+    " Question #{i + 1}/#{$rockclimbing_eggyolk_inc_questions.length}...")
+    generate_question(q, $rockclimbing_eggyolk_inc)
+  end
+
+  print("\n")
 end
 
-print("\n")
-
-rockclimbing_eggyolk_inc_questions.each_with_index do |q, i|
-  print("\rCreating #{rockclimbing_eggyolk_inc.name}"\
-  " Question #{i + 1}/#{rockclimbing_eggyolk_inc_questions.length}...")
-  generate_question(q, rockclimbing_eggyolk_inc)
-end
-
-print("\n")
-
-# RMI Users
-people = [
+$people = [
 ['Test', 'RMI', 'rmi@test.com', '18005558888', 'password'],
 ['Eleanore', 'Donnelly', 'raleigh.hammes@berkeley.edu', '16877036527', '^Vbf=Dtst('],
 ['Orland', 'Johns', 'laurence.spence@berkeley.edu', '18451135957', '}jylKd71Z4n-^Gh'],
@@ -215,7 +218,6 @@ people = [
 ['Merle', 'Effertz', 'barrows.ona@berkeley.edu', '18889991010', 'CXl+`q6sEV3igp']
 ]
 
-users_per_type = people.length / 3
 def person(p)
   {
     first_name: p[0],
@@ -227,32 +229,37 @@ def person(p)
   }
 end
 
-rmi_users = people[0..1 * users_per_type].each_with_index.map do |p, i|
-  print("\rCreating RMI User #{i}/#{users_per_type}...")
-  RmiUser.create(person(p))
-end
+def create_users
+  users_per_type = $people.length / 3
 
-print("\n")
+  # RMI Users
+  $rmi_users = $people[0..1 * users_per_type].each_with_index.map do |p, i|
+    print("\rCreating RMI User #{i}/#{users_per_type}...")
+    RmiUser.create(person(p))
+  end
 
-# Asset Manager Users
-asset_managers = people[1 * users_per_type..2 * users_per_type].each_with_index.map do |p, i|
-  print("\rCreating Asset Manager #{i}/#{users_per_type}...")
-  AssetManager.create(person(p))
-end
+  print("\n")
 
-print("\n")
+  # Asset Manager Users
+  $asset_managers = $people[1 * users_per_type..2 * users_per_type].each_with_index.map do |p, i|
+    print("\rCreating Asset Manager #{i}/#{users_per_type}...")
+    AssetManager.create(person(p))
+  end
 
-# Building Operator Users
-building_operators = people[2 * users_per_type..3 * users_per_type].each_with_index.map do |p, i|
-  print("\rCreating Building Operator #{i}/#{users_per_type}...")
-  BuildingOperator.create(person(p))
+  print("\n")
+
+  # Building Operator Users
+  $building_operators = $people[2 * users_per_type..3 * users_per_type].each_with_index.map do |p, i|
+    print("\rCreating Building Operator #{i}/#{users_per_type}...")
+    BuildingOperator.create(person(p))
+  end
 end
 
 # Locations
 # -----
 # FORMAT
 # [<name>, <address>, <city>, <state>, <zip>]
-addresses = [
+$addresses = [
   ['Unit 1', '2650 Durant Ave', 'Berkeley', :California, 94704],
   ['Northside Cafe', '1878 Euclid Ave', 'Berkeley', :California, 94709],
   ['MLK Student Union', '2560 Bancroft Way', 'Berkeley', :California, 94704],
@@ -281,37 +288,48 @@ def generate_location(l)
 end
 
 # Portfolios
-portfolios = asset_managers.map do |a|
-  Portfolio.create!({ name: a.first_name + "'s Portfolio", asset_manager: a })
-end
-
-# Buildings
-print("\n")
-Array(0...portfolios.length).each_with_index do |i, portfolio_index|
-  print("Creating Portfolio #{portfolio_index}/#{portfolios.length - 1}")
-  portfolio = portfolios[i]
-  asset_manager = portfolio.asset_manager
-
-  print("\n")
-  Array(0...addresses.length).each_with_index do |j, building_index|
-    print("\r- Creating Building #{building_index}/#{addresses.length - 1}")
-    location = generate_location(addresses[j])
-    building = Building.new({
-      portfolio: portfolio,
-      name: location[:name],
-      address: location[:address],
-      city: location[:city],
-      state: location[:state],
-      zip: location[:zip]
-    })
-
-    if i.even?
-      building.building_type = large_cube_retail
-    else
-      building.building_type = rockclimbing_eggyolk_inc
-    end
-
-    building.save!
+def create_portfolios
+  $portfolios = $asset_managers.map do |a|
+    Portfolio.create!({ name: a.first_name + "'s Portfolio", asset_manager: a })
   end
   print("\n")
 end
+
+# Buildings
+def create_buildings
+  Array(0...$portfolios.length).each_with_index do |i, portfolio_index|
+    print("Creating Portfolio #{portfolio_index}/#{$portfolios.length - 1}")
+    portfolio = $portfolios[i]
+    asset_manager = portfolio.asset_manager
+
+    print("\n")
+    Array(0...$addresses.length).each_with_index do |j, building_index|
+      print("\r- Creating Building #{building_index}/#{$addresses.length - 1}")
+      location = generate_location($addresses[j])
+      building = Building.new({
+        portfolio: portfolio,
+        name: location[:name],
+        address: location[:address],
+        city: location[:city],
+        state: location[:state],
+        zip: location[:zip]
+      })
+
+      if i.even?
+        building.building_type = $large_cube_retail
+      else
+        building.building_type = $rockclimbing_eggyolk_inc
+      end
+
+      building.save!
+    end
+    print("\n")
+  end
+end
+
+create_building_types
+create_categories
+create_questions
+create_users
+create_portfolios
+create_buildings
