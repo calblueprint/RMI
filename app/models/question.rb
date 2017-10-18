@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: questions
+#
+#  id                 :integer          not null, primary key
+#  question_type      :integer
+#  building_type_id   :integer
+#  parent_option_type :string
+#  parent_option_id   :integer
+#  category_id        :integer
+#  text               :string
+#  status             :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+
 class Question < ApplicationRecord
   enum question_type: [ :free, :dropdown, :range ]
   enum status: [ :draft, :published ]
