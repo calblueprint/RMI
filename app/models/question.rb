@@ -10,4 +10,5 @@ class Question < ApplicationRecord
   has_many :range_options
 
   validates :text, presence: true
+  validates :parameter, presence: true
 end
