@@ -10,4 +10,12 @@ class Question < ApplicationRecord
   has_many :range_options
 
   validates :text, presence: true
+
+  def matches_parent_category
+    unless parent_option.nil?
+      if parent_option.question.category != category
+        errors.add(:question, "category must match parent question's category")
+      end
+    end
+  end
 end
