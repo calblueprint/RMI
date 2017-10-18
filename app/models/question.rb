@@ -9,5 +9,5 @@ class Question < ApplicationRecord
   has_many :dropdown_options
   has_many :range_options
 
-  validates :text, :question_type, presence: true
+  validates :text, :question_type, :parameter, presence: true
 end
