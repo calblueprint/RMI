@@ -11,5 +11,6 @@ class Question < ApplicationRecord
 
   validates :text, presence: true
   validate :matches_parent_category
-  
+
+
 end
