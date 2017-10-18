@@ -1,6 +1,4 @@
 class Api::AnswersController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def create
     answer = Answer.new(answer_params)
     if answer.save
@@ -20,13 +18,14 @@ class Api::AnswersController < ApplicationController
   end
 
   private
+
   def answer_params
     params.require(:answer)
-        .permit(
+          .permit(
             :text,
-            :building,
-            :question,
-            :building_operator
-        )
+            :building_id,
+            :question_id,
+            :building_operator_id
+          )
   end
 end
