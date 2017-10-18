@@ -25,7 +25,8 @@ class Question < ApplicationRecord
   has_many :dropdown_options
   has_many :range_options
 
-  validates :text, presence: true
+
+  validates :text, :question_type, :parameter, presence: true
   validate :matches_parent_category
 
   def matches_parent_category
@@ -34,4 +35,5 @@ class Question < ApplicationRecord
     return if parent_option.question.category == category
     errors.add(:question, "category must match parent question's category")
   end
+  
 end

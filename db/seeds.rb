@@ -16,84 +16,84 @@ def create_categories
   safe_maximum = 2**31 - 1
 
   $large_cube_retail_questions = [
-    ['Describe the kind of cubes you enjoy most.', cube_facts, :free],
-    ['How many cubes do you currently have in your building?', cube_facts, :free],
-    ['Please provide your three desired cube colors.', cube_facts, :free],
-    ['Who manufactures your cubes?', cube_facts, :dropdown, 
+    ['Describe the kind of cubes you enjoy most.', 'favorite_cubes', cube_facts, :free],
+    ['How many cubes do you currently have in your building?', 'num_cubes', cube_facts, :free],
+    ['Please provide your three desired cube colors.', 'cube_colors', cube_facts, :free],
+    ['Who manufactures your cubes?', 'cube_manufacturer', cube_facts, :dropdown, 
       %w(Apple Google Samsung), no_dependents],
-    ['During which time slot are you available for a cube inspection?', cube_facts, :dropdown,
+    ['During which time slot are you available for a cube inspection?', 'cube_inspection', cube_facts, :dropdown,
       ['12:00-1:00 PM', '1:00-2:00 PM', '2:00-3:00 PM'], no_dependents],
-    ['What model are your cubes?', cube_facts, :dropdown,
+    ['What model are your cubes?', 'cube_model', cube_facts, :dropdown,
       ['Model T', 'Corolla', 'Leaf'], no_dependents],
-    ['Please specify the amount of faces your cube has.', cube_facts, :range,
+    ['Please specify the amount of faces your cube has.', 'num_cube_faces', cube_facts, :range,
       [[0, 6]], no_dependents],
-    ['How many corners does your cube have?', cube_facts, :range,
+    ['How many corners does your cube have?', 'num_cube_corners', cube_facts, :range,
       [[0, 8]], no_dependents],
-    ['Please evaluate your cube on a scale of 1-10: 1 = Strongly Disagree, 10 = Strongly Agree', cube_care, :range,
+    ['Please evaluate your cube on a scale of 1-10: 1 = Strongly Disagree, 10 = Strongly Agree', 'cube_evaluation', cube_care, :range,
       [[0, 10]], no_dependents],
     [
-      'Do you love your cube?', cube_care, :dropdown,
+      'Do you love your cube?', 'cube_love', cube_care, :dropdown,
       ['Yes.', 'Not really'],
       [[
-        'How many times a day do you tell your cube that you love it?', cube_care, :range,
+        'How many times a day do you tell your cube that you love it?', 'num_cube_love', cube_care, :range,
         [[0, 3], [4, 7], [8, 10]],
         [
-          [ 'List some ways you can spend more time with your cube.', cube_care, :free ],
-          [ 'What has been your favorite reaction to affection shown towards your cube?', cube_care, :free ],
-          [ 'Does your cube enjoy the attention?', cube_care, :dropdown, ['Yes', 'No'], [nil, nil] ]
+          [ 'List some ways you can spend more time with your cube.', 'cube_quality_time', cube_care, :free ],
+          [ 'What has been your favorite reaction to affection shown towards your cube?', 'cube_reaction', cube_care, :free ],
+          [ 'Does your cube enjoy the attention?', 'cube_attention', cube_care, :dropdown, ['Yes', 'No'], [nil, nil] ]
         ]
       ], nil]
     ]
   ]
 
   $rockclimbing_eggyolk_inc_questions = [
-    ['Please provide the name of the rockclimbing gym of your eggyolk\'s choice.', rockclimbing_skill, :free],
+    ['Please provide the name of the rockclimbing gym of your eggyolk\'s choice.', 'gym_choice', rockclimbing_skill, :free],
     [
-      'How many years has your eggyolk been rockclimbing?', rockclimbing_skill, :range,
+      'How many years has your eggyolk been rockclimbing?', 'years_rockclimbing', rockclimbing_skill, :range,
       [[0, 2], [3, 5], [6, safe_maximum]],
       [
-        ['Has your eggyolk taken lessons?', rockclimbing_skill, :free],
+        ['Has your eggyolk taken lessons?', 'has_taken_lessons', rockclimbing_skill, :free],
         [
-          'How does your egg prepare for rockclimbing?', rockclimbing_skill, :dropdown,
+          'How does your egg prepare for rockclimbing?', 'rockclimbing_preparation', rockclimbing_skill, :dropdown,
           ['Hardboiled', 'Scrambled', 'Overeasy'], no_dependents
         ],
         [
-          'How many hours a day does your eggyolk spend rockclimbing?', rockclimbing_skill, :range,
+          'How many hours a day does your eggyolk spend rockclimbing?', 'hours_spent_rockclimbing', rockclimbing_skill, :range,
           [[0, 4], [5, 8], [0, 24]],
           [
-            ['Describe your eggyolk\'s work-life balance.', rockclimbing_skill, :free],
-            ['Is your eggyolk often exhausted?', rockclimbing_skill, :dropdown, ['Yes', 'No'], no_dependents],
+            ['Describe your eggyolk\'s work-life balance.', 'work_life_balance', rockclimbing_skill, :free],
+            ['Is your eggyolk often exhausted?', 'is_exhausted', rockclimbing_skill, :dropdown, ['Yes', 'No'], no_dependents],
             nil
           ]
         ]
       ]
     ],
     [
-      'Does your eggyolk have any allergies?', eggyolk_information, :dropdown,
+      'Does your eggyolk have any allergies?', 'has_allergies', eggyolk_information, :dropdown,
       ['Yes', 'No'],
-      [['List any foods your eggyolk may be allergic to.', eggyolk_information, :free], nil] 
+      [['List any foods your eggyolk may be allergic to.', 'allergic_to', eggyolk_information, :free], nil] 
     ],
-    ['What is your eggyolk\'s budget on rockclimbing?', eggyolk_information, :range,
+    ['What is your eggyolk\'s budget on rockclimbing?', 'rockclimbing_budget', eggyolk_information, :range,
       [[0, 100], [101, 500], [501, safe_maximum]],
-      [nil, nil, ['Is your eggyolk employed?', eggyolk_information, :dropdown, ['Yes', 'No'], no_dependents]]
+      [nil, nil, ['Is your eggyolk employed?', 'is_employed', eggyolk_information, :dropdown, ['Yes', 'No'], no_dependents]]
     ],
-    ['Briefly describe how your eggyolk discovered rockclimbing.', eggyolk_information, :free],
-    ['Explain why your eggyolk enjoys rockclimbing, if applicable.', eggyolk_information, :free],
-    ['What kind of shoes does your eggyolk use when rockclimbing?', eggyolk_information, :dropdown,
+    ['Briefly describe how your eggyolk discovered rockclimbing.', 'rockclimbing_discovery', eggyolk_information, :free],
+    ['Explain why your eggyolk enjoys rockclimbing, if applicable.', 'reasons_to_rockclimb', eggyolk_information, :free],
+    ['What kind of shoes does your eggyolk use when rockclimbing?', 'rockclimbing_shoes', eggyolk_information, :dropdown,
       ['Laces', 'Velcro', 'Slipper'], no_dependents
     ],
-    ['Which kind of rockclimbing does your eggyolk engage in?', eggyolk_information, :dropdown,
+    ['Which kind of rockclimbing does your eggyolk engage in?', 'rockclimbing_types', eggyolk_information, :dropdown,
       ['Bouldering', 'Top Rope Climbing', 'Mountaineering'], no_dependents
     ],
-    ['How many shoes does your eggyolk own?', eggyolk_information, :range, [[0, 10]], no_dependents],
-    ['What size shoe is your eggyolk?', eggyolk_information, :range, [[0, 20]], no_dependents]
+    ['How many shoes does your eggyolk own?', 'num_shoes', eggyolk_information, :range, [[0, 10]], no_dependents],
+    ['What size shoe is your eggyolk?', 'shoe_size', eggyolk_information, :range, [[0, 20]], no_dependents]
   ]
 end
 
 # Questions
 # -----
 # FORMAT
-# [<text>, <category>, <type>, <array of options>, <array of dependents (or nils)>]
+# [<text>, <parameter>, <category>, <type>, <array of options>, <array of dependents (or nils)>]
 
 def generate_question(question, building_type, parent_option=nil)
   if question.nil?
@@ -101,17 +101,19 @@ def generate_question(question, building_type, parent_option=nil)
   end
 
   q_text = question[0]
-  q_category = question[1]
-  q_type = question[2]
-  q_options = question[3]
-  q_dependents = question[4]
+  q_parameter = question[1]
+  q_category = question[2]
+  q_type = question[3]
+  q_options = question[4]
+  q_dependents = question[5]
 
   q = Question.create!({
     question_type: q_type,
     status: :published,
     text: q_text,
     building_type: building_type,
-    category: q_category
+    category: q_category,
+    parameter: q_parameter
   })
 
   unless parent_option.nil?
