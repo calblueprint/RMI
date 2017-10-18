@@ -31,9 +31,8 @@ class Question < ApplicationRecord
 
   def matches_parent_category
     return if parent_option.nil?
-    puts "Arpan sux"
     return if parent_option.question.category == category
     errors.add(:question, "category must match parent question's category")
   end
-  
+
 end
