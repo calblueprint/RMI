@@ -20,13 +20,14 @@ class Api::AnswersController < ApplicationController
   end
 
   private
+
   def answer_params
     params.require(:answer)
-        .permit(
+          .permit(
             :text,
-            :building,
-            :question,
-            :building_operator
-        )
+            :building_id,
+            :question_id,
+            :building_operator_id
+          )
   end
 end
