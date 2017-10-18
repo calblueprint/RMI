@@ -10,4 +10,6 @@ class Question < ApplicationRecord
   has_many :range_options
 
   validates :text, presence: true
+  validate :matches_parent_category
+  
 end
