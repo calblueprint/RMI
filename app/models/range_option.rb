@@ -1,5 +1,5 @@
 class RangeOption < ApplicationRecord
-  has_one :question, as: :parent_option
+  has_one :child_question, class_name: 'Question', as: :parent_option
   belongs_to :question
 
   validates :min, :max, presence: true
