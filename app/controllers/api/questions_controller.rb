@@ -28,13 +28,16 @@ class Api::QuestionsController < ApplicationController
   end
 
   def publish
-    @question = Question.find(params[:id])
-    @question.publish
-    if @question.status == :published
-      render_json_message(:ok, message: "Question #{@question.id} successfully published", data: @question)
-    else
-      render_json_message(:forbidden, data: @question, errors: @question.errors.full_messages)
+    @questions = Question.find(params[:id])
+    for question in @questions
+      question.publish
+      if question.status == :published
+        render_json_message(:ok, message: "Question #{question.id} successfully published", data: question)
+      else
+        render_json_message(:forbidden, data: question, errors: question.errors.full_messages)
+      end
     end
+
   end
 
   def question_params
