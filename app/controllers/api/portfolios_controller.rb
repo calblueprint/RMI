@@ -1,7 +1,7 @@
 class Api::PortfoliosController < ApplicationController
   def index
-    portfolios = Portfolio.all
-    render json: portfolios
+    @portfolios = Portfolio.all
+    render json: @portfolios
   end
 
   def show
