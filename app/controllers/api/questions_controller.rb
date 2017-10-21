@@ -21,7 +21,7 @@ class Api::QuestionsController < ApplicationController
     @question = Question.find(params[:id])
     @question.destroy
     if @question.destroyed?
-      render_json_message(:ok, message: "Question #{@question.id} successfully destroyed", data: @question)
+      render_json_message(:ok, message: "Question #{@question.id} successfully destroyed")
     else
       render_json_message(:forbidden, errors: @question.errors.full_messages)
     end
