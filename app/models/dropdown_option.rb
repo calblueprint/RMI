@@ -10,6 +10,6 @@
 #
 
 class DropdownOption < ApplicationRecord
-  has_one :child_question, class_name: 'Question', as: :parent_option
+  has_one :child_question, class_name: 'Question', as: :parent_option, :dependent => :destroy
   belongs_to :question
 end
