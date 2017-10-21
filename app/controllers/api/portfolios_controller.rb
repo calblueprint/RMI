@@ -9,8 +9,9 @@ class Api::PortfoliosController < ApplicationController
     render json: portfolio
   end
 
+  ##
+  # Creates a new portfolio tied to the currently logged-in asset manager's account.
   def create
-    # Creates a new portfolio tied to the currently logged-in asset manager's account.
     if asset_manager_signed_in?
       portfolio = current_asset_manager.portfolios.new(portfolio_params)
       if portfolio.save
@@ -32,13 +33,32 @@ class Api::PortfoliosController < ApplicationController
     end
   end
 
+  ##
+  # Exports a CSV file for each Building Type in the portfolio.
+  # Each CSV header contains the parameters of each question in the portfolio.
+  # Each row in a Building Type CSV file contains all the answers for a
+  # particular building of that Building Type.
+  def download
+    portfolio = Portfolio.find(params[:id])
+
+    temp_file = Tempfile.new "portfolio-#{portfolio.name}-#{Date.today}.zip"
+    begin
+      
+    rescue
+
+    ensure
+
+    end
+  end
+
   private
+
   def portfolio_params
     params.require(:portfolio)
-        .permit(
-            :name,
-            :asset_manager,
-            :buildings
-        )
+          .permit(
+              :name,
+              :asset_manager,
+              :buildings
+          )
   end
 end
