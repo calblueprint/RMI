@@ -4,7 +4,7 @@ class Api::QuestionsController < ApplicationController
     if @question.save
       render_json_message(:ok, message: "New Question: #{@question.id} created", data: @question)
     else
-      render_json_message(:forbidden, data: @question, errors: @question.errors.full_messages)
+      render_json_message(:forbidden,errors: @question.errors.full_messages)
     end
   end
 
@@ -13,7 +13,7 @@ class Api::QuestionsController < ApplicationController
     if @question.update(answer_params)
       render_json_message(:ok, message: "Question #{@question.id} successfully updated", data: @question)
     else
-      render_json_message(:forbidden, data: @question, errors: @question.errors.full_messages)
+      render_json_message(:forbidden, errors: @question.errors.full_messages)
     end
   end
 
@@ -23,7 +23,7 @@ class Api::QuestionsController < ApplicationController
     if @question.destroyed?
       render_json_message(:ok, message: "Question #{@question.id} successfully destroyed", data: @question)
     else
-      render_json_message(:forbidden, data: @question, errors: @question.errors.full_messages)
+      render_json_message(:forbidden, errors: @question.errors.full_messages)
     end
   end
 
@@ -32,13 +32,17 @@ class Api::QuestionsController < ApplicationController
     if @questions.update_all(status: :published)
       render_json_message(:ok, message: "Questions successfully published", data: @questions)
     else
-      render_json_message(:forbidden, data: @questions, errors: "Statement is Invalid or Server Error, Questions not published")
+      render_json_message(:forbidden, errors: "Statement is Invalid or Server Error, Questions not published")
     end
 
   end
 
-  def question_params
-    params.require(:question).permit(:text, :question_type, :status, :building_type, :category)
-  end
+  params.require(:question).permit(
+      :text,
+      :question_type,
+      :status,
+      :building_type,
+      :category
+  )
 
 end
