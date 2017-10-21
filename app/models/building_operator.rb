@@ -6,7 +6,7 @@ class BuildingOperator < ApplicationRecord
 
   has_many :answers
 
-  has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingAssignment"
+  has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building
 
   validates :first_name, :last_name, presence: true

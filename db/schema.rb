@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171012070834) do
+ActiveRecord::Schema.define(version: 20171018035219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20171012070834) do
     t.index ["reset_password_token"], name: "index_asset_managers_on_reset_password_token", unique: true
   end
 
-  create_table "building_assignments", id: false, force: :cascade do |t|
+  create_table "building_operator_assignments", id: false, force: :cascade do |t|
     t.bigint "building_id", null: false
     t.bigint "building_operator_id", null: false
     t.index ["building_id", "building_operator_id"], name: "by_op_on_building"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20171012070834) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parameter", null: false
     t.index ["building_type_id"], name: "index_questions_on_building_type_id"
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["parent_option_type", "parent_option_id"], name: "index_questions_on_parent_option_type_and_parent_option_id"

@@ -4,7 +4,7 @@ class Building < ApplicationRecord
   has_one :location
   has_many :answers
 
-  has_many :building_assignments, foreign_key: :building_id, class_name: "BuildingAssignment"
+  has_many :building_assignments, foreign_key: :building_id, class_name: "BuildingOperatorAssignment"
   has_many :building_operators, through: :building_assignments, source: :building_operator
 
   enum state: [
@@ -67,5 +67,6 @@ class Building < ApplicationRecord
   ]
 
   validates :name, :address, :city, :state, :zip, presence: true
+
 
 end
