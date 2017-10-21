@@ -1,5 +1,6 @@
 require_relative 'boot'
 
+require 'zip'
 require 'tempfile'
 require 'csv'
 require 'rails/all'

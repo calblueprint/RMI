@@ -38,16 +38,30 @@ class Api::PortfoliosController < ApplicationController
   # Each CSV header contains the parameters of each question in the portfolio.
   # Each row in a Building Type CSV file contains all the answers for a
   # particular building of that Building Type.
+  # https://github.com/rubyzip/rubyzip
+  # http://www.rubydoc.info/github/rubyzip/rubyzip/master/toplevel/
+  # http://ruby-doc.org/stdlib-2.0.0/libdoc/tempfile/rdoc/Tempfile.html
   def download
     portfolio = Portfolio.find(params[:id])
+    filename = "portfolio-#{portfolio.name}-#{Date.today}.zip"
+    temp_file = Tempfile.new(filename)
 
-    temp_file = Tempfile.new "portfolio-#{portfolio.name}-#{Date.today}.zip"
     begin
+      # Initialize the temp file as a zip file
+      Zip::OutputStream.open(temp_file) { |zos| }
 
-    rescue
+      # Add files to zip file
+      Zip::File.open(temp_file.path, Zip::File::CREATE) do |zip|
+        # TODO: put files in here
+      end
 
+      # Read in the binary data of temp_file and send to browser as attachment
+      zip_data = File.read(temp_file.path)
+      send_data(zip_data, type: 'application/zip', filename: filename)
     ensure
-
+      # Close and delete temp
+      temp_file.close
+      temp_file.unlink
     end
   end
 
