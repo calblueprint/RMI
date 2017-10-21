@@ -28,11 +28,11 @@ class Api::QuestionsController < ApplicationController
   end
 
   def publish
-    @questions = Question.find(params[:id])
+    @questions = Question.find(params[:ids])
     if @questions.update_all(status: :published)
-      render_json_message(:ok, message: "Question #{@question.id} successfully published", data: @question)
+      render_json_message(:ok, message: "Questions successfully published", data: @questions)
     else
-      render_json_message(:forbidden, data: @question, errors: @question.errors.full_messages)
+      render_json_message(:forbidden, data: @questions, errors: "Statement is Invalid or Server Error, Questions not published")
     end
 
   end

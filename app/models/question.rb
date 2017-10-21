@@ -35,8 +35,4 @@ class Question < ApplicationRecord
     errors.add(:question, "category must match parent question's category")
   end
 
-  def publish
-    self.status = :published
-  end
-
 end
