@@ -26,13 +26,15 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_mailer.perform_deliveries = true
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
 
   # Saves emails in ActionMailer::Base.deliveries instead of actually sending them
-  config.action_mailer.delivery_method = :test
+  config.action_mailer.delivery_method = :letter_opener
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
