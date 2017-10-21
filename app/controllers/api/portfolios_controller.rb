@@ -43,7 +43,7 @@ class Api::PortfoliosController < ApplicationController
 
     temp_file = Tempfile.new "portfolio-#{portfolio.name}-#{Date.today}.zip"
     begin
-      
+
     rescue
 
     ensure
