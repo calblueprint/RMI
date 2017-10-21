@@ -1,16 +1,16 @@
 class RmiUsersController < ApplicationController
   def show
-    @asset_manager = AssetManager.find(params[:id])
+    @rmi_user = RmiUser.find(params[:id])
 
-    if asset_manager_signed_in? && current_asset_manager.id == @asset_manager.id
-      last_portfolio = @asset_manager.portfolios.order('updated_at').last
-      if last_portfolio
+    if rmi_user_signed_in? && current_rmi_user.id == @rmi_user.id
+      @portfolios = Portfolios.all
+      if portfolios
         redirect_to portfolio_path(last_portfolio)
       else
-        @message = 'This asset manager is logged in but does not have any portfolios yet.'
+        @message = 'No portfolios available'
       end
     else
-      @message = 'This asset manager is not currently logged in.'
+      @message = 'The RMI User is not currently logged in.'
     end
   end
 end

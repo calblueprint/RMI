@@ -15,4 +15,13 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :phone])
   end
+
+  case after_sign_in_path_for(resource)
+    when AssetManager
+      dashboard_path
+    when RmiUser
+      sdsd_path
+    else
+      sdsds_path
+  end
 end
