@@ -4,7 +4,7 @@ class Api::QuestionsController < ApplicationController
     if @question.save
       render_json_message(:ok, message: "New Question: #{@question.id} created", data: @question)
     else
-      render_json_message(:forbidden,errors: @question.errors.full_messages)
+      render_json_message(:forbidden, errors: @question.errors.full_messages)
     end
   end
 
