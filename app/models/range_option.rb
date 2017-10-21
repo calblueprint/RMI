@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: range_options
+#
+#  id          :integer          not null, primary key
+#  min         :integer
+#  max         :integer
+#  question_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class RangeOption < ApplicationRecord
   has_one :child_question, class_name: 'Question', as: :parent_option
   belongs_to :question
