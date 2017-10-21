@@ -1,6 +1,22 @@
+# == Schema Information
+#
+# Table name: questions
+#
+#  id                 :integer          not null, primary key
+#  question_type      :integer
+#  building_type_id   :integer
+#  parent_option_type :string
+#  parent_option_id   :integer
+#  category_id        :integer
+#  text               :string
+#  status             :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#
+
 class Question < ApplicationRecord
-  enum question_type: [ :free, :dropdown, :range ]
-  enum status: [ :draft, :published ]
+  enum question_type: %i[free dropdown range]
+  enum status: %i[draft published]
 
   belongs_to :building_type
   belongs_to :category
@@ -9,5 +25,14 @@ class Question < ApplicationRecord
   has_many :dropdown_options
   has_many :range_options
 
-  validates :text, :question_type, presence: true
+
+  validates :text, :question_type, :parameter, presence: true
+  validate :matches_parent_category
+
+  def matches_parent_category
+    return if parent_option.nil?
+    return if parent_option.question.category == category
+    errors.add(:question, "category must match parent question's category")
+  end
+
 end
