@@ -35,7 +35,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # Saves emails in ActionMailer::Base.deliveries instead of actually sending them
+  # Opens email previews in browser instead of actually sending them
   config.action_mailer.delivery_method = :letter_opener
 
   # Print deprecation notices to the Rails logger.
