@@ -77,7 +77,7 @@ class Building < ApplicationRecord
     Wyoming
     District_of_Columbia
     Puerto_Rico
-    Guam
+    Guamto
     American_Samoa
     Virgin_Islands
     Northern_Mariana_Islands
@@ -85,4 +85,7 @@ class Building < ApplicationRecord
 
   validates :name, :address, :city, :state, :zip, presence: true
 
+  def to_csv
+    return %w{}
+  end
 end

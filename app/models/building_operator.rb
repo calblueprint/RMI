@@ -26,6 +26,8 @@ class BuildingOperator < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  after_create :send_onboarding_email
+
   has_many :answers
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
@@ -35,4 +37,10 @@ class BuildingOperator < ApplicationRecord
   # email validation with regex
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
+
+  # New building operator accounts are only created when an asset manager delegates a question to them,
+  # so send an onboarding email telling them they have new questions.
+  def send_onboarding_email
+    BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
+  end
 end

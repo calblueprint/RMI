@@ -21,9 +21,9 @@ class Question < ApplicationRecord
   belongs_to :building_type
   belongs_to :category
   belongs_to :parent_option, polymorphic: true, optional: true
-  has_many :answers
-  has_many :dropdown_options
-  has_many :range_options
+  has_many :answers, :dependent => :destroy
+  has_many :dropdown_options, :dependent => :destroy
+  has_many :range_options, :dependent => :destroy
 
 
   validates :text, :question_type, :parameter, presence: true

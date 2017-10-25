@@ -38,10 +38,13 @@ class Api::PortfoliosController < ApplicationController
   # Each CSV header contains the parameters of each question in the portfolio.
   # Each row in a Building Type CSV file contains all the answers for a
   # particular building of that Building Type.
+  #
+  # References:
   # https://github.com/rubyzip/rubyzip
   # http://www.rubydoc.info/github/rubyzip/rubyzip/master/toplevel/
   # http://ruby-doc.org/stdlib-2.0.0/libdoc/tempfile/rdoc/Tempfile.html
   # http://thinkingeek.com/2013/11/15/create-temporary-zip-file-send-response-rails/
+  #
   def download
     portfolio = Portfolio.find(params[:id])
     filename = "#{Date.today}-portfolio-#{portfolio.name}"
@@ -53,18 +56,29 @@ class Api::PortfoliosController < ApplicationController
 
       # Add files to zip file
       Zip::File.open(temp_file.path, Zip::File::CREATE) do |zip|
-        # TODO: put files in here
-        # for building_type in building_types
+        # for building_type in building_types, create csv for that building type
+        # if the query result is not empty
         BuildingType.find_each do |type|
           buildings = portfolio.buildings.where(building_type: type).all
-          CSV.open("#{filename}-#{type.name}")
+          unless buildings.blank?
+            csv_name = filename + "-#{type.name}"
+            # populate CSV
+            CSV.open(csv_name, 'wb') do |csv|
+              # add column headers to CSV
+              csv << Building.column_names
+              # add rows to CSV
+              buildings.each do |building|
+                csv << building.attributes.map { |attr| building.send(attr) }
+              end
+            end
+            zip.add(csv_name, temp_file.path + csv_name)
+          end
         end
-          # create csv for that building type if the query result is not empty
       end
 
       # Read in the binary data of temp_file and send to browser as attachment
       zip_data = File.read(temp_file.path)
-      send_data(zip_data, type: 'application/zip', filename: "#{filename}+.zip")
+      send_data(zip_data, type: 'application/zip', filename: filename + '.zip')
     ensure
       # Close and delete temp_file
       temp_file.close
