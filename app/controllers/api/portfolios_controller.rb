@@ -41,9 +41,10 @@ class Api::PortfoliosController < ApplicationController
   # https://github.com/rubyzip/rubyzip
   # http://www.rubydoc.info/github/rubyzip/rubyzip/master/toplevel/
   # http://ruby-doc.org/stdlib-2.0.0/libdoc/tempfile/rdoc/Tempfile.html
+  # http://thinkingeek.com/2013/11/15/create-temporary-zip-file-send-response-rails/
   def download
     portfolio = Portfolio.find(params[:id])
-    filename = "portfolio-#{portfolio.name}-#{Date.today}.zip"
+    filename = "#{Date.today}-portfolio-#{portfolio.name}"
     temp_file = Tempfile.new(filename)
 
     begin
@@ -53,13 +54,19 @@ class Api::PortfoliosController < ApplicationController
       # Add files to zip file
       Zip::File.open(temp_file.path, Zip::File::CREATE) do |zip|
         # TODO: put files in here
+        # for building_type in building_types
+        BuildingType.find_each do |type|
+          buildings = portfolio.buildings.where(building_type: type).all
+          CSV.open("#{filename}-#{type.name}")
+        end
+          # create csv for that building type if the query result is not empty
       end
 
       # Read in the binary data of temp_file and send to browser as attachment
       zip_data = File.read(temp_file.path)
-      send_data(zip_data, type: 'application/zip', filename: filename)
+      send_data(zip_data, type: 'application/zip', filename: "#{filename}+.zip")
     ensure
-      # Close and delete temp
+      # Close and delete temp_file
       temp_file.close
       temp_file.unlink
     end
