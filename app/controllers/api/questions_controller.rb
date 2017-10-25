@@ -10,7 +10,7 @@ class Api::QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
-    if @question.update(answer_params)
+    if @question.update(question_params)
       render_json_message(:ok, message: "Question #{@question.id} successfully updated", data: @question)
     else
       render_json_message(:forbidden, errors: @question.errors.full_messages)
@@ -37,12 +37,17 @@ class Api::QuestionsController < ApplicationController
 
   end
 
-  params.require(:question).permit(
-      :text,
-      :question_type,
-      :status,
-      :building_type,
-      :category
-  )
+  def question_params
+    params.require(:question).permit(
+        :text,
+        :question_type,
+        :status,
+        :building_type,
+        :category
+    )
+
+  end
+
+
 
 end
