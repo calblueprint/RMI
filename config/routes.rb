@@ -7,10 +7,14 @@ Rails.application.routes.draw do
   resources :buildings, only: [:show]
   resources :portfolios, only: [:show]
   resources :asset_managers, only: [:show]
+  resources :building_operators, only: [:show]
 
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: [:create, :update, :show, :index]
     resources :buildings, only: %i[index create update]
     resources :answers, only: [:create, :update]
+    resources :questions, only: [:create, :update, :destroy]
+    # Can change route with:
+    patch '/api/questions/publish', to: 'questions#publish'
   end
 end
