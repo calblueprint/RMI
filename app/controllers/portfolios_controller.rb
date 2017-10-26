@@ -1,6 +1,6 @@
 class PortfoliosController < ApplicationController
   def index
-    @portfolios = Portfolios.all
+    @portfolios = Portfolio.all
   end
   def show
     @portfolio = Portfolio.find(params[:id])
