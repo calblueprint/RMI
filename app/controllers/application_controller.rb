@@ -18,15 +18,17 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if resource.is_a?(AssetManager)
-      return asset_manager_path(current_asset_manager)
-    elsif resource.is_a(RmiUser)
-      return rmi_user_path(current_rmi_user)
-    elsif resource.is_a(BuildingOperator)
-      return building_operator_path(current_building_operator)
+    case
+    when resource.is_a?(AssetManager)
+      asset_manager_path(current_asset_manager)
+    when resource.is_a(RmiUser)
+      rmi_user_path(current_rmi_user)
+    when resource.is_a(BuildingOperator)
+      building_operator_path(current_building_operator)
     else
       super
     end
   end
+
 
 end

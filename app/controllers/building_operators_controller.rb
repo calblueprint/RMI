@@ -1,7 +1,7 @@
 class BuildingOperatorsController < ApplicationController
   def show
     @building_operator = BuildingOperator.find(params[:id])
-    if building_operator_signed_in? && current_building_operator.id == @rmi_user.id
+    if building_operator_signed_in? && current_building_operator.id == @building_operator.id
       @answers = @building_operator.answers
       @questions = {}
       for answer in @answers
