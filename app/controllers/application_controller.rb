@@ -17,12 +17,16 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name phone])
   end
 
-  case after_sign_in_path_for(resource)
-    when AssetManager
-      dashboard_path
-    when RmiUser
-      sdsd_path
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(AssetManager)
+      return asset_manager_path(current_asset_manager)
+    elsif resource.is_a(RmiUser)
+      return rmi_user_path(current_rmi_user)
+    elsif resource.is_a(BuildingOperator)
+      return building_operator_path(current_building_operator)
     else
-      sdsds_path
+      super
+    end
   end
+
 end
