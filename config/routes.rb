@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     resources :portfolios, only: [:create, :update, :show, :index]
     resources :buildings, only: %i[index create update]
     resources :answers, only: [:create, :update]
-    resources :questions, only: [:show, :create, :update, :destroy]   # :show TEMPORARY - FOR TESTING QUESTION SERIALIZER
+    resources :questions, only: [:create, :update, :destroy]
     # Can change route with:
     patch '/api/questions/publish', to: 'questions#publish'
   end

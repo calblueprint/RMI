@@ -14,7 +14,6 @@
 #  updated_at         :datetime         not null
 #  parameter          :string           not null
 
-
 class QuestionSerializer < ActiveModel::Serializer
   attributes :id,
              :question_type,
