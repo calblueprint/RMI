@@ -8,6 +8,12 @@ class Api::QuestionsController < ApplicationController
     end
   end
 
+  # TEMPORARY - FOR TESTING QUESTION SERIALIZER
+  def show
+    question = Question.find(params[:id])
+    render json: question
+  end
+
   def update
     @question = Question.find(params[:id])
     if @question.update(question_params)
