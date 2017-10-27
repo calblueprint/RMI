@@ -17,7 +17,6 @@
 class QuestionSerializer < ActiveModel::Serializer
   attributes :id,
              :question_type,
-             :options,
              :building_type_id,
              :parent_option_type,
              :parent_option_id,
@@ -26,7 +25,7 @@ class QuestionSerializer < ActiveModel::Serializer
              :status,
              :parameter
 
-  has_many :answers
+  has_many :options
 
   # The serialized object will have a single array 'options' with all associated options,
   # instead of separate attributes like dropdown_options and range_options.
