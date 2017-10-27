@@ -1,8 +1,21 @@
-<h1>Message</h1>
+<h1>RMI User</h1>
 
 <p>
-  <i> <%= @rmi_user %> </i>
-  <i> <%= @portfolios %> </i>
-  <i>NOTE: <%= @message %></i>
+  <i> <%= @rmi_user.first_name %> </i>
+
   <%= tag(:br) %>
+</p>
+
+<h2>Portfolios</h2>
+<% @portfolios.each do |portfolio| %>
+    <p>
+      <strong>Name:</strong>
+      <%= portfolio.name %>
+    </p>
+    <%= tag(:br) %>
+<% end %>
+
+<h3> Error Message</h3>
+<p>
+  <i>NOTE: <%= @message %></i>
 </p>

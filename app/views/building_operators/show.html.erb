@@ -1,9 +1,31 @@
 <h1>Building Operator</h1>
 
 <p>
-  <i> <%= @building_operator %> </i>
-  <i> <%= @answers %> </i>
-  <i> <%= @questions %> </i>
-  <i>NOTE: <%= @message %></i>
+  <i> <%= @building_operator.first_name %> </i>
   <%= tag(:br) %>
 </p>
+
+<h2>Answers</h2>
+<% @answers.each do |answer| %>
+    <p>
+      <strong>Text:</strong>
+      <%= answer.text %>
+    </p>
+    <%= tag(:br) %>
+<% end %>
+
+<h3>Questions</h3>
+<% @questions.each do |question| %>
+    <p>
+      <strong>Text:</strong>
+      <%= question.text %>
+    </p>
+    <%= tag(:br) %>
+<% end %>
+
+<h4> Message </h4>
+<p>
+  <i>NOTE: <%= @message %></i>
+</p>
+
+
