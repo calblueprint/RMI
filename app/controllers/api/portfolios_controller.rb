@@ -85,6 +85,7 @@ class Api::PortfoliosController < ApplicationController
       temp_file.unlink
     end
   end
+  helper_method :download
 
   private
 
