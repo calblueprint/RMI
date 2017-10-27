@@ -10,7 +10,11 @@ Rails.application.routes.draw do
   resources :building_operators, only: %i[show]
 
   namespace :api, defaults: { format: :json } do
-    resources :portfolios, only: %i[index create update show]
+    resources :portfolios, only: %i[index create update show] do
+      collection do
+        get :download
+      end
+    end
     resources :buildings, only: %i[index create update]
     resources :answers, only: %i[create update]
     resources :questions, only: %i[create update destroy]
