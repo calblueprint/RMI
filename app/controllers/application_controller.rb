@@ -19,11 +19,11 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     case
-    when resource.is_a?(AssetManager)
+    when AssetManager
       asset_manager_path(current_asset_manager)
-    when resource.is_a(RmiUser)
+    when RmiUser
       rmi_user_path(current_rmi_user)
-    when resource.is_a(BuildingOperator)
+    when BuildingOperator
       building_operator_path(current_building_operator)
     else
       super
