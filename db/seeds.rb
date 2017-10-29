@@ -107,14 +107,14 @@ def generate_question(question, building_type, parent_option=nil)
   q_options = question[4]
   q_dependents = question[5]
 
-  q = Question.create!({
+  q = Question.create!(
     question_type: q_type,
     status: :published,
     text: q_text,
     building_type: building_type,
     category: q_category,
     parameter: q_parameter
-  })
+  )
 
   unless parent_option.nil?
     q.parent_option = parent_option
@@ -127,19 +127,19 @@ def generate_question(question, building_type, parent_option=nil)
 
   if q_type.equal? :dropdown
     q_options_saved = q_options.map do |option|
-      DropdownOption.create!({
+      DropdownOption.create!(
         text: option,
         question: q
-      })
+      )
     end
   end
   if q_type.equal? :range
     q_options_saved = q_options.map do |option|
-      RangeOption.create!({
+      RangeOption.create!(
         min: option[0],
         max: option[1],
         question: q
-      })
+      )
     end
   end
 
@@ -308,20 +308,20 @@ def create_buildings
     Array(0...$addresses.length).each_with_index do |j, building_index|
       print("\r- Creating Building #{building_index}/#{$addresses.length - 1}")
       location = generate_location($addresses[j])
-      building = Building.new({
+      building = Building.new(
         portfolio: portfolio,
         name: location[:name],
         address: location[:address],
         city: location[:city],
         state: location[:state],
         zip: location[:zip]
-      })
+      )
 
-      if i.even?
-        building.building_type = $large_cube_retail
-      else
-        building.building_type = $rockclimbing_eggyolk_inc
-      end
+      building.building_type = if j.even?
+                                 $large_cube_retail
+                               else
+                                 building.building_type = $rockclimbing_eggyolk_inc
+                               end
 
       building.save!
     end

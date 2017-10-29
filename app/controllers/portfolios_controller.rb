@@ -13,7 +13,7 @@ class PortfoliosController < ApplicationController
   # http://www.rubydoc.info/github/rubyzip/rubyzip/master/toplevel/
   # http://ruby-doc.org/stdlib-2.0.0/libdoc/tempfile/rdoc/Tempfile.html
   # http://thinkingeek.com/2013/11/15/create-temporary-zip-file-send-response-rails/
-  # TODO: modularize everything. Make CSV file temporary too. 
+  # TODO: modularize everything. Make CSV file temporary too.
   #
   def download
     portfolio = Portfolio.find(params[:id])
