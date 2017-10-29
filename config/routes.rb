@@ -5,16 +5,16 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'pages#home'
   resources :buildings, only: %i[show]
-  resources :portfolios, only: %i[show download]
+  resources :portfolios, only: %i[show download] do
+    collection do
+      get 'download/:id' => :download, as: 'download'
+    end
+  end
   resources :asset_managers, only: %i[show]
   resources :building_operators, only: %i[show]
 
   namespace :api, defaults: { format: :json } do
-    resources :portfolios, only: %i[index create update show] do
-      collection do
-        get :download
-      end
-    end
+    resources :portfolios, only: %i[index create update show]
     resources :buildings, only: %i[index create update]
     resources :answers, only: %i[create update]
     resources :questions, only: %i[create update destroy]
