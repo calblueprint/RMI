@@ -10,3 +10,5 @@
 <% @portfolio.buildings.each do |b| %>
   <p><%= b.name %> | <%= link_to('Details', building_path(b)) %></p>
 <% end %>
+
+<%= javascript_pack_tag 'components\\AssetManagerApp.js' %>

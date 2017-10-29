@@ -17,7 +17,7 @@ const Hello = props => (
   <div>Hello {props.name}!</div>
 )
 
-const store = initializeStore({});
+const store = initializeStore();
 
 Hello.defaultProps = {
   name: 'David'

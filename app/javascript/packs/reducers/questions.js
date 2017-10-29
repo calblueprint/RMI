@@ -8,7 +8,7 @@ import {
   SAVE_QUESTION
 } from '../constants';
 
-function attachQuestion(state = {}, action) {
+function attachQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,
@@ -19,7 +19,7 @@ function attachQuestion(state = {}, action) {
   }
 }
 
-function attachOptionToQuestion(state = {}, action) {
+function attachOptionToQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,
@@ -32,7 +32,7 @@ function attachOptionToQuestion(state = {}, action) {
   }
 }
 
-function detachQuestion(state = {}, action) {
+function detachQuestion(state, action) {
   return Object.keys(state)
     .filter(id => id !== action.question.id)
     .reduce((newState, id) => {
@@ -41,7 +41,7 @@ function detachQuestion(state = {}, action) {
     }, {});
 }
 
-function detachOptionFromQuestion(state = {}, action) {
+function detachOptionFromQuestion(state, action) {
   const currentOptions = state[questionId].options;
   return {
     ...state,
@@ -51,7 +51,7 @@ function detachOptionFromQuestion(state = {}, action) {
   }
 }
 
-function saveQuestion(state = {}, action) {
+function saveQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,

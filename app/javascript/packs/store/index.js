@@ -26,14 +26,13 @@ if (process.env.NODE_ENV === 'production') {
   // Any production-specific reducers
 } else {
   composition.push(applyMiddleware(logger));
-  // composition.push(DevToolsContainer.instrument());
   composition.push(
     window.__REDUX_DEVTOOLS_EXTENSION__
     && window.__REDUX_DEVTOOLS_EXTENSION__()
   );
 }
 
-function initializeStore(initialState) {
+function initializeStore(rootReducer, initialState) {
   return createStore(rootReducer, initialState, compose(...composition));
 }
 

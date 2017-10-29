@@ -4,11 +4,21 @@ export const CHANGE_BUILDING_TYPE_NAME = 'CHANGE_BUILDING_TYPE_NAME';
 export const REMOVE_BUILDING_TYPE = 'REMOVE_BUILDING_TYPE';
 export const SAVE_BUILDING_TYPE = 'SAVE_BUILDING_TYPE';
 
+// Portfolio ActionTypes
+export const FETCH_PORTFOLIOS = 'FETCH_PORTFOLIOS';
+
 // Building ActionTypes
 export const ADD_BUILDING = 'ADD_BUILDING';
-export const CHANGE_BUILDING_NAME = 'CHANGE_BUILDING_NAME';
+export const EDIT_BUILDING = 'EDIT_BUILDING';
 export const REMOVE_BUILDING = 'REMOVE_BUILDING';
-export const SAVE_BUILDING = 'SAVE_BUILDING';
+
+export const FETCH_BUILDINGS = 'FETCH_BUILDINGS';
+export const CREATE_BUILDING = 'CREATE_BUILDING';
+export const UPDATE_BUILDING = 'UPDATE_BUILDING';
+export const DELETE_BUILDING = 'DELETE_BUILDING';
+
+export const ASSIGN_BUILDING_OPERATOR = 'ASSIGN_BUILDING_OPERATOR';
+export const UNASSIGN_BUILDING_OPERATOR = 'UNASSIGN_BUILDING_OPERATOR';
 
 // Question ActionTypes
 export const ADD_QUESTION = 'ADD_QUESTION';
@@ -23,6 +33,26 @@ export const REMOVE_QUESTION = 'REMOVE_QUESTION';
 export const REMOVE_OPTION = 'REMOVE_OPTION';
 export const REMOVE_CATEGORY = 'REMOVE_CATEGORY';
 
-export const SAVE_QUESTION = 'SAVE_QUESTION';
-export const SAVE_OPTION = 'SAVE_OPTION';
-export const SAVE_CATEGORY = 'SAVE_CATEGORY';
+export const CREATE_QUESTION = 'CREATE_QUESTION';
+export const CREATE_OPTION = 'CREATE_OPTION';
+export const CREATE_CATEGORY = 'CREATE_CATEGORY';
+
+export const UPDATE_QUESTION = 'UPDATE_QUESTION';
+export const UPDATE_OPTION = 'UPDATE_OPTION';
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
+
+export const DELETE_QUESTION = 'DELETE_QUESTION';
+export const DELETE_OPTION = 'DELETE_OPTION';
+export const DELETE_CATEGORY = 'DELETE_CATEGORY';
+
+// Fetch constants
+export const FETCH_SUCCESS = 'FETCH_OK';
+export const FETCH_FAILURE = 'FETCH_ERR';
+export const FETCH_IN_PROGRESS = 'FETCH_LOADING';
+export const FETCH_SETTINGS = {
+  credentials: 'same-origin',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+};
