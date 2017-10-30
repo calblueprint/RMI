@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: %i[create update show index]
+    resources :building_types, only: %i[show]
     resources :buildings, only: %i[show index create update]
     resources :answers, only: %i[create update]
     resources :questions, only: %i[show create update destroy]

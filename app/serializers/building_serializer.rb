@@ -22,23 +22,11 @@ class BuildingSerializer < ActiveModel::Serializer
              :address,
              :city,
              :state,
-             :zip
-
-  has_many :questions
-  has_many :answers
-
-  # Questions are stored as a hash, where the key is the id and the value is the serialized question
-  def questions
-    questions = {}
-    object.building_type.questions.each do |q|
-      questions[q.id] = QuestionSerializer.new(q).as_json
-    end
-    questions
-  end
+             :zip,
+             :answers
 
   # Answers are stored as a hash, where the key is the id of the corresponding QUESTION
   def answers
     object.answers.index_by(&:question_id)
   end
 end
-
