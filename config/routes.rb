@@ -11,10 +11,11 @@ Rails.application.routes.draw do
   resources :rmi_users, only: [:show]
 
   namespace :api, defaults: { format: :json } do
-    resources :portfolios, only: [:create, :update, :show, :index]
-    resources :buildings, only: %i[index create update]
-    resources :answers, only: [:create, :update]
-    resources :questions, only: [:create, :update, :destroy]
+    resources :portfolios, only: %i[create update show index]
+    resources :building_types, only: %i[show]
+    resources :buildings, only: %i[show index create update]
+    resources :answers, only: %i[create update]
+    resources :questions, only: %i[show create update destroy]
     # Can change route with:
     patch '/api/questions/publish', to: 'questions#publish'
   end

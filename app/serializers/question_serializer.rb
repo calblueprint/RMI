@@ -23,9 +23,8 @@ class QuestionSerializer < ActiveModel::Serializer
              :category_id,
              :text,
              :status,
-             :parameter
-
-  has_many :options
+             :parameter,
+             :options
 
   # The serialized object will have a single array 'options' with all associated options,
   # instead of separate attributes like dropdown_options and range_options.
