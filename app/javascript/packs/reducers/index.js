@@ -11,11 +11,14 @@ const rootReducer = combineReducers({
   portfolios
 });
 
-function wrappedReducer(state, action) {
-  if (action.type === LOAD_INITIAL_STATE) {
-    return {...state,  ...action};
+
+export function wrapReducer(reducer = rootReducer) {
+  return function wrappedReducer(state, action) {
+    if (action.type === LOAD_INITIAL_STATE) {
+      return {...state,  ...action};
+    }
+    return reducer(state, action);
   }
-  return rootReducer(state, action);
 }
 
-export default wrappedReducer;
+export default rootReducer;

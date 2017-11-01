@@ -1,6 +1,8 @@
 import {
   ADD_BUILDING,
   EDIT_BUILDING,
+  CREATE_BUILDING,
+  UPDATE_BUILDING,
   REMOVE_BUILDING,
   SAVE_BUILDING,
   ASSIGN_BUILDING_OPERATOR,
@@ -77,6 +79,7 @@ function saveBuilding(state, action) {
 }
 
 export default function buildings(state = {}, action) {
+  if (!action) return state;
   switch (action.type) {
     case ADD_BUILDING: return addBuilding(state, action);
     case EDIT_BUILDING: return editBuilding(state, action);

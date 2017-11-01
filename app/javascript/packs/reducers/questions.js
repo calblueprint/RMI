@@ -62,6 +62,7 @@ function saveQuestion(state, action) {
 }
 
 export default function questions(state = {}, action) {
+  if (!action) return state;
   switch (action.type) {
     case ADD_QUESTION: return attachQuestion(state, action);
     case EDIT_QUESTION: return attachQuestion(state, action);

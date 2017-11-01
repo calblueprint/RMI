@@ -32,8 +32,8 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-function initializeStore(rootReducer, initialState) {
-  return createStore(rootReducer, initialState, compose(...composition));
+function initializeStore(rootReducer) {
+  return createStore(rootReducer, compose(...composition));
 }
 
 export { DevToolsContainer, initializeStore }; 

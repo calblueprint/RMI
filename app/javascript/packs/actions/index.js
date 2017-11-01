@@ -7,7 +7,8 @@ import { LOAD_INITIAL_STATE } from '../constants';
 export default { buildings, portfolios, questions };
 
 const toObjectById = (entities) => {
-  return entites.reduce((result, entity) => {
+  console.log(entities)
+  return entities.reduce((result, entity) => {
     result[entity.id] = entity;
     return result;
   }, {});
@@ -62,7 +63,7 @@ export function loadInitialState(initialState) {
 
     return stateFormatter(entity);
   }).reduce((result, shaped, index) => {
-    result[types[index]] = v;
+    result[types[index]] = shaped;
     return result;
   }, {});
 
