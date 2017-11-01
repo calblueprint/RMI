@@ -11,7 +11,7 @@
 #
 
 class RangeOption < ApplicationRecord
-  has_one :child_question, class_name: 'Question', as: :parent_option
+  has_one :child_question, class_name: 'Question', as: :parent_option, :dependent => :destroy
   belongs_to :question
 
   validates :min, :max, presence: true
@@ -41,4 +41,5 @@ class RangeOption < ApplicationRecord
     min2, max2 = [range2.min, range2.max].minmax
     return [min1, min2].max <= [max1, max2].min
   end
+
 end

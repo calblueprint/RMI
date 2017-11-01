@@ -33,12 +33,12 @@ class Api::PortfoliosController < ApplicationController
   end
 
   private
+
   def portfolio_params
     params.require(:portfolio)
-        .permit(
+          .permit(
             :name,
-            :asset_manager,
-            :buildings
-        )
+            :asset_manager_id
+          )
   end
 end

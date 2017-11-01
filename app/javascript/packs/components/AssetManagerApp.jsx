@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 class AssetManagerApp extends React.Component {
   render() {
-
+    
   }
 }
 

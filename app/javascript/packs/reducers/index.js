@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+import { LOAD_INITIAL_STATE }
+
 import questions from './questions';
 import buildings from './buildings';
 import portfolios from './portfolios';
@@ -9,4 +11,11 @@ const rootReducer = combineReducers({
   portfolios
 });
 
-export default rootReducer;
+function wrappedReducer(state, action) {
+  if (action.type === LOAD_INITIAL_STATE) {
+    return {...state, ...action};
+  }
+  return rootReducer(state, action);
+}
+
+export default wrappedReducer;

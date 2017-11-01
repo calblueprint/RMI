@@ -12,7 +12,23 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :phone])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[first_name last_name phone])
   end
+
+  def after_sign_in_path_for(resource)
+    case
+    when resource.is_a?(AssetManager)
+      asset_manager_path(current_asset_manager)
+    when resource.is_a?(RmiUser)
+      rmi_user_path(current_rmi_user)
+    when resource.is_a?(BuildingOperator)
+      building_operator_path(current_building_operator)
+    else
+      super
+    end
+  end
+
+
 end

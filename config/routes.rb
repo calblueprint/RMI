@@ -5,12 +5,17 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'pages#home'
   resources :buildings, only: [:show]
-  resources :portfolios, only: [:show]
+  resources :portfolios, only: [:show, :index]
   resources :asset_managers, only: [:show]
+  resources :building_operators, only: [:show]
+  resources :rmi_users, only: [:show]
 
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: [:create, :update, :show, :index]
     resources :buildings, only: %i[index create update]
     resources :answers, only: [:create, :update]
+    resources :questions, only: [:create, :update, :destroy]
+    # Can change route with:
+    patch '/api/questions/publish', to: 'questions#publish'
   end
 end

@@ -1,3 +1,5 @@
+export const LOAD_INITIAL_STATE = 'LOAD_INITIAL_STATE';
+
 // BuildingType ActionTypes
 export const ADD_BUILDING_TYPE = 'ADD_BUILDING_TYPE';
 export const CHANGE_BUILDING_TYPE_NAME = 'CHANGE_BUILDING_TYPE_NAME';
