@@ -13,8 +13,12 @@ class AssetManagerApp extends React.Component {
   }
 
   render() {
+    const buildings = this.props.buildings;
     return (<div>
-      {Object.keys(this.props.buildings).map(id => <p>{id}</p>)}
+      <h2>Buildings</h2>
+      {Object.keys(buildings).map(id => {
+        return (<p key={id}>{buildings[id].name} | <a href={`/buildings/${id}`}>Details</a></p>);
+      })}
     </div>);
   }
 }
