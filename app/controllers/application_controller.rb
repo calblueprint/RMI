@@ -30,5 +30,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_ability
+    if rmi_user_signed_in?
+      @current_ability ||= AdminAbility.new(current_rmi_user) #this ability gets created on next task
+    elsif asset_manager_signed_in?
+      @current_ability ||= ManagerAbility.new(current_asset_manager) #this ability gets created on next task
+    elsif building_operator_signed_in?
+      @current_ability ||= Ability.new(current_building_operator)
+    end
+  end
+
 
 end
