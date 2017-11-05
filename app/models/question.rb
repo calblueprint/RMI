@@ -41,7 +41,7 @@ class Question < ApplicationRecord
     for answer in user.answers
       question_ids.push(answer.question_id)
     end
-    if question_ids.include(id)
+    if question_ids.include?(id)
       true
     else
       false
