@@ -17,7 +17,8 @@ Rails.application.routes.draw do
     resources :portfolios, only: %i[index create update show]
     resources :buildings, only: %i[index create update]
     resources :answers, only: %i[create update]
-    resources :questions, only: %i[create update destroy]
+    resources :questions, only: %i[show create update destroy]
+    resources :portfolios, only: %i[index create update show]
     # Can change route with:
     patch '/api/questions/publish', to: 'questions#publish'
   end

@@ -33,7 +33,7 @@ class PortfoliosController < ApplicationController
         BuildingType.find_each do |building_type|
           buildings = portfolio.buildings.where(building_type: building_type).all
           csv_name = "#{filename}_#{building_type.name}.csv".delete(' ')
-          add_csv_to_zip(zip, csv_name, buildings) unless buildings.blank?
+          add_csv_to_zip(zip, csv_name, buildings, building_type) unless buildings.blank?
         end
       end
 
@@ -63,17 +63,18 @@ class PortfoliosController < ApplicationController
   # References:
   # http://ruby-doc.org/stdlib-2.0.0/libdoc/csv/rdoc/CSV.html
   #
-  def add_csv_to_zip(zip, csv_name, buildings)
+  def add_csv_to_zip(zip, csv_name, buildings, building_type)
     temp_csv = Tempfile.new(csv_name, Rails.root.join('tmp', 'zip'))
 
     begin
       # Create and populate CSV with given name
       CSV.open(temp_csv, 'wb') do |csv|
         # Add column headers to CSV
-        csv << Building.column_names
+        # TODO: Add answers
+        csv << Building.column_names + building_type.questions.select(&:published?).map(&:text)
         # Add a row of building attribute values to the CSV for each building
         buildings.each do |building|
-          csv << Building.column_names.map { |attr| building.send(attr) }
+          csv << Building.column_names.map { |attr| building.send(attr) } + building.answers.map(&:text)
         end
         zip.add(csv_name, csv.path)
       end
