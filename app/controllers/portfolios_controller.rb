@@ -74,10 +74,26 @@ class PortfoliosController < ApplicationController
         csv << Building.column_names + building_type.questions.select(&:published?).map(&:text)
         # Add a row of building attribute values to the CSV for each building
         buildings.each do |building|
-          csv << Building.column_names.map { |attr| building.send(attr) } + building.answers.map(&:text)
+          # csv << Building.column_names.map { |attr| building.send(attr) } + building.answers.map(&:text)
+          csv << Building.column_names.map { |attr| building.send(attr) } + building_type.questions.select(&:published?).map{ |question| find_answer(question, building) }
         end
         zip.add(csv_name, csv.path)
       end
     end
+  end
+
+  ##
+  # Given a question and a building, return the building's answer to that question
+  # if available, or "N/A" otherwise.
+  #
+  def find_answer(question, building)
+    p question.text
+    p question.id
+    answer = building.answers.find { |answer| answer.question.id == question.id }
+    p answer.question.text
+    p answer.question.id
+    p ' '
+    return answer.text unless answer.nil?
+    return ' '
   end
 end

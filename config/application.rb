@@ -3,6 +3,7 @@ require_relative 'boot'
 require 'zip'
 require 'tempfile'
 require 'csv'
+require 'faker'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems

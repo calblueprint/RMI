@@ -1,3 +1,6 @@
+# Instantiate Faker's RNG
+Faker::Config.random = Random.new(42)
+
 ## BuildingTypes
 def create_building_types
   $large_cube_retail = BuildingType.create!(name: 'Large Cube Retail')
@@ -317,11 +320,29 @@ def create_buildings
         zip: location[:zip]
       )
 
-      building.building_type = if j.even?
-                                 $large_cube_retail
-                               else
-                                 building.building_type = $rockclimbing_eggyolk_inc
-                               end
+      if j.even?
+        building.building_type = $large_cube_retail
+        Question.where(building_type: $large_cube_retail).all.each do |q|
+          Answer.create!(
+            text: Faker::Company.bs,
+            building: building,
+            question: q,
+            building_operator: $building_operators[rand(1..5)]
+          )
+        end
+      else
+        building.building_type = $rockclimbing_eggyolk_inc
+        Question.where(building_type: $rockclimbing_eggyolk_inc).all.each do |q|
+          Answer.create!(
+            text: Faker::Company.bs,
+            building: building,
+            question: q,
+            building_operator: $building_operators[rand(1..5)]
+          )
+        end
+      end
+
+
 
       building.save!
     end
