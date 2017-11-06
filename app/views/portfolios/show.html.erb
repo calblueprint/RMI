@@ -10,6 +10,7 @@
 <% @portfolio.buildings.each do |b| %>
   <p><%= b.name %> | <%= link_to('Details', building_path(b)) %></p>
 <% end %>
+<%= javascript_pack_tag 'containers/AssetManagerContainer.js' %>
 
 <h3>Download portfolio as CSV</h3>
 <%=	link_to('Download', download_portfolios_path(@portfolio))  %>
