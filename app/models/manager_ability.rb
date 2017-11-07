@@ -1,4 +1,4 @@
-class Ability
+class ManagerAbility < ApplicationRecord
   include CanCan::Ability
 
   def initialize(user)
@@ -28,22 +28,26 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
-    user ||= BuildingOperator.new
+    user ||= AssetManager.new
+
+    cannot :index, Portfolio
+    can :manage, Portfolio do |portfolio|
+      portfolio.asset_manager_id = user.id
+    end
     can :update, Answer do |answer|
-      answer.building_operator_id == user.id && answer.text != 'delegated'
+      user.read_answer(answer) && answer.text != 'delegated'
     end
 
     can :read, Answer do |answer|
-      answer.building_operator_id == user.id
+      user.read_answer(answer)
     end
 
     can :read, Question do |question|
-      #question.user_has_access(user)
       user.read_question(question)
     end
 
     can :manage, Building do |building|
-
+      user.portfolios.include?(building.portfolio)
     end
 
   end

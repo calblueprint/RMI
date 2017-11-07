@@ -36,16 +36,16 @@ class Question < ApplicationRecord
     errors.add(:question, "category must match parent question's category")
   end
 
-  def user_has_access(user)
-    question_ids = []
-    for answer in user.answers
-      question_ids.push(answer.question_id)
-    end
-    if question_ids.include?(id)
-      true
-    else
-      false
-    end
-  end
+  # def user_has_access(user)
+  #   question_ids = []
+  #   for answer in user.answers
+  #     question_ids.push(answer.question_id)
+  #   end
+  #   if question_ids.include?(id)
+  #     true
+  #   else
+  #     false
+  #   end
+  # end
 
 end

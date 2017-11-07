@@ -1,4 +1,4 @@
-class Ability
+class AdminAbility < ApplicationRecord
   include CanCan::Ability
 
   def initialize(user)
@@ -28,23 +28,7 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
-    user ||= BuildingOperator.new
-    can :update, Answer do |answer|
-      answer.building_operator_id == user.id && answer.text != 'delegated'
-    end
-
-    can :read, Answer do |answer|
-      answer.building_operator_id == user.id
-    end
-
-    can :read, Question do |question|
-      #question.user_has_access(user)
-      user.read_question(question)
-    end
-
-    can :manage, Building do |building|
-
-    end
+    can :manage, :all
 
   end
 end
