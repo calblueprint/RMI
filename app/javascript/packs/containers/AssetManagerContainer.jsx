@@ -9,12 +9,14 @@ import { initializeStore } from '../store';
 
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom'
 
 import { wrapReducer } from '../reducers';
 import { rootReducer } from '../reducers/AssetManagerReducer';
-import PortfolioContainer from '../containers/PortfolioContainer';
+import PortfolioContainer from './PortfolioContainer';
+import BuildingContainer from './BuildingContainer';
 
 const reducer = wrapReducer(rootReducer);
 
@@ -26,10 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <Router>
         <div>
           <hr />
-          <PortfolioContainer />
+          <Switch>
+            <Route path="/portfolios/:id" component={PortfolioContainer} />
+            <Route path="/buildings/:bId" component={BuildingContainer} />
+          </Switch>
         </div>
       </Router>
     </Provider>,
     document.body.appendChild(document.createElement('div')),
   )
-})
+});

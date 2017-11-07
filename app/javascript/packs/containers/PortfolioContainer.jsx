@@ -1,32 +1,45 @@
 import React from 'react';
+
+import * as BuildingActions from '../actions/buildings';
+import { loadInitialState } from '../actions/index';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import BuildingContainer from './BuildingContainer';
+import { Link } from 'react-router-dom';
 
 class PortfolioContainer extends React.Component {
-  handleBuildingClick(bId) {
-    console.log("Building clicked - " + bId);
+  componentDidMount() {
+    if (window.INITIAL_STATE) {
+      this.props.initActions.loadInitialState(window.INITIAL_STATE);
+    }
   }
 
   render() {
-    return (
-      <div>
-        <h2>PortfolioContainer</h2>
-        {Object.keys(this.props.buildings).map(bId =>
-          <BuildingContainer key={bId} id={bId} onClick={() => this.handleBuildingClick(bId)} />
-        )}
-      </div>
-    )
+    const buildings = this.props.buildings;
+    return (<div>
+      <h2>Buildings</h2>
+      {Object.keys(buildings).map(id => {
+        return (<p key={id}>{this.props.buildings[id].name} |
+          <Link to={`/buildings/${id}`}>Details</Link>
+        </p>)
+      })}
+    </div>);
   }
 }
 
 function mapStateToProps(state) {
   return {
-    buildings: {
-      1: {}, 2: {}, 3: {}
-    }
-  }
+    buildings: state.buildings
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    buildingActions: bindActionCreators(BuildingActions, dispatch),
+    initActions: bindActionCreators({ loadInitialState }, dispatch)
+  };
 }
 
 export default connect(
-  mapStateToProps
-)(PortfolioContainer)
+  mapStateToProps,
+  mapDispatchToProps
+)(PortfolioContainer);

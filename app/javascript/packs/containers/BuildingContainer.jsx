@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 class BuildingContainer extends React.Component {
   render() {
     return (
       <div>
-        <Link to={`/portfolios/1/buildings/${this.props.id}`}>ID: {this.props.id}</Link>
+        <p>Building container!!</p>
+        <p>ID: {this.props.match.params.bId}</p>
       </div>
     );
   }
