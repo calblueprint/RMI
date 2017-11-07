@@ -19,7 +19,7 @@ class Portfolio < ApplicationRecord
   def read_answer(answer)
     contains = false
     buildings.each do |building|
-      if building.answers.contains(answer)
+      if building.answers.include?(answer)
         contains = true
         break
       end
@@ -30,7 +30,7 @@ class Portfolio < ApplicationRecord
   def read_question(question)
     contains = false
     buildings.each do |building|
-      if building.read_question(question)
+      if building.contains_question(question)
         contains = true
         break
       end

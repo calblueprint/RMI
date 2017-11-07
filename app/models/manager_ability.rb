@@ -38,11 +38,10 @@ class ManagerAbility < ApplicationRecord
 
     cannot :index, Portfolio
 
-
     can :crud, Building do |building|
       user.portfolios.include?(building.portfolio)
     end
-    
+
     cannot :index, Building
 
     can :update, Answer do |answer|
@@ -56,8 +55,6 @@ class ManagerAbility < ApplicationRecord
     can :read, Question do |question|
       user.read_question(question)
     end
-
-
 
   end
 end
