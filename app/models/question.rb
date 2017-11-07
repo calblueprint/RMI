@@ -35,6 +35,6 @@ class Question < ApplicationRecord
     return if parent_option.question.category == category
     errors.add(:question, "category must match parent question's category")
   end
-  
+
 
 end
