@@ -38,12 +38,7 @@ class Ability
     end
 
     can :read, Question do |question|
-      #question.user_has_access(user)
       user.read_question(question)
-    end
-
-    can :manage, Building do |building|
-
     end
 
   end

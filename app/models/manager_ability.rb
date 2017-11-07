@@ -30,10 +30,21 @@ class ManagerAbility < ApplicationRecord
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
     user ||= AssetManager.new
 
-    cannot :index, Portfolio
-    can :manage, Portfolio do |portfolio|
+    alias_action :create, :read, :update, :destroy, to: :crud
+
+    can :crud, Portfolio do |portfolio|
       portfolio.asset_manager_id = user.id
     end
+
+    cannot :index, Portfolio
+
+
+    can :crud, Building do |building|
+      user.portfolios.include?(building.portfolio)
+    end
+    
+    cannot :index, Building
+
     can :update, Answer do |answer|
       user.read_answer(answer) && answer.text != 'delegated'
     end
@@ -46,9 +57,7 @@ class ManagerAbility < ApplicationRecord
       user.read_question(question)
     end
 
-    can :manage, Building do |building|
-      user.portfolios.include?(building.portfolio)
-    end
+
 
   end
 end
