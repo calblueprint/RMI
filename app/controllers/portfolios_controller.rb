@@ -24,8 +24,11 @@ class PortfoliosController < ApplicationController
   # http://www.rubydoc.info/github/rubyzip/rubyzip/master/toplevel/
   # http://ruby-doc.org/stdlib-2.0.0/libdoc/tempfile/rdoc/Tempfile.html
   # http://thinkingeek.com/2013/11/15/create-temporary-zip-file-send-response-rails/
+  # http://ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/FileUtils.html#method-c-mkdir_p
   #
   def download
+    FileUtils.mkdir_p(Rails.root.join('tmp', 'zip'))
+
     portfolio = Portfolio.find(params[:id])
     filename = "#{Date.today}_portfolio_#{portfolio.name}".delete(' ')
     temp_zip = Tempfile.new("#{filename}.zip", Rails.root.join('tmp', 'zip'))
@@ -33,6 +36,8 @@ class PortfoliosController < ApplicationController
     begin
       # Initialize the temp file as a zip file
       Zip::OutputStream.open(temp_zip) { |zos| }
+
+      p temp_zip.path
 
       # Add files to zip file
       Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
@@ -52,7 +57,7 @@ class PortfoliosController < ApplicationController
       # Close and delete temp_zip no matter what happens in the block
       temp_zip.close
       temp_zip.unlink
-      # Copypasta to delete CSV files in tmp/zip/ directory
+      # Copypasta to delete CSV files in tmp/zip directory
       FileUtils.rm_rf(Dir.glob(Rails.root.join('tmp', 'zip', '*')))
     end
   end
@@ -78,11 +83,9 @@ class PortfoliosController < ApplicationController
       # Create and populate CSV with given name
       CSV.open(temp_csv, 'wb') do |csv|
         # Add column headers to CSV
-        # TODO: Add answers
         csv << Building.column_names + building_type.questions.select(&:published?).map(&:text)
         # Add a row of building attribute values to the CSV for each building
         buildings.each do |building|
-          # csv << Building.column_names.map { |attr| building.send(attr) } + building.answers.map(&:text)
           csv << Building.column_names.map { |attr| building.send(attr) } + building_type.questions.select(&:published?).map{ |question| find_answer(question, building) }
         end
         zip.add(csv_name, csv.path)
@@ -95,12 +98,7 @@ class PortfoliosController < ApplicationController
   # if available, or "N/A" otherwise.
   #
   def find_answer(question, building)
-    p question.text
-    p question.id
     answer = building.answers.find { |answer| answer.question.id == question.id }
-    p answer.question.text
-    p answer.question.id
-    p ' '
     return answer.text unless answer.nil?
     return ' '
   end
