@@ -30,5 +30,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_ability
+    if rmi_user_signed_in?
+      @current_ability ||= AdminAbility.new(current_rmi_user) #this ability gets created on next task
+    elsif asset_manager_signed_in?
+      @current_ability ||= ManagerAbility.new(current_asset_manager) #this ability gets created on next task
+    elsif building_operator_signed_in?
+      @current_ability ||= Ability.new(current_building_operator)
+    end
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    respond_to do |format|
+      format.json { head :forbidden, content_type: 'text/html' }
+      format.html { redirect_to main_app.root_url, notice: exception.message }
+      format.js   { head :forbidden, content_type: 'text/html' }
+    end
+  end
 
 end

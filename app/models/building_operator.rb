@@ -42,4 +42,15 @@ class BuildingOperator < ApplicationRecord
   def send_onboarding_email
     BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
   end
+
+  def read_question(question)
+    contains = false
+    answers.each do |answer|
+      if answer.question_id == question.id
+        contains = true
+        break
+      end
+    end
+    contains
+  end
 end
