@@ -45,11 +45,11 @@ class ManagerAbility < ApplicationRecord
     cannot :index, Building
 
     can :update, Answer do |answer|
-      user.read_answer(answer) && answer.text != 'delegated'
+      user.answer.include?(answer) && answer.text != 'delegated'
     end
 
     can :read, Answer do |answer|
-      user.read_answer(answer)
+      user.answer.include?(answer)
     end
 
     can :read, Question do |question|

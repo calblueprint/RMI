@@ -46,7 +46,7 @@ class BuildingOperator < ApplicationRecord
   def read_question(question)
     contains = false
     answers.each do |answer|
-      if answer.question_id == question.id
+      if answer.question == question
         contains = true
         break
       end

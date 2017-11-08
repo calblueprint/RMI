@@ -34,21 +34,10 @@ class AssetManager < ApplicationRecord
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
 
-  def read_answer(answer)
-    contains = false
-    portfolios.each do |portfolio|
-      if portfolio.read_answer(answer)
-        contains = true
-        break
-      end
-    end
-    contains
-  end
-
   def read_question(question)
     contains = false
-    portfolios.each do |portfolio|
-      if portfolio.read_question(question)
+    answers.each do |answer|
+      if answer.question == question
         contains = true
         break
       end
