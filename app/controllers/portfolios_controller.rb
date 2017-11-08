@@ -36,7 +36,7 @@ class PortfoliosController < ApplicationController
     begin
       # Initialize the temp file as a zip file
       Zip::OutputStream.open(temp_zip) { |zos| }
-      
+
       # Add files to zip file
       Zip::File.open(temp_zip.path, Zip::File::CREATE) do |zip|
         # For building_type in building_types, create csv for that building type
@@ -81,7 +81,7 @@ class PortfoliosController < ApplicationController
       # Create and populate CSV with given name
       CSV.open(temp_csv, 'wb') do |csv|
         # Add column headers to CSV
-        csv << Building.column_names + building_type.questions.select(&:published?).map(&:text)
+        csv << Building.column_names + building_type.questions.select(&:published?).map(&:parameter)
         # Add a row of building attribute values to the CSV for each building
         buildings.each do |building|
           csv << Building.column_names.map { |attr| building.send(attr) } + building_type.questions.select(&:published?).map{ |question| find_answer(question, building) }

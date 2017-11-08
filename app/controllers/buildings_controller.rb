@@ -8,5 +8,20 @@ class BuildingsController < ApplicationController
     render 'show'
   end
 
+  ##
+  # Given a building and a set of questions, mark the given questions in the
+  # building as delegated, and return a new building instance
+  #
+  def delegate(building, questions)
+
+  end
+
+  ##
+  # Given a building, questions, and a user, assign the building + questions to
+  # the user.
+  #
+  def assign(building, questions, user)
+
+  end
 
 end
