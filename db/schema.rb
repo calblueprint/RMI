@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108054828) do
+ActiveRecord::Schema.define(version: 20171108070826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,12 @@ ActiveRecord::Schema.define(version: 20171108054828) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "building_operator_id"
-    t.string "user_answer_type"
-    t.bigint "user_answer_id"
+    t.string "user_type"
+    t.bigint "user_id"
     t.index ["building_id"], name: "index_answers_on_building_id"
     t.index ["building_operator_id"], name: "index_answers_on_building_operator_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
-    t.index ["user_answer_type", "user_answer_id"], name: "index_answers_on_user_answer_type_and_user_answer_id"
+    t.index ["user_type", "user_id"], name: "index_answers_on_user_type_and_user_id"
   end
 
   create_table "asset_managers", force: :cascade do |t|

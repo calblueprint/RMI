@@ -27,7 +27,7 @@ class AssetManager < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :portfolios
-  has_many :answers, as: :user_answer
+  has_many :answers, as: :user
 
   validates :first_name, :last_name, presence: true
   # email validation with regex

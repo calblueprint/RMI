@@ -30,7 +30,7 @@ class BuildingOperator < ApplicationRecord
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building
-  has_many :answers, as: :user_answer
+  has_many :answers, as: :user
 
   validates :first_name, :last_name, presence: true
   # email validation with regex
