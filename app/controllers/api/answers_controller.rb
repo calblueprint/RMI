@@ -25,7 +25,7 @@ class Api::AnswersController < ApplicationController
             :text,
             :building_id,
             :question_id,
-            :building_operator_id
+            :user_answer_id
           )
   end
 end
