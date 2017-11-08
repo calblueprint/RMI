@@ -63,6 +63,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Opens email previews in browser instead of sending them
   gem 'letter_opener'
+  # adds gem for authorization cancancan
+  gem 'cancancan', '~> 2.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
