@@ -1,4 +1,5 @@
 class BuildingsController < ApplicationController
+  load_and_authorize_resource
 
   def show
     # this is for when we set up the request to send a specific portfolio
