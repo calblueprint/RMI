@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
 import { loadInitialState } from '../actions/index';
+import { getBuildingsByPortfolio } from '../selectors';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -26,9 +27,9 @@ class PortfolioContainer extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    buildings: state.buildings
+    buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state) 
   };
 }
 
