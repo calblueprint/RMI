@@ -9,11 +9,6 @@ Rails.application.routes.draw do
   resources :building_operators, only: [:show]
   resources :rmi_users, only: [:show]
 
-  # React routes that need to be taken to an entry point controller
-  # (These are fallbacks and do not override previously declared routes)
-  get '/buildings/:id', to: 'asset_managers#show_building'
-  get '/portfolios/:id', to: 'asset_managers#show_portfolio'
-
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: %i[create update show index]
     resources :building_types, only: %i[show]
@@ -23,4 +18,9 @@ Rails.application.routes.draw do
     # Can change route with:
     patch '/api/questions/publish', to: 'questions#publish'
   end
+
+  # Redirect everything else to the entry point for React;
+  # React Router will then take care of what to display.
+  # (This is a fallback and does not override any routes declared above!)
+  get '/*other', to: 'application#show'
 end
