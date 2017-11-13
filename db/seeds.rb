@@ -327,7 +327,8 @@ def create_buildings
             text: Faker::Company.bs,
             building: building,
             question: q,
-            building_operator: $building_operators[rand(1..5)]
+            user: $building_operators[rand(1..5)],
+            user_type: BuildingOperator
           )
         end
       else
@@ -337,7 +338,8 @@ def create_buildings
             text: Faker::Company.bs,
             building: building,
             question: q,
-            building_operator: $building_operators[rand(1..5)]
+            user: $asset_managers[rand(1..5)],
+            user_type: AssetManager
           )
         end
       end
