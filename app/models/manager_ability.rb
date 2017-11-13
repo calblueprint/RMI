@@ -30,7 +30,7 @@ class ManagerAbility < ApplicationRecord
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
     user ||= AssetManager.new
 
-    alias_action :create, :read, :update, :destroy, to: :crud
+    alias_action :create, :read, :update, :destroy, :download, to: :crud
 
     can :crud, Portfolio do |portfolio|
       portfolio.asset_manager_id = user.id
