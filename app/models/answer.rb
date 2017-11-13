@@ -14,7 +14,7 @@
 class Answer < ApplicationRecord
   belongs_to :building
   belongs_to :question
-  belongs_to :building_operator
+  belongs_to :user, polymorphic: true
 
   validates :text, presence: true
 end

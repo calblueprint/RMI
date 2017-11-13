@@ -84,16 +84,16 @@ class Building < ApplicationRecord
 
   validates :name, :address, :city, :state, :zip, presence: true
 
-  def contains_question(question)
-    contains = false
-    answers.each do |answer|
-      if question.id == answer.question.id
-        contains = true
-        break
-      end
-    end
-    contains
-  end
-
+  # def contains_question(question)
+  #   contains = false
+  #   answers.each do |answer|
+  #     if question.id == answer.question.id
+  #       contains = true
+  #       break
+  #     end
+  #   end
+  #   contains
+  # end
+  #
 
 end

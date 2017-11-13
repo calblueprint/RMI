@@ -30,11 +30,11 @@ class Ability
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
     user ||= BuildingOperator.new
     can :update, Answer do |answer|
-      answer.building_operator_id == user.id && answer.text != 'delegated'
+      user.answers.include?(answer) && answer.text != 'delegated'
     end
 
     can :read, Answer do |answer|
-      answer.building_operator_id == user.id
+      user.answers.include?(answer)
     end
 
     can :read, Question do |question|
