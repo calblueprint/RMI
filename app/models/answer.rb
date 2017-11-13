@@ -12,9 +12,16 @@
 #
 
 class Answer < ApplicationRecord
+  enum status: %i[unanswered answered predelegated delegated]
+
   belongs_to :building
   belongs_to :question
   belongs_to :building_operator
 
   validates :text, presence: true
+
+  # set default status to unanswered
+  after_initialize do
+    self.status ||= :unanswered if new_record?
+  end
 end
