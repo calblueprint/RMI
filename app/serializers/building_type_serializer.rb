@@ -21,4 +21,9 @@ class BuildingTypeSerializer < ActiveModel::Serializer
     end
     questions
   end
+
+  def building_operator_questions
+    questions = {}
+
+  end
 end
