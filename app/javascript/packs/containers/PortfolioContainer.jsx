@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
-import { loadInitialState } from '../actions/index';
+import { loadInitialState } from '../actions/initialState';
 import { getBuildingsByPortfolio } from '../selectors';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
