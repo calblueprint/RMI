@@ -19,4 +19,9 @@ class Answer < ApplicationRecord
   belongs_to :building_operator
 
   validates :text, presence: true
+
+  # set default status to unanswered
+  after_initialize do
+    self.status ||= :unanswered if new_record?
+  end
 end
