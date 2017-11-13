@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   resources :asset_managers, only: %i[show]
   resources :building_operators, only: %i[show]
+  resources :rmi_users, only: [:show]
 
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: %i[index create update show]
