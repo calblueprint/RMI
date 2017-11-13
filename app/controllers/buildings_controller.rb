@@ -8,5 +8,23 @@ class BuildingsController < ApplicationController
     render 'show'
   end
 
+  ##
+  # Given a building and a set of questions, mark the given questions in the
+  # building as delegated, and return a new building instance
+  #
+  def delegate(building, questions)
+    questions.each do |question|
+      answer = building.answers.select{ |a| a.question = question }
+
+    end
+  end
+
+  ##
+  # Given a building, questions, create a BuildingOperator and assign the
+  # building + questions to the BuildingOperator. Return the BuildingOperator.
+  #
+  def assign(building, questions)
+
+  end
 
 end
