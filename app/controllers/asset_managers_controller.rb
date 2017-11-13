@@ -3,7 +3,6 @@ class AssetManagersController < ApplicationController
     # If this asset manager is currently logged in and has existing portfolios,
     # redirect them to their most recent portfolio page.
     @asset_manager = AssetManager.find(params[:id])
-
     if asset_manager_signed_in? && current_asset_manager.id == @asset_manager.id
       last_portfolio = @asset_manager.portfolios.order('updated_at').last
       if last_portfolio

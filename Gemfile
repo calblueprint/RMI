@@ -21,6 +21,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'webpacker'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+gem 'active_model_serializers', '~> 0.10.0'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -47,14 +48,23 @@ group :development, :test do
 end
 
 group :development do
+  # Add schema information to models
+  gem 'annotate'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  # Generates seed information
+  gem 'faker', :git => 'git://github.com/stympy/faker.git', :branch => 'master'
   gem 'rubocop'
+  # Enables zip-file creation
+  gem 'rubyzip'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'annotate'
+  # Opens email previews in browser instead of sending them
+  gem 'letter_opener'
+  # adds gem for authorization cancancan
+  gem 'cancancan', '~> 2.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
