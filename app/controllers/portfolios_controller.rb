@@ -12,7 +12,8 @@ class PortfoliosController < ApplicationController
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer
-      )
+      ),
+      userType: 'AssetManager'
     }
   end
 end

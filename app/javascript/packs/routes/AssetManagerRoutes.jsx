@@ -4,10 +4,10 @@ import {
   Switch
 } from 'react-router-dom'
 
-import PortfolioContainer from './PortfolioContainer';
-import BuildingContainer from './BuildingContainer';
+import PortfolioContainer from '../containers/PortfolioContainer';
+import BuildingContainer from '../containers/BuildingContainer';
 
-class App extends React.Component {
+class AssetManagerRoutes extends React.Component {
   render() {
     return (
       <div>
@@ -21,4 +21,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default AssetManagerRoutes;
