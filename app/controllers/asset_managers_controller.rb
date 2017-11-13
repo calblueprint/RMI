@@ -2,23 +2,19 @@ class AssetManagersController < ApplicationController
   # /asset_managers/:id
   def show
     @asset_manager = AssetManager.find(params[:id])
-    load_initial_state
-
-    # Attempt to redirect to the asset manager's portfolio page
-    if asset_manager_signed_in? && current_asset_manager.id == @asset_manager.id
-      if @asset_manager.portfolio
-        redirect_to portfolio_path(@asset_manager.portfolio)
-      else
-        @message = 'This asset manager is logged in but does not have any portfolios yet.'
-      end
-    else
-      @message = 'This asset manager is not currently logged in.'
-    end
+    redirect_to "/portfolios/#{@asset_manager.portfolio.id}"
   end
 
   # /buildings/:bId
   def show_building
-    @asset_manager = Building.find(params[:bId]).portfolio.asset_manager
+    @asset_manager = Building.find(params[:id]).portfolio.asset_manager
+    load_initial_state
+    render 'show'
+  end
+
+  # /portfolios/:pId
+  def show_portfolio
+    @asset_manager = Portfolio.find(params[:id]).asset_manager
     load_initial_state
     render 'show'
   end

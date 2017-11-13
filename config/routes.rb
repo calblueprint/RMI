@@ -4,15 +4,15 @@ Rails.application.routes.draw do
   devise_for :rmi_users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'pages#home'
-  # resources :buildings, only: [:show]
-  resources :portfolios, only: [:show, :index]
+  resources :portfolios, only: [:index]
   resources :asset_managers, only: [:show]
   resources :building_operators, only: [:show]
   resources :rmi_users, only: [:show]
 
-  # Routes that get listed later in the file are fallbacks and do not override previously declared ones.
-  # These wildcard routes will only be used if none of the above controller routes apply.
-  get '/buildings/*bId', to: 'asset_managers#show_building'
+  # React routes that need to be taken to an entry point controller
+  # (These are fallbacks and do not override previously declared routes)
+  get '/buildings/:id', to: 'asset_managers#show_building'
+  get '/portfolios/:id', to: 'asset_managers#show_portfolio'
 
   namespace :api, defaults: { format: :json } do
     resources :portfolios, only: %i[create update show index]
