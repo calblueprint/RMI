@@ -8,6 +8,4 @@ class BuildingsController < ApplicationController
     @building = Building.find(params[:id])
     render 'show'
   end
-
-
 end

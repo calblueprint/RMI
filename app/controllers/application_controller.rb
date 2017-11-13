@@ -49,6 +49,8 @@ class ApplicationController < ActionController::Base
       @current_ability ||= ManagerAbility.new(current_asset_manager) #this ability gets created on next task
     elsif building_operator_signed_in?
       @current_ability ||= Ability.new(current_building_operator)
+    else
+      raise CanCan::AccessDenied.new
     end
   end
 
