@@ -12,6 +12,8 @@
 #
 
 class Answer < ApplicationRecord
+  enum status: %i[unanswered answered predelegated delegated]
+
   belongs_to :building
   belongs_to :question
   belongs_to :building_operator
