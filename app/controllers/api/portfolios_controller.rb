@@ -1,8 +1,8 @@
 class Api::PortfoliosController < ApplicationController
   load_and_authorize_resource
   def index
-    portfolios = Portfolio.all
-    render json: portfolios
+    @portfolios = Portfolio.all
+    render json: @portfolios
   end
 
   def show
@@ -10,8 +10,9 @@ class Api::PortfoliosController < ApplicationController
     render json: portfolio
   end
 
+  ##
+  # Creates a new portfolio tied to the currently logged-in asset manager's account.
   def create
-    # Creates a new portfolio tied to the currently logged-in asset manager's account.
     if asset_manager_signed_in?
       portfolio = current_asset_manager.portfolios.new(portfolio_params)
       if portfolio.save
@@ -38,8 +39,9 @@ class Api::PortfoliosController < ApplicationController
   def portfolio_params
     params.require(:portfolio)
           .permit(
-            :name,
-            :asset_manager_id
+              :name,
+              :asset_manager,
+              :buildings
           )
   end
 end
