@@ -1,11 +1,13 @@
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
-import { loadInitialState } from '../actions';
+import { loadInitialState } from '../actions/index';
+import { getBuildingsByPortfolio } from '../selectors';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-class AssetManagerApp extends React.Component {
+class PortfolioContainer extends React.Component {
   componentDidMount() {
     if (window.INITIAL_STATE) {
       this.props.initActions.loadInitialState(window.INITIAL_STATE);
@@ -15,17 +17,21 @@ class AssetManagerApp extends React.Component {
   render() {
     const buildings = this.props.buildings;
     return (<div>
-      <h2>Buildings</h2>
+      <h2>Portfolio</h2>
+      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
+      <hr />
       {Object.keys(buildings).map(id => {
-        return (<p key={id}>{buildings[id].name} | <a href={`/buildings/${id}`}>Details</a></p>);
+        return (<p key={id}>{this.props.buildings[id].name} |
+          <Link to={`/buildings/${id}`}>Details</Link>
+        </p>)
       })}
     </div>);
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    buildings: state.buildings
+    buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state) 
   };
 }
 
@@ -39,4 +45,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AssetManagerApp);
+)(PortfolioContainer);
