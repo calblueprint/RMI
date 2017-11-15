@@ -10,10 +10,12 @@ class BuildingsController < ApplicationController
   end
 
   ##
-  # Given a building and a set of questions, mark the given questions in the
-  # building as delegated, and return a new building instance
+  # Given a building, a set of questions, and an email, mark the given questions
+  # in the building as delegated, and return a new building instance.
   #
-  def delegate(building, questions)
+  #
+  def delegate(building, questions, email)
+    building_operator = BuildingOperator.where(email: email).first_or_create
     questions.each do |question|
       answer = building.answers.select{ |a| a.question = question }
 

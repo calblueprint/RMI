@@ -37,6 +37,7 @@ class BuildingOperator < ApplicationRecord
   # email validation with regex
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
+  validates_uniqueness_of :email
 
   # New building operator accounts are only created when an asset manager delegates a question to them,
   # so send an onboarding email telling them they have new questions.
