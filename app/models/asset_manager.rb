@@ -26,7 +26,8 @@ class AssetManager < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :portfolios
+  has_one :portfolio
+  has_many :answers, as: :user
 
   validates :first_name, :last_name, presence: true
   # email validation with regex

@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: manager_abilities
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class ManagerAbility < ApplicationRecord
   include CanCan::Ability
 
@@ -30,7 +39,7 @@ class ManagerAbility < ApplicationRecord
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
     user ||= AssetManager.new
 
-    alias_action :create, :read, :update, :destroy, to: :crud
+    alias_action :create, :read, :update, :destroy, :download, to: :crud
 
     can :crud, Portfolio do |portfolio|
       portfolio.asset_manager_id = user.id
@@ -45,11 +54,11 @@ class ManagerAbility < ApplicationRecord
     cannot :index, Building
 
     can :update, Answer do |answer|
-      user.read_answer(answer) && answer.text != 'delegated'
+      user.answer.include?(answer) && answer.text != 'delegated'
     end
 
     can :read, Answer do |answer|
-      user.read_answer(answer)
+      user.answer.include?(answer)
     end
 
     can :read, Question do |question|

@@ -1,14 +1,5 @@
-<!-- <h1>Portfolio</h1>
-<p>
-  <strong>Name: </strong><%= @portfolio.name %>
-</p>
-<p>
-  <strong>Asset manager: </strong><%= @portfolio.asset_manager.first_name %>
-</p>
-
-<h3>Buildings</h3>
-<% @portfolio.buildings.each do |b| %>
-  <p><%= b.name %> | <%= link_to('Details', building_path(b)) %></p>
-<% end %>
- -->
+<h1>Portfolio</h1>
 <%= javascript_pack_tag 'containers/AssetManagerContainer.js' %>
+
+<h3>Download portfolio as CSV</h3>
+<%=	link_to('Download', download_portfolios_path(@portfolio))  %>
