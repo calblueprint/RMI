@@ -10,8 +10,6 @@ import DockMonitor from 'redux-devtools-dock-monitor';
 import { persistStore } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
-import rootReducer from '../reducers';
-
 const logger = createLogger();
 
 const DevToolsContainer = createDevTools(
