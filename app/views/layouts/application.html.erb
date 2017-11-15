@@ -4,15 +4,12 @@
     <title>Rmi</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <script>
       window.INITIAL_STATE = <%= raw @state.to_json %>
     </script>
   </head>
 
   <body>
-    <%= javascript_pack_tag 'application' %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
