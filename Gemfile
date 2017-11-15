@@ -50,7 +50,7 @@ group :development do
   gem 'annotate'
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Generates seed information
-  gem 'faker', '~> 1.8.4'
+  gem 'faker'
   gem 'rubocop'
   # Enables zip-file creation
   gem 'rubyzip'
