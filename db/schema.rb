@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108073827) do
+ActiveRecord::Schema.define(version: 20171113044233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,11 +26,11 @@ ActiveRecord::Schema.define(version: 20171108073827) do
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "user_type"
-    t.bigint "user_id"
+    t.bigint "building_operator_id"
+    t.integer "status"
     t.index ["building_id"], name: "index_answers_on_building_id"
+    t.index ["building_operator_id"], name: "index_answers_on_building_operator_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
-    t.index ["user_type", "user_id"], name: "index_answers_on_user_type_and_user_id"
   end
 
   create_table "asset_managers", force: :cascade do |t|
@@ -172,6 +172,7 @@ ActiveRecord::Schema.define(version: 20171108073827) do
     t.index ["reset_password_token"], name: "index_rmi_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "answers", "building_operators"
   add_foreign_key "answers", "buildings"
   add_foreign_key "answers", "questions"
   add_foreign_key "buildings", "building_types"
