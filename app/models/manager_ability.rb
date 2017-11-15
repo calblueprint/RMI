@@ -42,7 +42,7 @@ class ManagerAbility < ApplicationRecord
     alias_action :create, :read, :update, :destroy, :download, to: :crud
 
     can :crud, Portfolio do |portfolio|
-      portfolio.asset_manager_id = user.id
+      portfolio.asset_manager_id == user.id
     end
 
     cannot :index, Portfolio
