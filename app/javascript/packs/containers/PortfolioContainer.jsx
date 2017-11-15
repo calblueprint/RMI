@@ -17,7 +17,9 @@ class PortfolioContainer extends React.Component {
   render() {
     const buildings = this.props.buildings;
     return (<div>
-      <h2>Buildings</h2>
+      <h2>Portfolio</h2>
+      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
+      <hr />
       {Object.keys(buildings).map(id => {
         return (<p key={id}>{this.props.buildings[id].name} |
           <Link to={`/buildings/${id}`}>Details</Link>

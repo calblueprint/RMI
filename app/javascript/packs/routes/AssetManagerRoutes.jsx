@@ -11,7 +11,6 @@ class AssetManagerRoutes extends React.Component {
   render() {
     return (
       <div>
-        <hr />
         <Switch>
           <Route path="/portfolios/:pId" component={PortfolioContainer} />
           <Route path="/buildings/:bId" component={BuildingContainer} />

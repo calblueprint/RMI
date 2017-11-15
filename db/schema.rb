@@ -10,10 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171018035219) do
+ActiveRecord::Schema.define(version: 20171113044233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "admin_abilities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "answers", force: :cascade do |t|
     t.text "text"
@@ -22,6 +27,7 @@ ActiveRecord::Schema.define(version: 20171018035219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "building_operator_id"
+    t.integer "status"
     t.index ["building_id"], name: "index_answers_on_building_id"
     t.index ["building_operator_id"], name: "index_answers_on_building_operator_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
@@ -106,6 +112,11 @@ ActiveRecord::Schema.define(version: 20171018035219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_dropdown_options_on_question_id"
+  end
+
+  create_table "manager_abilities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "portfolios", force: :cascade do |t|
