@@ -37,7 +37,7 @@ class PortfoliosController < ApplicationController
       temp_zip.close
       temp_zip.unlink
       # Copypasta to delete CSV files in tmp/zip directory
-      FileUtils.rm_rf(Dir.glob(Rails.root.join('tmp', 'zip', '*')))
+      FileUtils.rm_rf(Dir.glob(Rails.root.join('tmp', 'zip', '*.csv')))
     end
   end
   helper_method :download
