@@ -7,9 +7,6 @@ import { createLogger } from 'redux-logger';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
-import { persistStore } from 'redux-persist';
-import storage from 'redux-persist/es/storage';
-
 import rootReducer from '../reducers';
 
 const logger = createLogger();
@@ -36,9 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 function initializeStore(rootReducer) {
-  const store = createStore(rootReducer, compose(...composition));
-  const persistor = persistStore(store);
-  return { store, persistor };
+  return createStore(rootReducer, compose(...composition));
 }
 
 export { DevToolsContainer, initializeStore }; 

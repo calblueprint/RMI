@@ -9,7 +9,6 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  building_operator_id :integer
-#  status               :integer
 #
 
 require 'test_helper'

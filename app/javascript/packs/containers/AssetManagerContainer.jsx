@@ -7,29 +7,19 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { initializeStore } from '../store';
 
-import { PersistGate } from 'redux-persist/es/integration/react'
-import {
-  BrowserRouter as Router
-} from 'react-router-dom';
-
 import { wrapReducer } from '../reducers';
-
-const { userType } = window.INITIAL_STATE;
-const rootReducer = require(`../reducers/${userType}Reducer`).default;
-const Routes = require(`../routes/${userType}Routes`).default;
+import { rootReducer } from '../reducers/AssetManagerReducer';
+import AssetManagerApp from '../components/AssetManagerApp';
 
 const reducer = wrapReducer(rootReducer);
-const { store, persistor } = initializeStore(reducer);
+
+const store = initializeStore(reducer);
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <Provider store={store}>
-    <PersistGate persistor={persistor}>
-      <Router>
-        <Routes />
-      </Router>
-    </PersistGate>
+      <AssetManagerApp />
     </Provider>,
     document.body.appendChild(document.createElement('div')),
   )
-});
+})

@@ -33,7 +33,7 @@ const formatState = {
     return toObjectById(
       mapFilterKeys(
         buildings,
-        ['id', 'name', 'answers', 'portfolio_id', 'address', 'city', 'state', 'zip']
+        ['id', 'name', 'answers', 'address', 'city', 'state', 'zip']
       )
     );
   },
@@ -62,12 +62,7 @@ const formatState = {
     );
   },
   portfolios: function(portfolios) {
-    return toObjectById(
-      mapFilterKeys(
-        portfolios,
-        ['name', 'asset_manager_id']
-      )
-    );
+
   }
 }
 

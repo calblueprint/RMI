@@ -2,18 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  include ApplicationHelper
-
-  def show
-    if asset_manager_signed_in?
-      @state = asset_manager_initial_state
-    elsif building_operator_signed_in?
-      @state = building_op_initial_state
-    elsif rmi_user_signed_in?
-      @state = rmi_user_initial_state
-    end
-  end
-
   def render_json_message(status, options = {})
     render json: {
       data: options[:data],
