@@ -65,7 +65,7 @@ const formatState = {
     return toObjectById(
       mapFilterKeys(
         portfolios,
-        ['name', 'asset_manager_id']
+        ['id', 'name', 'asset_manager_id']
       )
     );
   }

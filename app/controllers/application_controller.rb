@@ -32,11 +32,12 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     case
     when resource.is_a?(AssetManager)
-      asset_manager_path(current_asset_manager)
+      portfolio = current_asset_manager.portfolio
+      redirect_to "/portfolios/#{portfolio.id}"
     when resource.is_a?(RmiUser)
-      rmi_user_path(current_rmi_user)
+      "/portfolios"
     when resource.is_a?(BuildingOperator)
-      building_operator_path(current_building_operator)
+      "/buildings"
     else
       super
     end
