@@ -48,7 +48,7 @@ class ManagerAbility < ApplicationRecord
     cannot :index, Portfolio
 
     can :crud, Building do |building|
-      user.portfolios.include?(building.portfolio)
+      user.portfolio.id == building.portfolio_id
     end
 
     cannot :index, Building

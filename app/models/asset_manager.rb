@@ -35,22 +35,16 @@ class AssetManager < ApplicationRecord
 
   def read_answer(answer)
     contains = false
-    portfolios.each do |portfolio|
-      if portfolio.read_answer(answer)
-        contains = true
-        break
-      end
+    if portfolio.read_answer(answer)
+      contains = true
     end
     contains
   end
 
   def read_question(question)
     contains = false
-    portfolios.each do |portfolio|
-      if portfolio.read_question(question)
-        contains = true
-        break
-      end
+    if portfolio.read_question(question)
+      contains = true
     end
     contains
   end
