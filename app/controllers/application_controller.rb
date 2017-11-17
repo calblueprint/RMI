@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
       @state = building_op_initial_state
     elsif rmi_user_signed_in?
       @state = rmi_user_initial_state
+    else
+      # No current user; redirect to login page
+      redirect_to '/'
     end
   end
 
@@ -33,7 +36,7 @@ class ApplicationController < ActionController::Base
     case
     when resource.is_a?(AssetManager)
       portfolio = current_asset_manager.portfolio
-      redirect_to "/portfolios/#{portfolio.id}"
+      "/portfolios/#{portfolio.id}"
     when resource.is_a?(RmiUser)
       "/portfolios"
     when resource.is_a?(BuildingOperator)
