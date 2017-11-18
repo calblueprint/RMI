@@ -3,13 +3,33 @@ import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
 
+import DropdownOption from '../components/DropdownOption';
+import RangeOption from '../components/RangeOption';
+import FreeOption from '../components/FreeOption';
+
 class OptionsContainer extends React.Component {
+  handleSelect(option_id) {
+    console.log("Answer selected! Option id: " + option_id)
+  }
+
   render() {
+    const optionProps = {
+      options: Object.values(this.props.options),
+      onSelect: this.handleSelect
+    };
+    const optionsComponent = (() => {
+      switch (this.props.question_type) {
+        case "dropdown":
+          return <DropdownOption {...optionProps} />;
+        case "range":
+          return <RangeOption {...optionProps} />;
+        default:
+          return <FreeOption {...optionProps} />
+      }
+    })();
+
     return (<div>
-      {Object.keys(this.props.options).map((id) => {
-        var option = this.props.options[id];
-        return (<p key={id}>{option.text}</p>);
-      })}
+       {optionsComponent}
     </div>)
   }
 }
