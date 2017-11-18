@@ -12,13 +12,13 @@ import {
   BrowserRouter as Router
 } from 'react-router-dom';
 
-import { wrapReducer } from '../reducers';
+import withInitialState from '../reducers/initialState';
 
 const { userType } = window.INITIAL_STATE;
-const rootReducer = require(`../reducers/${userType}Reducer`).default;
+const rootReducer = require(`../reducers/roots/${userType}Reducer`).default;
 const Routes = require(`../routes/${userType}Routes`).default;
 
-const reducer = wrapReducer(rootReducer);
+const reducer = withInitialState(rootReducer);
 const { store, persistor } = initializeStore(reducer);
 
 document.addEventListener('DOMContentLoaded', () => {

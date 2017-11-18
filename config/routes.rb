@@ -13,10 +13,6 @@ Rails.application.routes.draw do
       get 'download/:id' => :download, as: 'download'
     end
   end
-  resources :asset_managers, only: %i[show]
-  resources :building_operators, only: %i[show]
-  resources :rmi_users, only: [:show]
-
   namespace :api, defaults: { format: :json } do
     resources :building_types, only: %i[show]
     resources :buildings, only: %i[show index create update]
