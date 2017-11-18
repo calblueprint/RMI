@@ -13,9 +13,12 @@ class BuildingContainer extends React.Component {
         <p>Name: {this.props.building.name}</p>
         <hr />
         {this.props.questions.map((question) => {
-          return (<Question key={question.id}
-                            building_id={this.props.building.id}
-                            {...question} />);
+          // Only display non-dependent questions initially
+          if (!question.parent_option_id) {
+            return (<Question key={question.id}
+                              building_id={this.props.building.id}
+                              {...question} />);
+          }
         })}
       </div>
     );
