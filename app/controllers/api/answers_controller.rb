@@ -18,6 +18,15 @@ class Api::AnswersController < ApplicationController
     end
   end
 
+  ##
+  # Validates that the email is valid address, then sets the status of the
+  # answer to be predelegated
+  #
+  def predelegate_answer(email)
+    answer = Answer.find(params[:id])
+    answer.set_status_predelegated(email) if email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+  end
+
   private
 
   def answer_params

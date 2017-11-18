@@ -55,6 +55,6 @@ class Answer < ApplicationRecord
 
   def set_status_delegated
     self.status = :delegated
-    save!
+    save!p
   end
 end
