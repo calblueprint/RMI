@@ -2,14 +2,15 @@
 #
 # Table name: answers
 #
-#  id                   :integer          not null, primary key
-#  text                 :text             default("")
-#  building_id          :integer
-#  question_id          :integer
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  building_operator_id :integer
-#  status               :integer
+#  id          :integer          not null, primary key
+#  text        :text             default("")
+#  building_id :integer
+#  question_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  status      :integer
+#  user_type   :string
+#  user_id     :integer
 #
 
 require 'test_helper'
