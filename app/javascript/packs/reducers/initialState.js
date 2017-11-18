@@ -13,7 +13,7 @@ const rootReducer = {
   portfolios
 };
 
-export function wrapReducer(reducer = rootReducer) {
+export default function reducerWithInitialState(reducer = rootReducer) {
   return function wrappedReducer(state, action) {
     if (action.type === LOAD_INITIAL_STATE) {
       return {...state,  ...action};
@@ -25,4 +25,3 @@ export function wrapReducer(reducer = rootReducer) {
   }
 }
 
-export default rootReducer;

@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import {
   Route,
   Switch
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 import PortfolioContainer from '../containers/PortfolioContainer';
 import BuildingContainer from '../containers/BuildingContainer';
@@ -21,3 +21,4 @@ class AssetManagerRoutes extends React.Component {
 }
 
 export default AssetManagerRoutes;
+

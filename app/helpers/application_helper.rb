@@ -18,6 +18,16 @@ module ApplicationHelper
   end
 
   def rmi_user_initial_state
-    # Initial state here
+    portfolios = Portfolio.all
+    {
+      portfolios: portfolios,
+      buildings: ActiveModel::Serializer::CollectionSerializer.new(
+        (portfolios.map { |p| p.buildings }).flatten, each_serializer: BuildingSerializer
+      ),
+      building_types: ActiveModel::Serializer::CollectionSerializer.new(
+        BuildingType.all, each_serializer: BuildingTypeSerializer
+      ),
+      userType: 'RMIUser'
+    } 
   end
 end

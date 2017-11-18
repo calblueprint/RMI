@@ -6,15 +6,6 @@ class RmiUsersController < ApplicationController
     else
       @message = 'The RMI User is not currently logged in.'
     end
-    @state = {
-      portfolios: @portfolios,
-      buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        @portfolios.map { |p| p.buildings }, each_serializer: BuildingSerializer
-      ),
-      building_types: ActiveModel::Serializer::CollectionSerializer.new(
-        BuildingType.all, each_serializer: BuildingTypeSerializer
-      )
-    }
   end
 end
 
