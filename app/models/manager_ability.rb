@@ -54,7 +54,7 @@ class ManagerAbility < ApplicationRecord
     cannot :index, Building
 
     can :update, Answer do |answer|
-      user.answer.include?(answer) && answer.text != 'delegated'
+      user.answer.include?(answer) && answer.status != 'delegated'
     end
 
     can :read, Answer do |answer|
