@@ -5,10 +5,12 @@ services:
   webpacker:
     build:
         context: .
-        dockerfile: docker/Dockerfile
+        dockerfile: docker/webpacker_dockerfile
     command: bash -c "./bin/webpack-dev-server"
   web:
-    build: .
+    build:
+        context: .
+        dockerfile: docker/rails_dockerfile
     command: bash -c "bundle exec puma -C config/puma.rb"
     volumes:
       - .:/myapp
