@@ -14,4 +14,13 @@ class Portfolio < ApplicationRecord
   has_many :buildings
 
   validates :name, presence: true
+
+  def building_types
+    building_types = []
+    buildings.each do |building|
+      unless building_types.include?(building.building_type)
+        building_types.push(building.building_type)
+      end
+    end
+  end
 end

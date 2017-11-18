@@ -45,4 +45,8 @@ class AssetManager < ApplicationRecord
     contains
   end
 
+  def building_types
+    portfolio.building_types
+  end
+
 end
