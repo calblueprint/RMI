@@ -35,6 +35,7 @@ class Answer < ApplicationRecord
   def set_status_predelegated(email)
     self.status = :predelegated
     self.text = email
+    save!
   end
 
   ##
@@ -44,13 +45,16 @@ class Answer < ApplicationRecord
   def set_status_unanswered
     self.status = :unanswered
     self.text = ''
+    save!
   end
 
   def set_status_answered
     self.status = :answered
+    save!
   end
 
   def set_status_delegated
     self.status = :delegated
+    save!
   end
 end

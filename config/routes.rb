@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  namespace :api do
-    get 'building_operator/create'
-  end
-
   devise_for :building_operators
   devise_for :asset_managers
   devise_for :rmi_users
