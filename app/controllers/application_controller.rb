@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     case
     when resource.is_a?(AssetManager)
       portfolio = current_asset_manager.portfolio
-      redirect_to "/portfolios/#{portfolio.id}"
+      "/portfolios/#{portfolio.id}"
     when resource.is_a?(RmiUser)
       "/portfolios"
     when resource.is_a?(BuildingOperator)
