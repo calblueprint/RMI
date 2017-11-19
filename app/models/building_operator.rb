@@ -53,4 +53,13 @@ class BuildingOperator < ApplicationRecord
     end
     contains
   end
+
+  def building_types
+    building_types = []
+    buildings.each do |building|
+      unless building_types.include?(building.building_type)
+        building_types.push(building.building_type)
+      end
+    end
+  end
 end
