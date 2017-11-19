@@ -9,7 +9,7 @@ module ApplicationHelper
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         current_asset_manager.building_types, each_serializer: BuildingTypeSerializer,
-        scope: {user_id: current_asset_manager_id,
+        scope: {user_id: current_asset_manager.id,
                 user_type: 'AssetManager'}
       ),
       userType: 'AssetManager'
@@ -24,7 +24,7 @@ module ApplicationHelper
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
        current_building_operator.building_types, each_serializer: BuildingTypeSerializer,
-       scope: {user_id: current_building_operator_id,
+       scope: {user_id: current_building_operator.id,
                user_type: 'BuildingOperator'}
       ),
       userType: 'BuildingOperator'
@@ -40,7 +40,7 @@ module ApplicationHelper
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer,
-        scope: {user_id: current_rmi_user_id,
+        scope: {user_id: current_rmi_user.id,
                 user_type: 'RmiUser'}
       ),
       userType: 'RMIUser'
