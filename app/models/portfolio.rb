@@ -2,10 +2,11 @@
 #
 # Table name: portfolios
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id               :integer          not null, primary key
+#  name             :string
+#  asset_manager_id :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 class Portfolio < ApplicationRecord
@@ -15,25 +16,25 @@ class Portfolio < ApplicationRecord
   validates :name, presence: true
 
 
-  def read_answer(answer)
-    contains = false
-    buildings.each do |building|
-      if building.answers.include?(answer)
-        contains = true
-        break
-      end
-    end
-    contains
-  end
-
-  def read_question(question)
-    contains = false
-    buildings.each do |building|
-      if building.contains_question(question)
-        contains = true
-        break
-      end
-    end
-    contains
-  end
+  # def read_answer(answer)
+  #   contains = false
+  #   buildings.each do |building|
+  #     if building.answers.include?(answer)
+  #       contains = true
+  #       break
+  #     end
+  #   end
+  #   contains
+  # end
+  #
+  # def read_question(question)
+  #   contains = false
+  #   buildings.each do |building|
+  #     if building.contains_question(question)
+  #       contains = true
+  #       break
+  #     end
+  #   end
+  #   contains
+  # end
 end

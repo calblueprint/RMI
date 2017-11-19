@@ -33,7 +33,7 @@ const formatState = {
     return toObjectById(
       mapFilterKeys(
         buildings,
-        ['id', 'name', 'answers', 'address', 'city', 'state', 'zip']
+        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip']
       )
     );
   },
@@ -62,7 +62,12 @@ const formatState = {
     );
   },
   portfolios: function(portfolios) {
-
+    return toObjectById(
+      mapFilterKeys(
+        portfolios,
+        ['id', 'name', 'asset_manager_id']
+      )
+    );
   }
 }
 
@@ -92,7 +97,10 @@ export function loadInitialState(initialState) {
     initialState.building_types.forEach((buildingType) => {
       formattedState = {
         ...formattedState,
-        questions: formatState.questions(buildingType.questions)
+        questions: {
+          ...formattedState.questions,
+          ...formatState.questions(buildingType.questions)
+        }
       };
     });
   }

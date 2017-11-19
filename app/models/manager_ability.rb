@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: manager_abilities
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class ManagerAbility < ApplicationRecord
   include CanCan::Ability
 
@@ -33,23 +42,23 @@ class ManagerAbility < ApplicationRecord
     alias_action :create, :read, :update, :destroy, :download, to: :crud
 
     can :crud, Portfolio do |portfolio|
-      portfolio.asset_manager_id = user.id
+      portfolio.asset_manager_id == user.id
     end
 
     cannot :index, Portfolio
 
     can :crud, Building do |building|
-      user.portfolios.include?(building.portfolio)
+      user.portfolio.id == building.portfolio_id
     end
 
     cannot :index, Building
 
     can :update, Answer do |answer|
-      user.read_answer(answer) && answer.text != 'delegated'
+      user.answer.include?(answer) && answer.text != 'delegated'
     end
 
     can :read, Answer do |answer|
-      user.read_answer(answer)
+      user.answer.include?(answer)
     end
 
     can :read, Question do |question|

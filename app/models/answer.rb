@@ -9,6 +9,7 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  building_operator_id :integer
+#  status               :integer
 #
 
 class Answer < ApplicationRecord
@@ -16,7 +17,7 @@ class Answer < ApplicationRecord
 
   belongs_to :building
   belongs_to :question
-  belongs_to :building_operator
+  belongs_to :user, polymorphic: true
 
   validates :text, presence: true
 

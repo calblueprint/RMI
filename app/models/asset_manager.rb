@@ -26,7 +26,8 @@ class AssetManager < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :portfolios
+  has_one :portfolio
+  has_many :answers, as: :user
 
   validates :first_name, :last_name, presence: true
   # email validation with regex
@@ -35,22 +36,16 @@ class AssetManager < ApplicationRecord
 
   def read_answer(answer)
     contains = false
-    portfolios.each do |portfolio|
-      if portfolio.read_answer(answer)
-        contains = true
-        break
-      end
+    if portfolio.read_answer(answer)
+      contains = true
     end
     contains
   end
 
   def read_question(question)
     contains = false
-    portfolios.each do |portfolio|
-      if portfolio.read_question(question)
-        contains = true
-        break
-      end
+    if portfolio.read_question(question)
+      contains = true
     end
     contains
   end
