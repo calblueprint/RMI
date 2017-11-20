@@ -6,15 +6,17 @@ import { getDependentQuestionsForOptions } from "../selectors/questionsSelector"
 import DropdownOption from '../components/DropdownOption';
 import RangeOption from '../components/RangeOption';
 import FreeOption from '../components/FreeOption';
+import Question from '../components/Question';
 
 class OptionsContainer extends React.Component {
   handleSelect(option_id) {
-    console.log("Answer selected! Option id: " + option_id)
+    console.log("Answer selected! Option id: " + option_id);
   }
 
   render() {
     const optionProps = {
       options: Object.values(this.props.options),
+      answer: this.props.answer,
       onSelect: this.handleSelect
     };
     const optionsComponent = (() => {
@@ -24,12 +26,24 @@ class OptionsContainer extends React.Component {
         case "range":
           return <RangeOption {...optionProps} />;
         default:
-          return <FreeOption {...optionProps} />
+          return <FreeOption {...optionProps} />;
+      }
+    })();
+    const dependentQuestions = (() => {
+      const selected_option_id = this.props.answer.selected_option_id;
+      const dependents = this.props.dependentQuestions[selected_option_id];
+      if (selected_option_id && dependents) {
+        return dependents.map((question) => {
+          return (<div key={question.id}>
+            <Question building_id={this.props.building_id} {...question} />
+          </div>);
+        });
       }
     })();
 
     return (<div>
-       {optionsComponent}
+      {optionsComponent}
+      {dependentQuestions}
     </div>)
   }
 }
@@ -37,7 +51,7 @@ class OptionsContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, state)
+    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state)
   }
 }
 
