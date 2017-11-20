@@ -44,14 +44,7 @@ class BuildingOperator < ApplicationRecord
   end
 
   def read_question(question)
-    contains = false
-    answers.each do |answer|
-      if answer.question == question
-        contains = true
-        break
-      end
-    end
-    contains
+    questions.include?(question)
   end
 
   def building_types
@@ -62,5 +55,13 @@ class BuildingOperator < ApplicationRecord
       end
     end
     building_types
+  end
+
+  def questions
+    questions = []
+    answers.each do |answer|
+      questions.push(answer.question)
+    end
+    questions
   end
 end
