@@ -39,7 +39,8 @@ class Api::BuildingsController < ApplicationController
     building = Building.find(params[:id])
     building.answers.where(&:predelegated?).each do |answer|
       @building_operator = BuildingOperator.where(email: answer.text).first_or_create
-      Answer.create!(building: building, question: answer.question, user: building_operator, user_type: BuildingOperator)
+      Answer.create!(building: building, question: answer.question, user: @building_operator, user_type: BuildingOperator)
+      answer.set_status_delegated
     end
     @building_operator.buildings << building
   end
