@@ -36,8 +36,19 @@ class AssetManager < ApplicationRecord
 
   def read_question(question)
     contains = false
-    answers.each do |answer|
-      if answer.question == question
+    building_types.each do |bt|
+      if bt.questions.include?(question)
+        contains = true
+        break
+      end
+    end
+    contains
+  end
+
+  def read_answer(answer)
+    contains = false
+    portfolio.buildings.each do |building|
+      if building.answers.include?(answer)
         contains = true
         break
       end
