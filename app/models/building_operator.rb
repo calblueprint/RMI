@@ -61,5 +61,6 @@ class BuildingOperator < ApplicationRecord
         building_types.push(building.building_type)
       end
     end
+    building_types
   end
 end
