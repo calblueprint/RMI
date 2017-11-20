@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   def show
     if asset_manager_signed_in?
       @state = asset_manager_initial_state
+      puts @state
     elsif building_operator_signed_in?
       @state = building_op_initial_state
     elsif rmi_user_signed_in?
