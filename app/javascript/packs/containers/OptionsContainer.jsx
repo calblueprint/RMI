@@ -9,15 +9,25 @@ import FreeOption from '../components/FreeOption';
 import Question from '../components/Question';
 
 class OptionsContainer extends React.Component {
-  handleSelect(option_id) {
-    console.log("Answer selected! Option id: " + option_id);
+  constructor() {
+    super();
+    this.state = {
+      option_ids: []
+    };
+  }
+
+  handleSelect(option_ids) {
+    this.setState({
+      ...this.state,
+      option_ids: option_ids
+    });
   }
 
   render() {
     const optionProps = {
-      options: Object.values(this.props.options),
+      options: this.props.options,
       answer: this.props.answer,
-      onSelect: this.handleSelect
+      onSelect: this.handleSelect.bind(this)
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -30,15 +40,16 @@ class OptionsContainer extends React.Component {
       }
     })();
     const dependentQuestions = (() => {
-      const selected_option_id = this.props.answer.selected_option_id;
-      const dependents = this.props.dependentQuestions[selected_option_id];
-      if (selected_option_id && dependents) {
-        return dependents.map((question) => {
-          return (<div key={question.id}>
-            <Question building_id={this.props.building_id} {...question} />
-          </div>);
-        });
-      }
+      return this.state.option_ids.map(selected_option_id => {
+        const dependents = this.props.dependentQuestions[selected_option_id];
+        if (selected_option_id && dependents) {
+          return dependents.map(question => {
+            return (<div key={question.id}>
+              <Question building_id={this.props.building_id} {...question} />
+            </div>);
+          });
+        }
+      });
     })();
 
     return (<div>
