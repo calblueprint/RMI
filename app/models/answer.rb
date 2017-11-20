@@ -21,6 +21,7 @@ class Answer < ApplicationRecord
   belongs_to :user, polymorphic: true
 
   validates :text, presence: true
+  validates :valid_email, on: :update
 
   # Set default status to unanswered
   after_initialize do
@@ -35,7 +36,7 @@ class Answer < ApplicationRecord
   def set_status_predelegated(email)
     self.status = :predelegated
     self.text = email
-    save!
+    save! if self.valid?
   end
 
   ##
@@ -55,6 +56,18 @@ class Answer < ApplicationRecord
 
   def set_status_delegated
     self.status = :delegated
-    save!p
+    save!
+  end
+
+  private
+
+  ##
+  # If the answer status is :predelegated, then check that the text contains a
+  # valid email
+  #
+  def valid_email
+    if self.predelegated? && self.text !~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
+        errors.add(:text, 'invalid email')
+    end
   end
 end

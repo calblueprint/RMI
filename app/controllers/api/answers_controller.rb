@@ -24,7 +24,7 @@ class Api::AnswersController < ApplicationController
   #
   def predelegate_answer(email)
     answer = Answer.find(params[:id])
-    answer.set_status_predelegated(email) if email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+    answer.set_status_predelegated(email)
   end
 
   private
