@@ -15,26 +15,13 @@ class Portfolio < ApplicationRecord
 
   validates :name, presence: true
 
-
-  # def read_answer(answer)
-  #   contains = false
-  #   buildings.each do |building|
-  #     if building.answers.include?(answer)
-  #       contains = true
-  #       break
-  #     end
-  #   end
-  #   contains
-  # end
-  #
-  # def read_question(question)
-  #   contains = false
-  #   buildings.each do |building|
-  #     if building.contains_question(question)
-  #       contains = true
-  #       break
-  #     end
-  #   end
-  #   contains
-  # end
+  def building_types
+    building_types = []
+    buildings.each do |building|
+      unless building_types.include?(building.building_type)
+        building_types.push(building.building_type)
+      end
+    end
+    building_types
+  end
 end

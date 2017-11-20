@@ -11,4 +11,14 @@
 class BuildingType < ApplicationRecord
   has_many :questions
   has_many :buildings
+
+  def user_questions(user)
+    questions = []
+    self.questions.each do |question|
+      if user.can? :read, question
+        questions.push(question)
+      end
+    end
+    questions
+  end
 end
