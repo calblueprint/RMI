@@ -15,7 +15,7 @@ class BuildingType < ApplicationRecord
   def user_questions(user)
     questions = []
     self.questions.each do |question|
-      if user.can? :read, question
+      if user.read_question(question)
         questions.push(question)
       end
     end
