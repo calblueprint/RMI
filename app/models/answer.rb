@@ -21,7 +21,7 @@ class Answer < ApplicationRecord
   belongs_to :user, polymorphic: true
 
   validates :text, presence: true
-  validates :valid_email, on: :update
+  validate :valid_email, on: :update
 
   # Set default status to unanswered
   after_initialize do
