@@ -31,10 +31,11 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
+gem 'cancancan', '~> 2.0'
+ # Enables zip-file creation
+gem 'rubyzip'
+  # Generates seed information
+gem 'faker', '~> 1.8.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -42,18 +43,13 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
-
 end
 
 group :development do
   # Add schema information to models
   gem 'annotate'
   gem 'listen', '>= 3.0.5', '< 3.2'
-  # Generates seed information
-  gem 'faker'
   gem 'rubocop'
-  # Enables zip-file creation
-  gem 'rubyzip'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
@@ -62,7 +58,7 @@ group :development do
   # Opens email previews in browser instead of sending them
   gem 'letter_opener'
   # adds gem for authorization cancancan
-  gem 'cancancan', '~> 2.0'
+
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

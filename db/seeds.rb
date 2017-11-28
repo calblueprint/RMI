@@ -319,7 +319,6 @@ def create_buildings
         state: location[:state],
         zip: location[:zip]
       )
-
       if j.even?
         building.building_type = $large_cube_retail
         Question.where(building_type: $large_cube_retail).all.each do |q|
@@ -328,6 +327,7 @@ def create_buildings
             building: building,
             question: q,
             user: $building_operators[rand(1..5)],
+            #user: BuildingOperator.find(1),
             user_type: BuildingOperator
           )
         end
@@ -346,6 +346,8 @@ def create_buildings
 
 
 
+      building.save!
+      building.building_operators << BuildingOperator.find(rand(1..17))
       building.save!
     end
     print("\n")

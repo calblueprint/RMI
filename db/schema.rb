@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20171120020810) do
   end
 
   create_table "answers", force: :cascade do |t|
-    t.text "text"
+    t.string "text", default: ""
     t.bigint "building_id"
     t.bigint "question_id"
     t.datetime "created_at", null: false

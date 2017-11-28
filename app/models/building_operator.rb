@@ -36,6 +36,7 @@ class BuildingOperator < ApplicationRecord
   # email validation with regex
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
+  validates_uniqueness_of :email
 
   # New building operator accounts are only created when an asset manager delegates a question to them,
   # so send an onboarding email telling them they have new questions.
@@ -44,13 +45,24 @@ class BuildingOperator < ApplicationRecord
   end
 
   def read_question(question)
-    contains = false
-    answers.each do |answer|
-      if answer.question == question
-        contains = true
-        break
+    questions.include?(question)
+  end
+
+  def building_types
+    building_types = []
+    buildings.each do |building|
+      unless building_types.include?(building.building_type)
+        building_types.push(building.building_type)
       end
     end
-    contains
+    building_types
+  end
+
+  def questions
+    questions = []
+    answers.each do |answer|
+      questions.push(answer.question)
+    end
+    questions
   end
 end

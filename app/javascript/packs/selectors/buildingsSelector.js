@@ -5,3 +5,7 @@ export function getBuildingsByPortfolio(portfolioId, state) {
     return state.buildings[buildingId];
   });
 };
+
+export function getBuildings(state) {
+  return state.buildings
+};
