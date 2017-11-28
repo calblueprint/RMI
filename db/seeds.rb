@@ -327,6 +327,7 @@ def create_buildings
             building: building,
             question: q,
             user: $building_operators[rand(1..5)],
+            #user: BuildingOperator.find(1),
             user_type: BuildingOperator
           )
         end
