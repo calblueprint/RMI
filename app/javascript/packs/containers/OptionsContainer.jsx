@@ -9,18 +9,9 @@ import FreeOption from '../components/FreeOption';
 import Question from '../components/Question';
 
 class OptionsContainer extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      option_ids: []
-    };
-  }
-
-  handleSelect(option_ids) {
-    this.setState({
-      ...this.state,
-      option_ids: option_ids
-    });
+  handleSelect(option_id) {
+    console.log("Triggered id - " + option_id);
+    // TODO: dispatch an action to update answer in the database and in state tree
   }
 
   render() {
@@ -40,16 +31,14 @@ class OptionsContainer extends React.Component {
       }
     })();
     const dependentQuestions = (() => {
-      return this.state.option_ids.map(selected_option_id => {
-        const dependents = this.props.dependentQuestions[selected_option_id];
-        if (selected_option_id && dependents) {
-          return dependents.map(question => {
-            return (<div key={question.id}>
-              <Question building_id={this.props.building_id} {...question} />
-            </div>);
-          });
-        }
-      });
+      const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
+      if (dependents) {
+        return dependents.map(question => {
+          return (<div key={question.id}>
+            <Question building_id={this.props.building_id} {...question} />
+          </div>);
+        });
+      }
     })();
 
     return (<div>

@@ -4,7 +4,7 @@ class DropdownOption extends React.Component {
   componentDidMount() {
     const selected_option_id = this.props.answer.selected_option_id;
     if (selected_option_id) {
-      this.props.onSelect([selected_option_id]);
+      this.props.onSelect(selected_option_id);
     }
   }
 
