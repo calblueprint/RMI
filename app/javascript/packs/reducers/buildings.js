@@ -51,7 +51,7 @@ function saveBuilding(state, action) {
     return {
       ...state,
       [receivedBuilding.id]: {
-        ...receivedBuilding,
+          ...receivedBuilding,
         saved: true,
         fetching: false,
         error: false

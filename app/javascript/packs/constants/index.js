@@ -1,5 +1,13 @@
 export const LOAD_INITIAL_STATE = 'LOAD_INITIAL_STATE';
 
+// Answer ActionTypes
+export const FETCH_ANSWER = 'FETCH_ANSWER';
+export const ADD_ANSWER = 'ADD_ANSWER';
+export const CREATE_ANSWER = 'CREATE_ANSWER';
+export const EDIT_ANSWER = 'EDIT_ANSWER';
+export const REMOVE_ANSWER = 'REMOVE_ANSWER';
+export const SAVE_ANSWER = 'SAVE_ANSWER';
+
 // BuildingType ActionTypes
 export const ADD_BUILDING_TYPE = 'ADD_BUILDING_TYPE';
 export const CHANGE_BUILDING_TYPE_NAME = 'CHANGE_BUILDING_TYPE_NAME';

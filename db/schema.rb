@@ -26,9 +26,9 @@ ActiveRecord::Schema.define(version: 20171118204301) do
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status"
     t.string "user_type"
     t.bigint "user_id"
+    t.integer "status"
     t.index ["building_id"], name: "index_answers_on_building_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_type", "user_id"], name: "index_answers_on_user_type_and_user_id"
