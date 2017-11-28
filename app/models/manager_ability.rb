@@ -48,17 +48,17 @@ class ManagerAbility < ApplicationRecord
     cannot :index, Portfolio
 
     can :crud, Building do |building|
-      user.portfolio.id == building.portfolio_id
+      user.portfolio.id == building.portfolio.id
     end
 
     cannot :index, Building
 
     can :update, Answer do |answer|
-      user.answer.include?(answer) && answer.text != 'delegated'
+      user.answer.include?(answer) && answer.status != 'delegated'
     end
 
     can :read, Answer do |answer|
-      user.answer.include?(answer)
+      user.read_answer(answer)
     end
 
     can :read, Question do |question|
