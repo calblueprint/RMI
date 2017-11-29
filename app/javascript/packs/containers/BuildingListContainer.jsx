@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
 import { loadInitialState } from '../actions/initialState';
-import { getBuildings} from '../selectors';
+import { getBuildings } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
