@@ -24,4 +24,3 @@ export default function reducerWithInitialState(reducer = rootReducer) {
     }, reducer)(state, action);
   }
 }
-

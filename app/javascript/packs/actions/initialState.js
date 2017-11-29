@@ -69,7 +69,26 @@ const formatState = {
       )
     );
   }
-}
+};
+
+// Initial view contexts by user type
+export const INITIAL_VIEW_CONTEXT = {
+  'AssetManager': {
+
+  },
+  'BuildingOperator': {
+    questionnaire_view: {
+      category: 'all',
+      edit_mode: 'false',
+      delegate_mode: 'false',
+      review_mode: 'false'
+    },
+    building_dashboard_view: 'false'
+  },
+  'RMIUser': {
+
+  }
+};
 
 export function loadInitialState(initialState) {
   const types = Object.keys(initialState);
@@ -104,6 +123,13 @@ export function loadInitialState(initialState) {
       };
     });
   }
+
+  // Set initial view context based on user type
+  formattedState = {
+    ...formattedState,
+    viewContext: INITIAL_VIEW_CONTEXT[initialState.userType],
+    userType: initialState.userType
+  };
 
   return {
     type: LOAD_INITIAL_STATE,
