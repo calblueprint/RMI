@@ -11,9 +11,7 @@ import {
   FETCH_FAILURE,
   CREATE_ANSWER,
   UPDATE_ANSWER,
-  EDIT_ANSWER,
   REMOVE_ANSWER,
-  SAVE_ANSWER,
 } from '../constants';
 
   /////////////////////////////////////////////////////////////////

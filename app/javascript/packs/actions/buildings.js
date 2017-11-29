@@ -9,13 +9,7 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
-  FETCH_SETTINGS,
-  FETCH_ANSWER,
-  ADD_ANSWER,
-  CREATE_ANSWER,
-  UPDATE_ANSWER,
-  REMOVE_ANSWER,
-  SAVE_ANSWER,
+  FETCH_SETTINGS
 } from '../constants';
 
 export function addBuilding(portfolioId) {

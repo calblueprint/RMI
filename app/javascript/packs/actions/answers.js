@@ -7,7 +7,7 @@ import {
   CREATE_ANSWER,
   UPDATE_ANSWER,
   REMOVE_ANSWER,
-  SAVE_ANSWER,
+  SAVE_ANSWER
 } from '../constants';
 
 export function createAnswer(buildingId) {
