@@ -111,7 +111,7 @@ function createAnswer(state, action) {
   };
 }
 
-function saveAnswer(state, action) {
+function updateAnswer(state, action) {
   const buildingId = action.buildingId;
   const status = action.status;
   const answer = action.response;
@@ -181,8 +181,6 @@ export default function buildings(state = {}, action) {
     // Answers
     case CREATE_ANSWER: return createAnswer(state, action);
     case UPDATE_ANSWER: return updateAnswer(state, action);
-    case REMOVE_ANSWER: return removeAnswer(state, action);
-    case SAVE_ANSWER: return saveAnswer(state, action);
   default:
     return state;
   }
