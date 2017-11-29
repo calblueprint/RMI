@@ -9,8 +9,18 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
-  FETCH_SETTINGS
+  FETCH_SETTINGS,
+  FETCH_ANSWER,
+  ADD_ANSWER,
+  CREATE_ANSWER,
+  UPDATE_ANSWER,
+  REMOVE_ANSWER,
+  SAVE_ANSWER,
 } from '../constants';
+
+  /////////////////////////////////////////////////////////////////
+ // BUILDINGS ////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 export function addBuilding(portfolioId) {
   return {
@@ -31,6 +41,22 @@ export function removeBuilding(id, dispatch) {
   return {
     type: REMOVE_BUILDING,
     buildingId: id
+  };
+}
+
+function saveBuilding(type, id, response) {
+  return {
+    type,
+    status: FETCH_SUCCESS,
+    buildingId: id,
+    response
+  };
+}
+
+function saveBuildingError(type, id, error) {
+  return {
+    ...saveError(type, error),
+    buildingId: id,
   };
 }
 
@@ -56,9 +82,9 @@ export async function createBuilding(id, building, dispatch) {
     dispatch(removeBuilding(id, dispatch));
 
     let id = response.data.id;
-    dispatch(saveResponse(CREATE_BUILDING, id, response.data));
+    dispatch(saveBuilding(CREATE_BUILDING, id, response.data));
   } catch (error) {
-    dispatch(saveError(CREATE_BUILDING, id, error));
+    dispatch(saveBuildingError(CREATE_BUILDING, id, error));
   };
 }
 
@@ -81,26 +107,65 @@ export async function updateBuilding(id, updatedBuilding, dispatch) {
       ...FETCH_SETTINGS
     }).then(resp => resp.json());
 
-    dispatch(saveResponse(UPDATE_BUILDING, id, response.data));
+    dispatch(saveBuilding(UPDATE_BUILDING, id, response.data));
   } catch (error) {
     dispatch(saveError(UPDATE_BUILDING, id, error));
   };
 }
 
-function saveResponse(type, id, response) {
+  /////////////////////////////////////////////////////////////////
+ // ANSWERS //////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+export function createAnswer(buildingId) {
+  return {
+    type: CREATE_ANSWER,
+    status: FETCH_IN_PROGRESS,
+    buildingId: buildingId,
+    questionId: questionId
+  };
+}
+
+// export function updateAnswer() {
+//   return {
+//     type: UPDATE_ANSWER,
+//     portfolioId
+//   };
+// }
+
+function saveAnswer(type, response) {
   return {
     type,
     status: FETCH_SUCCESS,
-    buildingId: id,
     response
   };
 }
 
-function saveError(type, id, error) {
+function saveError(type, error) {
   return {
     type,
     status: FETCH_FAILURE,
-    buildingId: id,
     response: error
   };
+}
+
+
+export async function addAnswer(buildingId, answer, dispatch) {
+  dispatch(createAnswer(buildingId));
+
+  try {
+    const answerData = JSON.stringify({
+      ...answer
+    });
+
+    let response = await fetch('/api/buildings', {
+      method: 'POST',
+      data: answerData
+    }).then(resp => resp.json());
+
+    dispatch(updateAnswer());
+    dispatch(saveAnswer(ADD_ANSWER, response.data));
+  } catch (error) {
+    dispatch(saveError(CREATE_ANSWER, error));
+  }
 }

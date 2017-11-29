@@ -8,8 +8,17 @@ import {
   ASSIGN_BUILDING_OPERATOR,
   UNASSIGN_BUILDING_OPERATOR,
   FETCH_SUCCESS,
-  FETCH_FAILURE
+  FETCH_FAILURE,
+  CREATE_ANSWER,
+  UPDATE_ANSWER,
+  EDIT_ANSWER,
+  REMOVE_ANSWER,
+  SAVE_ANSWER,
 } from '../constants';
+
+  /////////////////////////////////////////////////////////////////
+ // BUILDINGS ////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 function addBuilding(state, action) {
   const tempId = '__unsaved__' + Date.now();
@@ -78,14 +87,102 @@ function saveBuilding(state, action) {
   };
 }
 
+  /////////////////////////////////////////////////////////////////
+ // ANSWERS //////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
+function createAnswer(state, action) {
+  const tempId = '__unsaved__' + Date.now();
+  const buildingId = action.buildingId;
+  return {
+    ...state,
+    [buildingId]: {
+      ...state[buildingId],
+      answers: {
+        ...state[buildingId]['answers'],
+        [tempId]: {
+          saved: false,
+          fetching: true,
+          buildingId: buildingId,
+          questionId: action.questionId
+        }
+      },
+    }
+  };
+}
+
+function saveAnswer(state, action) {
+  const buildingId = action.buildingId;
+  const status = action.status;
+  const answer = action.response;
+
+  if (status === FETCH_SUCCESS) {
+    return {
+      ...state,
+      [buildingId]: {
+        ...state[buildingId],
+        answers: {
+          ...state[buildingId]['answers'],
+          [answer.id]: {
+            ...state[buildingId]['answers'][answer.id],
+            saved: true,
+            fetching: false,
+            error: false
+          }
+        }
+      }
+    }
+  }
+
+  if (status === FETCH_FAILURE) {
+    const errorMessage = action.response;
+    const tempId = '__unsaved__' + Date.now();
+    return {
+      ...state,
+      [buildingId]: {
+        ...state[buildingId],
+        answers:{
+          ...state[buildingId]['answers'],
+          [answer.id]: {
+            ...state[buildingId]['answers'][answer.id],
+            error: errorMessage,
+            fetching: false
+          }
+        }
+      }
+    }
+  }
+
+  return {
+    ...state,
+    [buildingId]: {
+      ...state[buildingId],
+      answers: {
+        ...state[buildingId]['answers'],
+        [answer.id]: {
+          ...state[buildingId]['answers'][answer.id],
+          fetching: true,
+        }
+      }
+    }
+  }
+}
+
 export default function buildings(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
+    // Buildings
     case ADD_BUILDING: return addBuilding(state, action);
     case EDIT_BUILDING: return editBuilding(state, action);
     case REMOVE_BUILDING: return removeBuilding(state, action);
     case CREATE_BUILDING: return saveBuilding(state, action);
     case UPDATE_BUILDING: return saveBuilding(state, action);
+
+    // Answers
+    case CREATE_ANSWER: return createAnswer(state, action);
+    case UPDATE_ANSWER: return updateAnswer(state, action);
+    case REMOVE_ANSWER: return removeAnswer(state, action);
+    case SAVE_ANSWER: return saveAnswer(state, action);
   default:
     return state;
   }

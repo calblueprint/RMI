@@ -2,7 +2,7 @@ import {
   FETCH_ANSWER,
   ADD_ANSWER,
   CREATE_ANSWER,
-  EDIT_ANSWER,
+  UPDATE_ANSWER,
   REMOVE_ANSWER,
   SAVE_ANSWER,
   FETCH_SUCCESS,
@@ -21,7 +21,7 @@ export function createAnswer(buildingId) {
 
 export function updateAnswer() {
   return {
-    type: ADD_ANSWER,
+    type: UPDATE_ANSWER,
     portfolioId
   };
 }

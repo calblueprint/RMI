@@ -1,25 +1,32 @@
 import {
-  FETCH_ANSWER,
-  ADD_ANSWER,
+  CREATE_ANSWER,
+  UPDATE_ANSWER,
   EDIT_ANSWER,
   REMOVE_ANSWER,
-  SAVE_ANSWER, CREATE_ANSWER
+  SAVE_ANSWER,
 } from "../constants/index";
 
 function createAnswer(state, action) {
   const tempId = '__unsaved__' + Date.now();
-  const buildingId = action.buildingId;
+  const id = 2;
+  // return {
+  //   ...state,
+  //   [buildingId]: {
+  //     // ...state[buildingId],
+  //     // [tempId]: {
+  //     //   saved: false,
+  //     //   buildingId: buildingId,
+  //     //   questionId: action.questionId
+  //     // }
+  //     fetching: true
+  //   }
+  // };
   return {
     ...state,
-    [buildingId]: {
-      ...state[buildingId],
-      [tempId]: {
-        saved: false,
-        buildingId: buildingId,
-        questionId: action.questionId
-      }
+    2: {
+      fetching: true
     }
-  }
+  };
 }
 
 function updateAnswer(state, action) {
@@ -38,7 +45,7 @@ export default function answers(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
     case CREATE_ANSWER: return createAnswer(state, action);
-    case EDIT_ANSWER: return updateAnswer(state, action);
+    case UPDATE_ANSWER: return updateAnswer(state, action);
     case REMOVE_ANSWER: return removeAnswer(state, action);
     case SAVE_ANSWER: return saveAnswer(state, action);
     default:
