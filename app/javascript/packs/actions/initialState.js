@@ -74,19 +74,20 @@ const formatState = {
 // Initial view contexts by user type
 export const INITIAL_VIEW_CONTEXT = {
   'AssetManager': {
-
+    user_type: 'AssetManager'
   },
   'BuildingOperator': {
     questionnaire_view: {
       category: 'all',
-      edit_mode: 'false',
-      delegate_mode: 'false',
-      review_mode: 'false'
+      edit_mode: false,
+      delegate_mode: false,
+      review_mode: false
     },
-    building_dashboard_view: 'false'
+    building_dashboard_view: false,
+    user_type: 'BuildingOperator'
   },
   'RMIUser': {
-
+    user_type: 'RMIUser'
   }
 };
 
@@ -128,7 +129,6 @@ export function loadInitialState(initialState) {
   formattedState = {
     ...formattedState,
     viewContext: INITIAL_VIEW_CONTEXT[initialState.userType],
-    userType: initialState.userType
   };
 
   return {
