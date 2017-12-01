@@ -71,7 +71,9 @@ const formatState = {
   }
 };
 
-// Initial view contexts by user type
+// Initial view contexts by user type. Any time something changes, this allows
+// the reducer to reset everything in view context to the default values and change
+// only the setting that applies.
 export const INITIAL_VIEW_CONTEXT = {
   'AssetManager': {
     user_type: 'AssetManager'

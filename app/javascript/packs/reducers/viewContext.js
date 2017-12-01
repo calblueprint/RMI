@@ -19,22 +19,22 @@ function setQuestionnaireReviewMode(state, action) {
 }
 
 function setQuestionnaireMode(mode, state, action) {
-  const view_context = INITIAL_VIEW_CONTEXT[state.user_type];
+  const default_values = INITIAL_VIEW_CONTEXT[state.user_type];
 
   return {
-    ...view_context,
+    ...default_values,
     questionnaire_view: {
-      ...view_context.questionnaire_view,
+      ...default_values.questionnaire_view,
       [mode]: true
     }
   };
 }
 
 function setBuildingDashboardView(state, action) {
-  const view_context = INITIAL_VIEW_CONTEXT[state.user_type];
+  const default_values = INITIAL_VIEW_CONTEXT[state.user_type];
 
   return {
-    ...view_context,
+    ...default_values,
     building_dashboard_view: true
   }
 }
