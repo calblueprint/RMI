@@ -29,6 +29,9 @@ const mapFilterKeys = (objs, keys) => {
 };
 
 const formatState = {
+  user: function(user) {
+      return filterKeys(user[0], ['id', 'email', 'first_name', 'last_name']);
+  },
   buildings: function(buildings) {
     return toObjectById(
       mapFilterKeys(

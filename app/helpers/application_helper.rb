@@ -18,6 +18,7 @@ module ApplicationHelper
     end
 
     {
+
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         portfolio.buildings, each_serializer: BuildingSerializer,
         scope: {user_id: current_asset_manager.id,
@@ -47,6 +48,7 @@ module ApplicationHelper
     end
 
     {
+      user: current_building_operator,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
        current_building_operator.buildings, each_serializer: BuildingSerializer,
        scope: {user_id: current_building_operator.id,

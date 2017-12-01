@@ -1,5 +1,7 @@
 import React from 'react';
+
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
+import NavigationBarContainer from "../containers/NavigationBarContainer"
 import BuildingListContainer from "../containers/BuildingListContainer";
 
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -9,6 +11,7 @@ class BuildingOperatorRoutes extends React.Component {
   render() {
     return (
       <div>
+        <NavigationBarContainer/>
         <Switch>
           <Route exact path="/buildings" component={BuildingListContainer} />
 
