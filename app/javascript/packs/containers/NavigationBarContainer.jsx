@@ -14,26 +14,25 @@ class NavigationBarContainer extends React.Component {
         }
     }
     render() {
-        // const buildings = this.props.buildings;
-        // const name = this.props.name;
-        // const email = this.props.email;
-        // return (
-        //     <div class="navbar">
-        //         <a href= "/buildings">{name}</a>
-        //         <a href= "/buildings">{email}</a>
-        //         <div class="dropdown">
-        //             <button class="dropbtn">Select A Building
-        //                 <i class="fa fa-caret-down"></i>
-        //             </button>
-        //             <div class="dropdown-content">
-        //                 {Object.keys(buildings).map(id => {
-        //                     return (<p>
-        //                         <Link to={`/buildings/${id}`}>{buildings[id].name}</Link>
-        //                     </p>)
-        //                 })}
-        //                 </div>
-        //         </div>
-        //     </div>);
+        const buildings = this.props.buildings;
+        const name = this.props.name;
+        const email = this.props.email;
+        return (
+            <div className="navbar">
+                <Link to= "/buildings">{name}</Link>
+                <br/>
+                <Link to= "/buildings">{email}</Link>
+                <div className="dropdown">
+                    <button className="dropbtn" onClick= {myFunction()}>Current Building</button>
+                    <div className="dropdown-content">
+                        {Object.keys(buildings).map(id => {
+                            return (<p>
+                                <Link to={`/buildings/${id}`}>{buildings[id].name}</Link>
+                            </p>)
+                        })}
+                        </div>
+                </div>
+            </div>);
     }
 }
 
@@ -49,6 +48,23 @@ function mapDispatchToProps(dispatch) {
     return {
         initActions: bindActionCreators({ loadInitialState }, dispatch)
     };
+}
+
+function myFunction() {
+    if (document.getElementById("dropdown-content")) {
+        document.getElementById("dropdown-content").classList.toggle("show");
+    }
+
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(click) {
+    if (!click.target.matches('.dropbtn')) {
+        var myDropdown = document.getElementById("dropdown-content");
+        if (myDropdown.classList.contains('show')) {
+            myDropdown.classList.remove('show');
+        }
+    }
 }
 
 export default connect(
