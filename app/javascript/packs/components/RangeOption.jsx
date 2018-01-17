@@ -12,12 +12,15 @@ class RangeOption extends React.Component {
   }
 
   componentDidMount() {
-    this.checkRange(this.props.answer.text);
+    if (this.props.answer) {
+      this.checkRange(this.props.answer.text);
+    }
   }
 
   render() {
+    const currentValue = this.props.answer ? this.props.answer.text : "";
     return (<div>
-      <input type="number" defaultValue={this.props.answer.text} onChange={(e) => this.checkRange(e.target.value)} />
+      <input type="number" defaultValue={currentValue} onChange={(e) => this.checkRange(e.target.value)} />
     </div>)
   }
 }
