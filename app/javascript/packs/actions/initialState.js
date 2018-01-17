@@ -76,6 +76,13 @@ const formatState = {
 // only the setting that applies.
 export const INITIAL_VIEW_CONTEXT = {
   'AssetManager': {
+    questionnaire_view: {
+      category: 'all',
+      edit_mode: false,
+      delegate_mode: false,
+      review_mode: false
+    },
+    portfolio_view: false,
     user_type: 'AssetManager'
   },
   'BuildingOperator': {
@@ -89,6 +96,12 @@ export const INITIAL_VIEW_CONTEXT = {
     user_type: 'BuildingOperator'
   },
   'RMIUser': {
+    questionnaire_view: {
+      category: 'all',
+      edit_mode: false,
+      delegate_mode: false,
+      review_mode: false
+    },
     user_type: 'RMIUser'
   }
 };

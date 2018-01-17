@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
-import * as ViewContextActions from '../actions/viewContext';
+import { setBuildingDashboardView } from '../actions/viewContext';
 import { loadInitialState } from '../actions/initialState';
 import { getBuildings } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
@@ -14,7 +14,7 @@ class BuildingListContainer extends React.Component {
       this.props.initActions.loadInitialState(window.INITIAL_STATE);
       window.INITIAL_STATE = null;
     }
-    this.props.viewContextActions.setBuildingDashboardView();
+    this.props.setBuildingDashboardView();
   }
 
   render() {
@@ -41,7 +41,7 @@ class BuildingListContainer extends React.Component {
     return {
       buildingActions: bindActionCreators(BuildingActions, dispatch),
       initActions: bindActionCreators({ loadInitialState }, dispatch),
-      viewContextActions: bindActionCreators(ViewContextActions, dispatch)
+      setBuildingDashboardView: () => { dispatch(setBuildingDashboardView()) }
     };
   }
 
