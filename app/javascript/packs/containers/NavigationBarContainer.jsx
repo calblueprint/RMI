@@ -18,21 +18,29 @@ class NavigationBarContainer extends React.Component {
         const name = this.props.name;
         const email = this.props.email;
         return (
-            <div className="navbar">
-                <Link to= "/buildings">{name}</Link>
-                <br/>
-                <Link to= "/buildings">{email}</Link>
-                <div className="dropdown">
-                    <button className="dropbtn" onClick= {myFunction()}>Current Building</button>
-                    <div className="dropdown-content">
-                        {Object.keys(buildings).map(id => {
-                            return (<p>
-                                <Link to={`/buildings/${id}`}>{buildings[id].name}</Link>
-                            </p>)
-                        })}
-                        </div>
-                </div>
-            </div>);
+            {/*<div className="navbar">*/}
+                {/*<Link to= "/buildings">{name}</Link>*/}
+                {/*<br/>*/}
+                {/*<Link to= "/buildings">{email}</Link>*/}
+                {/*<div className="dropdown">*/}
+                    {/*<button className="dropbtn" onClick= {myFunction()}>Current Building</button>*/}
+                    {/*<div className="dropdown-content">*/}
+                        {/*{Object.keys(buildings).map(id => {*/}
+                            {/*return (<p>*/}
+                                {/*<Link to={`/buildings/${id}`}>{buildings[id].name}</Link>*/}
+                            {/*</p>)*/}
+                        {/*})}*/}
+                        {/*</div>*/}
+                {/*</div>*/}
+            {/*</div>);*/}
+        <Provider store={store}>
+            <RouterWithRedux>
+                <Scene key="root" navBar={NavBar}>
+                    <Scene key="main" component={Main} title="Main" initial={true}/>
+                    <Scene key="list" component={List} title="List"　/>
+                </Scene>
+            </RouterWithRedux>
+        </Provider>
     }
 }
 
