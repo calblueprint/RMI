@@ -69,7 +69,42 @@ const formatState = {
       )
     );
   }
-}
+};
+
+// Initial view contexts by user type. Any time something changes, this allows
+// the reducer to reset everything in view context to the default values and change
+// only the setting that applies.
+export const INITIAL_VIEW_CONTEXT = {
+  'AssetManager': {
+    questionnaire_view: {
+      category: 'all',
+      edit_mode: false,
+      delegate_mode: false,
+      review_mode: false
+    },
+    portfolio_view: false,
+    user_type: 'AssetManager'
+  },
+  'BuildingOperator': {
+    questionnaire_view: {
+      category: 'all',
+      edit_mode: false,
+      delegate_mode: false,
+      review_mode: false
+    },
+    building_dashboard_view: false,
+    user_type: 'BuildingOperator'
+  },
+  'RMIUser': {
+    questionnaire_view: {
+      category: 'all',
+      edit_mode: false,
+      delegate_mode: false,
+      review_mode: false
+    },
+    user_type: 'RMIUser'
+  }
+};
 
 export function loadInitialState(initialState) {
   const types = Object.keys(initialState);
@@ -104,6 +139,12 @@ export function loadInitialState(initialState) {
       };
     });
   }
+
+  // Set initial view context based on user type
+  formattedState = {
+    ...formattedState,
+    viewContext: INITIAL_VIEW_CONTEXT[initialState.userType],
+  };
 
   return {
     type: LOAD_INITIAL_STATE,

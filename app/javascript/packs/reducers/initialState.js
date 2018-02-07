@@ -6,11 +6,13 @@ import { LOAD_INITIAL_STATE } from '../constants';
 import questions from './questions';
 import buildings from './buildings';
 import portfolios from './portfolios';
+import viewContext from './viewContext';
 
 const rootReducer = {
   questions,
   buildings,
-  portfolios
+  portfolios,
+  viewContext
 };
 
 export default function reducerWithInitialState(reducer = rootReducer) {
@@ -24,4 +26,3 @@ export default function reducerWithInitialState(reducer = rootReducer) {
     }, reducer)(state, action);
   }
 }
-
