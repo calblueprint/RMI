@@ -74,7 +74,7 @@ def create_categories
     [
       'Does your eggyolk have any allergies?', 'has_allergies', eggyolk_information, :dropdown,
       ['Yes', 'No'],
-      [['List any foods your eggyolk may be allergic to.', 'allergic_to', eggyolk_information, :free], nil] 
+      [['List any foods your eggyolk may be allergic to.', 'allergic_to', eggyolk_information, :free], nil]
     ],
     ['What is your eggyolk\'s budget on rockclimbing?', 'rockclimbing_budget', eggyolk_information, :range,
       [[0, 100], [101, 500], [501, safe_maximum]],

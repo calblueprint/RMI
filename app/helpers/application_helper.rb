@@ -44,7 +44,7 @@ module ApplicationHelper
                 user_type: 'RmiUser'}
       ),
       userType: 'RMIUser'
-    } 
+    }
   end
   # rubocop:enable AlignHash
 end

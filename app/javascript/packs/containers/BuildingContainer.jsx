@@ -1,10 +1,16 @@
 import React from 'react';
+
 import Question from '../components/Question';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+import * as ViewContextActions from '../actions/viewContext';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 class BuildingContainer extends React.Component {
+  componentDidMount() {
+    this.props.viewContextActions.setQuestionnaireEditMode();
+  }
+
   render() {
     return (
       <div>
@@ -33,7 +39,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    viewContextActions: bindActionCreators(ViewContextActions, dispatch)
+  };
 }
 
 export default connect(
