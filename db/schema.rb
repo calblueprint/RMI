@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120020810) do
+ActiveRecord::Schema.define(version: 20180210181007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,13 +26,9 @@ ActiveRecord::Schema.define(version: 20171120020810) do
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status"
-    t.string "user_type"
-    t.bigint "user_id"
     t.integer "selected_option_id"
     t.index ["building_id"], name: "index_answers_on_building_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
-    t.index ["user_type", "user_id"], name: "index_answers_on_user_type_and_user_id"
   end
 
   create_table "asset_managers", force: :cascade do |t|
@@ -108,6 +104,16 @@ ActiveRecord::Schema.define(version: 20171120020810) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "delegation", force: :cascade do |t|
+    t.bigint "building_operator_id"
+    t.bigint "answers_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answers_id"], name: "index_delegation_on_answers_id"
+    t.index ["building_operator_id"], name: "index_delegation_on_building_operator_id"
+  end
+
   create_table "dropdown_options", force: :cascade do |t|
     t.string "text"
     t.bigint "question_id"
@@ -178,6 +184,8 @@ ActiveRecord::Schema.define(version: 20171120020810) do
   add_foreign_key "answers", "questions"
   add_foreign_key "buildings", "building_types"
   add_foreign_key "buildings", "portfolios"
+  add_foreign_key "delegation", "answers", column: "answers_id"
+  add_foreign_key "delegation", "building_operators"
   add_foreign_key "dropdown_options", "questions"
   add_foreign_key "portfolios", "asset_managers"
   add_foreign_key "questions", "building_types"

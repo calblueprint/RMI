@@ -30,7 +30,7 @@ class BuildingOperator < ApplicationRecord
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building
-  has_many :answers, as: :user
+  has_many :answers, through: :delegation
 
   validates :first_name, :last_name, presence: true
   # email validation with regex
@@ -44,10 +44,6 @@ class BuildingOperator < ApplicationRecord
     BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
   end
 
-  def read_question(question)
-    questions.include?(question)
-  end
-
   def building_types
     building_types = []
     buildings.each do |building|
@@ -59,9 +55,13 @@ class BuildingOperator < ApplicationRecord
   end
 
   def questions
+    # Returns
+    # questions: array of question objects that are accessible to read
     questions = []
-    answers.each do |answer|
-      questions.push(answer.question)
+    delegations.each do |delegation|
+      if delegation.status == 'active'
+        questions.push(delegation.answer.question)
+      end
     end
     questions
   end

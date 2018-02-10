@@ -17,7 +17,8 @@ class BuildingTypeSerializer < ActiveModel::Serializer
   def questions
     questions = {}
     if scope[:user_type] == 'BuildingOperator'
-      object.user_questions(BuildingOperator.find(scope[:user_id])).each do |q|
+      building_operator = BuildingOperator.find(scope[:user_id])
+      object.building_operator_questions(building_operator).each do |q|
         questions[q.id] = QuestionSerializer.new(q).as_json
       end
     else
@@ -27,5 +28,4 @@ class BuildingTypeSerializer < ActiveModel::Serializer
     end
     questions
   end
-
 end
