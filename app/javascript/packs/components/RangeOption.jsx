@@ -20,7 +20,11 @@ class RangeOption extends React.Component {
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
     return (<div>
-      <input type="number" defaultValue={currentValue} onChange={(e) => this.checkRange(e.target.value)} />
+      <input
+        type="number"
+        defaultValue={currentValue}
+        onChange={(e) => this.checkRange(e.target.value)}
+      />
     </div>)
   }
 }
