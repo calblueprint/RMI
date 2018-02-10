@@ -1,22 +1,12 @@
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
-import { setBuildingDashboardView } from '../actions/viewContext';
-import { loadInitialState } from '../actions/initialState';
 import { getBuildings } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class BuildingListContainer extends React.Component {
-  componentDidMount() {
-    if (window.INITIAL_STATE) {
-      this.props.initActions.loadInitialState(window.INITIAL_STATE);
-      window.INITIAL_STATE = null;
-    }
-    this.props.setBuildingDashboardView();
-  }
-
   render() {
     const buildings = this.props.buildings;
     return (<div>
@@ -31,19 +21,17 @@ class BuildingListContainer extends React.Component {
   }
 }
 
-  function mapStateToProps(state) {
-    return {
-      buildings: getBuildings(state)
-    };
-  }
+function mapStateToProps(state) {
+  return {
+    buildings: getBuildings(state)
+  };
+}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      buildingActions: bindActionCreators(BuildingActions, dispatch),
-      initActions: bindActionCreators({ loadInitialState }, dispatch),
-      setBuildingDashboardView: () => { dispatch(setBuildingDashboardView()) }
-    };
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    buildingActions: bindActionCreators(BuildingActions, dispatch),
+  };
+}
 
 export default connect(
   mapStateToProps,
