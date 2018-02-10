@@ -1,19 +1,12 @@
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
-import { loadInitialState } from '../actions/initialState';
 import { getBuildings } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class BuildingListContainer extends React.Component {
-    componentDidMount() {
-        if (window.INITIAL_STATE) {
-            this.props.initActions.loadInitialState(window.INITIAL_STATE);
-        }
-    }
-
     render() {
         const buildings = this.props.buildings;
         return (<div>
@@ -37,7 +30,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         buildingActions: bindActionCreators(BuildingActions, dispatch),
-        initActions: bindActionCreators({ loadInitialState }, dispatch)
     };
 }
 
