@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom';
 
 import withInitialState from '../reducers/initialState';
+import { loadInitialState } from '../actions/initialState';
 
 const { userType } = window.INITIAL_STATE;
 const rootReducer = require(`../reducers/roots/${userType}Reducer`).default;
@@ -20,6 +21,10 @@ const Routes = require(`../routes/${userType}Routes`).default;
 
 const reducer = withInitialState(rootReducer);
 const { store, persistor } = initializeStore(reducer);
+
+if (window.INITIAL_STATE) {
+  store.dispatch(loadInitialState(window.INITIAL_STATE));
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
