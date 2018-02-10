@@ -31,13 +31,15 @@ class OptionsContainer extends React.Component {
       }
     })();
     const dependentQuestions = (() => {
-      const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
-      if (dependents) {
-        return dependents.map(question => {
-          return (<div key={question.id}>
-            <Question building_id={this.props.building_id} {...question} />
-          </div>);
-        });
+      if (this.props.answer) {
+        const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
+        if (dependents) {
+          return dependents.map(question => {
+            return (<div key={question.id}>
+              <Question building_id={this.props.building_id} {...question} />
+            </div>);
+          });
+        }
       }
     })();
 
