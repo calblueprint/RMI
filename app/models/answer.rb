@@ -2,15 +2,19 @@
 #
 # Table name: answers
 #
-#  id          :integer          not null, primary key
-#  text        :text             default("")
-#  building_id :integer
-#  question_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  status      :integer
-#  user_type   :string
-#  user_id     :integer
+#  id                      :integer          not null, primary key
+#  text                    :text             default("")
+#  building_id             :integer
+#  question_id             :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  status                  :integer
+#  user_type               :string
+#  user_id                 :integer
+#  attachment_file_name    :string
+#  attachment_content_type :string
+#  attachment_file_size    :integer
+#  attachment_updated_at   :datetime
 #
 
 class Answer < ApplicationRecord
@@ -20,8 +24,11 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user, polymorphic: true
 
+  has_attached_file :attachment
+
   validates :text, presence: true
   validate :valid_email, on: :update
+  validate :attachment, :size => { :in => 0..2.megabytes }
 
   # Set default status to unanswered
   after_initialize do
