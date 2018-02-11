@@ -27,8 +27,8 @@ class Answer < ApplicationRecord
   has_attached_file :attachment
 
   validates :text, presence: true
+  validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 2.megabytes
   validate :valid_email, on: :update
-  validate :attachment, :size => { :in => 0..2.megabytes }
 
   # Set default status to unanswered
   after_initialize do
