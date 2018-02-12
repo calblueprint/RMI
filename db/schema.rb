@@ -27,6 +27,10 @@ ActiveRecord::Schema.define(version: 20180210181007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "selected_option_id"
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
     t.index ["building_id"], name: "index_answers_on_building_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
