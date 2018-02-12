@@ -33,6 +33,7 @@ class Api::AnswersController < ApplicationController
     params.require(:answer)
           .permit(
             :text,
+            :attachment,
             :building_id,
             :question_id,
             :user_id,
