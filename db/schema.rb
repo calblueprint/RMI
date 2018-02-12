@@ -104,14 +104,14 @@ ActiveRecord::Schema.define(version: 20180210181007) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "delegation", force: :cascade do |t|
+  create_table "delegations", force: :cascade do |t|
     t.bigint "building_operator_id"
-    t.bigint "answers_id"
+    t.bigint "answer_id"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["answers_id"], name: "index_delegation_on_answers_id"
-    t.index ["building_operator_id"], name: "index_delegation_on_building_operator_id"
+    t.index ["answer_id"], name: "index_delegations_on_answer_id"
+    t.index ["building_operator_id"], name: "index_delegations_on_building_operator_id"
   end
 
   create_table "dropdown_options", force: :cascade do |t|
@@ -184,8 +184,8 @@ ActiveRecord::Schema.define(version: 20180210181007) do
   add_foreign_key "answers", "questions"
   add_foreign_key "buildings", "building_types"
   add_foreign_key "buildings", "portfolios"
-  add_foreign_key "delegation", "answers", column: "answers_id"
-  add_foreign_key "delegation", "building_operators"
+  add_foreign_key "delegations", "answers"
+  add_foreign_key "delegations", "building_operators"
   add_foreign_key "dropdown_options", "questions"
   add_foreign_key "portfolios", "asset_managers"
   add_foreign_key "questions", "building_types"
