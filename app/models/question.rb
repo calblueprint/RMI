@@ -16,7 +16,7 @@
 #
 
 class Question < ApplicationRecord
-  enum question_type: %i[free dropdown range]
+  enum question_type: %i[free dropdown range file]
   enum status: %i[draft published]
 
   belongs_to :building_type
