@@ -9,7 +9,7 @@ class FileOption extends React.Component {
 
   // get link to file already uploaded
   getFileLink() {
-    if (this.props.answer) {
+    if (this.currentFileExists()) {
       // Need to generate link
       return "/api/answers/" + this.props.answer.id;
     } else {
@@ -17,12 +17,16 @@ class FileOption extends React.Component {
     }
   }
 
+  currentFileExists() {
+    return this.props.answer && this.props.answer.attachment_file_name;
+  }
+
   render() {
-    const currentFileName = this.props.answer ? this.props.answer.attachment_file_name : "";
+    const currentFileName = this.currentFileExists() ? this.props.answer.attachment_file_name : "";
     const currentFileLink = this.getFileLink()
 
     // filler is None when no file corresponds to this field
-    const filler = this.props.answer ? "" : "None";
+    const filler = this.currentFileExists() ? "" : "None";
 
     return (<div>
       File uploaded: <a href={currentFileLink}>{currentFileName}</a>{filler}<br>
