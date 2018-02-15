@@ -24,7 +24,11 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user, polymorphic: true
 
-  has_attached_file :attachment
+  # attachment is used for FileOption
+  # files on S3 should be private and accessed via expiring_url
+  has_attached_file :attachment,
+    :storage => :s3,
+    :s3_permissions => :private
 
   validates :text, presence: true
   validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 2.megabytes
