@@ -14,6 +14,8 @@
 class Answer < ApplicationRecord
   belongs_to :building
   belongs_to :question
+  has_many :delegations, foreign_key: :answer_id
+  has_many :building_operators, through: :delegations
 
   has_attached_file :attachment
 

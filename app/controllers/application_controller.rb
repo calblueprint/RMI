@@ -46,6 +46,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def after_sign_out_path_for(resource)
+    root_path
+  end
+
   def current_ability
     if rmi_user_signed_in?
       @current_ability ||= AdminAbility.new(current_rmi_user) #this ability gets created on next task

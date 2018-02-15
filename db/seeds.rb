@@ -197,9 +197,12 @@ def make_delegations
       delegation.building_operator = BuildingOperator.all.sample
       delegation.answer = answer
       delegation.status = n
+      delegation.save
     end
   end
 end
+
+
 
 # Run the seeds: DO NOT DISTURB THIS ORDER.
 # To run additional seeds, add to THE BOTTOM of this list.
