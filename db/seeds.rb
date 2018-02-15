@@ -106,7 +106,7 @@ def make_portfolio
   end
 end
 
-def make_bulding_types
+def make_building_types
   BUILDING_TYPES.each do |b|
     building_type = BuildingType.create(b)
     building_type.save
@@ -124,6 +124,7 @@ def make_questions_options
   BuildingType.all.each do |b_type|
     QUESTIONS.each do |q|
       question = b_type.questions.create(q[:question])
+      question.status = 'published'
       question.save
       q[:options].each do |o|
         option =
@@ -164,6 +165,7 @@ def make_answers
       case q.question_type
       when 'dropdown'
         answer[:selected_option_id] = q.dropdown_options.first.id
+        answer[:text] = q.dropdown_options.first.text
       when 'range'
         answer[:selected_option_id] = q.range_options.last.id
         answer[:text] = 55
@@ -210,7 +212,7 @@ end
 make_rmi_user
 make_asset_manager
 make_portfolio
-make_bulding_types
+make_building_types
 make_categories
 make_questions_options
 make_buildings
