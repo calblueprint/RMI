@@ -3,7 +3,7 @@ import React from 'react';
 class FileOption extends React.Component {
 
   // TODO: handle click of upload button
-  handleUpload(e) {
+  handleUpload() {
 
   }
 
@@ -23,19 +23,19 @@ class FileOption extends React.Component {
 
   render() {
     const currentFileName = this.currentFileExists() ? this.props.answer.attachment_file_name : "";
-    const currentFileLink = this.getFileLink()
+    const currentFileLink = this.getFileLink();
 
     // filler is None when no file corresponds to this field
     const filler = this.currentFileExists() ? "" : "None";
 
-    return (<div>
-      File uploaded: <a href={currentFileLink}>{currentFileName}</a>{filler}<br>
-      <input
-        type="file"
-      />
+    return (
+    <div>
+      File uploaded:
+      <a href= {currentFileLink} > {currentFileName} </a> {filler} <br></br>
+      <input type="file" />
       <button
         type="submit" value="Upload"
-        onclick={this.handleUpload(e)}
+        onClick={this.handleUpload}
       >Upload</button>
     </div>)
   }
