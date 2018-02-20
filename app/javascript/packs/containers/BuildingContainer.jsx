@@ -1,34 +1,56 @@
 import React from 'react';
-import Question from '../components/Question';
-import { getQuestionsByBuilding } from '../selectors/questionsSelector';
-import { bindActionCreators } from 'redux';
+import AnswerModeContainer from './AnswerModeContainer';
+import DelegateModeContainer from './DelegateModeContainer';
+import ReviewModeContainer from "./ReviewModeContainer";
+import QuestionnaireControls from "../components/QuestionnaireControls";
+
 import { connect } from 'react-redux';
+
+import { Route, Switch } from 'react-router-dom';
 
 class BuildingContainer extends React.Component {
   render() {
+    const currentPath = this.props.match.url;
+    const propsToPass = {
+      building: this.props.building
+    };
+
     return (
       <div>
         <p>Building container!!</p>
         <p>ID: {this.props.match.params.bId}</p>
         <p>Name: {this.props.building.name}</p>
+
+        <QuestionnaireControls currentPath={currentPath} />
+
         <hr />
-        {this.props.questions.map((question) => {
-          // Only display non-dependent questions initially
-          if (!question.parent_option_id) {
-            return (<Question key={question.id}
-                              building_id={this.props.building.id}
-                              {...question} />);
-          }
-        })}
+
+        <Switch>
+          <Route path={`${currentPath}/edit`}
+                 render={renderWithProps(AnswerModeContainer, propsToPass)} />
+          <Route path={`${currentPath}/delegate`}
+                 render={renderWithProps(DelegateModeContainer, propsToPass)} />
+          <Route path={`${currentPath}/review`}
+                 render={renderWithProps(ReviewModeContainer, propsToPass)} />
+        </Switch>
       </div>
     );
   }
 }
 
+/**
+ * Helper method - returns a render function that renders the component with the given props passed down to it.
+ * Used by Routes.
+ */
+function renderWithProps(ComponentName, props) {
+  return () => (
+    <ComponentName {...props} />
+  );
+}
+
 function mapStateToProps(state, ownProps) {
   return {
-    building: state.buildings[ownProps.match.params.bId],
-    questions: getQuestionsByBuilding(ownProps.match.params.bId, state)
+    building: state.buildings[ownProps.match.params.bId]
   };
 }
 
