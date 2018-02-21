@@ -35,7 +35,7 @@ class QuestionSerializer < ActiveModel::Serializer
     when 'range'
       object.range_options
     when 'file'
-      object.file_options
+      object.file_option
     else
       []
     end

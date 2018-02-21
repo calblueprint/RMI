@@ -31,7 +31,7 @@ class FileOption extends React.Component {
     return (
     <div>
       File uploaded:
-      <a href= {currentFileLink} > {currentFileName} </a> {filler} <br></br>
+      <a href= {currentFileLink} >{currentFileName}</a> {filler} <br></br>
       <input type="file" />
       <button
         type="submit" value="Upload"

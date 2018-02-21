@@ -25,7 +25,7 @@ class Question < ApplicationRecord
   has_many :answers, :dependent => :destroy
   has_many :dropdown_options, :dependent => :destroy
   has_many :range_options, :dependent => :destroy
-
+  has_one :file_option, :dependent => :destroy
 
   validates :text, :question_type, :parameter, presence: true
   validate :matches_parent_category
