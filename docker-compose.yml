@@ -12,7 +12,7 @@ services:
     build:
         context: .
         dockerfile: docker/rails_dockerfile
-    command: bash -c "bundle exec puma -C config/puma.rb"
+    command: rails s
     volumes:
       - .:/myapp
     ports:
