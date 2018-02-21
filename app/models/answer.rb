@@ -32,6 +32,8 @@ class Answer < ApplicationRecord
 
   validates :text, presence: true
   validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 2.megabytes
+  do_not_validate_attachment_file_type :attachment
+
   validate :valid_email, on: :update
 
   # Set default status to unanswered
