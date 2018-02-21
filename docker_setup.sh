@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# if .env doesn't exist, ask user to create it
+if [ ! -e ".env" ] ; then
+    echo ".env file doesn't exit! Please create it with environment variables needed."
+    exit
+fi
+
 # Environment variables
 #cp config/application.yml.sample config/application.yml
 
