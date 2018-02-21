@@ -35,7 +35,9 @@ module ApplicationHelper
     {
       portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        (portfolios.map { |p| p.buildings }).flatten, each_serializer: BuildingSerializer
+        Building.all, each_serializer: BuildingSerializer,
+        scope: {user_id: current_rmi_user.id,
+                user_type: 'RmiUser'}
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer,
