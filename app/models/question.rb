@@ -28,13 +28,26 @@ class Question < ApplicationRecord
 
 
   validates :text, :question_type, :parameter, presence: true
-  validate :matches_parent_category
+  # validate :matches_parent_category
 
   def matches_parent_category
     return if parent_option.nil?
+    byebug
     return if parent_option.question.category == category
     errors.add(:question, "category must match parent question's category")
   end
 
+  def self.get_all_parents(question)
+    if question.parent_option.nil?
+      []
+    else
+      parent_questions = []
+      while !question.parent_option.nil?
+        question = question.parent_option.question
+        parent_questions << question
+      end
+      parent_questions
+    end
+  end
 
 end

@@ -83,7 +83,9 @@ class BuildingOperator < ApplicationRecord
     delegations.each do |delegation|
       if delegation.status == 'active' &&
         delegation.answer.building.id == building_id
-        questions.push(delegation.answer.question)
+        question = delegation.answer.question
+        questions << question
+        questions = questions + Question.get_all_parents(question)
       end
     end
     questions
@@ -91,10 +93,8 @@ class BuildingOperator < ApplicationRecord
 
   def questions
     questions = Set.new
-    delegations.each do |delegation|
-      if delegation.status == 'active'
-        questions << delegation.answer.question
-      end
+    buildings.each do |building|
+      questions.merge(questions_by_building(building.id))
     end
     questions
   end

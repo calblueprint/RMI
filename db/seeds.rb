@@ -56,13 +56,26 @@ QUESTIONS = [
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
       { min: 1, max: 100 }
-    ] }
-].freeze
-
-DEPENDENT_QUESTIONS = [
-  { id: 10, question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenents?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'range_option', parent_option_id: 2 },
-  { id: 11, question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'range_option', parent_option_id: 2 },
-  { id: 12, question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'dropdown_option', parent_option_id: 1 }
+    ] },
+  {
+    # DEPENDENT QUESTIONS
+    question:
+      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenents?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption', parent_option_id: 2 },
+    options: [
+      { min: 1, max: 100}
+    ]
+  },
+  {
+    question:
+      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption', parent_option_id: 2 },
+    options: [
+      { min: 1, max: 100}
+    ]
+  },
+  {
+    question:
+      { question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption', parent_option_id: 1 }
+  }
 ].freeze
 
 # Seed functions
@@ -126,6 +139,7 @@ def make_questions_options
       question = b_type.questions.create(q[:question])
       question.status = 'published'
       question.save
+      next if question.question_type == 'free'
       q[:options].each do |o|
         option =
           case question.question_type
@@ -138,6 +152,10 @@ def make_questions_options
       end
     end
   end
+end
+
+def make_dependent_questions
+
 end
 
 def make_buildings
