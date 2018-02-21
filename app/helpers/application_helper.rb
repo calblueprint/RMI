@@ -5,12 +5,12 @@ module ApplicationHelper
 
     {
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        portfolio.buildings, each_serializer: BuildingSerializer
-      ),
-      building_types: ActiveModel::Serializer::CollectionSerializer.new(
-        current_asset_manager.building_types, each_serializer: BuildingTypeSerializer,
+        portfolio.buildings, each_serializer: BuildingSerializer,
         scope: {user_id: current_asset_manager.id,
                 user_type: 'AssetManager'}
+      ),
+      questions: ActiveModel::Serializer::CollectionSerializer.new(
+        current_asset_manager.questions, each_serializer: QuestionSerializer
       ),
       userType: 'AssetManager'
     }
@@ -20,21 +20,20 @@ module ApplicationHelper
     # Initial state here
     {
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-       current_building_operator.buildings, each_serializer: BuildingSerializer
-      ),
-      building_types: ActiveModel::Serializer::CollectionSerializer.new(
-       current_building_operator.building_types, each_serializer: BuildingTypeSerializer,
+       current_building_operator.buildings, each_serializer: BuildingSerializer,
        scope: {user_id: current_building_operator.id,
                user_type: 'BuildingOperator'}
+      ),
+      questions: ActiveModel::Serializer::CollectionSerializer.new(
+        current_building_operator.questions, each_serializer: QuestionSerializer
       ),
       userType: 'BuildingOperator'
     }
   end
 
   def rmi_user_initial_state
-    portfolios = Portfolio.all
     {
-      portfolios: portfolios,
+      portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         (portfolios.map { |p| p.buildings }).flatten, each_serializer: BuildingSerializer
       ),
@@ -42,6 +41,9 @@ module ApplicationHelper
         BuildingType.all, each_serializer: BuildingTypeSerializer,
         scope: {user_id: current_rmi_user.id,
                 user_type: 'RmiUser'}
+      ),
+      questions: ActiveModel::Serializer::CollectionSerializer.new(
+        Question.all, each_serializer: QuestionSerializer
       ),
       userType: 'RMIUser'
     }

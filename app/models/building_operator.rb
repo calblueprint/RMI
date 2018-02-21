@@ -55,8 +55,10 @@ class BuildingOperator < ApplicationRecord
 
   def buildings
     buildings = Set.new []
-    answers.each do |answer|
-      buildings.add(answer.building)
+    delegations.each do |delegation|
+      if delegation.status == 'active'
+        buildings << delegation.answer.building
+      end
     end
     buildings.to_a
   end
@@ -69,6 +71,29 @@ class BuildingOperator < ApplicationRecord
       if delegation.status == 'active' &&
         delegation.answer.building.building_type.id == building_type_id
         questions.push(delegation.answer.question)
+      end
+    end
+    questions
+  end
+
+  def questions_by_building(building_id)
+    # Returns
+    # questions: array of question objects that are accessible to read
+    questions = []
+    delegations.each do |delegation|
+      if delegation.status == 'active' &&
+        delegation.answer.building.id == building_id
+        questions.push(delegation.answer.question)
+      end
+    end
+    questions
+  end
+
+  def questions
+    questions = Set.new
+    delegations.each do |delegation|
+      if delegation.status == 'active'
+        questions << delegation.answer.question
       end
     end
     questions

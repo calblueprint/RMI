@@ -33,8 +33,17 @@ const formatState = {
     return toObjectById(
       mapFilterKeys(
         buildings,
-        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip']
-      )
+        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip', 'questions']
+      ).map((filteredBuilding) => {
+        if (filteredBuilding.questions) {
+          return {
+            ...filteredBuilding,
+            questions: Object.keys(filteredBuilding.questions)
+          };
+        } else {
+          return filteredBuilding;
+        }
+      })
     );
   },
   building_types: function(buildingTypes) {
@@ -92,18 +101,18 @@ export function loadInitialState(initialState) {
   }, {});
 
   // Look for questions inside buildingTypes
-  if (initialState.building_types) {
-    formattedState.questions = [];
-    initialState.building_types.forEach((buildingType) => {
-      formattedState = {
-        ...formattedState,
-        questions: {
-          ...formattedState.questions,
-          ...formatState.questions(buildingType.questions)
-        }
-      };
-    });
-  }
+  // if (initialState.userType == 'rmi_user') {
+  //   formattedState.questions = [];
+  //   initialState.building_types.forEach((buildingType) => {
+  //     formattedState = {
+  //       ...formattedState,
+  //       questions: {
+  //         ...formattedState.questions,
+  //         ...formatState.questions(buildingType.questions)
+  //       }
+  //     };
+  //   });
+  // }
 
   return {
     type: LOAD_INITIAL_STATE,
