@@ -8,10 +8,11 @@ services:
         dockerfile: docker/webpacker_dockerfile
     command: bash -c "./bin/webpack-dev-server"
   web:
+    env_file: .env
     build:
         context: .
         dockerfile: docker/rails_dockerfile
-    command: bash -c "bundle exec puma -C config/puma.rb"
+    command: rails s
     volumes:
       - .:/myapp
     ports:

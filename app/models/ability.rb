@@ -28,18 +28,18 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
-    user ||= BuildingOperator.new
-    can :update, Answer do |answer|
-      user.answers.include?(answer) && answer.status != 'delegated'
-    end
+    # user ||= BuildingOperator.new
+    # can :update, Answer do |answer|
+    #   user.answers.include?(answer) && answer.status != 'delegated'
+    # end
 
-    can :read, Answer do |answer|
-      user.answers.include?(answer)
-    end
+    # can :read, Answer do |answer|
+    #   user.answers.include?(answer)
+    # end
 
-    can :read, Question do |question|
-      user.read_question(question)
-    end
+    # can :read, Question do |question|
+    #   user.read_question(question)
+    # end
 
   end
 end
