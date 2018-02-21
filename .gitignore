@@ -55,3 +55,4 @@ bower.json
 
 #Ignore vim swp file
 *.swp
+package-lock.json
