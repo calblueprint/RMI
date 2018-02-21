@@ -9,6 +9,7 @@ class AssetManagerRoutes extends React.Component {
   render() {
     return (
       <div>
+        <Route path="*" component={DropdownMenuContainer} />
         <Switch>
           <Route path="/portfolios/:pId" component={PortfolioContainer} />
 
