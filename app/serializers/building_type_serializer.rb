@@ -15,17 +15,14 @@ class BuildingTypeSerializer < ActiveModel::Serializer
 
   # Questions are stored as a hash, where the key is the id and the value is the serialized question
   def questions
-    questions = {}
-    if scope[:user_type] == 'BuildingOperator'
-      object.user_questions(BuildingOperator.find(scope[:user_id])).each do |q|
-        questions[q.id] = QuestionSerializer.new(q).as_json
+    _questions =
+      if scope[:user_type] == 'BuildingOperator'
+        BuildingOperator.find(scope[:user_id]).questions_by_building_type(object.id)
+      else
+        object.questions
       end
-    else
-      object.questions.each do |q|
-        questions[q.id] = QuestionSerializer.new(q).as_json
-      end
+    _questions.each_with_object({}) do |q, hsh|
+      hsh[q.id] = QuestionSerializer.new(q).as_json
     end
-    questions
   end
-
 end

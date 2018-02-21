@@ -65,7 +65,7 @@ DEPENDENT_QUESTIONS = [
   { id: 12, question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'dropdown_option', parent_option_id: 1 }
 ].freeze
 
-
+# Seed functions
 
 def make_rmi_user
   1.upto(NUM_USERS) do |n|
@@ -106,7 +106,7 @@ def make_portfolio
   end
 end
 
-def make_bulding_types
+def make_building_types
   BUILDING_TYPES.each do |b|
     building_type = BuildingType.create(b)
     building_type.save
@@ -124,6 +124,7 @@ def make_questions_options
   BuildingType.all.each do |b_type|
     QUESTIONS.each do |q|
       question = b_type.questions.create(q[:question])
+      question.status = 'published'
       question.save
       q[:options].each do |o|
         option =
@@ -157,10 +158,64 @@ def make_buildings
   end
 end
 
+def make_answers
+  Building.all.each do |b|
+    b.questions.each do |q|
+      answer = Answer.new(building_id: b.id, question_id: q.id)
+      case q.question_type
+      when 'dropdown'
+        answer[:selected_option_id] = q.dropdown_options.first.id
+        answer[:text] = q.dropdown_options.first.text
+      when 'range'
+        answer[:selected_option_id] = q.range_options.last.id
+        answer[:text] = 55
+      when 'free'
+        answer[:text] = 'Text free range answer'
+      end
+      answer.save
+    end
+  end
+end
+
+def make_building_operator
+  1.upto(NUM_USERS) do |n|
+    building_operator = BuildingOperator.create(
+      id: n,
+      first_name: Faker::Name.unique.first_name,
+      last_name: Faker::Name.unique.last_name,
+      password: 'password',
+      password_confirmation: 'password',
+      phone: '11231231234',
+      email: "building_operator#{n}@test.com"
+    )
+    building_operator.save
+  end
+end
+
+def make_delegations
+  Answer.all.each do |answer|
+    0.upto(2) do |n|
+      delegation = Delegation.new
+      delegation.building_operator = BuildingOperator.all.sample
+      delegation.answer = answer
+      delegation.status = n
+      delegation.save
+    end
+  end
+end
+
+
+
+# Run the seeds: DO NOT DISTURB THIS ORDER.
+# To run additional seeds, add to THE BOTTOM of this list.
+# Seeds run in top-bottom order, there is no pre-compile step.
 make_rmi_user
 make_asset_manager
 make_portfolio
-make_bulding_types
+make_building_types
 make_categories
 make_questions_options
 make_buildings
+make_answers
+make_building_operator
+make_delegations

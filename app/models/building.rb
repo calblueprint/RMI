@@ -85,4 +85,7 @@ class Building < ApplicationRecord
 
   validates :name, :address, :city, :state, :zip, presence: true
 
+  def questions
+    building_type.questions
+  end
 end

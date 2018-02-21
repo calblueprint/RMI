@@ -12,13 +12,13 @@ class BuildingType < ApplicationRecord
   has_many :questions
   has_many :buildings
 
-  def user_questions(user)
-    questions = []
-    self.questions.each do |question|
-      if user.read_question(question)
-        questions.push(question)
-      end
-    end
-    questions
+  def building_operator_questions(building_operator)
+    # Input
+    # building_operator: a BuildingOperator object
+    #
+    # Returns
+    # an array of Question objects that this building operator has
+    # read access to
+    building_operator.questions
   end
 end
