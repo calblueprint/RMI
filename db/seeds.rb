@@ -60,7 +60,7 @@ QUESTIONS = [
   {
     # DEPENDENT QUESTIONS
     question:
-      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenents?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption', parent_option_id: 2 },
+      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption', parent_option_id: 2 },
     options: [
       { min: 1, max: 100}
     ]
@@ -152,10 +152,6 @@ def make_questions_options
       end
     end
   end
-end
-
-def make_dependent_questions
-
 end
 
 def make_buildings

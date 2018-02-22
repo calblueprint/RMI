@@ -100,19 +100,19 @@ export function loadInitialState(initialState) {
     return result;
   }, {});
 
-  // Look for questions inside buildingTypes
-  // if (initialState.userType == 'rmi_user') {
-  //   formattedState.questions = [];
-  //   initialState.building_types.forEach((buildingType) => {
-  //     formattedState = {
-  //       ...formattedState,
-  //       questions: {
-  //         ...formattedState.questions,
-  //         ...formatState.questions(buildingType.questions)
-  //       }
-  //     };
-  //   });
-  // }
+  // Look for questions inside buildings
+  if (initialState.buildings) {
+    formattedState.questions = [];
+    initialState.buildings.forEach((building) => {
+      formattedState = {
+        ...formattedState,
+        questions: {
+          ...formattedState.questions,
+          ...formatState.questions(building.questions)
+        }
+      };
+    });
+  }
 
   return {
     type: LOAD_INITIAL_STATE,
