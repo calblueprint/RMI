@@ -21,4 +21,5 @@ cp config/database.yml.docker config/database.yml
 docker-compose start
 docker-compose run web rake db:create
 docker-compose run web rake db:migrate
+docker-compose run web rake db:seed:
 

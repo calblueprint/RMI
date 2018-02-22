@@ -65,7 +65,12 @@ class ExportPortfolioCSV
         csv << Building.column_names + building_type.questions.select(&:published?).map(&:parameter)
         # Add a row of building attribute values to the CSV for each building
         buildings.each do |building|
-          csv << Building.column_names.map { |attr| building.send(attr) } + building_type.questions.select(&:published?).map{ |question| find_answer(question, building) }
+          row = Building.column_names
+                         .map { |attr| building.send(attr) } \
+                         + building_type
+                           .questions.select(&:published?)
+                           .map { |question| find_answer(question, building) }
+          csv << row
         end
         zip.add(csv_name, csv.path)
       end
@@ -73,12 +78,15 @@ class ExportPortfolioCSV
   end
 
   ##
-  # Given a question and a building, return the building's answer to that question
-  # if available, or "N/A" otherwise.
-  #
+  # Given a question and a building, return the building's answer to that
+  # question
   def find_answer(question, building)
-    answer = building.answers.find { |answer| answer.question.id == question.id }
-    return answer.text unless answer.nil?
-    return ' '
+    _answer = Answer.where(question_id: question.id, building_id: building.id).first
+    answer =
+    if _answer
+      _answer.text
+    else
+      ''
+    end
   end
 end
