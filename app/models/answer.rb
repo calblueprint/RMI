@@ -17,8 +17,13 @@ class Answer < ApplicationRecord
   has_many :delegations, foreign_key: :answer_id
   has_many :building_operators, through: :delegations
 
-  has_attached_file :attachment
+  # attachment is used for FileOption
+  # files on S3 should be private and accessed via expiring_url
+  has_attached_file :attachment,
+    :storage => :s3,
+    :s3_permissions => :private
 
   validates :text, presence: true
   validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 2.megabytes
+  do_not_validate_attachment_file_type :attachment
 end

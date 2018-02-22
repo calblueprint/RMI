@@ -16,7 +16,7 @@
 #
 
 class Question < ApplicationRecord
-  enum question_type: %i[free dropdown range]
+  enum question_type: %i[free dropdown range file]
   enum status: %i[draft published]
 
   belongs_to :building_type
@@ -25,7 +25,7 @@ class Question < ApplicationRecord
   has_many :answers, :dependent => :destroy
   has_many :dropdown_options, :dependent => :destroy
   has_many :range_options, :dependent => :destroy
-
+  has_one :file_option, :dependent => :destroy
 
   validates :text, :question_type, :parameter, presence: true
   validate :matches_parent_category
