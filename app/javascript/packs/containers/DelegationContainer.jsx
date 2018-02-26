@@ -1,8 +1,11 @@
 import React from 'react';
 
+import * as ContactActions from '../actions/contacts';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
+import { getContacts } from "../selectors/contactsSelector";
 
 class DelegationContainer extends React.Component {
 
@@ -92,13 +95,14 @@ class DelegationContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state)
+    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state),
+    contacts: getContacts(state)
   }
 }
 
-function mapDispatchToProps(state, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
-
+    contactActions: bindActionCreators(ContactActions, dispatch)
   }
 }
 export default connect(

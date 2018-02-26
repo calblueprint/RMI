@@ -51,7 +51,7 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(state, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
 
   }
