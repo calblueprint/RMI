@@ -14,7 +14,7 @@ class DropdownOption extends React.Component {
     const currentValue = this.props.answer ? this.props.answer.selected_option_id : "unselected";
     return (<div>
       <select onChange={(e) => this.props.onSelect([e.target.value])}
-              defaultValue={currentValue}>
+              value={currentValue}>
         <option value="unselected" disabled>Select an option</option>
         {Object.values(this.props.options).map((option) => {
           return (<option value={option.id} key={option.id}>{option.text}</option>)
