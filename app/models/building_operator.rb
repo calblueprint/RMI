@@ -63,6 +63,14 @@ class BuildingOperator < ApplicationRecord
     buildings.to_a
   end
 
+  def categories
+    categories = Set.new []
+    building_types.each do |building_type|
+      categories.push(*building_type.categories)
+    end
+    categories.to_a
+  end
+
   def questions_by_building_type(building_type_id)
     # Returns
     # questions: array of question objects that are accessible to read

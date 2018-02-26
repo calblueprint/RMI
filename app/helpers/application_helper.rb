@@ -18,14 +18,14 @@ module ApplicationHelper
     end
 
     {
-
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         portfolio.buildings, each_serializer: BuildingSerializer,
         scope: {user_id: current_asset_manager.id,
                 user_type: 'AssetManager'}
       ),
-      userType: 'AssetManager',
-      contacts: contacts
+      contacts: contacts,
+      categories: current_asset_manager.categories,
+      userType: 'AssetManager'
     }
   end
 
@@ -55,7 +55,9 @@ module ApplicationHelper
                user_type: 'BuildingOperator'}
       ),
       userType: 'BuildingOperator',
-      contacts: contacts
+      contacts: contacts,
+      categories: current_building_operator.categories,
+      userType: 'BuildingOperator'
     }
   end
 
