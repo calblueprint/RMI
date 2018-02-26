@@ -5,7 +5,9 @@ import { getBuildings } from '../selectors/buildingsSelector';
 import { getName, getEmail} from '../selectors/usersSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import DropdownMenuContainer from 'DropdownMenuContainer'
 import { Link } from 'react-router-dom';
+import {}
 
 class NavigationBarContainer extends React.Component {
     componentDidMount() {
@@ -14,41 +16,23 @@ class NavigationBarContainer extends React.Component {
         }
     }
     render() {
-        const buildings = this.props.buildings;
-        const name = this.props.name;
-        const email = this.props.email;
-        return (
-            {/*<div className="navbar">*/}
-                {/*<Link to= "/buildings">{name}</Link>*/}
-                {/*<br/>*/}
-                {/*<Link to= "/buildings">{email}</Link>*/}
-                {/*<div className="dropdown">*/}
-                    {/*<button className="dropbtn" onClick= {myFunction()}>Current Building</button>*/}
-                    {/*<div className="dropdown-content">*/}
-                        {/*{Object.keys(buildings).map(id => {*/}
-                            {/*return (<p>*/}
-                                {/*<Link to={`/buildings/${id}`}>{buildings[id].name}</Link>*/}
-                            {/*</p>)*/}
-                        {/*})}*/}
-                        {/*</div>*/}
-                {/*</div>*/}
-            {/*</div>);*/}
-        <Provider store={store}>
-            <RouterWithRedux>
-                <Scene key="root" navBar={NavBar}>
-                    <Scene key="main" component={Main} title="Main" initial={true}/>
-                    <Scene key="list" component={List} title="List"　/>
-                </Scene>
-            </RouterWithRedux>
-        </Provider>
+        return(
+            <DropdownMenuContainer {...this.props}/>
+            // <CategoryContainer/>
+
+            )
+
+
     }
 }
 
 function mapStateToProps(state) {
     return {
         buildings: getBuildings(state),
-        name: getName(state),
-        email: getEmail(state)
+        currentBuilding: getNavBarBuildings(ownProps.match.params.entity, ownProps.match.params.id, state),
+    //    currentCategory: getCurrentCategory(ownProps.match.params.entity, ownProps.match.params.id, state),
+    //    categories:  getCategories(ownProps.match.params.entity, ownProps.match.params.id, state)
+    //    answers: getRemainingAnswers(getAnswers(ownProps.match.params.entity, ownProps.match.params.id, state))
     };
 }
 
