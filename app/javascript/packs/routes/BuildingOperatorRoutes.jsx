@@ -1,5 +1,5 @@
 import React from 'react';
-import BuildingContainer from '../containers/BuildingContainer';
+import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 import BuildingListContainer from "../containers/BuildingListContainer";
 
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -13,7 +13,7 @@ class BuildingOperatorRoutes extends React.Component {
 
           {/* If no questionnaire mode is specified, the default should be /edit */}
           <Route exact path="/buildings/:bId" render={({match}) => (<Redirect to={`${match.url}/edit`} />)} />
-          <Route path="/buildings/:bId" component={BuildingContainer} />
+          <Route path="/buildings/:bId" component={QuestionnaireRoutes} />
         </Switch>
       </div>
     )

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { Route, Switch } from 'react-router-dom';
 
-class BuildingContainer extends React.Component {
+class QuestionnaireRoutes extends React.Component {
   render() {
     const currentPath = this.props.match.url;
     const propsToPass = {
@@ -61,5 +61,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BuildingContainer);
-
+)(QuestionnaireRoutes);

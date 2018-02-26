@@ -6,7 +6,7 @@ import {
 
 import PortfolioListContainer from '../containers/PortfolioListContainer';
 import PortfolioContainer from '../containers/PortfolioContainer';
-import BuildingContainer from '../containers/BuildingContainer';
+import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 import BuildingEditorContainer from '../containers/BuildingEditorContainer';
 
 class RMIUserRoutes extends React.Component {

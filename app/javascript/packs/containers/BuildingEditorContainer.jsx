@@ -1,7 +1,7 @@
 // Clearly, to be replaced by a container that renders
 // QuestionEditors or something like that.
 
-import BuildingContainer from './BuildingContainer';
+import QuestionnaireRoutes from './QuestionnaireRoutes';
 
-export default BuildingContainer;
+export default QuestionnaireRoutes;
 

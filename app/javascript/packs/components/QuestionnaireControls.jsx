@@ -1,13 +1,13 @@
 /**
  * Displays controls allowing the user to navigate between modes and choose question categories to filter.
- * All this does is modify the current URL, and BuildingContainer will take care of the rest.
+ * All this does is modify the current URL, and QuestionnaireRoutes will take care of the rest.
  */
 
 import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-class QuestionnaireNavigation extends React.Component {
+class QuestionnaireControls extends React.Component {
   render() {
     return (
       <div>
@@ -25,4 +25,4 @@ class QuestionnaireNavigation extends React.Component {
   }
 }
 
-export default QuestionnaireNavigation;
+export default QuestionnaireControls;
