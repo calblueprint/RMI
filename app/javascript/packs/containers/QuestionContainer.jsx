@@ -20,7 +20,15 @@ class QuestionContainer extends React.Component {
   }
 
   renderReviewMode() {
-
+    return (
+        <div>
+          <p>{props.text}</p>
+          <QuestionResultContainer
+            question_id={props.id}
+            building_id={props.building_id}
+            question_type={props.question_type}
+            options={props.options} />
+        </div>);
   }
 
   renderDelegationMode() {
@@ -37,11 +45,11 @@ class QuestionContainer extends React.Component {
     if (this.props.mode == "answer") {
       return this.renderAnswerMode();
     } else if (this.props.mode == "review") {
-
+      return this.renderReviewMode();
     } else if (this.props.mode == "delegation") {
       return renderDelegationMode();
     } else {
-      // Shouldn't reach here
+      console.log("Unknown mode!");
     }
   };
 
