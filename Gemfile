@@ -37,12 +37,21 @@ gem 'rubyzip'
   # Generates seed information
 gem 'faker', '~> 1.8.4'
 
+# AWS upload
+gem 'paperclip'
+gem 'aws-sdk', '~> 2.3'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'figaro'
+  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-byebug'
+  gem 'better_errors'
 end
 
 group :development do

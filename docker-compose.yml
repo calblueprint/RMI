@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    image: postgres
+  webpacker:
+    build:
+        context: .
+        dockerfile: docker/webpacker_dockerfile
+    command: bash -c "./bin/webpack-dev-server"
+  web:
+    env_file: .env
+    build:
+        context: .
+        dockerfile: docker/rails_dockerfile
+    command: rails s
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - webpacker

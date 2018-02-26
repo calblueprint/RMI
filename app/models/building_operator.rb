@@ -26,11 +26,12 @@ class BuildingOperator < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  after_create :send_onboarding_email
+  # after_create :send_onboarding_email
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building
-  has_many :answers, as: :user
+  has_many :delegations, foreign_key: :building_operator_id
+  has_many :answers, through: :delegations
 
   validates :first_name, :last_name, presence: true
   # email validation with regex
@@ -44,24 +45,31 @@ class BuildingOperator < ApplicationRecord
     BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
   end
 
-  def read_question(question)
-    questions.include?(question)
-  end
-
   def building_types
-    building_types = []
+    building_types = Set.new []
     buildings.each do |building|
-      unless building_types.include?(building.building_type)
-        building_types.push(building.building_type)
-      end
+      building_types.add(building.building_type)
     end
-    building_types
+    building_types.to_a
   end
 
-  def questions
-    questions = []
+  def buildings
+    buildings = Set.new []
     answers.each do |answer|
-      questions.push(answer.question)
+      buildings.add(answer.building)
+    end
+    buildings.to_a
+  end
+
+  def questions_by_building_type(building_type_id)
+    # Returns
+    # questions: array of question objects that are accessible to read
+    questions = []
+    delegations.each do |delegation|
+      if delegation.status == 'active' &&
+        delegation.answer.building.building_type.id == building_type_id
+        questions.push(delegation.answer.question)
+      end
     end
     questions
   end

@@ -5,6 +5,7 @@ import { getDependentQuestionsForOptions } from "../selectors/questionsSelector"
 
 import DropdownOption from '../components/DropdownOption';
 import RangeOption from '../components/RangeOption';
+import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
 import Question from '../components/Question';
 
@@ -26,18 +27,22 @@ class OptionsContainer extends React.Component {
           return <DropdownOption {...optionProps} />;
         case "range":
           return <RangeOption {...optionProps} />;
+        case "file":
+          return <FileOption {...optionProps} />;
         default:
           return <FreeOption {...optionProps} />;
       }
     })();
     const dependentQuestions = (() => {
-      const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
-      if (dependents) {
-        return dependents.map(question => {
-          return (<div key={question.id}>
-            <Question building_id={this.props.building_id} {...question} />
-          </div>);
-        });
+      if (this.props.answer) {
+        const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
+        if (dependents) {
+          return dependents.map(question => {
+            return (<div key={question.id}>
+              <Question building_id={this.props.building_id} {...question} />
+            </div>);
+          });
+        }
       }
     })();
 

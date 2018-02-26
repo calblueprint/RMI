@@ -8,12 +8,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class PortfolioContainer extends React.Component {
-  componentDidMount() {
-    if (window.INITIAL_STATE) {
-      this.props.initActions.loadInitialState(window.INITIAL_STATE);
-    }
-  }
-
   render() {
     return (<div>
       <h2>Portfolio</h2>

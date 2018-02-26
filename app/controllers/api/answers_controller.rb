@@ -18,6 +18,12 @@ class Api::AnswersController < ApplicationController
     end
   end
 
+  # Redirect user to download attachment
+  # Not actually showing Answer because it should be accessed with buildings
+  def show
+    redirect_to download_file
+  end
+
   ##
   # Validates that the email is valid address, then sets the status of the
   # answer to be predelegated
@@ -27,12 +33,21 @@ class Api::AnswersController < ApplicationController
     answer.set_status_predelegated(email)
   end
 
+  ##
+  # Returns a temporary url to the file option associated with this answer
+  #
+  def download_file
+    answer = Answer.find(params[:id])
+    answer.attachment.expiring_url(60)
+  end
+
   private
 
   def answer_params
     params.require(:answer)
           .permit(
             :text,
+            :attachment,
             :building_id,
             :question_id,
             :user_id,

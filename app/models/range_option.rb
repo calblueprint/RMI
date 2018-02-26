@@ -11,13 +11,14 @@
 #
 
 class RangeOption < ApplicationRecord
-  has_one :child_question, class_name: 'Question', as: :parent_option, :dependent => :destroy
+  has_many :child_questions, class_name: 'Question', as: :parent_option, :dependent => :destroy
   belongs_to :question
 
   validates :min, :max, presence: true
   validate :is_valid_min_max
 
   private
+
   def is_valid_min_max
     return if min.nil? or max.nil?
 
@@ -41,5 +42,4 @@ class RangeOption < ApplicationRecord
     min2, max2 = [range2.min, range2.max].minmax
     return [min1, min2].max <= [max1, max2].min
   end
-
 end
