@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180210181007) do
+ActiveRecord::Schema.define(version: 20180213031518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,13 @@ ActiveRecord::Schema.define(version: 20180210181007) do
     t.index ["question_id"], name: "index_dropdown_options_on_question_id"
   end
 
+  create_table "file_options", force: :cascade do |t|
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_file_options_on_question_id"
+  end
+
   create_table "manager_abilities", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -191,6 +198,7 @@ ActiveRecord::Schema.define(version: 20180210181007) do
   add_foreign_key "delegations", "answers"
   add_foreign_key "delegations", "building_operators"
   add_foreign_key "dropdown_options", "questions"
+  add_foreign_key "file_options", "questions"
   add_foreign_key "portfolios", "asset_managers"
   add_foreign_key "questions", "building_types"
   add_foreign_key "questions", "categories"
