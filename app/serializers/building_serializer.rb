@@ -23,10 +23,23 @@ class BuildingSerializer < ActiveModel::Serializer
              :city,
              :state,
              :zip,
-             :answers
+             :answers,
+             :questions
 
   # Answers are stored as a hash, where the key is the id of the corresponding QUESTION
   def answers
     object.answers.index_by(&:question_id)
+  end
+
+  def questions
+    _questions =
+      if scope[:user_type] == 'BuildingOperator'
+        BuildingOperator.find(scope[:user_id]).questions_by_building(object.id)
+      else
+        object.questions
+      end
+    _questions.each_with_object({}) do |q, hsh|
+      hsh[q.id] = QuestionSerializer.new(q).as_json
+    end
   end
 end

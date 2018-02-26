@@ -5,10 +5,7 @@ module ApplicationHelper
 
     {
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        portfolio.buildings, each_serializer: BuildingSerializer
-      ),
-      building_types: ActiveModel::Serializer::CollectionSerializer.new(
-        current_asset_manager.building_types, each_serializer: BuildingTypeSerializer,
+        portfolio.buildings, each_serializer: BuildingSerializer,
         scope: {user_id: current_asset_manager.id,
                 user_type: 'AssetManager'}
       ),
@@ -20,10 +17,7 @@ module ApplicationHelper
     # Initial state here
     {
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-       current_building_operator.buildings, each_serializer: BuildingSerializer
-      ),
-      building_types: ActiveModel::Serializer::CollectionSerializer.new(
-       current_building_operator.building_types, each_serializer: BuildingTypeSerializer,
+       current_building_operator.buildings, each_serializer: BuildingSerializer,
        scope: {user_id: current_building_operator.id,
                user_type: 'BuildingOperator'}
       ),
@@ -32,11 +26,12 @@ module ApplicationHelper
   end
 
   def rmi_user_initial_state
-    portfolios = Portfolio.all
     {
-      portfolios: portfolios,
+      portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        (portfolios.map { |p| p.buildings }).flatten, each_serializer: BuildingSerializer
+        Building.all, each_serializer: BuildingSerializer,
+        scope: {user_id: current_rmi_user.id,
+                user_type: 'RmiUser'}
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer,

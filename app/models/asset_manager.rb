@@ -59,4 +59,11 @@ class AssetManager < ApplicationRecord
     portfolio.building_types
   end
 
+  def questions
+    questions = Set.new
+    building_types.each do |bt|
+      questions.merge(bt.questions)
+    end
+    questions
+  end
 end

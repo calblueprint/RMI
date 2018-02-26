@@ -33,8 +33,17 @@ const formatState = {
     return toObjectById(
       mapFilterKeys(
         buildings,
-        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip']
-      )
+        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip', 'questions']
+      ).map((filteredBuilding) => {
+        if (filteredBuilding.questions) {
+          return {
+            ...filteredBuilding,
+            questions: Object.keys(filteredBuilding.questions)
+          };
+        } else {
+          return filteredBuilding;
+        }
+      })
     );
   },
   building_types: function(buildingTypes) {
@@ -91,15 +100,15 @@ export function loadInitialState(initialState) {
     return result;
   }, {});
 
-  // Look for questions inside buildingTypes
-  if (initialState.building_types) {
+  // Look for questions inside buildings
+  if (initialState.buildings) {
     formattedState.questions = [];
-    initialState.building_types.forEach((buildingType) => {
+    initialState.buildings.forEach((building) => {
       formattedState = {
         ...formattedState,
         questions: {
           ...formattedState.questions,
-          ...formatState.questions(buildingType.questions)
+          ...formatState.questions(building.questions)
         }
       };
     });

@@ -1,6 +1,6 @@
 export function getQuestionsByBuilding(buildingId, state) {
-  const buildingTypeId = state.buildings[buildingId].building_type_id;
-  return state.building_types[buildingTypeId].questions.map((questionId) => {
+  const questions = state.buildings[buildingId].questions;
+  return questions.map((questionId) => {
     return state.questions[questionId];
   });
 }
