@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-  Route,
-  Switch
-} from 'react-router-dom';
-
 import PortfolioContainer from '../containers/PortfolioContainer';
-import BuildingContainer from '../containers/BuildingContainer';
+import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
+
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 class AssetManagerRoutes extends React.Component {
   render() {
@@ -13,7 +10,10 @@ class AssetManagerRoutes extends React.Component {
       <div>
         <Switch>
           <Route path="/portfolios/:pId" component={PortfolioContainer} />
-          <Route path="/buildings/:bId" component={BuildingContainer} />
+
+          {/* If no questionnaire mode is specified, the default should be /edit */}
+          <Route exact path="/buildings/:bId" render={({match}) => (<Redirect to={`${match.url}/edit`} />)} />
+          <Route path="/buildings/:bId" component={QuestionnaireRoutes} />
         </Switch>
       </div>
     )
@@ -21,4 +21,3 @@ class AssetManagerRoutes extends React.Component {
 }
 
 export default AssetManagerRoutes;
-

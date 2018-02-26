@@ -9,7 +9,10 @@ import { initializeStore } from '../store';
 
 import { PersistGate } from 'redux-persist/es/integration/react'
 import {
-  BrowserRouter as Router
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  Route
 } from 'react-router-dom';
 
 import withInitialState from '../reducers/initialState';
@@ -31,7 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     <Provider store={store}>
     <PersistGate persistor={persistor}>
       <Router>
-        <Routes />
+        <Switch>
+          {/* Remove trailing slash so we don't have to deal with it when appending nested routes */}
+          <Route exact strict path="*/" render={({ match }) => (<Redirect to={match.url.slice(0, -1)} />)} />
+          <Routes />
+        </Switch>
       </Router>
     </PersistGate>
     </Provider>,
