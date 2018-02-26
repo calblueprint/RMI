@@ -5,6 +5,12 @@ export function getQuestionsByBuilding(buildingId, state) {
   });
 }
 
+export function getQuestionsByBuildingType(buildingTypeId, state) {
+  return state.building_types[buildingTypeId].questions.map((questionId) => {
+    return state.questions[questionId];
+  });
+}
+
 /**
  * Returns a hash of dependent questions for the given options,
  * where the keys are option ids and values are arrays of question objects.

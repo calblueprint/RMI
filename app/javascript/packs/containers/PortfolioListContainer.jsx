@@ -14,7 +14,17 @@ class PortfolioListContainer extends React.Component {
 
   render() {
     const portfolios = this.props.portfolios;
+    const building_types = this.props.building_types;
     return (<div>
+      <h2>Building Types</h2>
+      {Object.keys(building_types).map(id => {
+        return (
+          <p key={id}>
+            {building_types[id].name}
+            <Link to={`/building_types/${id}`}>Edit</Link>
+          </p>
+        )
+      })}
       <h2>Portfolios</h2>
       {Object.keys(portfolios).map(id => {
         return (<p key={id}>{portfolios[id].name} |
@@ -27,7 +37,8 @@ class PortfolioListContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    portfolios: state.portfolios
+    portfolios: state.portfolios,
+    building_types: state.building_types
   };
 }
 
