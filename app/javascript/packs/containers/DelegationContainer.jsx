@@ -1,6 +1,16 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
+import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
+
 class DelegationContainer extends React.Component {
+
+  // TODO: this.props.contacts cannot come from nowhere
+
+  answerValid() {
+    return this.props.answer.text || this.props.answer.attachment_file_name;
+  }
 
   handleSelect(value) {
 
@@ -18,7 +28,7 @@ class DelegationContainer extends React.Component {
 
   }
 
-  render() {
+  renderUnanswered() {
     const currentEmail = this.props.email;
     const currentFirstName = this.props.firstName;
     const currentLastName = this.props.lastName;
@@ -51,6 +61,47 @@ class DelegationContainer extends React.Component {
       />
     </div>)
   }
+
+  renderAnswered() {
+    const dependentQuestions = (() => {
+      if (this.props.answer) {
+        const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
+        if (dependents) {
+          return dependents.map(question => {
+            return (<div key={question.id}>
+              <QuestionContainer mode="delegation"
+                   building_id={this.props.building_id} {...question} />
+            </div>);
+          });
+        }
+      }
+    })();
+
+    return ({dependentQuestions});
+  }
+
+  render() {
+    if (this.answerValid()) {
+      return renderAnswered();
+    } else {
+      return renderUnanswered();
+    }
+  }
 }
 
-export default DelegationContainer;
+function mapStateToProps(state, ownProps) {
+  return {
+    answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
+    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state)
+  }
+}
+
+function mapDispatchToProps(state, ownProps) {
+  return {
+
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DelegationContainer);
