@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Question extends React.Component {
+class QuestionContainer extends React.Component {
 
   // this.props.mode can be
   // "answer": answering mode
@@ -27,7 +27,7 @@ class Question extends React.Component {
     return (
       <div>
         <p>{props.text}</p>
-        <Delegation
+        <DelegationContainer
           question_id={props.id}
           building_id={props.building_id} />
       </div>);
@@ -45,4 +45,4 @@ class Question extends React.Component {
     }
   };
 
-export default Question;
+export default QuestionContainer;

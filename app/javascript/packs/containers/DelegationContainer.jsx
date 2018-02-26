@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Delegation extends React.Component {
+class DelegationContainer extends React.Component {
 
   handleSelect(value) {
 
@@ -53,4 +53,4 @@ class Delegation extends React.Component {
   }
 }
 
-export default Delegation;
+export default DelegationContainer;

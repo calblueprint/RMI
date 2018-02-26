@@ -7,7 +7,6 @@ import DropdownOption from '../components/DropdownOption';
 import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
-import Question from '../components/Question';
 
 class OptionsContainer extends React.Component {
   handleSelect(option_id) {
@@ -39,7 +38,7 @@ class OptionsContainer extends React.Component {
         if (dependents) {
           return dependents.map(question => {
             return (<div key={question.id}>
-              <Question building_id={this.props.building_id} {...question} />
+              <QuestionContainer building_id={this.props.building_id} {...question} />
             </div>);
           });
         }
