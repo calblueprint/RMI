@@ -9,7 +9,15 @@ class ReviewModeContainer extends React.Component {
   render() {
     return (
       <div>
-        <p>Building review container</p>
+        {this.props.questions.map((question) => {
+          // Only display non-dependent questions initially
+          if (!question.parent_option_id) {
+            return (<QuestionContainer mode="review"
+                              key={question.id}
+                              building_id={this.props.building.id}
+                              {...question} />);
+          }
+        })}
       </div>
     );
   }
