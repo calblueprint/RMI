@@ -1,17 +1,18 @@
+/**
+ * The default mode that allows the user to answer questions about a building.
+ * ROUTE - /buildings/:bId/edit
+ */
+
 import React from 'react';
 import Question from '../components/Question';
-import { getQuestionsByBuilding } from '../selectors/questionsSelector';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-class BuildingContainer extends React.Component {
+import { connect } from 'react-redux';
+import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+
+class AnswerModeContainer extends React.Component {
   render() {
     return (
       <div>
-        <p>Building container!!</p>
-        <p>ID: {this.props.match.params.bId}</p>
-        <p>Name: {this.props.building.name}</p>
-        <hr />
         {this.props.questions.map((question) => {
           // Only display non-dependent questions initially
           if (!question.parent_option_id) {
@@ -27,8 +28,7 @@ class BuildingContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    building: state.buildings[ownProps.match.params.bId],
-    questions: getQuestionsByBuilding(ownProps.match.params.bId, state)
+    questions: getQuestionsByBuilding(ownProps.building.id, state)
   };
 }
 
@@ -39,5 +39,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BuildingContainer);
-
+)(AnswerModeContainer);
