@@ -7,7 +7,7 @@ export function getBuildingsByPortfolio(portfolioId, state) {
 };
 
 export function getBuildings(state) {
-  return state.buildings
+    return state.buildings
 };
 
 export function getBuildingByID(buildingId, state) {

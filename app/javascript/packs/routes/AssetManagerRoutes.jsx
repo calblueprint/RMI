@@ -1,5 +1,7 @@
 import React from 'react';
+
 import PortfolioContainer from '../containers/PortfolioContainer';
+import NavigationBarContainer from '../containers/NavigationBarContainer';
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -9,8 +11,7 @@ class AssetManagerRoutes extends React.Component {
   render() {
     return (
       <div>
-        <Route path="/:entity?/:id?/" component={DropdownMenuContainer} />
-          {/*<Route path="/:entity?/:id?" component={NavigationBarContainer} />*/}
+        <Route path="/:entity?/:id?/" component={NavigationBarContainer}/>
         <Switch>
           <Route path="/portfolios/:pId" component={PortfolioContainer} />
 

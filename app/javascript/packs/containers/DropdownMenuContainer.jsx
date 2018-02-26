@@ -1,41 +1,26 @@
-import {getBuildingByID, getBuildings, getNavBarBuildings} from '../selectors/buildingsSelector'
-import {Link} from 'react-router-dom'
+import {getBuildings, getNavBarBuildings} from '../selectors/buildingsSelector'
 import React from 'react'
 import {connect} from 'react-redux'
 
 class DropdownMenuContainer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dropped: false,
-        };
-    }
 
-    show() {
-        this.setState({dropped: true});
-        document.addEventListener("click", this.hide);
-    }
-
-    hide() {
-        this.setState({dropped: false});
-        document.removeEventListener("click", this.hide);
+    buildingChange(event) {
+        this.props.history.push(`/buildings/${event.target.value}`)
     }
 
     render() {
         const buildings = this.props.buildings;
         const currentBuilding = this.props.currentBuilding;
         return (<div>
-            <h1> {"Current Building"} </h1>
-            <h2>{currentBuilding ? currentBuilding.name : "Choose an Building"}</h2>
-            <select className={"dropdown-container" + (this.state.dropped ? " show" : "")} onClick={this.show}>
-                {"button"}
-                <div className="dropdown-list">
-                    {Object.keys(buildings).map(id => {
-                        return (
-                            <Link key={id} to={`/buildings/${id}`}> {buildings[id].name}</Link>
-                        )
+            <h1> {currentBuilding ? currentBuilding.name : null} </h1>
+            <select className={"dropdown-container"}
+                    onChange={this.buildingChange.bind(this)} value = {currentBuilding ? currentBuilding.id : "Choose a Building"}>
+                <option disabled value = {"Choose a Building"}> {"Choose a Building"}</option>
+                {Object.keys(buildings).map(id => {
+                    return (
+                        <option key = {id} value={id} > {buildings[id].name} </option>
+                    )
                 })}
-                </div>
             </select>
 
         </div>);
@@ -44,19 +29,16 @@ class DropdownMenuContainer extends React.Component {
 
 }
 
-function mapStateToProps(state, ownProps) {
-    return {
-        buildings: getBuildings(state),
-        currentBuilding: getNavBarBuildings(ownProps.match.params.entity, ownProps.match.params.id, state),
-    };
-}
+// function mapStateToProps(state, ownProps) {
+//     return {
+//         buildings: getBuildings(state),
+//         currentBuilding: getNavBarBuildings(ownProps.match.params.entity, ownProps.match.params.id, state),
+//     };
+// }
 
 
 function mapDispatchToProps(dispatch) {
     return {};
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DropdownMenuContainer);
+export default DropdownMenuContainer
