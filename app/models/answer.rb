@@ -2,13 +2,16 @@
 #
 # Table name: answers
 #
-#  id                 :integer          not null, primary key
-#  text               :string           default("")
-#  building_id        :integer
-#  question_id        :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  selected_option_id :integer
+#  id                       :integer          not null, primary key
+#  text                     :string           default("")
+#  building_id              :integer
+#  question_id              :integer
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  selected_option_id       :integer
+#  delegation_email         :string
+#  delegation_first_name    :string
+#  delegation_last_name     :string
 #
 
 class Answer < ApplicationRecord
