@@ -1,11 +1,24 @@
+# == Schema Information
+#
+# Table name: range_options
+#
+#  id          :integer          not null, primary key
+#  min         :integer
+#  max         :integer
+#  question_id :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class RangeOption < ApplicationRecord
-  has_one :child_question, class_name: 'Question', as: :parent_option
+  has_many :child_questions, as: :parent_option, :dependent => :destroy
   belongs_to :question
 
   validates :min, :max, presence: true
   validate :is_valid_min_max
 
   private
+
   def is_valid_min_max
     return if min.nil? or max.nil?
 

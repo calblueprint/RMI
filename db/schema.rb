@@ -10,20 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171015221125) do
+ActiveRecord::Schema.define(version: 20180210181007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "admin_abilities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "answers", force: :cascade do |t|
-    t.text "text"
+    t.string "text", default: ""
     t.bigint "building_id"
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "building_operator_id"
+    t.integer "selected_option_id"
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
     t.index ["building_id"], name: "index_answers_on_building_id"
-    t.index ["building_operator_id"], name: "index_answers_on_building_operator_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
@@ -100,12 +108,27 @@ ActiveRecord::Schema.define(version: 20171015221125) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "delegations", force: :cascade do |t|
+    t.bigint "building_operator_id"
+    t.bigint "answer_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_delegations_on_answer_id"
+    t.index ["building_operator_id"], name: "index_delegations_on_building_operator_id"
+  end
+
   create_table "dropdown_options", force: :cascade do |t|
     t.string "text"
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_dropdown_options_on_question_id"
+  end
+
+  create_table "manager_abilities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "portfolios", force: :cascade do |t|
@@ -126,6 +149,7 @@ ActiveRecord::Schema.define(version: 20171015221125) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "parameter", null: false
     t.index ["building_type_id"], name: "index_questions_on_building_type_id"
     t.index ["category_id"], name: "index_questions_on_category_id"
     t.index ["parent_option_type", "parent_option_id"], name: "index_questions_on_parent_option_type_and_parent_option_id"
@@ -160,11 +184,12 @@ ActiveRecord::Schema.define(version: 20171015221125) do
     t.index ["reset_password_token"], name: "index_rmi_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "answers", "building_operators"
   add_foreign_key "answers", "buildings"
   add_foreign_key "answers", "questions"
   add_foreign_key "buildings", "building_types"
   add_foreign_key "buildings", "portfolios"
+  add_foreign_key "delegations", "answers"
+  add_foreign_key "delegations", "building_operators"
   add_foreign_key "dropdown_options", "questions"
   add_foreign_key "portfolios", "asset_managers"
   add_foreign_key "questions", "building_types"

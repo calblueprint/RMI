@@ -26,10 +26,17 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_mailer.perform_deliveries = true
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
+
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  # Opens email previews in browser instead of actually sending them
+  config.action_mailer.delivery_method = :test
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -55,4 +62,16 @@ Rails.application.configure do
   # Devise setup
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+  # AWS credentials for paperclip upload
+  config.paperclip_defaults = {
+    storage: :s3,
+    s3_credentials: {
+      bucket: ENV.fetch('S3_BUCKET_NAME'),
+      access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+      secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+      s3_region: ENV.fetch('AWS_REGION'),
+    }
+  }
+
 end
