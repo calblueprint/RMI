@@ -1,3 +1,9 @@
+/**
+ * Gets array of question objects for a building by building ID.
+ * @param { number } buildingId - the building ID of the questionnaire
+ * @param { Object } state - state in store
+ * @returns { Array[] } the array of question objects
+ */
 export function getQuestionsByBuilding(buildingId, state) {
   const questions = state.buildings[buildingId].questions;
   return questions.map((questionId) => {
@@ -5,6 +11,12 @@ export function getQuestionsByBuilding(buildingId, state) {
   });
 }
 
+/**
+ * Gets array of question objects for a buildingType by buildingType ID.
+ * @param { number } buildingTypeId - the buildingType ID
+ * @param { Object } state - state in store
+ * @returns { Array[] } the array of question objects
+ */
 export function getQuestionsByBuildingType(buildingTypeId, state) {
   return state.building_types[buildingTypeId].questions.map((questionId) => {
     return state.questions[questionId];
