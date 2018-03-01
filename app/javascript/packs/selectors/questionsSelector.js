@@ -9,10 +9,15 @@ export function getQuestionsByBuilding(buildingId, state) {
  * Returns a hash of dependent questions for the given options,
  * where the keys are option ids and values are arrays of question objects.
  *
- * {
- *    2: [{ <question> }, { <question> }, { <question> }],
- *    3: [{ <question> }, { <question> }]
- * }
+ * @param { Array[] } options         An array of options whose dependent questions we want to find
+ * @param { String }  question_type   The type of question (dropdown, range, or free)
+ * @param { Object }  state           state in store
+ *
+ * @returns { Object } hash of option ids to dependent question arrays
+ *
+ *      {
+ *         option_id: [{ <question> }, { <question> }, { <question> }],
+ *      }
  */
 export function getDependentQuestionsForOptions(options, question_type, state) {
   const questions = {};

@@ -16,7 +16,7 @@ class OptionsContainer extends React.Component {
     console.log("Triggered id - " + option_id);
     console.log("Text - " + text);
 
-    // TODO: dispatch an action to update answer in the database and in state tree
+    // Dispatch an action to update answer in the database and in store
     const answer = {
       building_id: this.props.building_id,
       question_id: this.props.question_id
@@ -32,9 +32,6 @@ class OptionsContainer extends React.Component {
     else {
       answer.text = text;
     }
-
-    console.log("ANSWER:");
-    console.log(answer);
 
     this.props.addAnswer(answer.building_id, answer);
   }

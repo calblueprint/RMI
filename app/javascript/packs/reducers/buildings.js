@@ -110,9 +110,9 @@ function createAnswer(state, action) {
 }
 
 function updateAnswer(state, action) {
-  const buildingId = action.buildingId;
   const status = action.status;
   const answer = action.response;
+  const buildingId = answer.building_id;
 
   if (status === FETCH_SUCCESS) {
     return {
@@ -120,9 +120,9 @@ function updateAnswer(state, action) {
       [buildingId]: {
         ...state[buildingId],
         answers: {
-          ...state[buildingId]['answers'],
-          [answer.id]: {
-            ...state[buildingId]['answers'][answer.id],
+          ...state[buildingId].answers,
+          [answer.question_id]: {
+            ...answer,
             saved: true,
             fetching: false,
             error: false

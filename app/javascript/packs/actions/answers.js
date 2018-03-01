@@ -42,17 +42,10 @@ function saveError(error) {
  * @param dispatch      The dispatch function
  */
 export async function addAnswer(buildingId, answer, dispatch) {
-  console.log("creating answer....");
-  dispatch(createAnswer(buildingId));
-
   try {
-    console.log("before stringify:");
-    console.log(answer);
     const answerData = JSON.stringify({
       answer
     });
-    console.log("answer data:");
-    console.log(answerData);
 
     let response = await fetch('/api/answers', {
       method: 'POST',
