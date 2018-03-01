@@ -1,5 +1,5 @@
 class Api::AnswersController < ApplicationController
-  load_and_authorize_resource
+  # load_and_authorize_resource
   def create
     answer = Answer.new(answer_params)
     if answer.save
@@ -48,10 +48,9 @@ class Api::AnswersController < ApplicationController
           .permit(
             :text,
             :attachment,
+            :selected_option_id,
             :building_id,
-            :question_id,
-            :user_id,
-            :user_type
+            :question_id
           )
   end
 end

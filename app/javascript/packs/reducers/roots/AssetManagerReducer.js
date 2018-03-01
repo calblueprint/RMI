@@ -3,6 +3,7 @@ import portfolios from '../portfolios';
 
 export default {
   buildings,
-  portfolios
+  portfolios,
+  questions: (state={}, action) => state
 };
 

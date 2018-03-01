@@ -7,50 +7,65 @@ import {
   CREATE_ANSWER,
   UPDATE_ANSWER,
   REMOVE_ANSWER,
-  SAVE_ANSWER
 } from '../constants';
 
 export function createAnswer(buildingId) {
   return {
     type: CREATE_ANSWER,
     status: FETCH_IN_PROGRESS,
-    buildingId: buildingId,
-    questionId: questionId
+    buildingId: buildingId
   };
 }
 
-function updateAnswer(type, response) {
+function updateAnswer(response) {
   return {
-    type,
+    type: UPDATE_ANSWER,
     status: FETCH_SUCCESS,
     response
   };
 }
 
-function saveError(type, error) {
+function saveError(error) {
   return {
-    type,
+    type: UPDATE_ANSWER,
     status: FETCH_FAILURE,
     response: error
   };
 }
 
 
+/**
+ * Updates the answer in store and sends a fetch request.
+ *
+ * @param buildingId    id of building the answer belongs to
+ * @param answer        A hash that contains all params required by the Answers API controller
+ * @param dispatch      The dispatch function
+ */
 export async function addAnswer(buildingId, answer, dispatch) {
+  console.log("creating answer....");
   dispatch(createAnswer(buildingId));
 
   try {
+    console.log("before stringify:");
+    console.log(answer);
     const answerData = JSON.stringify({
-      ...answer
+      answer
     });
+    console.log("answer data:");
+    console.log(answerData);
 
-    let response = await fetch('/api/buildings', {
+    let response = await fetch('/api/answers', {
       method: 'POST',
-      data: answerData
+      body: answerData,
+      headers: {
+        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content,
+        "Content-Type": "application/json"
+      },
+      credentials: 'same-origin'
     }).then(resp => resp.json());
 
-    dispatch(updateAnswer(UPDATE_ANSWER, response.data));
+    dispatch(updateAnswer(response.data));
   } catch (error) {
-    dispatch(saveError(CREATE_ANSWER, error));
+    dispatch(saveError(error));
   }
 }

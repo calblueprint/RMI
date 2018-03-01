@@ -5,7 +5,7 @@ class RangeOption extends React.Component {
     for (let id in this.props.options) {
       const option = this.props.options[id];
       if (num && num >= option.min && num <= option.max) {
-        this.props.onSelect(id);
+        this.props.onSelect(id, num);
         return;
       }
     }
