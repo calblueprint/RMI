@@ -11,5 +11,6 @@ before_install:
   - sudo service docker start
   - flynn docker set-push-url
   - flynn docker login
+  - echo $DOCKER_ENV > .env
 script: ./docker_setup.sh
 after_script: flynn -a humans-harangue-burlington docker push rmi_web
