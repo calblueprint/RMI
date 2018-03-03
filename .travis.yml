@@ -1,0 +1,11 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - L=$PWD/flynn && curl -sSL -A "`uname -sp`" https://dl.flynn.io/cli | zcat >$L && chmod +x $L
+  - export PATH=$PATH:$PWD/
+  - flynn cluster add -p $FLYNN_CLUSTER_ADD
+  - flynn docker set-push-url
+  - flynn docker login
+script: ./docker_setup.sh
+after_script: flynn -a humans-harangue-burlington docker push rmi_web
