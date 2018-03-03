@@ -7,6 +7,12 @@ import React from 'react';
 
 class DelegateModeContainer extends React.Component {
 
+  // called when delegation should be submitted
+  // should synchronously submit delegations since user expects success
+  submitDelegation() {
+
+  }
+
   render() {
     return (
       <div>
@@ -23,6 +29,10 @@ class DelegateModeContainer extends React.Component {
           }
         })
         }
+
+        <button type="submit" value="Submit Delegation"
+          onClick={this.submitDelegation}
+        >Submit Delegation</button>
       </div>
     );
   }

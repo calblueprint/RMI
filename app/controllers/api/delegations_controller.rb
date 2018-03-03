@@ -2,34 +2,31 @@ class Api::DelegationsController < ApplicationController
   load_and_authorize_resource
 
   def create
-    delegation = Delegation.new(delegation_params)
-    if delegation.save
-      render_json_message(:ok, message: 'New delegation created', data: delegation)
-    else
-      render_json_message(:forbidden, data: delegation, errors: delegation.errors.full_messages)
+    # either all delegations are created, or none
+    Delegation.transaction do
+      delegations_params.each do |delegation_params|
+        Delegation.create!(delegation_params)
+      end
+      render_json_message(:ok, message: 'New delegations created')
     end
-  end
-
-  def update
-    delegation = Delegation.find(params[:id])
-    if delegation.update(delegation_params)
-      render_json_message(:ok, message: 'Delegation successfully updated', data: delegation)
-    else
-      render_json_message(:forbidden, data: delegation, errors: delegation.errors.full_messages)
-    end
+  rescue => e
+    render_json_message(:forbidden, data: delegation, errors: e.message)
   end
 
   # access to delegation is done from endpoints related to questions
 
   private
 
-  def delegation_params
-    params.require(:delegation)
-    .permit(
-      :building_operator_id,
-      :answers_id,
-      :status
-    )
+  # only for batch creation case
+  def delegations_params
+    # delegations allow batch creation and therefore should be submitted as a list
+    params.require(:delegation).map! do |delegation|
+      delegation.permit(
+        :building_operator_id,
+        :answers_id,
+        :status
+      )
+    end
   end
 
 end

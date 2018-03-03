@@ -11,6 +11,7 @@ class DelegationContainer extends React.Component {
 
   // TODO: this.props.contacts cannot come from nowhere
 
+  // determine whether answers are available
   answerValid() {
     return this.props.answer.text || this.props.answer.attachment_file_name;
   }
@@ -19,6 +20,8 @@ class DelegationContainer extends React.Component {
 
   }
 
+  // Need tp dispatch actions to update answer in redux, then send to backend
+  // XXX: Blocked on answer actions by Kevin Li
   handleChangeEmail(value) {
 
   }
@@ -28,6 +31,13 @@ class DelegationContainer extends React.Component {
   }
 
   handleChangeLastName(value) {
+
+  }
+
+  // If email, firstname and lastname are valid pair, then
+  // this function should be called to update contacts stored
+  // in redux, and make it available in future references
+  createOrUpdateContacts() {
 
   }
 
