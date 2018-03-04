@@ -12,7 +12,7 @@ export function addContact(contactEmail, contactFirstName, contactLastName) {
   };
 }
 
-export function editContact(email, firstName, lastName) {
+export function editContact(contactEmail, contactFirstName, contactLastName) {
   return {
     type: EDIT_CONTACT,
     email: contactEmail,

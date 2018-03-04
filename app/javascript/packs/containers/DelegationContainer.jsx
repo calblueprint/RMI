@@ -9,8 +9,6 @@ import { getContacts } from "../selectors/contactsSelector";
 
 class DelegationContainer extends React.Component {
 
-  // TODO: this.props.contacts cannot come from nowhere
-
   // TODO: need to add current value of delegations to redux, if they aren't empty
 
   // determine whether answers are available
@@ -25,21 +23,39 @@ class DelegationContainer extends React.Component {
   // Need tp dispatch actions to update answer in redux, then send to backend
   // XXX: Blocked on answer actions by Kevin Li
   handleChangeEmail(value) {
+    this.props.email = value;
+    this.createOrUpdateContactsIfValid();
+    this.updateAnswer();
 
   }
 
   handleChangeFirstName(value) {
+    this.props.firstName = value;
+    this.createOrUpdateContactsIfValid();
+    this.updateAnswer();
 
   }
 
   handleChangeLastName(value) {
+    this.props.lastName = value;
+    this.createOrUpdateContactsIfValid();
+    this.updateAnswer();
 
   }
 
   // If email, firstname and lastname are valid pair, then
   // this function should be called to update contacts stored
   // in redux, and make it available in future references
-  createOrUpdateContacts() {
+  createOrUpdateContactsIfValid() {
+    // TODO: should validate for valid email address here
+    if (this.props.email && this.props.firstName && this.props.lastName) {
+      this.contactActions.addContact(
+          this.props.email, this.props.firstName, this.props.lastName);
+    }
+  }
+
+  updateAnswer() {
+    // Need to keep answers up to date as during editing
 
   }
 
