@@ -9,7 +9,7 @@ services:
         dockerfile: docker/rails_dockerfile
     command: rails s
     volumes:
-      - .:/rmi
+      - .:/myapp
     ports:
       - "3000:3000"
     depends_on:
