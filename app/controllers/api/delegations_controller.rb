@@ -9,6 +9,18 @@ class Api::DelegationsController < ApplicationController
       # TODO: validate this user is currently the person delegated to
       # maybe easier to do in controller than cancancan?
       delegations_params.each do |delegation_params|
+        operator = BuildingOperator.find_by(email: delegation_params[:email])
+        unless operator
+          # if building operator doesn't exist, create it
+          operator = BuildingOperator.create!(
+            email: delegation_params[:email],
+            first_name: delegation_params[:first_name],
+            last_name: delegation_params[:last_name],
+            phone: "0000000000" # use this filler by default, should be replaced during first login
+          )
+        end
+
+        delegation_params[:building_operator_id] = operator.id
         Delegation.create!(delegation_params)
 
         # mark all other delegations on same answers_id delegated
@@ -32,7 +44,9 @@ class Api::DelegationsController < ApplicationController
     # delegations allow batch creation and therefore should be submitted as a list
     params.require(:delegation).map! do |delegation|
       delegation.permit(
-        :building_operator_id,
+        :email,
+        :first_name,
+        :last_name,
         :answers_id,
         :status
       )
