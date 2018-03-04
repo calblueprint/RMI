@@ -3,17 +3,17 @@ import {
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
   FETCH_SETTINGS,
-  FETCH_ANSWER,
-  CREATE_ANSWER,
+  FETCHING_ANSWER,
   UPDATE_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
 
-export function createAnswer(buildingId) {
+export function createAnswer(buildingId, answer) {
   return {
-    type: CREATE_ANSWER,
+    type: FETCHING_ANSWER,
     status: FETCH_IN_PROGRESS,
-    buildingId: buildingId
+    buildingId,
+    answer
   };
 }
 
@@ -42,6 +42,8 @@ function saveError(error) {
  * @param dispatch      The dispatch function
  */
 export async function addAnswer(buildingId, answer, dispatch) {
+  dispatch(createAnswer(buildingId, answer));
+
   try {
     const answerData = JSON.stringify({
       answer

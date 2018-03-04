@@ -9,7 +9,7 @@ import {
   UNASSIGN_BUILDING_OPERATOR,
   FETCH_SUCCESS,
   FETCH_FAILURE,
-  CREATE_ANSWER,
+  FETCHING_ANSWER,
   UPDATE_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
@@ -89,26 +89,33 @@ function saveBuilding(state, action) {
  // ANSWERS //////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 
-function createAnswer(state, action) {
-  const tempId = '__unsaved__' + Date.now();
+/**
+ * Updates the answer in store with the data that is currently being sent through a fetch request.
+ */
+function beforeFetchAnswer(state, action) {
   const buildingId = action.buildingId;
+  const answer = action.answer;
+
   return {
     ...state,
     [buildingId]: {
       ...state[buildingId],
       answers: {
-        ...state[buildingId]['answers'],
-        [tempId]: {
+        ...state[buildingId].answers,
+        [answer.question_id]: {
+          ...answer,
           saved: false,
           fetching: true,
           buildingId: buildingId,
-          questionId: action.questionId
         }
       },
     }
   };
 }
 
+/**
+ * Updates the answer in store with the response received from the fetch request.
+ */
 function updateAnswer(state, action) {
   const status = action.status;
   const answer = action.response;
@@ -134,15 +141,14 @@ function updateAnswer(state, action) {
 
   if (status === FETCH_FAILURE) {
     const errorMessage = action.response;
-    const tempId = '__unsaved__' + Date.now();
     return {
       ...state,
       [buildingId]: {
         ...state[buildingId],
         answers:{
-          ...state[buildingId]['answers'],
+          ...state[buildingId].answers,
           [answer.id]: {
-            ...state[buildingId]['answers'][answer.id],
+            ...state[buildingId].answers[answer.id],
             error: errorMessage,
             fetching: false
           }
@@ -177,7 +183,7 @@ export default function buildings(state = {}, action) {
     case UPDATE_BUILDING: return saveBuilding(state, action);
 
     // Answers
-    case CREATE_ANSWER: return createAnswer(state, action);
+    case FETCHING_ANSWER: return beforeFetchAnswer(state, action);
     case UPDATE_ANSWER: return updateAnswer(state, action);
   default:
     return state;

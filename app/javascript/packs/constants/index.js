@@ -1,8 +1,7 @@
 export const LOAD_INITIAL_STATE = 'LOAD_INITIAL_STATE';
 
 // Answer ActionTypes
-export const FETCH_ANSWER = 'FETCH_ANSWER';
-export const CREATE_ANSWER = 'CREATE_ANSWER';
+export const FETCHING_ANSWER = 'FETCHING_ANSWER';
 export const UPDATE_ANSWER = 'UPDATE_ANSWER';
 export const REMOVE_ANSWER = 'REMOVE_ANSWER';
 
