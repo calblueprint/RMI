@@ -21,6 +21,11 @@ class Api::DelegationsController < ApplicationController
         end
 
         delegation_params[:building_operator_id] = operator.id
+
+        if current_user.is_a?(BuildingOperator)
+          delegation_params[:source_id] = current_user.id
+        end
+
         Delegation.create!(delegation_params)
 
         # mark all other delegations on same answers_id delegated

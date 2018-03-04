@@ -3,6 +3,7 @@
 # Table name: delegations
 #
 #  id                   :integer          not null, primary key
+#  source_id            :integer
 #  building_operator_id :integer
 #  answers_id           :integer
 #  status               :integer          default("predelegated")
@@ -16,6 +17,7 @@ class Delegation < ApplicationRecord
   # when delegation object is created, default value is the 0th
   # element of this enum, which should be :pre-delegated.
   belongs_to :building_operator
+  belongs_to :source, :class_name => 'BuildingOperator', :foreign_key => 'source_id', optional: true
   belongs_to :answer
 
   enum status: %i[predelegated delegated active]

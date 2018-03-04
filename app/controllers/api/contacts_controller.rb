@@ -1,0 +1,23 @@
+class Api::ContactsController < ApplicationController
+  load_and_authorize_resource
+
+  # return a list of contacts in json available
+  def show
+    contact_ids = Hash.new
+
+    Delegation.where(source_id: current_user.id).each do |delegation|
+      result[delegation.building_operator_id] = 1
+    end
+
+    result = []
+
+    contact_ids.each_key do |operator_id|
+      operator = BuildingOperator.find(operator_id)
+      result.push({
+        email: operator.email, first_name: operator.first_name, last_name: operator.last_name
+      })
+    end
+
+    render :json => result
+  end
+end

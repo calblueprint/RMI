@@ -11,6 +11,8 @@ class DelegationContainer extends React.Component {
 
   // TODO: this.props.contacts cannot come from nowhere
 
+  // TODO: need to add current value of delegations to redux, if they aren't empty
+
   // determine whether answers are available
   answerValid() {
     return this.props.answer.text || this.props.answer.attachment_file_name;
