@@ -5,6 +5,9 @@
 
 import React from 'react';
 
+import { connect } from 'react-redux';
+import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+
 class ReviewModeContainer extends React.Component {
   render() {
     return (
@@ -22,5 +25,17 @@ class ReviewModeContainer extends React.Component {
     );
   }
 }
+function mapStateToProps(state, ownProps) {
+  return {
+    questions: getQuestionsByBuilding(ownProps.building.id, state)
+  };
+}
 
-export default ReviewModeContainer;
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReviewModeContainer);

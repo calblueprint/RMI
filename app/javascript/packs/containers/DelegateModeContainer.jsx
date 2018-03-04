@@ -5,7 +5,25 @@
 
 import React from 'react';
 
+// XXX: may be too inefficient
+import { getDependentQuestionsForOption } from "../selectors/questionsSelector";
+
+import { connect } from 'react-redux';
+
 class DelegateModeContainer extends React.Component {
+
+  // recursively find all dependent questions, return a list
+  getDependentQuestionIds(parentQuestion) {
+    var potentialChildren = parentQuestion.options.map((option) => {
+      return this.props.getDependentQuestion(option.id, parentQuestion.question_type);
+    })
+
+    if (potentialChildren.length == 0) {
+      return [];
+    } else {
+      return potentialChildren.concat(potentialChildren.map(getDependentQuestionIds));
+    }
+  }
 
   // called when delegation should be submitted
   // should synchronously submit delegations since user expects success
@@ -38,4 +56,22 @@ class DelegateModeContainer extends React.Component {
   }
 }
 
-export default DelegateModeContainer;
+function mapStateToProps(state, ownProps) {
+  return {
+    getDependentQuestion: (optionId, optionType) => {
+      return getDependentQuestionsForOption(optionId, optionType, state);
+    },
+    questions: getQuestionsByBuilding(ownProps.building.id, state)
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+
+  }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DelegateModeContainer);
