@@ -2,9 +2,10 @@ class Api::ContactsController < ApplicationController
 
   skip_before_action :verify_authenticity_token
   # return a list of contacts in json available
-  def show
+  def index
     if !current_building_operator
       render :json => []
+      return
     end
 
     contact_ids = Hash.new
