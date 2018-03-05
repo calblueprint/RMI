@@ -7,6 +7,7 @@ import {
   UPDATE_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
+import { post, patch } from '../fetch/requester';
 
 export function createAnswer(buildingId, answer) {
   return {
@@ -35,7 +36,8 @@ function saveError(error) {
 
 
 /**
- * Updates the answer in store and sends a fetch request.
+ * Creates a new answer in the database,
+ * updates the answer in store and sends a fetch request.
  *
  * @param buildingId    id of building the answer belongs to
  * @param answer        A hash that contains all params required by the Answers API controller
@@ -45,20 +47,21 @@ export async function addAnswer(buildingId, answer, dispatch) {
   dispatch(createAnswer(buildingId, answer));
 
   try {
-    const answerData = JSON.stringify({
-      answer
-    });
+    let response = await post('/api/answers', {'answer': answer});
+    dispatch(updateAnswer(response.data));
+  } catch (error) {
+    dispatch(saveError(error));
+  }
+}
 
-    let response = await fetch('/api/answers', {
-      method: 'POST',
-      body: answerData,
-      headers: {
-        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content,
-        "Content-Type": "application/json"
-      },
-      credentials: 'same-origin'
-    }).then(resp => resp.json());
+/**
+ * For answers that already exist in the database.
+ */
+export async function editAnswer(buildingId, answer, dispatch) {
+  dispatch(createAnswer(buildingId, answer));
 
+  try {
+    let response = await patch('/api/answers/' + answer.id, {'answer': answer});
     dispatch(updateAnswer(response.data));
   } catch (error) {
     dispatch(saveError(error));

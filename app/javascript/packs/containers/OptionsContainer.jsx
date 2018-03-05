@@ -9,31 +9,29 @@ import Question from '../components/Question';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptions } from '../selectors/questionsSelector';
-import { addAnswer } from '../actions/answers';
+import { addAnswer, editAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
   handleSelect(option_id, text) {
-    console.log("Triggered id - " + option_id);
-    console.log("Text - " + text);
-
-    // Dispatch an action to update answer in the database and in store
+    // Set up answer data to send in fetch request
     const answer = {
       building_id: this.props.building_id,
-      question_id: this.props.question_id
+      question_id: this.props.question_id,
+      selected_option_id: option_id,
+      text: text
     };
-
-    if (option_id) {
-      answer.selected_option_id = option_id;
-    }
-
     if (this.props.question_type == "dropdown") {
       answer.text = this.props.options[option_id].text;
     }
-    else {
-      answer.text = text;
-    }
 
-    this.props.addAnswer(answer.building_id, answer);
+    // Dispatch an action to update answer in the database and in store
+    if (!this.props.answer) {
+      this.props.addAnswer(answer.building_id, answer);
+    }
+    else {
+      answer.id = this.props.answer.id;
+      this.props.editAnswer(answer.building_id, answer);
+    }
   }
 
   render() {
@@ -85,6 +83,9 @@ function mapDispatchToProps(dispatch) {
   return {
     addAnswer: function (buildingId, answer) {
       return addAnswer(buildingId, answer, dispatch);
+    },
+    editAnswer: function (buildingId, answer) {
+      return editAnswer(buildingId, answer, dispatch);
     }
   }
 }
