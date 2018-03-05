@@ -10,6 +10,8 @@ CATEGORIES = [
   { name: 'Spaces' },
   { name: 'Lighting - Interior' }
 ].freeze
+
+# DO NOT CHANGE THE ORDER OF THESE QUESTIONS. IF YOU WANT TO ADD MORE, APPEND TO BOTTOM.
 QUESTIONS = [
   { question:
     { question_type: 'dropdown', category_id: 1, text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
@@ -56,25 +58,29 @@ QUESTIONS = [
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
       { min: 1, max: 100 }
-    ] },
+    ] }
+].freeze
+
+# DO NOT CHANGE THE ORDER OF THESE QUESTIONS. IF YOU WANT TO ADD MORE, APPEND BOTTOM
+DEPENDENT_QUESTIONS = [
   {
     # DEPENDENT QUESTIONS
-    question:
-      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption', parent_option_id: 2 },
+    q1:
+      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
     options: [
       { min: 1, max: 100}
     ]
   },
   {
-    question:
-      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption', parent_option_id: 2 },
+    q2:
+      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
     options: [
       { min: 1, max: 100}
     ]
   },
   {
-    question:
-      { question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption', parent_option_id: 1 }
+    q3:
+      { question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
   }
 ].freeze
 
@@ -150,6 +156,33 @@ def make_questions_options
           end
         option.save
       end
+    end
+  end
+end
+
+def make_dependent_questions
+  BuildingType.all.each do |b_type|
+    parent_option1 = b_type.questions.first.options.first
+    parent_option2 = b_type.questions.second.options.first
+    byebug
+    dep_q1 = DEPENDENT_QUESTIONS[0][:q1]
+    dep_q2 = DEPENDENT_QUESTIONS[1][:q2]
+    dep_q3 = DEPENDENT_QUESTIONS[2][:q3]
+
+    q1 = Question.new(dep_q1)
+    q1.parent_option_id = parent_option2.id
+    q1.parent_option_type = parent_option2.type
+    q2 = Question.new(dep_q2)
+    q2.parent_option_id = parent_option2.id
+    q2.parent_option_type = parent_option2.type
+    q3 = Question.new(dep_q3)
+    q3.parent_option_id = parent_option1.id
+    q3.parent_option_type = parent_option1.type
+    byebug
+    dep_questions = [q1, q2, q3]
+    dep_questions.each do |q|
+      q.building_type = b_type
+      q.save
     end
   end
 end
@@ -233,3 +266,4 @@ make_buildings
 make_answers
 make_building_operator
 make_delegations
+make_dependent_questions
