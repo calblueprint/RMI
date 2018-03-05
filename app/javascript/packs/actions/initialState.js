@@ -60,6 +60,22 @@ const formatState = {
       })
     );
   },
+  categories: function(categories) {
+    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id']));
+  },
+  questions: function(questions) {
+    return toObjectById(
+      Object.keys(questions).map((id) => {
+        const question = {...questions[id]};
+        if (question.options.length > 0) {
+          question.options = toObjectById(question.options);
+        } else {
+          question.options = {};
+        }
+        return question;
+      })
+    );
+  },
   portfolios: function(portfolios) {
     return toObjectById(
       mapFilterKeys(

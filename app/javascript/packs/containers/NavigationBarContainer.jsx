@@ -6,8 +6,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
 import {getName, getEmail} from '../selectors/usersSelector'
+import {getCurrentCategory, getCategories} from "../selectors/categoriesSelector";
+import CategoryContainer from './CategoryContainer'
 
-//import CategoryContainer from 'CategoryContainer'
 // import {getAnswersforBuilding, getRemainingAnswers} from "../selectors/answersSelector";
 
 
@@ -26,11 +27,14 @@ class NavigationBarContainer extends React.Component {
                 <DropdownMenuContainer buildings={this.props.buildings} currentBuilding={this.props.currentBuilding}
                                        history={this.props.history}>
                 </DropdownMenuContainer>
+                <CategoryContainer categories={this.props.categories} currentCategory={this.props.currentCategory}
+                                   url={this.props.match.url} currentBuilding={this.props.currentBuilding}
+                                   mode={this.props.mode}>
+                </CategoryContainer>
                 <div className="userInfo">
                     {username} <br/>
                     {userEmail}
                 </div>
-                {/*<CategoryContainer currentCategory = {this.props.currentCategory} categories = {this.props.categories} numAnswers = {this.props.numAnswers}>*/}
             </div>
         )
 
@@ -43,9 +47,9 @@ function mapStateToProps(state, ownProps) {
         currentBuilding: getNavBarBuildings(ownProps.match.params.entity, ownProps.match.params.id, state),
         userEmail: getEmail(state),
         username: getName(state),
-        // currentCategory: getCurrentCategory(ownProps.match.params.entity, ownProps.match.params.id, state),
-        // categories:  getCategories(ownProps.match.params.entity, ownProps.match.params.id, state),
-        // numAnswers: getRemainingAnswers(getAnswersforBuilding(ownProps.match.params.entity, ownProps.match.params.id, state))
+        currentCategory: getCurrentCategory(ownProps.match.params.cId, state),
+        categories: getCategories(state),
+        mode: ownProps.match.params.mode,
     };
 }
 

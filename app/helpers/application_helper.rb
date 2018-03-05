@@ -18,6 +18,7 @@ module ApplicationHelper
     end
 
     {
+      user: current_asset_manager,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         portfolio.buildings, each_serializer: BuildingSerializer,
         scope: {user_id: current_asset_manager.id,
@@ -57,24 +58,23 @@ module ApplicationHelper
       userType: 'BuildingOperator',
       contacts: contacts,
       categories: current_building_operator.categories,
-      userType: 'BuildingOperator'
     }
   end
 
   def rmi_user_initial_state
     {
-      portfolios: Portfolio.all,
-      buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        Building.all, each_serializer: BuildingSerializer,
-        scope: {user_id: current_rmi_user.id,
-                user_type: 'RmiUser'}
-      ),
-      building_types: ActiveModel::Serializer::CollectionSerializer.new(
-        BuildingType.all, each_serializer: BuildingTypeSerializer,
-        scope: {user_id: current_rmi_user.id,
-                user_type: 'RmiUser'}
-      ),
-      userType: 'RMIUser'
+        portfolios: Portfolio.all,
+        buildings: ActiveModel::Serializer::CollectionSerializer.new(
+            Building.all, each_serializer: BuildingSerializer,
+            scope: {user_id: current_rmi_user.id,
+                    user_type: 'RmiUser'}
+        ),
+        building_types: ActiveModel::Serializer::CollectionSerializer.new(
+            BuildingType.all, each_serializer: BuildingTypeSerializer,
+            scope: {user_id: current_rmi_user.id,
+                    user_type: 'RmiUser'}
+        ),
+        userType: 'RMIUser'
     }
   end
   # rubocop:enable AlignHash
