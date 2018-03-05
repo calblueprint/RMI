@@ -1,4 +1,4 @@
-/**
+  /**
  * The default mode that allows the user to answer questions about a building.
  * ROUTE - /buildings/:bId/edit
  */

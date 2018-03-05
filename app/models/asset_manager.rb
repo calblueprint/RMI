@@ -62,7 +62,7 @@ class AssetManager < ApplicationRecord
   def categories
     categories = Set.new
     building_types.each do |building_type|
-      categories.push(*building_type.categories)
+      categories.merge(building_type.categories)
     end
     categories
   end

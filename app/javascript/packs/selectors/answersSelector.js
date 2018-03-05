@@ -11,10 +11,10 @@ export function getAnswersforBuilding(entity, id, state) {
     return null
 }
 
-export function getRemainingAnswersforCategory(answers, category) {
+export function getRemainingAnswersforCategory(answers) {
     let counter = 0;
     for (const answer of answers) {
-        if (answer == "%EMPTY%") {
+        if (!answer.trim()) {
             counter = counter + 1;
         }
     }
