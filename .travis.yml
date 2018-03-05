@@ -11,8 +11,7 @@ before_install:
   - sudo service docker start
   - flynn docker set-push-url
   - flynn docker login
-  - echo $DOCKER_ENV > .env
-  - source .env
+  - openssl aes-256-cbc -K $encrypted_0bbbfb8288d9_key -iv $encrypted_0bbbfb8288d9_iv -in .env.enc -out .env -d
 install: echo "Skipping install step"
 script: ./docker_setup.sh
 after_script: flynn -a humans-harangue-burlington docker push rmi_web
