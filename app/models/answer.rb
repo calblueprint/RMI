@@ -18,7 +18,7 @@
 class Answer < ApplicationRecord
   belongs_to :building
   belongs_to :question
-  has_many :delegations, foreign_key: :answer_id
+  has_many :delegations, foreign_key: :answer_id, :dependent => :destroy
   has_many :building_operators, through: :delegations
 
   # attachment is used for FileOption

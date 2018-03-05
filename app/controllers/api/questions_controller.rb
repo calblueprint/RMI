@@ -1,5 +1,6 @@
 class Api::QuestionsController < ApplicationController
   load_and_authorize_resource
+
   def create
     question = Question.new(question_params)
     if question.save
