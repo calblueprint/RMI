@@ -51,6 +51,8 @@ class QuestionContainer extends React.Component {
     } else {
       console.log("Unknown mode!");
     }
-  };
+  }
+
+}
 
 export default QuestionContainer;

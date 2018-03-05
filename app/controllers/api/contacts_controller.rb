@@ -1,11 +1,15 @@
 class Api::ContactsController < ApplicationController
-  load_and_authorize_resource
 
+  skip_before_action :verify_authenticity_token
   # return a list of contacts in json available
   def show
+    if !current_building_operator
+      render :json => []
+    end
+
     contact_ids = Hash.new
 
-    Delegation.where(source_id: current_user.id).each do |delegation|
+    Delegation.where(source_id: current_building_operator.id).each do |delegation|
       result[delegation.building_operator_id] = 1
     end
 

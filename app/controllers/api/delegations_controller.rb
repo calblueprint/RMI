@@ -1,5 +1,6 @@
 class Api::DelegationsController < ApplicationController
-  load_and_authorize_resource
+  #load_and_authorize_resource
+  skip_before_action :verify_authenticity_token
 
   # XXX: dependent questions are not automatically delegated, user should post
   # a batch that includes all dependent questions known
@@ -12,32 +13,34 @@ class Api::DelegationsController < ApplicationController
         operator = BuildingOperator.find_by(email: delegation_params[:email])
         unless operator
           # if building operator doesn't exist, create it
-          operator = BuildingOperator.create!(
+          operator = BuildingOperator.new(
             email: delegation_params[:email],
             first_name: delegation_params[:first_name],
             last_name: delegation_params[:last_name],
-            phone: "0000000000" # use this filler by default, should be replaced during first login
+            phone: "0000000000", # use this filler by default, should be replaced during first login
+            password: (0...15).map { (65 + rand(26)).chr }.join
           )
+          operator.save!
         end
 
-        delegation_params[:building_operator_id] = operator.id
-
-        if current_user.is_a?(BuildingOperator)
-          delegation_params[:source_id] = current_user.id
-        end
-
-        Delegation.create!(delegation_params)
-
-        # mark all other delegations on same answers_id delegated
+        # mark all other delegations on same answer_id delegated
         Delegation.where(
-          answers_id: delegation_params[:answers_id], status: :active).each do |old_delegation|
-            old_delegation.update(staus: :delegated)
+          answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
+            old_delegation.update(status: :delegated)
         end
+
+        Delegation.new(
+          answer: Answer.find(delegation_params[:answer_id]),
+          source: current_building_operator,
+          building_operator: operator,
+          status: :active
+        ).save!
+
       end
       render_json_message(:ok, message: 'New delegations created')
     end
   rescue => e
-    render_json_message(:forbidden, data: delegation, errors: e.message)
+    render_json_message(:forbidden, errors: e.message)
   end
 
   # access to delegation is done from endpoints related to questions
@@ -47,13 +50,12 @@ class Api::DelegationsController < ApplicationController
   # only for batch creation case
   def delegations_params
     # delegations allow batch creation and therefore should be submitted as a list
-    params.require(:delegation).map! do |delegation|
+    params.require(:delegations).map! do |delegation|
       delegation.permit(
         :email,
         :first_name,
         :last_name,
-        :answers_id,
-        :status
+        :answer_id,
       )
     end
   end
