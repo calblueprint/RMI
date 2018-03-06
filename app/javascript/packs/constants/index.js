@@ -53,6 +53,12 @@ export const DELETE_QUESTION = 'DELETE_QUESTION';
 export const DELETE_OPTION = 'DELETE_OPTION';
 export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 
+export const OPTION_FETCH_IN_PROGRESS = 'OPTION_FETCH_IN_PROGRESS,';
+export const OPTION_SAVE_IN_PROGRESS = 'OPTION_SAVE_IN_PROGRESS';
+
+// Intermediate save constants
+export const PRE_FETCH_SAVE = 'PRE_FETCH_SAVING';
+
 // Fetch constants
 export const FETCH_SUCCESS = 'FETCH_OK';
 export const FETCH_FAILURE = 'FETCH_ERR';

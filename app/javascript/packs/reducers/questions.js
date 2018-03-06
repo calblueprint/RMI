@@ -5,10 +5,13 @@ import {
   EDIT_OPTION,
   REMOVE_QUESTION,
   REMOVE_OPTION,
-  SAVE_QUESTION
+  SAVE_QUESTION,
+  OPTION_FETCH_IN_PROGRESS,
+  OPTION_SAVE_IN_PROGRESS
+
 } from '../constants';
 
-function attachQuestion(state, action) {
+function addQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,
@@ -61,15 +64,34 @@ function saveQuestion(state, action) {
   }
 }
 
+function beforeFetchOption(state, action) {
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      fetching: action.fetching,
+      saved: false,
+      options: {
+        ...state[questionId].options,
+        [optionId]: action.option
+      }
+    }
+  }
+}
+
 export default function questions(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
-    case ADD_QUESTION: return attachQuestion(state, action);
+    case ADD_QUESTION: return addQuestion(state, action);
     case EDIT_QUESTION: return attachQuestion(state, action);
     case ADD_OPTION: return attachOptionToQuestion(state, action);
     case REMOVE_QUESTION: return detachQuestion(state, action);
     case REMOVE_OPTION: return detachOptionFromQuestion(state, action);
     case SAVE_QUESTION: return saveQuestion(state, action);
+    case OPTION_FETCH_IN_PROGRESS: return beforeFetchOption(state, action);
+    case OPTION_SAVE_IN_PROGRESS: return beforeFetchOption(state, action);
   default:
     return state;
   }
