@@ -2,18 +2,10 @@ export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
     return state.buildings[buildingId].answers[questionId]
 }
 
-export function getAnswersforBuilding(entity, id, state) {
-    if (entity == "buildings") {
-        if (id) {
-            return state.buildings[id].answers;
-        }
-    }
-    return null
-}
-
-export function getRemainingAnswersforCategory(answers) {
+export function getRemainingAnswersforCategory(qFromC, buildingId, state) {
     let counter = 0;
-    for (const answer of answers) {
+    for (let q of qFromC) {
+        let answer = state.buildings[buildingId].answers[q];
         if (!answer.trim()) {
             counter = counter + 1;
         }

@@ -22,7 +22,7 @@ class QuestionnaireRoutes extends React.Component {
         <QuestionnaireControls currentPath={currentPath} />
 
         <Switch>
-          <Route path={`${currentPath}/edit`}
+          <Route path={`${currentPath}/edit/:cId?`}
                  render={renderWithProps(AnswerModeContainer, propsToPass)} />
           <Route path={`${currentPath}/delegate`}
                  render={renderWithProps(DelegateModeContainer, propsToPass)} />
@@ -46,7 +46,8 @@ function renderWithProps(ComponentName, props) {
 
 function mapStateToProps(state, ownProps) {
   return {
-    building: state.buildings[ownProps.match.params.bId]
+    building: state.buildings[ownProps.match.params.bId],
+    //categoryId: ownProps.match.params.cId,
   };
 }
 

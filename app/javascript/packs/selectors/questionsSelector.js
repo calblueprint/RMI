@@ -78,3 +78,11 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
     ));
   }
 }
+
+export function getQuestionsByCategory(categoryId, questions) {
+  return Object.keys(questions).filter(id => {
+          return questions[id].category_id == categoryId
+      }).map(id => {
+          return questions[id]
+      })
+}

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import {loadInitialState} from '../actions/initialState';
-import {getBuildings, getNavBarBuildings} from '../selectors/buildingsSelector';
+import {loadInitialState} from '../../actions/initialState';
+import {getBuildings, getNavBarBuildings} from '../../selectors/buildingsSelector';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
-import {getName, getEmail} from '../selectors/usersSelector'
-import {getCurrentCategory, getCategories} from "../selectors/categoriesSelector";
+import {getName, getEmail} from '../../selectors/usersSelector'
+import {getCurrentCategory, getCategories} from "../../selectors/categoriesSelector";
 import CategoryContainer from './CategoryContainer'
 
 // import {getAnswersforBuilding, getRemainingAnswers} from "../selectors/answersSelector";
@@ -29,6 +29,7 @@ class NavigationBarContainer extends React.Component {
                 </DropdownMenuContainer>
                 <CategoryContainer categories={this.props.categories} currentCategory={this.props.currentCategory}
                                    currentBuilding={this.props.currentBuilding}>
+                                   {/*remainingQuestions = {this.props.remainingQuestions}>*/}
                 </CategoryContainer>
                 <div className="userInfo">
                     {username} <br/>
@@ -47,8 +48,9 @@ function mapStateToProps(state, ownProps) {
         userEmail: getEmail(state),
         username: getName(state),
         currentCategory: getCurrentCategory(ownProps.match.params.cId, state),
-        categories: getCategories(state),
-        mode: ownProps.match.params.mode,
+        categories: getCategories(ownProps.match.params.entity, ownProps.match.params.id, state),
+        //remainingQuestions: getRemainingAnswersforCategory(getQuestionsByCategory(ownProps.match.params.cId,
+        // getQuestionsByBuilding(ownProps.match.params.entity, ownProps.match.params.id, state)), ownProps.match.params.id, state)
     };
 }
 

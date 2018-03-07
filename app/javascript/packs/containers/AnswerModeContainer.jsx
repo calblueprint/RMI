@@ -8,9 +8,9 @@ import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 
 import { connect } from 'react-redux';
-import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+import {getQuestionsByCategory, getQuestionsByBuilding} from '../selectors/questionsSelector';
 
-class AnswerModeContainer extends React.Component {
+  class AnswerModeContainer extends React.Component {
   render() {
     return (
       <div className="question__container">
@@ -33,7 +33,7 @@ class AnswerModeContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    questions: getQuestionsByBuilding(ownProps.building.id, state)
+    questions: getQuestionsByCategory(ownProps.match.params.cId, getQuestionsByBuilding(ownProps.building.id, state)),
   };
 }
 

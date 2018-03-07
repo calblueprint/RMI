@@ -6,18 +6,22 @@ class CategoryContainer extends React.Component {
     render() {
         const currentCategory = this.props.currentCategory;
         const categories = this.props.categories;
-        const currentBuildingId = this.props.currentBuilding.id;
+        const currentBuildingId = this.props.currentBuilding ? this.props.currentBuilding.id : null;
+        //const remainingQuestions = this.props.remainingQuestions
         return (
             <div>
                 <h1>{currentCategory ? currentCategory.name : "No Category Selected"}</h1>
                 <div className = {"categoryList"}>
                     {Object.keys(categories).map(id => {
                     return (
-                       <p key = {id}> <Link to= {`/buildings/${currentBuildingId}/edit/${id}`} key = {id}> {categories[id].name} </Link>
+                       <p key = {id}> <Link to= {`/buildings/${currentBuildingId}/edit/${categories[id].id}`} key = {categories[id].id}> {categories[id].name} </Link>
                        </p>
                     )
                 })}
                 </div>
+                {/*<div>*/}
+                {/*<p> {remainingQuestions} Questions Remaining</p>*/}
+                {/*</div>*/}
             </div>
 
         )
