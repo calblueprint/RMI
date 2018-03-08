@@ -1,6 +1,5 @@
 class Api::DelegationsController < ApplicationController
-  #load_and_authorize_resource
-  skip_before_action :verify_authenticity_token
+  load_and_authorize_resource
 
   # XXX: dependent questions are not automatically delegated, user should post
   # a batch that includes all dependent questions known

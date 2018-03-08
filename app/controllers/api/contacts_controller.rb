@@ -1,6 +1,6 @@
 class Api::ContactsController < ApplicationController
+  load_and_authorize_resource
 
-  skip_before_action :verify_authenticity_token
   # return a list of contacts in json available
   def index
     if !current_building_operator
