@@ -51,7 +51,10 @@ class Api::AnswersController < ApplicationController
             :building_id,
             :question_id,
             :user_id,
-            :user_type
+            :user_type,
+            :delegation_email,
+            :delegation_first_name,
+            :delegation_last_name
           )
   end
 end
