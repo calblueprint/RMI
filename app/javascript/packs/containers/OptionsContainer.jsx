@@ -9,28 +9,34 @@ import Question from '../components/Question';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptions } from '../selectors/questionsSelector';
-import { addAnswer, editAnswer } from '../actions/answers';
+import { createAnswer, updateAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
-  handleSelect(option_id, text) {
+  /**
+   * Callback for when an option has been triggered. Will update the answer in database and store.
+   *
+   * @param option_id   id of the selected option
+   * @param value       The data of the updated answer. For range options, this is the number the user inputted;
+   *                      for dropdown options, it's the text of the option that was selected.
+   */
+  handleSelect(option_id, value) {
     // Set up answer data to send in fetch request
+    console.log("ANSWER");
+    console.log(this.props.answer);
     const answer = {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
       selected_option_id: option_id,
-      text: text
+      text: value
     };
-    if (this.props.question_type == "dropdown") {
-      answer.text = this.props.options[option_id].text;
-    }
 
     // Dispatch an action to update answer in the database and in store
     if (!this.props.answer) {
-      this.props.addAnswer(answer.building_id, answer);
+      this.props.createAnswer(answer.building_id, answer);
     }
     else {
       answer.id = this.props.answer.id;
-      this.props.editAnswer(answer.building_id, answer);
+      this.props.updateAnswer(answer.building_id, answer);
     }
   }
 
@@ -81,11 +87,11 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addAnswer: function (buildingId, answer) {
-      return addAnswer(buildingId, answer, dispatch);
+    createAnswer: function (buildingId, answer) {
+      return createAnswer(buildingId, answer, dispatch);
     },
-    editAnswer: function (buildingId, answer) {
-      return editAnswer(buildingId, answer, dispatch);
+    updateAnswer: function (buildingId, answer) {
+      return updateAnswer(buildingId, answer, dispatch);
     }
   }
 }
@@ -96,7 +102,9 @@ OptionsContainer.propTypes = {
   question_type: PropTypes.string.isRequired,
   options: PropTypes.object.isRequired,
   dependentQuestions: PropTypes.object.isRequired,
-  answer: PropTypes.object  // Optional - new questions can have no answer
+  answer: PropTypes.shape({ // Optional - new questions can have no answer
+
+  })
 };
 
 export default connect(

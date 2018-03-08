@@ -34,7 +34,7 @@ export function removeBuilding(id, dispatch) {
   };
 }
 
-function saveBuilding(type, id, response) {
+function buildingFetchSuccess(type, id, response) {
   return {
     type,
     status: FETCH_SUCCESS,
@@ -43,7 +43,7 @@ function saveBuilding(type, id, response) {
   };
 }
 
-function saveBuildingError(type, id, error) {
+function buildingFetchFailure(type, id, error) {
   return {
     ...saveError(type, error),
     buildingId: id,
@@ -72,9 +72,9 @@ export async function createBuilding(id, building, dispatch) {
     dispatch(removeBuilding(id, dispatch));
 
     let id = response.data.id;
-    dispatch(saveBuilding(CREATE_BUILDING, id, response.data));
+    dispatch(buildingFetchSuccess(CREATE_BUILDING, id, response.data));
   } catch (error) {
-    dispatch(saveBuildingError(CREATE_BUILDING, id, error));
+    dispatch(buildingFetchFailure(CREATE_BUILDING, id, error));
   };
 }
 
@@ -97,9 +97,9 @@ export async function updateBuilding(id, updatedBuilding, dispatch) {
       ...FETCH_SETTINGS
     }).then(resp => resp.json());
 
-    dispatch(saveBuilding(UPDATE_BUILDING, id, response.data));
+    dispatch(buildingFetchSuccess(UPDATE_BUILDING, id, response.data));
   } catch (error) {
-    dispatch(saveError(UPDATE_BUILDING, id, error));
+    dispatch(buildingFetchFailure(UPDATE_BUILDING, id, error));
   };
 }
 

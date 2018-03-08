@@ -3,33 +3,36 @@ import {
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
   FETCH_SETTINGS,
-  FETCHING_ANSWER,
-  UPDATE_ANSWER,
+  ANSWER_FETCH_IN_PROGRESS,
+  ANSWER_FETCH_SUCCESS,
+  ANSWER_FETCH_FAILURE,
   REMOVE_ANSWER,
 } from '../constants';
 import { post, patch } from '../fetch/requester';
 
-export function createAnswer(buildingId, answer) {
+export function answerFetchInProgress(buildingId, answer) {
   return {
-    type: FETCHING_ANSWER,
+    type: ANSWER_FETCH_IN_PROGRESS,
     status: FETCH_IN_PROGRESS,
     buildingId,
     answer
   };
 }
 
-function updateAnswer(response) {
+function answerFetchSuccess(response) {
   return {
-    type: UPDATE_ANSWER,
+    type: ANSWER_FETCH_SUCCESS,
     status: FETCH_SUCCESS,
+    buildingId: response.building_id,
     response
   };
 }
 
-function saveError(error) {
+function answerFetchFailure(error) {
   return {
-    type: UPDATE_ANSWER,
+    type: ANSWER_FETCH_FAILURE,
     status: FETCH_FAILURE,
+    buildingId: error.building_id,
     response: error
   };
 }
@@ -43,27 +46,27 @@ function saveError(error) {
  * @param answer        A hash that contains all params required by the Answers API controller
  * @param dispatch      The dispatch function
  */
-export async function addAnswer(buildingId, answer, dispatch) {
-  dispatch(createAnswer(buildingId, answer));
+export async function createAnswer(buildingId, answer, dispatch) {
+  dispatch(answerFetchInProgress(buildingId, answer));
 
   try {
     let response = await post('/api/answers', {'answer': answer});
-    dispatch(updateAnswer(response.data));
+    dispatch(answerFetchSuccess(response.data));
   } catch (error) {
-    dispatch(saveError(error));
+    dispatch(answerFetchFailure(error));
   }
 }
 
 /**
  * For answers that already exist in the database.
  */
-export async function editAnswer(buildingId, answer, dispatch) {
-  dispatch(createAnswer(buildingId, answer));
+export async function updateAnswer(buildingId, answer, dispatch) {
+  dispatch(answerFetchInProgress(buildingId, answer));
 
   try {
     let response = await patch('/api/answers/' + answer.id, {'answer': answer});
-    dispatch(updateAnswer(response.data));
+    dispatch(answerFetchSuccess(response.data));
   } catch (error) {
-    dispatch(saveError(error));
+    dispatch(answerFetchFailure(error));
   }
 }

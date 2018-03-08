@@ -10,10 +10,15 @@ class DropdownOption extends React.Component {
     }
   }
 
+  handleChange(e) {
+    const optionId = e.target.value;
+    this.props.onSelect(optionId, this.props.options[optionId].text);
+  }
+
   render() {
     const currentValue = this.props.answer ? this.props.answer.selected_option_id : "unselected";
     return (<div>
-      <select onChange={(e) => this.props.onSelect(e.target.value)}
+      <select onChange={(e) => this.handleChange(e)}
               value={currentValue}>
         <option value="unselected" disabled>Select an option</option>
         {Object.values(this.props.options).map((option) => {

@@ -8,11 +8,9 @@ import {
   ASSIGN_BUILDING_OPERATOR,
   UNASSIGN_BUILDING_OPERATOR,
   FETCH_SUCCESS,
-  FETCH_FAILURE,
-  FETCHING_ANSWER,
-  UPDATE_ANSWER,
-  REMOVE_ANSWER,
+  FETCH_FAILURE
 } from '../constants';
+import { answers } from './answers';
 
   /////////////////////////////////////////////////////////////////
  // BUILDINGS ////////////////////////////////////////////////////
@@ -85,91 +83,19 @@ function saveBuilding(state, action) {
   };
 }
 
-  /////////////////////////////////////////////////////////////////
- // ANSWERS //////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-
-/**
- * Updates the answer in store with the data that is currently being sent through a fetch request.
- */
-function beforeFetchAnswer(state, action) {
-  const buildingId = action.buildingId;
-  const answer = action.answer;
-
-  return {
-    ...state,
-    [buildingId]: {
-      ...state[buildingId],
-      answers: {
-        ...state[buildingId].answers,
-        [answer.question_id]: {
-          ...answer,
-          saved: false,
-          fetching: true,
-          buildingId: buildingId,
-        }
-      },
-    }
-  };
-}
-
-/**
- * Updates the answer in store with the response received from the fetch request.
- */
-function updateAnswer(state, action) {
-  const status = action.status;
-  const answer = action.response;
-  const buildingId = answer.building_id;
-
-  if (status === FETCH_SUCCESS) {
+function tryAnswersReducer(state, action) {
+  // Pass answer actions on to the answers reducer.
+  // (action must have a buildingId to indicate which building the answers belong to)
+  if (action.buildingId) {
     return {
       ...state,
-      [buildingId]: {
-        ...state[buildingId],
-        answers: {
-          ...state[buildingId].answers,
-          [answer.question_id]: {
-            ...answer,
-            saved: true,
-            fetching: false,
-            error: false
-          }
-        }
+      [action.buildingId]: {
+        ...state[action.buildingId],
+        answers: answers(state[action.buildingId].answers, action)
       }
-    }
+    };
   }
-
-  if (status === FETCH_FAILURE) {
-    const errorMessage = action.response;
-    return {
-      ...state,
-      [buildingId]: {
-        ...state[buildingId],
-        answers:{
-          ...state[buildingId].answers,
-          [answer.id]: {
-            ...state[buildingId].answers[answer.id],
-            error: errorMessage,
-            fetching: false
-          }
-        }
-      }
-    }
-  }
-
-  return {
-    ...state,
-    [buildingId]: {
-      ...state[buildingId],
-      answers: {
-        ...state[buildingId]['answers'],
-        [answer.id]: {
-          ...state[buildingId]['answers'][answer.id],
-          fetching: true,
-        }
-      }
-    }
-  }
+  return state;
 }
 
 export default function buildings(state = {}, action) {
@@ -181,11 +107,6 @@ export default function buildings(state = {}, action) {
     case REMOVE_BUILDING: return removeBuilding(state, action);
     case CREATE_BUILDING: return saveBuilding(state, action);
     case UPDATE_BUILDING: return saveBuilding(state, action);
-
-    // Answers
-    case FETCHING_ANSWER: return beforeFetchAnswer(state, action);
-    case UPDATE_ANSWER: return updateAnswer(state, action);
-  default:
-    return state;
+    default: return tryAnswersReducer(state, action);
   }
 }
