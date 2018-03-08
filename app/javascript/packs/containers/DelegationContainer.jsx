@@ -1,5 +1,7 @@
 import React from 'react';
 
+import QuestionContainer from './QuestionContainer';
+
 import * as ContactActions from '../actions/contacts';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -108,14 +110,14 @@ class DelegationContainer extends React.Component {
       }
     })();
 
-    return ({dependentQuestions});
+    return (<div>{dependentQuestions}</div>);
   }
 
   render() {
     if (this.answerValid()) {
-      return renderAnswered();
+      return this.renderAnswered();
     } else {
-      return renderUnanswered();
+      return this.renderUnanswered();
     }
   }
 }

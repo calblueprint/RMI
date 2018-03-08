@@ -1,4 +1,7 @@
 import React from 'react';
+
+import QuestionContainer from './QuestionContainer';
+
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
@@ -38,7 +41,8 @@ class OptionsContainer extends React.Component {
         if (dependents) {
           return dependents.map(question => {
             return (<div key={question.id}>
-              <QuestionContainer building_id={this.props.building_id} {...question} />
+              <QuestionContainer mode="answer"
+                   building_id={this.props.building_id} {...question} />
             </div>);
           });
         }

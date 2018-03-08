@@ -5,9 +5,11 @@
 
 import React from 'react';
 
+import QuestionContainer from './QuestionContainer';
+
 // XXX: may be too inefficient
 import { getDependentQuestionsForOption } from "../selectors/questionsSelector";
-
+import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 import { connect } from 'react-redux';
 
 class DelegateModeContainer extends React.Component {
@@ -21,7 +23,7 @@ class DelegateModeContainer extends React.Component {
     if (potentialChildren.length == 0) {
       return [];
     } else {
-      return potentialChildren.concat(potentialChildren.map(getDependentQuestionIds));
+      return potentialChildren.concat(potentialChildren.map(this.getDependentQuestionIds));
     }
   }
 

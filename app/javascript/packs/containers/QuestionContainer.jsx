@@ -1,5 +1,9 @@
 import React from 'react';
 
+import OptionsContainer from './OptionsContainer';
+import QuestionResultContainer from './QuestionResultContainer';
+import DelegationContainer from './DelegationContainer';
+
 class QuestionContainer extends React.Component {
 
   // this.props.mode can be
@@ -10,34 +14,34 @@ class QuestionContainer extends React.Component {
   renderAnswerMode() {
     return (
         <div>
-          <p>{props.text}</p>
+          <p>{this.props.text}</p>
           <OptionsContainer
-            question_id={props.id}
-            building_id={props.building_id}
-            question_type={props.question_type}
-            options={props.options} />
+            question_id={this.props.id}
+            building_id={this.props.building_id}
+            question_type={this.props.question_type}
+            options={this.props.options} />
         </div>);
   }
 
   renderReviewMode() {
     return (
         <div>
-          <p>{props.text}</p>
+          <p>{this.props.text}</p>
           <QuestionResultContainer
-            question_id={props.id}
-            building_id={props.building_id}
-            question_type={props.question_type}
-            options={props.options} />
+            question_id={this.props.id}
+            building_id={this.props.building_id}
+            question_type={this.props.question_type}
+            options={this.props.options} />
         </div>);
   }
 
   renderDelegationMode() {
     return (
       <div>
-        <p>{props.text}</p>
+        <p>{this.props.text}</p>
         <DelegationContainer
-          question_id={props.id}
-          building_id={props.building_id} />
+          question_id={this.props.id}
+          building_id={this.props.building_id} />
       </div>);
   }
 
@@ -47,9 +51,11 @@ class QuestionContainer extends React.Component {
     } else if (this.props.mode == "review") {
       return this.renderReviewMode();
     } else if (this.props.mode == "delegation") {
-      return renderDelegationMode();
+      return this.renderDelegationMode();
     } else {
-      console.log("Unknown mode!");
+      console.log("Unknown mode! ");
+      console.log(this.props.mode);
+      return (<p>Error</p>);
     }
   }
 

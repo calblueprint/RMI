@@ -5,6 +5,8 @@
 
 import React from 'react';
 
+import QuestionContainer from './QuestionContainer';
+
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 
