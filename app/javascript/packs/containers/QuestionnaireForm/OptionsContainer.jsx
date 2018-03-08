@@ -4,7 +4,7 @@ import RangeOption from '../../components/QuestionnaireForm/RangeOption';
 import {
   optionFetchInProgress,
   optionPreFetchSave
-} from '../../actions/questions';
+} from '../../actions/options';
 import {connect} from 'react-redux';
 
 class OptionsContainer extends React.Component {
@@ -17,20 +17,20 @@ class OptionsContainer extends React.Component {
   }
 
   updateOption(id, args) {
-    const updated_option = {...this.props.question.options[id], ...args}
-    this.props.optionFetchInProgress(updated_option)
+    const updatedOption = {...this.props.question.options[id], ...args}
+    this.props.optionFetchInProgress(updatedOption)
   }
 
   handleOnChange(id, args) {
-    const updated_option = {...this.props.question.options[id], ...args}
-    this.props.optionPreFetchSave(updated_option)
+    const updatedOption = {...this.props.question.options[id], ...args}
+    this.props.optionPreFetchSave(updatedOption)
   }
 
   render () {
     const question = this.props.question;
     const ComponentName = this.getComponentName(question.question_type);
 
-    const options_display = Object.keys(this.props.question.options).map((optionId) => {
+    const optionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
       const option = this.props.question.options[optionId];
       return (
         <div key={optionId}>
@@ -45,7 +45,7 @@ class OptionsContainer extends React.Component {
 
     return(
       <div>
-        {options_display}
+        {optionsDisplay}
       </div>
     )
   }
