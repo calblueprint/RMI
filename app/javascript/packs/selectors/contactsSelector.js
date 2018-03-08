@@ -1,3 +1,8 @@
 export function getContacts(state) {
-  return state.contacts;
+  if (state.contacts) {
+    return state.contacts;
+  } else {
+    // for compatibility with no contact code
+    return [];
+  }
 };

@@ -10,6 +10,14 @@ import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getContacts } from "../selectors/contactsSelector";
 
 class DelegationContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: this.props.answer.delegation_email,
+      firstName: this.props.answer.delegation_first_name,
+      lastName: this.props.answer.delegation_last_name,
+    };
+  }
 
   // TODO: need to add current value of delegations to redux, if they aren't empty
 
@@ -22,27 +30,23 @@ class DelegationContainer extends React.Component {
 
   }
 
+  afterUpdateState() {
+    this.createOrUpdateContactsIfValid();
+    this.updateAnswer();
+  }
+
   // Need tp dispatch actions to update answer in redux, then send to backend
   // XXX: Blocked on answer actions by Kevin Li
   handleChangeEmail(value) {
-    this.props.email = value;
-    this.createOrUpdateContactsIfValid();
-    this.updateAnswer();
-
+    this.setState((state) => ({ email: value}), this.afterUpdateState);
   }
 
   handleChangeFirstName(value) {
-    this.props.firstName = value;
-    this.createOrUpdateContactsIfValid();
-    this.updateAnswer();
-
+    this.setState((state) => ({ firstName: value}), this.afterUpdateState);
   }
 
   handleChangeLastName(value) {
-    this.props.lastName = value;
-    this.createOrUpdateContactsIfValid();
-    this.updateAnswer();
-
+    this.setState((state) => ({ lastName: value}), this.afterUpdateState);
   }
 
   // If email, firstname and lastname are valid pair, then
@@ -50,9 +54,9 @@ class DelegationContainer extends React.Component {
   // in redux, and make it available in future references
   createOrUpdateContactsIfValid() {
     // TODO: should validate for valid email address here
-    if (this.props.email && this.props.firstName && this.props.lastName) {
+    if (this.state.email && this.state.firstName && this.state.lastName) {
       this.contactActions.addContact(
-          this.props.email, this.props.firstName, this.props.lastName);
+          this.state.email, this.state.firstName, this.state.lastName);
     }
   }
 
@@ -62,9 +66,9 @@ class DelegationContainer extends React.Component {
   }
 
   renderUnanswered() {
-    const currentEmail = this.props.email;
-    const currentFirstName = this.props.firstName;
-    const currentLastName = this.props.lastName;
+    const currentEmail = this.state.email;
+    const currentFirstName = this.state.firstName;
+    const currentLastName = this.state.lastName;
 
     return (
     <div>
@@ -73,7 +77,7 @@ class DelegationContainer extends React.Component {
       Email:<br></br>
       <input type="text" value={currentEmail}
         onChange={(e) => this.handleChangeEmail(e.target.value)}
-      />
+      /><br></br>
 
       <select onChange={(e) => this.handleSelect([e.target.value])}
               defaultValue={currentEmail}>
@@ -81,17 +85,17 @@ class DelegationContainer extends React.Component {
           return (<option value={contact.email} key={contact.email}>
               {contact.first_name + contact.last_name}</option>)
         })}
-      </select>
+      </select><br></br>
 
       First name:<br></br>
       <input type="text" value={currentFirstName}
         onChange={(e) => this.handleChangeFirstName(e.target.value)}
-      />
+      /><br></br>
 
       Last name:<br></br>
       <input type="text" value={currentLastName}
         onChange={(e) => this.handleChangeLastName(e.target.value)}
-      />
+      /><br></br>
     </div>)
   }
 
