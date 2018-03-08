@@ -16,48 +16,74 @@ QUESTIONS = [
   { question:
     { question_type: 'dropdown', category_id: 1, text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
     options: [
-      { text: 'yes' },
-      { text: 'no' }
+      { option:
+          {text: 'yes' },
+        dep_questions: [
+          {
+            question:
+              { question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
+          }
+        ]
+      },
+      { option: {text: 'no' }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'What is the area in ft2 of the conditioned floor space?', status: 'published', parameter: 'cfs_area' },
+    { question_type: 'range', category_id: 1, text: 'What is the area in ft2 of the office space?', status: 'published', parameter: 'cfs_area' },
     options: [
-      { min: 1, max: 100 }
+      { option:
+          {min: 1, max: 100 },
+        dep_questions: [
+          {
+            question:
+              { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
+            options: [
+              { option: { min: 1, max: 100 }}
+            ]
+          },
+          {
+            question:
+              { question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
+            options: [
+              { option: { min: 1, max: 100 }}
+            ]
+          }
+        ]
+      }
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the office space accounts for in the building in percentage.', status: 'published', parameter: 'perc_office_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the Back of House space accounts for in the building in percentage.', status: 'published', parameter: 'perc_boh_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the retail space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ret_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the restaurant/dining/kitchen space accounts for in the building in percentage.', status: 'published', parameter: 'perc_din_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the data center space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ds_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] },
   { question:
     { question_type: 'range', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
-      { min: 1, max: 100 }
+      { option: { min: 1, max: 100 }}
     ] }
 ].freeze
 
@@ -98,7 +124,9 @@ def make_rmi_user
       email: "rmi_user#{n}@test.com"
     )
     rmi_user.save
+    printf("#{n}/#{NUM_USERS} RMI Users \r")
   end
+  puts
 end
 
 def make_asset_manager
@@ -113,81 +141,89 @@ def make_asset_manager
       email: "asset_manager#{n}@test.com"
     )
     asset_manager.save
+    printf("#{n}/#{NUM_USERS} Asset Managers \r")
   end
+  puts
 end
 
 def make_portfolio
+  count = 0
+  total = AssetManager.all.count
   AssetManager.all.each do |a|
     portfolio = a.create_portfolio(
       name: Faker::Company.unique.name
     )
     portfolio.save
+    count += 1
+    printf("#{count}/#{total} Portfolios \r")
   end
+  puts
 end
 
 def make_building_types
+  count = 0
+  total = BUILDING_TYPES.length
   BUILDING_TYPES.each do |b|
     building_type = BuildingType.create(b)
     building_type.save
+    count += 1
+    printf("#{count}/#{total} Building Types \r")
   end
+  puts
 end
 
 def make_categories
+  count = 0
+  total = CATEGORIES.length
   CATEGORIES.each do |c|
     category = Category.create(c)
     category.save
+    count += 1
+    printf("#{count}/#{total} Categories \r")
   end
+  puts
 end
 
 def make_questions_options
+  count = 0
+  total = BuildingType.all.count * QUESTIONS.length
   BuildingType.all.each do |b_type|
     QUESTIONS.each do |q|
-      question = b_type.questions.create(q[:question])
-      question.status = 'published'
-      question.save
-      next if question.question_type == 'free'
-      q[:options].each do |o|
-        option =
-          case question.question_type
-          when 'dropdown'
-            question.dropdown_options.create(o)
-          when 'range'
-            question.range_options.create(o)
-          end
-        option.save
+      _make_question(q, b_type)
+      count += 1
+      printf("#{count}/#{total} Questions \r")
+    end
+  end
+  puts
+end
+
+def _make_question(q_hash, b_type)
+  question = b_type.questions.create(q_hash[:question])
+  question.status = 'published'
+  question.save
+  return if question.question_type == 'free'
+  q_hash[:options].each do |o|
+    option =
+      case question.question_type
+        when 'dropdown'
+          question.dropdown_options.create(o[:option])
+        when 'range'
+          question.range_options.create(o[:option])
+      end
+    option.save
+    if o.key?(:dep_questions)
+      o[:dep_questions].each do |q|
+        q[:question][:parent_option_id] = option.id
+        q[:question][:parent_option_type] = option.type
+        _make_question(q, b_type)
       end
     end
   end
 end
 
-def make_dependent_questions
-  BuildingType.all.each do |b_type|
-    parent_option1 = b_type.questions.first.options.first
-    parent_option2 = b_type.questions.second.options.first
-    byebug
-    dep_q1 = DEPENDENT_QUESTIONS[0][:q1]
-    dep_q2 = DEPENDENT_QUESTIONS[1][:q2]
-    dep_q3 = DEPENDENT_QUESTIONS[2][:q3]
-
-    q1 = Question.new(dep_q1)
-    q1.parent_option_id = parent_option2.id
-    q1.parent_option_type = parent_option2.type
-    q2 = Question.new(dep_q2)
-    q2.parent_option_id = parent_option2.id
-    q2.parent_option_type = parent_option2.type
-    q3 = Question.new(dep_q3)
-    q3.parent_option_id = parent_option1.id
-    q3.parent_option_type = parent_option1.type
-    byebug
-    dep_questions = [q1, q2, q3]
-    dep_questions.each do |q|
-      q.building_type = b_type
-      q.save
-    end
-  end
-end
-
 def make_buildings
+  count = 0
+  total = Portfolio.all.count * NUM_BUILDINGS
   Portfolio.all.each do |p|
     1.upto(NUM_BUILDINGS) do
       building_type_id = rand(1..BuildingType.all.size)
@@ -201,11 +237,16 @@ def make_buildings
               + BuildingType.find(building_type_id).name
       )
       building.save
+      count += 1
+      printf("#{count}/#{total} Buildings \r")
     end
   end
+  puts
 end
 
 def make_answers
+  count = 0
+  total = Building.all.count * QUESTIONS.length
   Building.all.each do |b|
     b.questions.each do |q|
       answer = Answer.new(building_id: b.id, question_id: q.id)
@@ -220,8 +261,11 @@ def make_answers
         answer[:text] = 'Text free range answer'
       end
       answer.save
+      count +=1
+      printf("#{count}/#{total} Answers \r")
     end
   end
+  puts
 end
 
 def make_building_operator
@@ -236,10 +280,14 @@ def make_building_operator
       email: "building_operator#{n}@test.com"
     )
     building_operator.save
+    printf("#{n}/#{NUM_USERS} Building Operators \r")
   end
+  puts
 end
 
 def make_delegations
+  count = 0
+  total = Answer.all.count * 3
   Answer.all.each do |answer|
     0.upto(2) do |n|
       delegation = Delegation.new
@@ -247,8 +295,11 @@ def make_delegations
       delegation.answer = answer
       delegation.status = n
       delegation.save
+      count += 1
+      printf("#{count}/#{total} Delegations \r")
     end
   end
+  puts
 end
 
 
@@ -266,4 +317,3 @@ make_buildings
 make_answers
 make_building_operator
 make_delegations
-make_dependent_questions
