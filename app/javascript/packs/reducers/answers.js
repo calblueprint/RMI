@@ -40,13 +40,12 @@ function answerFetchSuccess(state, action) {
  * Updates the answer in store with the response received from the fetch request.
  */
 function answerFetchFailure(state, action) {
-  const answer = action.response;
   const errorMessage = action.response;
 
   return {
     ...state,
-    [answer.question_id]: {
-      ...state[answer.question_id],
+    [action.questionId]: {
+      ...state[action.questionId],
       error: errorMessage,
       fetching: false
     }

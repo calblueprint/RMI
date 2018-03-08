@@ -5,6 +5,7 @@ import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
 import Question from '../components/Question';
+import Status from '../components/Status';
 
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
@@ -37,6 +38,17 @@ class OptionsContainer extends React.Component {
     else {
       answer.id = this.props.answer.id;
       this.props.updateAnswer(answer.building_id, answer);
+    }
+  }
+
+  /**
+   * Called when the user clicks the "retry" button. Will attempt to save
+   * the answer again if it previously failed due to connection issues.
+   */
+  onRetry() {
+    const answer = this.props.answer;
+    if (answer) {
+      this.handleSelect(answer.selected_option_id, answer.text);
     }
   }
 
@@ -73,6 +85,7 @@ class OptionsContainer extends React.Component {
 
     return (<div>
       {optionsComponent}
+      <Status fetchObject={this.props.answer} onRetry={this.onRetry.bind(this)} />
       {dependentQuestions}
     </div>)
   }

@@ -28,12 +28,13 @@ function answerFetchSuccess(response) {
   };
 }
 
-function answerFetchFailure(error) {
+function answerFetchFailure(buildingId, questionId, error) {
   return {
     type: ANSWER_FETCH_FAILURE,
     status: FETCH_FAILURE,
-    buildingId: error.building_id,
-    response: error
+    response: error,
+    buildingId,
+    questionId
   };
 }
 
@@ -53,7 +54,7 @@ export async function createAnswer(buildingId, answer, dispatch) {
     let response = await post('/api/answers', {'answer': answer});
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
-    dispatch(answerFetchFailure(error));
+    dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }
 
@@ -67,6 +68,6 @@ export async function updateAnswer(buildingId, answer, dispatch) {
     let response = await patch('/api/answers/' + answer.id, {'answer': answer});
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
-    dispatch(answerFetchFailure(error));
+    dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }

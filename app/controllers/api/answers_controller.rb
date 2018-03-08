@@ -1,5 +1,5 @@
 class Api::AnswersController < ApplicationController
-  load_and_authorize_resource
+  # load_and_authorize_resource << WHY???????
 
   def create
     answer = Answer.new(answer_params)
