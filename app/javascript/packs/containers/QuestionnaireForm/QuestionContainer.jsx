@@ -5,7 +5,6 @@ import OptionsContainer from './OptionsContainer'
 import {connect} from 'react-redux';
 import questionFetchInProgress from '../../actions/questions';
 import questionPreFetchSave from '../../actions/questions';
-import {optionFetchInProgress, optionPreFetchSave} from '../../actions/options';
 
 class QuestionContainer extends React.Component {
   updateQuestion(id, args) {
@@ -23,7 +22,7 @@ class QuestionContainer extends React.Component {
       <div style={{border: "1px solid black"}}>
         <Question
           question={this.props.question}
-          updateOption={this.updateOption.bind(this)}
+          updateQuestion={this.updateQuestion.bind(this)}
           handleOnChange={this.handleOnChange.bind(this)}
         />
         <OptionsContainer
