@@ -14,7 +14,7 @@ export function getBuildingByID(buildingId, state) {
   return state.buildings[buildingId]
 
 }
-
+//gets buildings by id but checks that we are in a building view
 export function getNavBarBuildings(entity, id, state) {
   if (entity == "buildings") {
     if (id) {

@@ -7,9 +7,9 @@ import {connect} from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
 import {getName, getEmail} from '../../selectors/usersSelector'
 import {getCurrentCategory, getCategories} from "../../selectors/categoriesSelector";
-import CategoryContainer from './CategoryContainer'
-
-// import {getAnswersforBuilding, getRemainingAnswers} from "../selectors/answersSelector";
+import CategoryContainer from './CategoryContainer';
+import {getQuestionsByBuildingNavBar, getQuestionsByCategory} from "../../selectors/questionsSelector";
+import {getRemainingAnswersforCategory} from "../../selectors/answersSelector";
 
 
 class NavigationBarContainer extends React.Component {
@@ -28,8 +28,7 @@ class NavigationBarContainer extends React.Component {
                                        history={this.props.history}>
                 </DropdownMenuContainer>
                 <CategoryContainer categories={this.props.categories} currentCategory={this.props.currentCategory}
-                                   currentBuilding={this.props.currentBuilding}>
-                                   {/*remainingQuestions = {this.props.remainingQuestions}>*/}
+                                   currentBuilding={this.props.currentBuilding} remainingQuestions = {this.props.remainingQuestions}>
                 </CategoryContainer>
                 <div className="userInfo">
                     {username} <br/>
@@ -49,8 +48,8 @@ function mapStateToProps(state, ownProps) {
         username: getName(state),
         currentCategory: getCurrentCategory(ownProps.match.params.cId, state),
         categories: getCategories(ownProps.match.params.entity, ownProps.match.params.id, state),
-        //remainingQuestions: getRemainingAnswersforCategory(getQuestionsByCategory(ownProps.match.params.cId,
-        // getQuestionsByBuilding(ownProps.match.params.entity, ownProps.match.params.id, state)), ownProps.match.params.id, state)
+        remainingQuestions: getRemainingAnswersforCategory(getQuestionsByCategory(ownProps.match.params.cId,
+            getQuestionsByBuildingNavBar(ownProps.match.params.id, state)), ownProps.match.params.id, state)
     };
 }
 

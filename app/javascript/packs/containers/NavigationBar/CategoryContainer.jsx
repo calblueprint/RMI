@@ -7,7 +7,7 @@ class CategoryContainer extends React.Component {
         const currentCategory = this.props.currentCategory;
         const categories = this.props.categories;
         const currentBuildingId = this.props.currentBuilding ? this.props.currentBuilding.id : null;
-        //const remainingQuestions = this.props.remainingQuestions
+        const remainingQuestions = this.props.remainingQuestions
         return (
             <div>
                 <h1>{currentCategory ? currentCategory.name : "No Category Selected"}</h1>
@@ -19,9 +19,9 @@ class CategoryContainer extends React.Component {
                     )
                 })}
                 </div>
-                {/*<div>*/}
-                {/*<p> {remainingQuestions} Questions Remaining</p>*/}
-                {/*</div>*/}
+                <div>
+                    <p> {remainingQuestions} Questions Remaining</p>
+                </div>
             </div>
 
         )

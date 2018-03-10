@@ -23,6 +23,19 @@ export function getQuestionsByBuildingType(buildingTypeId, state) {
   });
 }
 
+//gets questions based off of the specific building we are viewing
+//entity is simply the part of a portfolio that we are in (portfolios/portfolio_id or buildings/buildingId)
+export function getQuestionsByBuildingNavBar(entity, buildingId, state) {
+    if (entity == 'buildings') {
+        if (buildingId) {
+            const questions = state.buildings[buildingId].questions;
+            return questions.map((questionId) => {
+                return state.questions[questionId];
+            });
+        }
+    }
+}
+
 /**
  * Returns a hash of dependent questions for the given options,
  * where the keys are option ids and values are arrays of question objects.
@@ -79,10 +92,16 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
   }
 }
 
-export function getQuestionsByCategory(categoryId, questions) {
-  return Object.keys(questions).filter(id => {
-          return questions[id].category_id == categoryId
-      }).map(id => {
-          return questions[id]
-      })
+//takes in the ID of a specific category that we have selected and returns the questions associated with that category
+export function getQuestionsByCategory(categoryId, questions){
+  if (questions) {
+      if (categoryId) {
+          return Object.keys(questions).filter(id => {
+              return questions[id].category_id == categoryId
+          }).map(id => {
+              return questions[id]
+          })
+      }
+      return questions;
+  }
 }
