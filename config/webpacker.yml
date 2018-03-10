@@ -20,9 +20,6 @@ default: &default
     - .jsx
     - .ts
     - .vue
-    - .sass
-    - .scss
-    - .css
     - .png
     - .svg
     - .gif
@@ -36,7 +33,7 @@ development:
   dev_server:
     host: localhost
     port: 8080
-    hmr: false
+    hmr: true
     https: false
 
 test:
