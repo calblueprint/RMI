@@ -41,6 +41,8 @@ class QuestionContainer extends React.Component {
         <DelegationContainer
           text={this.props.text}
           question_id={this.props.id}
+          question_type={this.props.question_type}
+          options={this.props.options}
           building_id={this.props.building_id} />
       </div>);
   }

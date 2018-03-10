@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
+import QuestionContainer from "./QuestionContainer";
 
 class QuestionResultContainer extends React.Component {
 
