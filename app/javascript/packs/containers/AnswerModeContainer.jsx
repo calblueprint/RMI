@@ -13,15 +13,18 @@ import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 class AnswerModeContainer extends React.Component {
   render() {
     return (
-      <div>
+      <div className="question__container">
         {this.props.questions.map((question) => {
           // Only display non-dependent questions initially
-          if (question.parent_option_id == null) {
-            return (<QuestionContainer mode="answer"
-                              key={question.id}
-                              building_id={this.props.building.id}
-                              {...question} />);
-          }
+          if (question.parent_option_id) return null;
+            return (
+              <QuestionContainer
+                mode="answer"
+                key={question.id}
+                building_id={this.props.building.id}
+                {...question}
+              />
+            );
         })}
       </div>
     );

@@ -22,14 +22,18 @@ class DropdownOption extends React.Component {
   render() {
     const currentValue = this.props.answer ? this.props.answer.selected_option_id : "unselected";
     return (<div>
-      <select onChange={(e) => this.onChange(e.target.value)}
-              value={currentValue}>
+      <select
+        value={currentValue}
+        onChange={(e) => this.onChange(e.target.value)}
+        onFocus={(e) => this.props.onEnter()}
+        onBlur={(e) => this.props.onLeave()}
+      >
         <option value="unselected" disabled>Select an option</option>
         {Object.values(this.props.options).map((option) => {
           return (<option value={option.id} key={option.id}>{option.text}</option>)
         })}
       </select>
-    </div>)
+    </div>);
   }
 }
 

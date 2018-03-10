@@ -36,14 +36,18 @@ class RangeOption extends React.Component {
 
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
-    return (<div>
+    return (<div className="input__range">
       <input
         type="number"
         value={currentValue}
         onChange={(e) => this.onChange(e.target.value)}
-        onBlur={(e) => this.onChange(e.target.value, true)}
+        onFocus={(e) => this.props.onEnter()}
+        onBlur={(e) => {
+          this.onChange(e.target.value, true);
+          this.props.onLeave();
+        }}
       />
-    </div>)
+    </div>);
   }
 }
 

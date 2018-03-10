@@ -18,11 +18,17 @@ class FreeOption extends React.Component {
   }
 
   render() {
-    return (<div>
-      <textarea value={this.props.answer ? this.props.answer.text : ""}
-                onChange={(e) => this.onChange(e.target.value)}
-                onBlur={(e) => this.onChange(e.target.value, true)} />
-    </div>)
+    return (<div class="input__text">
+      <textarea
+        value={this.props.answer ? this.props.answer.text : ""}
+        onChange={(e) => this.onChange(e.target.value)}
+        onFocus={(e) => this.props.onEnter()}
+        onBlur={(e) => {
+          this.onChange(e.target.value, true);
+          this.props.onLeave();
+        }}
+      />
+    </div>);
   }
 }
 
