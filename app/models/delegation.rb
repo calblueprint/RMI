@@ -5,7 +5,7 @@
 #  id                   :integer          not null, primary key
 #  source_id            :integer
 #  building_operator_id :integer
-#  answers_id           :integer
+#  answer_id            :integer
 #  status               :integer          default("predelegated")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
