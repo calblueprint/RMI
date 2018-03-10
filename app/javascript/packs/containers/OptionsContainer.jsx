@@ -14,6 +14,12 @@ import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answer
 
 
 class OptionsContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false
+    };
+  }
   /**
    * Returns answer data in the format expected for a fetch request.
    */
@@ -78,6 +84,8 @@ class OptionsContainer extends React.Component {
       answer: this.props.answer,
       onChange: this.onChange.bind(this),
       onSave: this.onSave.bind(this)
+      onEnter: () => this.setState({ selected: true }),
+      onLeave: () => this.setState({ selected: false })
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -92,23 +100,60 @@ class OptionsContainer extends React.Component {
       }
     })();
     const dependentQuestions = (() => {
-      if (this.props.answer) {
-        const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
-        if (dependents) {
-          return dependents.map(question => {
-            return (<div key={question.id}>
-              <QuestionContainer mode="answer"
-                   building_id={this.props.building_id} {...question} />
-            </div>);
-          });
+      if (!this.props.answer) return null;
+      const { dependentQuestions, answer } = this.props;
+
+      const dependentOptionIds = Object.keys(dependentQuestions);
+      const allDependentQuestions = dependentOptionIds.reduce((arr, key) => {
+        const questions = dependentQuestions[key];
+        return arr.concat(questions);
+      }, []);
+      const selectedOption = answer.selected_option_id;
+
+      const shownDependents = dependentQuestions[selectedOption];
+      const firstShownDependent = shownDependents.length > 0
+          ? shownDependents[0]
+          : null;
+
+      return allDependentQuestions.map((question, i) => {
+        let focus;
+        if (firstShownDependent) {
+          focus = question.id === firstShownDependent.id ? {
+            setFocusFunc: (focusFunc) => {
+              this.focusFirstDependent = focusFunc;
+            }
+          } : {};
         }
-      }
+        return (
+          <Transition
+            in={question.parent_option_id === selectedOption}
+            timeout={0}
+          >
+            {(state) => (
+              <div
+                key={question.id}
+                style={{...styles, ...transitionStyles[state]}}
+              >
+                <OptionsContainer
+                  building_id={this.props.building_id}
+                  question_id={question.id}
+                  {...question}
+                  {...focus}
+                />
+              </div>
+            )}
+          </Transition>
+        );
+      });
     })();
 
     return (<div>
-      {optionsComponent}
       <Status fetchObject={this.props.answer}
               onRetry={this.onRetry.bind(this)} />
+      <div className={`question ${this.state.selected ? 'question--selected' : ''}`}>
+        <p>{this.props.text}</p>
+        {optionsComponent}
+      </div>
       {dependentQuestions}
     </div>)
   }
