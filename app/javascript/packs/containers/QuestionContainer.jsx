@@ -38,8 +38,8 @@ class QuestionContainer extends React.Component {
   renderDelegationMode() {
     return (
       <div>
-        <p>{this.props.text}</p>
         <DelegationContainer
+          text={this.props.text}
           question_id={this.props.id}
           building_id={this.props.building_id} />
       </div>);

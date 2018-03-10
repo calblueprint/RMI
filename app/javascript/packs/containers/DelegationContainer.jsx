@@ -12,18 +12,30 @@ import { getContacts } from "../selectors/contactsSelector";
 class DelegationContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: this.props.answer.delegation_email,
-      firstName: this.props.answer.delegation_first_name,
-      lastName: this.props.answer.delegation_last_name,
-    };
+    if (this.props.answer) {
+      this.state = {
+        email: this.props.answer.delegation_email,
+        firstName: this.props.answer.delegation_first_name,
+        lastName: this.props.answer.delegation_last_name,
+      };
+    } else {
+      this.state = {
+        email: "",
+        firstName: "",
+        lastName: "",
+      };
+    }
   }
 
   // TODO: need to add current value of delegations to redux, if they aren't empty
 
   // determine whether answers are available
   answerValid() {
-    return this.props.answer.text || this.props.answer.attachment_file_name;
+    if (this.props.answer) {
+      return this.props.answer.text || this.props.answer.attachment_file_name;
+    } else {
+      return false;
+    }
   }
 
   handleSelect(value) {
@@ -72,6 +84,7 @@ class DelegationContainer extends React.Component {
 
     return (
     <div>
+      <p>{this.props.text}</p>
       Assign to other users:<br></br>
 
       Email:<br></br>
