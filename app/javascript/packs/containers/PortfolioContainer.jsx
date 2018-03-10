@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
@@ -7,7 +9,17 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-class PortfolioContainer extends React.Component {
+type Props = {
+  buildings: {
+    id: {
+      name: string
+    }
+  },
+  f: number
+};
+
+
+class PortfolioContainer extends React.Component<Props> {
   render() {
     return (<div>
       <h2>Portfolio</h2>
