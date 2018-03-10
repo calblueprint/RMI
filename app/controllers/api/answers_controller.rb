@@ -1,9 +1,10 @@
 class Api::AnswersController < ApplicationController
   load_and_authorize_resource
+
   def create
     answer = Answer.new(answer_params)
     if answer.save
-      render_json_message(:ok, message: 'New answer created', data: answer)
+      render_json_message(:ok, data: answer, message: 'New answer created')
     else
       render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)
     end
@@ -12,7 +13,7 @@ class Api::AnswersController < ApplicationController
   def update
     answer = Answer.find(params[:id])
     if answer.update(answer_params)
-      render_json_message(:ok, message: 'Answer successfully updated', data: answer)
+      render_json_message(:ok, data: answer, message: 'Answer successfully updated')
     else
       render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)
     end
@@ -48,10 +49,9 @@ class Api::AnswersController < ApplicationController
           .permit(
             :text,
             :attachment,
+            :selected_option_id,
             :building_id,
-            :question_id,
-            :user_id,
-            :user_type
+            :question_id
           )
   end
 end

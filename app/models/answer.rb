@@ -2,19 +2,23 @@
 #
 # Table name: answers
 #
-#  id                 :integer          not null, primary key
-#  text               :string           default("")
-#  building_id        :integer
-#  question_id        :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  selected_option_id :integer
+#  id                      :integer          not null, primary key
+#  text                    :string           default("")
+#  building_id             :integer
+#  question_id             :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  selected_option_id      :integer
+#  attachment_file_name    :string
+#  attachment_content_type :string
+#  attachment_file_size    :integer
+#  attachment_updated_at   :datetime
 #
 
 class Answer < ApplicationRecord
   belongs_to :building
   belongs_to :question
-  has_many :delegations, foreign_key: :answer_id
+  has_many :delegations, foreign_key: :answer_id, :dependent => :destroy
   has_many :building_operators, through: :delegations
 
   # attachment is used for FileOption
