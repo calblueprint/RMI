@@ -21,8 +21,6 @@ class OptionsContainer extends React.Component {
    */
   handleSelect(option_id, value) {
     // Set up answer data to send in fetch request
-    console.log("ANSWER");
-    console.log(this.props.answer);
     const answer = {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
