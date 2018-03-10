@@ -3,6 +3,7 @@ import PortfolioContainer from '../containers/PortfolioContainer';
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
+import { hot } from 'react-hot-loader';
 
 class AssetManagerRoutes extends React.Component {
   render() {
@@ -20,4 +21,4 @@ class AssetManagerRoutes extends React.Component {
   }
 }
 
-export default AssetManagerRoutes;
+export default hot(module)(AssetManagerRoutes);
