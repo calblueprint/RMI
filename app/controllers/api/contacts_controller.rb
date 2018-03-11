@@ -1,5 +1,6 @@
 class Api::ContactsController < ApplicationController
-  load_and_authorize_resource
+  # load_and_authorize_resource
+  # because there is no Contact model, cancan doesn't work well here
 
   # return a list of contacts in json available
   def index
@@ -11,7 +12,7 @@ class Api::ContactsController < ApplicationController
     contact_ids = Hash.new
 
     Delegation.where(source_id: current_building_operator.id).each do |delegation|
-      result[delegation.building_operator_id] = 1
+      contact_ids[delegation.building_operator_id] = 1
     end
 
     result = []
