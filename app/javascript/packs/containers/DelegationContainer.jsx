@@ -49,16 +49,8 @@ class DelegationContainer extends React.Component {
 
   // Need tp dispatch actions to update answer in redux, then send to backend
   // XXX: Blocked on answer actions by Kevin Li
-  handleChangeEmail(value) {
-    this.setState((state) => ({ email: value}), this.afterUpdateState);
-  }
-
-  handleChangeFirstName(value) {
-    this.setState((state) => ({ firstName: value}), this.afterUpdateState);
-  }
-
-  handleChangeLastName(value) {
-    this.setState((state) => ({ lastName: value}), this.afterUpdateState);
+  handleChange(key, value) {
+    this.setState((state) => ({ [key]: value}), this.afterUpdateState);
   }
 
   // If email, firstname and lastname are valid pair, then
@@ -67,7 +59,7 @@ class DelegationContainer extends React.Component {
   createOrUpdateContactsIfValid() {
     // TODO: should validate for valid email address here
     if (this.state.email && this.state.firstName && this.state.lastName) {
-      this.contactActions.addContact(
+      this.props.contactActions.addContact(
           this.state.email, this.state.firstName, this.state.lastName);
     }
   }
@@ -89,7 +81,7 @@ class DelegationContainer extends React.Component {
 
       Email:<br></br>
       <input type="text" value={currentEmail}
-        onChange={(e) => this.handleChangeEmail(e.target.value)}
+        onChange={(e) => this.handleChange("email", e.target.value)}
       /><br></br>
 
       <select onChange={(e) => this.handleSelect([e.target.value])}
@@ -102,12 +94,12 @@ class DelegationContainer extends React.Component {
 
       First name:<br></br>
       <input type="text" value={currentFirstName}
-        onChange={(e) => this.handleChangeFirstName(e.target.value)}
+        onChange={(e) => this.handleChange("firstName", e.target.value)}
       /><br></br>
 
       Last name:<br></br>
       <input type="text" value={currentLastName}
-        onChange={(e) => this.handleChangeLastName(e.target.value)}
+        onChange={(e) => this.handleChange("lastName", e.target.value)}
       /><br></br>
     </div>)
   }
