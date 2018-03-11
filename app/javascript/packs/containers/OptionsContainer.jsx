@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import QuestionContainer from './QuestionContainer';
 import DropdownOption from '../components/DropdownOption';
 import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
-import Question from '../components/Question';
 import Status from '../components/Status';
 
-import { connect } from 'react-redux';
-import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import { getDependentQuestionsForOptions } from '../selectors/questionsSelector';
 import { createAnswer, updateAnswer } from '../actions/answers';
+
 
 class OptionsContainer extends React.Component {
   /**
@@ -22,8 +20,6 @@ class OptionsContainer extends React.Component {
    */
   handleSelect(option_id, value) {
     // Set up answer data to send in fetch request
-    console.log("ANSWER");
-    console.log(this.props.answer);
     const answer = {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
@@ -76,7 +72,8 @@ class OptionsContainer extends React.Component {
         if (dependents) {
           return dependents.map(question => {
             return (<div key={question.id}>
-              <Question building_id={this.props.building_id} {...question} />
+              <QuestionContainer mode="answer"
+                   building_id={this.props.building_id} {...question} />
             </div>);
           });
         }
