@@ -10,7 +10,13 @@ import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getContacts } from "../selectors/contactsSelector";
 import { createAnswer, updateAnswer } from '../actions/answers';
 
+function validateEmail(elementValue){
+  var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  return emailPattern.test(elementValue);
+}
+
 class DelegationContainer extends React.Component {
+
   constructor(props) {
     super(props);
     if (this.props.answer) {
@@ -68,7 +74,8 @@ class DelegationContainer extends React.Component {
   // in redux, and make it available in future references
   createOrUpdateContactsIfValid() {
     // TODO: should validate for valid email address here
-    if (this.state.email && this.state.firstName && this.state.lastName) {
+    if (validateEmail(this.state.email) &&
+        this.state.firstName && this.state.lastName) {
       this.props.contactActions.addContact(
           this.state.email, this.state.firstName, this.state.lastName);
     }
