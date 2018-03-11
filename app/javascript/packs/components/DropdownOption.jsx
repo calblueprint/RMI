@@ -8,6 +8,10 @@ class DropdownOption extends React.Component {
         this.saveAnswer(selected_option_id, this.props.answer.text);
       }
     }
+
+    if (this.props.setFocusFunc) {
+      this.props.setFocusFunc(() => this.ref.focus());
+    }
   }
 
   onChange(optionId) {
@@ -27,6 +31,7 @@ class DropdownOption extends React.Component {
         onChange={(e) => this.onChange(e.target.value)}
         onFocus={(e) => this.props.onEnter()}
         onBlur={(e) => this.props.onLeave()}
+        ref={(ref) => this.ref = ref}
       >
         <option value="unselected" disabled>Select an option</option>
         {Object.values(this.props.options).map((option) => {

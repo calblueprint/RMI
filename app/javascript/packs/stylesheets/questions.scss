@@ -14,6 +14,16 @@
   padding: 5px 20px 5px 20px;
   border-left: 3px solid $secondary;
   transition: transform 0.5s;
+  transition: all 0.5s;
+}
+
+@keyframes slide {
+  from {
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .question p {
@@ -23,7 +33,7 @@
 }
 
 .questions__nested {
-  margin: 20px;
+  margin-bottom: 20px;
 }
 
 .question--selected {

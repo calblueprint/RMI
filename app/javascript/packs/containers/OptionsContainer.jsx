@@ -1,4 +1,7 @@
 import React from 'react';
+
+import Transition from 'react-transition-group/Transition';
+
 import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 import DropdownOption from '../components/DropdownOption';
@@ -12,6 +15,33 @@ import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
 import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
+const styles = {
+  transition: 'all 0.4s cubic-bezier(1, 0, 0, 1)',
+  overflowY: 'hidden'
+};
+
+const transitionStyles = {
+  entering: {
+    maxHeight: 0,
+    transform: 'translateX(-20px)',
+    marginLeft: 0,
+    opacity: 0
+  },
+  entered: {
+    maxHeight: 800,
+    marginLeft: 20,
+    opacity: 1
+  },
+  exiting: {
+    maxHeight: 800,
+    opacity: 1
+  },
+  exited: {
+    maxHeight: 0,
+    marginLeft: 0,
+    opacity: 0
+  }
+};
 
 class OptionsContainer extends React.Component {
   constructor(props) {
@@ -19,6 +49,8 @@ class OptionsContainer extends React.Component {
     this.state = {
       selected: false
     };
+
+    this.focusFirstDependent = () => console.warn('No');
   }
   /**
    * Returns answer data in the format expected for a fetch request.
@@ -65,6 +97,8 @@ class OptionsContainer extends React.Component {
       answer.id = this.props.answer.id;
       this.props.updateAnswer(answer.building_id, answer);
     }
+
+    setTimeout(() => this.focusFirstDependent(), 500);
   }
 
   /**
@@ -85,7 +119,8 @@ class OptionsContainer extends React.Component {
       onChange: this.onChange.bind(this),
       onSave: this.onSave.bind(this)
       onEnter: () => this.setState({ selected: true }),
-      onLeave: () => this.setState({ selected: false })
+      onLeave: () => this.setState({ selected: false }),
+      setFocusFunc: this.props.setFocusFunc
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -147,15 +182,22 @@ class OptionsContainer extends React.Component {
       });
     })();
 
-    return (<div>
+    return (<div class="question__block">
       <Status fetchObject={this.props.answer}
               onRetry={this.onRetry.bind(this)} />
-      <div className={`question ${this.state.selected ? 'question--selected' : ''}`}>
+      <div
+        className={`question ${this.state.selected ? 'question--selected' : ''}`}
+      >
         <p>{this.props.text}</p>
         {optionsComponent}
       </div>
-      {dependentQuestions}
-    </div>)
+      {dependentQuestions ?
+        <div className="questions__nested">
+          {dependentQuestions}
+        </div>
+      : null}
+
+    </div>);
   }
 }
 

@@ -27,6 +27,7 @@ class FreeOption extends React.Component {
           this.onChange(e.target.value, true);
           this.props.onLeave();
         }}
+        ref={(ref) => this.ref = ref}
       />
     </div>);
   }

@@ -13,14 +13,14 @@ class QuestionContainer extends React.Component {
 
   renderAnswerMode() {
     return (
-        <div>
-          <p>{this.props.text}</p>
-          <OptionsContainer
-            question_id={this.props.id}
-            building_id={this.props.building_id}
-            question_type={this.props.question_type}
-            options={this.props.options} />
-        </div>);
+      <OptionsContainer
+        question_id={this.props.id}
+        building_id={this.props.building_id}
+        question_type={this.props.question_type}
+        options={this.props.options}
+        text={this.props.text}
+      />
+    );
   }
 
   renderReviewMode() {
