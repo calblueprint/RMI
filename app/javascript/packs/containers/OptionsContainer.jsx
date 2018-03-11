@@ -7,6 +7,9 @@ import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
 import Status from '../components/Status';
 
+import { connect } from 'react-redux';
+import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
+import { getDependentQuestionsForOptions } from '../selectors/questionsSelector';
 import { createAnswer, updateAnswer } from '../actions/answers';
 
 
