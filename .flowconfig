@@ -4,6 +4,7 @@
 
 [libs]
 ./node_modules/fbjs/flow/lib
+./flow-typed/
 
 [lints]
 

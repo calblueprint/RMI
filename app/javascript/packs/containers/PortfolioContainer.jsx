@@ -8,14 +8,12 @@ import { getBuildingsByPortfolio } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import type { Match } from 'react-router-dom';
+import type { Building } from 'rmi';
 
 type Props = {
-  buildings: {
-    id: {
-      name: string
-    }
-  },
-  f: number
+  buildings: [ Building ],
+  match: Match
 };
 
 
