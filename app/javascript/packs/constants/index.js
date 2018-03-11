@@ -64,3 +64,7 @@ export const FETCH_SETTINGS = {
     'Content-Type': 'application/json'
   }
 };
+
+// Contact constants
+export const ADD_CONTACT = 'ADD_CONTACT';
+export const EDIT_CONTACT = 'EDIT_CONTACT';

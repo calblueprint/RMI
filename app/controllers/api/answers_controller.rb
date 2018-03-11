@@ -51,7 +51,10 @@ class Api::AnswersController < ApplicationController
             :attachment,
             :selected_option_id,
             :building_id,
-            :question_id
+            :question_id,
+            :delegation_email,
+            :delegation_first_name,
+            :delegation_last_name
           )
   end
 end

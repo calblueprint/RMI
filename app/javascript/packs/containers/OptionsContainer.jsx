@@ -1,10 +1,12 @@
 import React from 'react';
+
+import QuestionContainer from './QuestionContainer';
+
 import PropTypes from 'prop-types';
 import DropdownOption from '../components/DropdownOption';
 import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
-import Question from '../components/Question';
 
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
@@ -62,7 +64,8 @@ class OptionsContainer extends React.Component {
         if (dependents) {
           return dependents.map(question => {
             return (<div key={question.id}>
-              <Question building_id={this.props.building_id} {...question} />
+              <QuestionContainer mode="answer"
+                   building_id={this.props.building_id} {...question} />
             </div>);
           });
         }

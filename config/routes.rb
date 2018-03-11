@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :api do
+    get 'contacts/show'
+  end
+
   devise_for :building_operators
   devise_for :asset_managers
   devise_for :rmi_users
@@ -15,6 +19,8 @@ Rails.application.routes.draw do
     resources :answers, only: %i[show create update]
     resources :questions, only: %i[show create update destroy]
     resources :portfolios, only: %i[index create update show]
+    resources :delegations, only: %i[create]
+    resources :contacts, only: %i[index]
     # Can change route with:
     patch '/api/questions/publish', to: 'questions#publish'
   end
