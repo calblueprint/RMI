@@ -10,15 +10,15 @@ export function getBuildings(state) {
     return state.buildings
 };
 
-export function getBuildingByID(buildingId, state) {
+export function getBuildingById(buildingId, state) {
   return state.buildings[buildingId]
 
 }
 //gets buildings by id but checks that we are in a building view
-export function getNavBarBuildings(entity, id, state) {
+export function getNavBarBuildings(entity, buildingId, state) {
   if (entity == "buildings") {
     if (id) {
-        return state.buildings[id]
+        return state.buildings[buildingId]
     }
   }
   return null

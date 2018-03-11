@@ -9,8 +9,7 @@ import QuestionContainer from './QuestionContainer';
 
 import { connect } from 'react-redux';
 import {getQuestionsByCategory, getQuestionsByBuilding} from '../selectors/questionsSelector';
-
-  class AnswerModeContainer extends React.Component {
+class AnswerModeContainer extends React.Component {
   render() {
     return (
       <div className="question__container">
