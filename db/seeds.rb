@@ -291,6 +291,7 @@ def make_delegations
   Answer.all.each do |answer|
     0.upto(2) do |n|
       delegation = Delegation.new
+      delegation.source = BuildingOperator.all.sample
       delegation.building_operator = BuildingOperator.all.sample
       delegation.answer = answer
       delegation.status = n

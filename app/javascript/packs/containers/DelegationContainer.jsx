@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getContacts } from "../selectors/contactsSelector";
+import { createAnswer, updateAnswer } from '../actions/answers';
 
 class DelegationContainer extends React.Component {
   constructor(props) {
@@ -39,7 +40,16 @@ class DelegationContainer extends React.Component {
   }
 
   handleSelect(value) {
-
+    const contact = this.props.contacts.find(
+        (contact) => (contact.email == value));
+    if (!contact) {
+      return;
+    }
+    this.setState((state) => ({
+      email: value,
+      firstName: contact.first_name,
+      lastName: contact.last_name,
+    }), this.updateAnswer);
   }
 
   afterUpdateState() {
@@ -66,7 +76,21 @@ class DelegationContainer extends React.Component {
 
   updateAnswer() {
     // Need to keep answers up to date as during editing
+    const answer = {
+      building_id: this.props.building_id,
+      question_id: this.props.question_id,
+      delegation_email: this.state.email,
+      delegation_first_name: this.state.firstName,
+      delegation_last_name: this.state.lastName,
+    };
 
+    if (!this.props.answer) {
+      this.props.createAnswer(answer.building_id, answer);
+    }
+    else {
+      answer.id = this.props.answer.id;
+      this.props.updateAnswer(answer.building_id, answer);
+    }
   }
 
   renderUnanswered() {
@@ -86,9 +110,10 @@ class DelegationContainer extends React.Component {
 
       <select onChange={(e) => this.handleSelect([e.target.value])}
               defaultValue={currentEmail}>
+        <option value="" key="">New target</option>
         {Object.values(this.props.contacts).map((contact) => {
           return (<option value={contact.email} key={contact.email}>
-              {contact.first_name + contact.last_name}</option>)
+              {contact.first_name + " " + contact.last_name + "<" + contact.email + ">"}</option>)
         })}
       </select><br></br>
 
@@ -141,7 +166,13 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    contactActions: bindActionCreators(ContactActions, dispatch)
+    contactActions: bindActionCreators(ContactActions, dispatch),
+    createAnswer: function (buildingId, answer) {
+      return createAnswer(buildingId, answer, dispatch);
+    },
+    updateAnswer: function (buildingId, answer) {
+      return updateAnswer(buildingId, answer, dispatch);
+    }
   }
 }
 export default connect(
