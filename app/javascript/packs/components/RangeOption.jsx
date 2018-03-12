@@ -5,10 +5,13 @@ class RangeOption extends React.Component {
     for (let id in this.props.options) {
       const option = this.props.options[id];
       if (num && num >= option.min && num <= option.max) {
-        this.props.onSelect(id, num);
+        this.props.onChange(id, num);
         return;
       }
     }
+
+    // No dependent range hit, but we still want to update answer in store
+    this.props.onChange(null, num)
   }
 
   componentDidMount() {

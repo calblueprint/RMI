@@ -6,13 +6,15 @@ import {
   ANSWER_FETCH_IN_PROGRESS,
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
+  UPDATE_LOCAL_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
 import { post, patch } from '../fetch/requester';
 
-export function answerFetchInProgress(buildingId, answer) {
+function answerFetchInProgress(buildingId, answer) {
   return {
     type: ANSWER_FETCH_IN_PROGRESS,
+    // TODO: no longer need fetch status because we have separate actions for each stage
     status: FETCH_IN_PROGRESS,
     buildingId,
     answer
@@ -38,6 +40,13 @@ function answerFetchFailure(buildingId, questionId, error) {
   };
 }
 
+export function updateLocalAnswer(buildingId, answer) {
+  return {
+    type: UPDATE_LOCAL_ANSWER,
+    buildingId,
+    answer
+  };
+}
 
 /**
  * Creates a new answer in the database,

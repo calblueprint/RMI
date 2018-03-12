@@ -10,25 +10,29 @@ import Status from '../components/Status';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptions } from '../selectors/questionsSelector';
-import { createAnswer, updateAnswer } from '../actions/answers';
+import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 
 class OptionsContainer extends React.Component {
   /**
-   * Callback for when an option has been triggered. Will update the answer in database and store.
+   * Callback for when an answer field has been modified in any way.
    *
    * @param option_id   id of the selected option
    * @param value       The data of the updated answer. For range options, this is the number the user inputted;
    *                      for dropdown options, it's the text of the option that was selected.
    */
-  handleSelect(option_id, value) {
-    // Set up answer data to send in fetch request
+  onChange(option_id, value) {
+    // Set up answer data to send in action and fetch request
     const answer = {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
       selected_option_id: option_id,
       text: value
     };
+
+    this.props.updateLocalAnswer(this.props.building_id, answer);
+
+    // TODO: debounce fetch requests
 
     // Dispatch an action to update answer in the database and in store
     if (!this.props.answer) {
@@ -55,7 +59,7 @@ class OptionsContainer extends React.Component {
     const optionProps = {
       options: this.props.options,
       answer: this.props.answer,
-      onSelect: this.handleSelect.bind(this)
+      onChange: this.onChange.bind(this)
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -106,7 +110,8 @@ function mapDispatchToProps(dispatch) {
     },
     updateAnswer: function (buildingId, answer) {
       return updateAnswer(buildingId, answer, dispatch);
-    }
+    },
+    updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }
 }
 
