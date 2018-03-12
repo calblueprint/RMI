@@ -20,10 +20,11 @@ module ApplicationHelper
     {
       user: current_asset_manager,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-        portfolio.buildings, each_serializer: BuildingSerializer,
-        scope: {user_id: current_asset_manager.id,
-                user_type: 'AssetManager'}
+          portfolio.buildings, each_serializer: BuildingSerializer,
+          scope: {user_id: current_asset_manager.id,
+                  user_type: 'AssetManager'}
       ),
+      portfolios: portfolio,
       contacts: contacts,
       categories: current_asset_manager.categories,
       userType: 'AssetManager'

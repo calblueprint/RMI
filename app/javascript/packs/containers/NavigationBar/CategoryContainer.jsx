@@ -10,7 +10,7 @@ class CategoryContainer extends React.Component {
         const remainingQuestions = this.props.remainingQuestions;
         return (
             <div>
-                <h1>{currentCategory ? currentCategory.name : "No Category Selected"}</h1>
+                <h1>{currentCategory ? currentCategory.name : null}</h1>
                 <div className = {"categoryList"}>
                     {Object.keys(categories).map(id => {
                     return (

@@ -8,12 +8,6 @@ export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
 //## if no questions are provided, the building did not have any questions for the users so they have no questions
 //to answer for that building
 export function getRemainingAnswersforCategory(questions, buildingId, state) {
-  if (!buildingId) {
-    return null;
-  }
-  if (!questions) {
-    return 0;
-  }
   return questions.reduce((count, question) => {
     let answer = state.buildings[buildingId].answers[question.id];
     if (!answer.text.trim() && !answer.attachment_file_name) {

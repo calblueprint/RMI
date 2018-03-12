@@ -1,4 +1,7 @@
 //takes in an entity to check that we are in a specific building and returns the categories associated with a specific building
+import {getQuestionsByCategory} from "./questionsSelector";
+import {getRemainingAnswersforCategory} from "./answersSelector";
+
 export function getCategories(buildingId, state) {
   //we only want the categories associated with a specific building
   return Object.keys(state.categories).filter(id => {
@@ -11,4 +14,16 @@ export function getCategories(buildingId, state) {
 //returns the category that we are viewing currently
 export function getCurrentCategory(cId, state) {
     return state.categories[cId];
+}
+// takes in a list of categories for a user
+// also takes in a building and its respective questions for filtering
+// loops through the categories and outputs the first category that has more than 0 unanswered questions
+export function getFirstUnansweredCategory(categories, questions, buildingId, state) {
+  for (let currCategory in categories) {
+    let cQuestions = getQuestionsByCategory(currCategory.id, questions);
+    if (getRemainingAnswersforCategory(cQuestions, buildingId, state) > 0) {
+      return currCategory;
+    }
+  }
+  return categories[0];
 }

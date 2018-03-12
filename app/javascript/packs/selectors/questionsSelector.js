@@ -53,7 +53,7 @@ export function getDependentQuestionsForOption(optionId, optionType, state) {
     // We need to check that the option's type matches what is expected by the potential dependent question,
     // because there could be a DropdownOption and RangeOption with the same id.
     return state.questions[questionId].parent_option_id == optionId &&
-            state.questions[questionId].parent_option_type.includes(optionType);
+      state.questions[questionId].parent_option_type.toLowerCase().includes(optionType);
   }).map((questionId) => {
     return state.questions[questionId];
   });
@@ -80,15 +80,14 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
 }
 
 //takes in the ID of a specific category that we have selected and returns the questions associated with that category
-export function getQuestionsByCategory(categoryId, questions){
-  if (questions) {
-      if (categoryId) {
-          return Object.keys(questions).filter(id => {
-              return questions[id].category_id == categoryId
-          }).map(id => {
-              return questions[id]
-          })
-      }
-      return questions;
+//if no category is specified we return all of the questions
+export function getQuestionsByCategory(categoryId, questions) {
+  if (categoryId) {
+    return Object.keys(questions).filter(id => {
+      return questions[id].category_id == categoryId
+    }).map(id => {
+      return questions[id]
+    })
   }
+  return questions;
 }

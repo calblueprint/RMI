@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
 import {getName, getEmail} from '../../selectors/usersSelector'
-import {getCurrentCategory, getCategories} from "../../selectors/categoriesSelector";
+import {getCurrentCategory, getCategories, getFirstUnansweredCategory} from "../../selectors/categoriesSelector";
 import CategoryContainer from './CategoryContainer';
 import {getQuestionsByBuilding, getQuestionsByCategory} from "../../selectors/questionsSelector";
 import {getRemainingAnswersforCategory} from "../../selectors/answersSelector";
@@ -44,27 +44,49 @@ class NavigationBarContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const buildingView = ownProps.match.params.entity == "buildings";
+  const questions = buildingView && ownProps.match.params.id ?
+    getQuestionsByBuilding(ownProps.match.params.id, state) : [];
+  const categoryId = ownProps.match.params.cId ? ownProps.match.params.cId : null;
+  const questionsByCategory = getQuestionsByCategory(categoryId, questions);
+
+  let remainingQuestions;
+  if (!ownProps.match.params.id) {
+    remainingQuestions = null;
+  } else if (!questionsByCategory) {
+    remainingQuestions = 0;
+  } else {
+    remainingQuestions = getRemainingAnswersforCategory(questionsByCategory, ownProps.match.params.id, state);
+  }
+
+  let loadCategory;
+  if (!buildingView) {
+    loadCategory = null;
+  }
+  else if (!ownProps.match.params.cId) {
+    // need category ids
+    //need questions by their categories
+    let categories = getCategories(ownProps.match.params.id, state);
+    loadCategory = getFirstUnansweredCategory(categories, questions, ownProps.match.params.id, state);
+  } else {
+    getCurrentCategory(ownProps.match.params.cId, state)
+  }
   return {
     buildings: getBuildings(state),
 
-    currentBuilding: ownProps.match.params.entity == "buildings" && ownProps.match.params.id ?
+    currentBuilding: buildingView && ownProps.match.params.id ?
       getBuildingById(ownProps.match.params.id, state) : null,
 
     userEmail: getEmail(state),
 
     username: getName(state),
 
-    currentCategory: ownProps.match.params.cId ?
-      getCurrentCategory(ownProps.match.params.cId, state) : null,
+    currentCategory: loadCategory,
 
-    categories: ownProps.match.params.entity == "buildings" ?
+    categories: buildingView ?
       getCategories(ownProps.match.params.id, state) : {},
 
-    remainingQuestions: getRemainingAnswersforCategory(getQuestionsByCategory(ownProps.match.params.cId,
-      ownProps.match.params.entity == "buildings" && ownProps.match.params.id ?
-        getQuestionsByBuilding(ownProps.match.params.id, state) : null),
-      ownProps.match.params.id,
-      state)
+    remainingQuestions: remainingQuestions,
   };
 }
 
