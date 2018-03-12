@@ -49,4 +49,15 @@ class Question < ApplicationRecord
     end
   end
 
+  def options
+    case question_type
+      when "dropdown"
+        dropdown_options
+      when "range"
+        range_options
+      else
+        nil
+    end
+  end
+
 end
