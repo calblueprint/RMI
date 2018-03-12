@@ -8,6 +8,12 @@ import {
 import {connect} from 'react-redux';
 
 class OptionsContainer extends React.Component {
+
+  /**
+   * Returns the correct questionnaire form option component given quesiton type
+   * @param { string } questionType - question.question_type
+   * @returns react component
+   */
   getComponentName(questionType) {
     switch (questionType) {
       case "dropdown": return DropdownOption;
@@ -16,11 +22,21 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  /**
+   * Function handling fetch request to update an option and redux update
+   * @param { string } id - optionId to update
+   * @param { Object } args - any option parameters
+   */
   updateOption(id, args) {
     const updatedOption = {...this.props.question.options[id], ...args}
     this.props.optionFetchInProgress(updatedOption)
   }
 
+  /**
+   * Handles event for onChange which is updating redux temporarily
+   * @param { string } id - optionId that is updating
+   * @param { string } args - any option parameters
+   */
   handleOnChange(id, args) {
     const updatedOption = {...this.props.question.options[id], ...args}
     this.props.optionPreFetchSave(updatedOption)
