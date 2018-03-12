@@ -8,6 +8,7 @@ function attachContact(state, action) {
   return {
     ...state,
     [email]: {
+      email: action.email,
       firstName: action.firstName,
       lastName: action.lastName
     }

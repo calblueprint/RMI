@@ -10,6 +10,7 @@ module ApplicationHelper
                 user_type: 'AssetManager'}
       ),
       userType: 'AssetManager'
+      contacts: []
     }
   end
 

@@ -34,7 +34,9 @@ class DelegationContainer extends React.Component {
     }
   }
 
-  // TODO: need to add current value of delegations to redux, if they aren't empty
+  componentDidMount() {
+    createOrUpdateContactsIfValid();
+  }
 
   // determine whether answers are available
   answerValid() {
