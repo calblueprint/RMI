@@ -24,7 +24,7 @@
 }
 
 .questions__nested {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .question--selected {
@@ -32,8 +32,41 @@
   transform: translateX(5px);
 }
 
+.question--error {
+  animation: 1.5s ease error-pulse;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+@keyframes error-pulse {
+  from {
+    border-left: 3px solid #ff3f3f;
+  }
+
+  to {
+    border-left: 3px solid #fca037;
+  }
+}
+
 .question--completed {
   // border-left: 3px solid
+}
+
+.status__container p {
+  margin-top: 10px;
+  font-size: 8.5pt;
+  color: $secondary;
+}
+
+.status__container--error p {
+  color: red;
+}
+
+.status__retry {
+  text-decoration: underline;
+  color: $primary;
+  cursor: pointer;
+  font-weight: 700;
 }
 
 input, textarea {

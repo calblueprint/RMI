@@ -183,13 +183,18 @@ class OptionsContainer extends React.Component {
     })();
 
     return (<div class="question__block">
-      <Status fetchObject={this.props.answer}
-              onRetry={this.onRetry.bind(this)} />
       <div
-        className={`question ${this.state.selected ? 'question--selected' : ''}`}
+        className={
+          `question \
+          ${this.state.selected ? 'question--selected' : '' } \
+          ${this.props.answer
+            && this.props.answer.error ? 'question--error' : ''}`
+        }
       >
         <p>{this.props.text}</p>
         {optionsComponent}
+        <Status fetchObject={this.props.answer}
+                onRetry={this.onRetry.bind(this)} />
       </div>
       {dependentQuestions ?
         <div className="questions__nested">
