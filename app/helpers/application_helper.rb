@@ -11,8 +11,7 @@ module ApplicationHelper
 
     contacts = []
 
-    contact_ids.each_key do |operator_id|
-      operator = BuildingOperator.find(operator_id)
+    BuildingOperator.where(id: contact_ids.keys).each do |operator|
       contacts.push({
         email: operator.email, first_name: operator.first_name, last_name: operator.last_name
       })
@@ -41,8 +40,7 @@ module ApplicationHelper
 
     contacts = []
 
-    contact_ids.each_key do |operator_id|
-      operator = BuildingOperator.find(operator_id)
+    BuildingOperator.where(id: contact_ids.keys).each do |operator|
       contacts.push({
         email: operator.email, first_name: operator.first_name, last_name: operator.last_name
       })
