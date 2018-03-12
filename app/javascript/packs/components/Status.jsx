@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import Moment from 'react-moment';
 
 /**
  * Displays the save status of an answer, and allows the user
@@ -38,9 +38,8 @@ class Status extends React.Component {
 
     // Answer successfully saved
     const updatedAt = this.props.fetchObject.updated_at;
-    const timeAgo = moment(updatedAt).fromNow();
     return (<div>
-      <p>Saved {timeAgo}</p>
+      <p>Saved <Moment fromNow>{updatedAt}</Moment></p>
       <hr />
     </div>);
   }
