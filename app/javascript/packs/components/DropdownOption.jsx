@@ -5,13 +5,18 @@ class DropdownOption extends React.Component {
     if (this.props.answer) {
       const selected_option_id = this.props.answer.selected_option_id;
       if (selected_option_id) {
-        this.props.onChange(selected_option_id, this.props.answer.text);
+        this.saveAnswer(selected_option_id, this.props.answer.text);
       }
     }
   }
 
   onChange(optionId) {
-    this.props.onChange(optionId, this.props.options[optionId].text);
+    this.saveAnswer(optionId, this.props.options[optionId].text);
+  }
+
+  saveAnswer(optionId, text) {
+    this.props.onChange(optionId, text);
+    this.props.onSave(optionId, text);
   }
 
   render() {

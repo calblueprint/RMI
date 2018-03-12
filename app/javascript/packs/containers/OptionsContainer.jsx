@@ -23,16 +23,20 @@ class OptionsContainer extends React.Component {
    */
   onChange(option_id, value) {
     // Set up answer data to send in action and fetch request
-    const answer = {
-      building_id: this.props.building_id,
-      question_id: this.props.question_id,
-      selected_option_id: option_id,
-      text: value
-    };
-
+    const answer = getAnswerData(option_id, value);
     this.props.updateLocalAnswer(this.props.building_id, answer);
+  }
 
-    // TODO: debounce fetch requests
+  /**
+   * Callback for when the answer should be saved remotely.
+   * Some answer components (such as FreeOption) may debounce this, while others (like DropdownOption) don't need to.
+   *
+   * @param option_id   id of the selected option
+   * @param value       The data of the updated answer. For range options, this is the number the user inputted;
+   *                      for dropdown options, it's the text of the option that was selected.
+   */
+  onSave(option_id, value) {
+    const answer = getAnswerData(option_id, value);
 
     // Dispatch an action to update answer in the database and in store
     if (!this.props.answer) {
@@ -51,15 +55,28 @@ class OptionsContainer extends React.Component {
   onRetry() {
     const answer = this.props.answer;
     if (answer) {
-      this.handleSelect(answer.selected_option_id, answer.text);
+      this.onSave(answer.selected_option_id, answer.text);
     }
+  }
+
+  /**
+   * Returns answer data in the form expected for a fetch request.
+   */
+  getAnswerData(option_id, value) {
+    return {
+      building_id: this.props.building_id,
+      question_id: this.props.question_id,
+      selected_option_id: option_id,
+      text: value
+    };
   }
 
   render() {
     const optionProps = {
       options: this.props.options,
       answer: this.props.answer,
-      onChange: this.onChange.bind(this)
+      onChange: this.onChange.bind(this),
+      onSave: this.onSave.bind(this)
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -105,12 +122,12 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: function (buildingId, answer) {
+    createAnswer: debounce(function (buildingId, answer) {
       return createAnswer(buildingId, answer, dispatch);
-    },
-    updateAnswer: function (buildingId, answer) {
+    }, 3000),
+    updateAnswer: debounce(function (buildingId, answer) {
       return updateAnswer(buildingId, answer, dispatch);
-    },
+    }, 3000),
     updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }
 }
