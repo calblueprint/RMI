@@ -3,14 +3,29 @@ module ApplicationHelper
   def asset_manager_initial_state
     portfolio = current_asset_manager.portfolio
 
+    contact_ids = Hash.new
+
+    Delegation.joins(answer: :building).where(buildings: { portfolio_id: portfolio.id} ).each do |delegation|
+      contact_ids[delegation.building_operator_id] = 1
+    end
+
+    contacts = []
+
+    contact_ids.each_key do |operator_id|
+      operator = BuildingOperator.find(operator_id)
+      contacts.push({
+        email: operator.email, first_name: operator.first_name, last_name: operator.last_name
+      })
+    end
+
     {
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         portfolio.buildings, each_serializer: BuildingSerializer,
         scope: {user_id: current_asset_manager.id,
                 user_type: 'AssetManager'}
       ),
-      userType: 'AssetManager'
-      contacts: []
+      userType: 'AssetManager',
+      contacts: contacts
     }
   end
 
