@@ -85,7 +85,8 @@ class OptionsContainer extends React.Component {
 
     return (<div>
       {optionsComponent}
-      <Status fetchObject={this.props.answer} onRetry={this.onRetry.bind(this)} />
+      <Status fetchObject={this.props.answer}
+              onRetry={this.onRetry.bind(this)} />
       {dependentQuestions}
     </div>)
   }

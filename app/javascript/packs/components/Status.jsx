@@ -8,9 +8,6 @@ import Moment from 'react-moment';
  */
 class Status extends React.Component {
   render() {
-    console.log("fetch object:");
-    console.log(this.props.fetchObject);
-
     // (Default) Unanswered question
     if (!this.props.fetchObject) {
       return (<div>
