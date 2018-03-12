@@ -106,7 +106,11 @@ DEPENDENT_QUESTIONS = [
   },
   {
     q3:
-      { question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
+      { question_type: 'file', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
+  },
+  {
+    q4:
+      { question_type: 'free', category_id: 1, text: 'Please comment about building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
   }
 ].freeze
 
@@ -114,8 +118,7 @@ DEPENDENT_QUESTIONS = [
 
 def make_rmi_user
   1.upto(NUM_USERS) do |n|
-    rmi_user = RmiUser.create(
-      id: n,
+    rmi_user = RmiUser.new(
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
@@ -131,8 +134,7 @@ end
 
 def make_asset_manager
   1.upto(NUM_USERS) do |n|
-    asset_manager = AssetManager.create(
-      id: n,
+    asset_manager = AssetManager.new(
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
@@ -209,6 +211,8 @@ def _make_question(q_hash, b_type)
           question.dropdown_options.create(o[:option])
         when 'range'
           question.range_options.create(o[:option])
+        when 'file'
+          question.file_options.create(o[:option])
       end
     option.save
     if o.key?(:dep_questions)
@@ -259,6 +263,8 @@ def make_answers
         answer[:text] = 55
       when 'free'
         answer[:text] = 'Text free range answer'
+      when 'file'
+        answer[:text] = 'No file'
       end
       answer.save
       count +=1
@@ -270,8 +276,7 @@ end
 
 def make_building_operator
   1.upto(NUM_USERS) do |n|
-    building_operator = BuildingOperator.create(
-      id: n,
+    building_operator = BuildingOperator.new(
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
