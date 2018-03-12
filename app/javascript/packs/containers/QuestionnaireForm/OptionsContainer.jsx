@@ -6,6 +6,8 @@ import {
   optionPreFetchSave
 } from '../../actions/options';
 import {connect} from 'react-redux';
+import {patch} from '../../fetch/requester';
+import {questionFetchSuccess} from '../../actions/questions';
 
 class OptionsContainer extends React.Component {
 
@@ -28,8 +30,8 @@ class OptionsContainer extends React.Component {
    * @param { Object } args - any option parameters
    */
   updateOption(id, args) {
-    const updatedOption = {...this.props.question.options[id], ...args}
-    this.props.optionFetchInProgress(updatedOption)
+    const updatedOption = {...this.props.question.options[id], ...args};
+    this.props.optionFetchInProgress(updatedOption);
   }
 
   /**
@@ -38,8 +40,8 @@ class OptionsContainer extends React.Component {
    * @param { string } args - any option parameters
    */
   handleOnChange(id, args) {
-    const updatedOption = {...this.props.question.options[id], ...args}
-    this.props.optionPreFetchSave(updatedOption)
+    const updatedOption = {...this.props.question.options[id], ...args};
+    this.props.optionPreFetchSave(updatedOption);
   }
 
   render () {
@@ -57,7 +59,7 @@ class OptionsContainer extends React.Component {
           />
         </div>
       )
-    })
+    });
 
     return(
       <div>

@@ -37,7 +37,7 @@ export function getQuestionsByBuildingType(buildingTypeId, state) {
  *         option_id: [{ <question> }, { <question> }, { <question> }],
  *      }
  */
-export function getDependentQuestionsForOptions(optionIds, questionType, state) {
+export function getDependentQuestionsForOptionIds(optionIds, questionType, state) {
   const questions = {};
   for (let id of optionIds) {
     const dependent_questions = getDependentQuestionsForOption(id, questionType, state);

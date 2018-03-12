@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Question from '../../components/QuestionnaireForm/Question';
 import QuestionContainer  from './QuestionContainer';
-import {getDependentQuestionsForOptions, getQuestionsByBuildingType} from '../../selectors/questionsSelector';
+import { getDependentQuestionsForOptionIds } from '../../selectors/questionsSelector';
 
 class DepQuestionContainer extends React.Component {
   render() {
@@ -66,7 +65,7 @@ class DepQuestionContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    options_to_questions: getDependentQuestionsForOptions(ownProps.optionsList, ownProps.question.question_type, state)
+    options_to_questions: getDependentQuestionsForOptionIds(ownProps.optionsList, ownProps.question.question_type, state)
   };
 }
 

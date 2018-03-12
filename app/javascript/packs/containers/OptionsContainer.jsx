@@ -9,7 +9,7 @@ import Status from '../components/Status';
 
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import { getDependentQuestionsForOptions } from '../selectors/questionsSelector';
+import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
 import { createAnswer, updateAnswer } from '../actions/answers';
 
 
@@ -95,7 +95,7 @@ class OptionsContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state)
+    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state)
   }
 }
 

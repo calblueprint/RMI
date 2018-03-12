@@ -18,7 +18,8 @@ class Api::QuestionsController < ApplicationController
   def update
     question = Question.find(params[:id])
     if question.update(question_params)
-      render_json_message(:ok, message: "Question #{question.id} successfully updated", data: question)
+      updatedQuestion = QuestionSerializer.new(question)
+      render_json_message(:ok, message: "Question #{question.id} successfully updated", data: updatedQuestion)
     else
       render_json_message(:forbidden, errors: question.errors.full_messages)
     end
@@ -48,11 +49,15 @@ class Api::QuestionsController < ApplicationController
   def question_params
     params.require(:question)
           .permit(
+            :id,
             :text,
             :question_type,
             :status,
-            :building_type,
-            :category
+            :building_type_id,
+            :category_id,
+            :parent_option_type,
+            :parent_option_id,
+            :parameter
           )
   end
 end

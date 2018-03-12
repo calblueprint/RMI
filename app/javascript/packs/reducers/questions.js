@@ -7,20 +7,14 @@ import {
   REMOVE_OPTION,
   SAVE_QUESTION,
   OPTION_FETCH_IN_PROGRESS,
-  OPTION_SAVE_IN_PROGRESS, QUESTION_FETCH_IN_PROGRESS, QUESTION_SAVE_IN_PROGRESS
+  OPTION_SAVE_IN_PROGRESS,
+  QUESTION_FETCH_IN_PROGRESS,
+  QUESTION_SAVE_IN_PROGRESS,
+  CREATE_UNSAVED_QUESTION,
+  QUESTION_FETCH_SUCCESS,
+  QUESTION_FETCH_FAILURE
 
 } from '../constants';
-
-function addQuestion(state, action) {
-  const questionId = action.question.id;
-  return {
-    ...state,
-    [questionId]: {
-      saved: false,
-      ...action.question
-    }
-  }
-}
 
 function attachOptionToQuestion(state, action) {
   const questionId = action.question.id;
@@ -69,7 +63,8 @@ function beforeFetchQuestion(state, action) {
   return {
     ...state,
     [questionId]: {
-      ...state[questionId]
+      ...state[questionId],
+      saved: false
     }
   }
 }
@@ -91,11 +86,41 @@ function beforeFetchOption(state, action) {
   }
 }
 
+function beforeCreateQuestion(state, action) {
+  const questionId = action.question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...action.question,
+      saved: false,
+      temp: true
+    }
+  }
+}
+
+function questionFetchSuccess(state, action) {
+  const question = action.response;
+  const questionId = question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...question,
+      saved: true,
+      fetching: false,
+    }
+  }
+}
+
+function questionFetchFailure(state, action) {
+  return {
+    state
+  }
+}
+
+
 export default function questions(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
-    case ADD_QUESTION: return addQuestion(state, action);
-    case EDIT_QUESTION: return attachQuestion(state, action);
     case ADD_OPTION: return attachOptionToQuestion(state, action);
     case REMOVE_QUESTION: return detachQuestion(state, action);
     case REMOVE_OPTION: return detachOptionFromQuestion(state, action);
@@ -104,6 +129,9 @@ export default function questions(state = {}, action) {
     case QUESTION_SAVE_IN_PROGRESS: return beforeFetchQuestion(state, action);
     case OPTION_FETCH_IN_PROGRESS: return beforeFetchOption(state, action);
     case OPTION_SAVE_IN_PROGRESS: return beforeFetchOption(state, action);
+    case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);
+    case QUESTION_FETCH_SUCCESS: return questionFetchSuccess(state, action);
+    case QUESTION_FETCH_FAILURE: return questionFetchFailure(state, action);
   default:
     return state;
   }
