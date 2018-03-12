@@ -16,7 +16,7 @@ import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelecto
 import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 const styles = {
-  transition: 'all 0.4s cubic-bezier(1, 0, 0, 1)',
+  transition: 'all 0.4s ease',
   overflowY: 'hidden'
 };
 
