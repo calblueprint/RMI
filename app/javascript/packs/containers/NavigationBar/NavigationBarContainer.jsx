@@ -46,16 +46,23 @@ class NavigationBarContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     buildings: getBuildings(state),
+
     currentBuilding: ownProps.match.params.entity == "buildings" && ownProps.match.params.id ?
       getBuildingById(ownProps.match.params.id, state) : null,
+
     userEmail: getEmail(state),
+
     username: getName(state),
-    currentCategory: getCurrentCategory(ownProps.match.params.cId, state),
-    categories: getCategories(ownProps.match.params.entity, ownProps.match.params.id, state),
+
+    currentCategory: ownProps.match.params.cId ?
+      getCurrentCategory(ownProps.match.params.cId, state) : null,
+
+    categories: ownProps.match.params.entity == "buildings" ?
+      getCategories(ownProps.match.params.id, state) : {},
+
     remainingQuestions: getRemainingAnswersforCategory(getQuestionsByCategory(ownProps.match.params.cId,
       ownProps.match.params.entity == "buildings" && ownProps.match.params.id ?
-        getQuestionsByBuilding(ownProps.match.params.id, state) : null
-      ),
+        getQuestionsByBuilding(ownProps.match.params.id, state) : null),
       ownProps.match.params.id,
       state)
   };

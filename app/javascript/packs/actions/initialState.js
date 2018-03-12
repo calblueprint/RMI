@@ -87,7 +87,7 @@ const formatState = {
   contacts: function(contacts) {
     return contacts;
   }
-}
+};
 
 export function loadInitialState(initialState) {
   const types = Object.keys(initialState);

@@ -11,17 +11,15 @@ export function getRemainingAnswersforCategory(questions, buildingId, state) {
   if (!buildingId) {
     return null;
   }
-  if (questions) {
+  if (!questions) {
     return 0;
   }
-  let counter = 0;
-  for (let q of questions) {
-    let answer = state.buildings[buildingId].answers[q];
-    if (!answer.trim()) {
-      counter = counter + 1;
+  return questions.reduce((count, question) => {
+    let answer = state.buildings[buildingId].answers[question.id];
+    if (!answer.text.trim() && !answer.attachment_file_name) {
+      return count + 1;
     }
-  }
-  return counter;
-
+    return count;
+  }, 0);
 }
 
