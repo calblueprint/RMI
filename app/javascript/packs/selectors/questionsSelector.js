@@ -81,13 +81,15 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
 
 //takes in the ID of a specific category that we have selected and returns the questions associated with that category
 //if no category is specified we return all of the questions
+
 export function getQuestionsByCategory(categoryId, questions) {
+  debugger;
   if (categoryId) {
-    return Object.keys(questions).filter(id => {
-      return questions[id].category_id == categoryId
-    }).map(id => {
-      return questions[id]
+    return questions.filter(question => {
+      return question.category_id == categoryId;
     })
   }
   return questions;
 }
+
+

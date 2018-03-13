@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
 import {getName, getEmail} from '../../selectors/usersSelector'
-import {getCurrentCategory, getCategories, getFirstUnansweredCategory} from "../../selectors/categoriesSelector";
+import {getCurrentCategory, getCategoriesForBuilding, getFirstUnansweredCategory} from "../../selectors/categoriesSelector";
 import CategoryContainer from './CategoryContainer';
 import {getQuestionsByBuilding, getQuestionsByCategory} from "../../selectors/questionsSelector";
 import {getRemainingAnswersforCategory} from "../../selectors/answersSelector";
@@ -44,6 +44,7 @@ class NavigationBarContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  //WE NEED THE ID TO BE A BUILDING ID SO WE CHECK ENTITY REPEATEDLY
   const buildingView = ownProps.match.params.entity == "buildings";
   const questions = buildingView && ownProps.match.params.id ?
     getQuestionsByBuilding(ownProps.match.params.id, state) : [];
@@ -66,7 +67,7 @@ function mapStateToProps(state, ownProps) {
   else if (!ownProps.match.params.cId) {
     // need category ids
     //need questions by their categories
-    let categories = getCategories(ownProps.match.params.id, state);
+    let categories = getCategoriesForBuilding(ownProps.match.params.id, state);
     loadCategory = getFirstUnansweredCategory(categories, questions, ownProps.match.params.id, state);
   } else {
     getCurrentCategory(ownProps.match.params.cId, state)
@@ -84,20 +85,14 @@ function mapStateToProps(state, ownProps) {
     currentCategory: loadCategory,
 
     categories: buildingView ?
-      getCategories(ownProps.match.params.id, state) : {},
+      getCategoriesForBuilding(ownProps.match.params.id, state) : {},
 
     remainingQuestions: remainingQuestions,
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    initActions: bindActionCreators({loadInitialState}, dispatch)
-  };
-}
 
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(NavigationBarContainer);

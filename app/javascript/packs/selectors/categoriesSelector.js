@@ -2,7 +2,7 @@
 import {getQuestionsByCategory} from "./questionsSelector";
 import {getRemainingAnswersforCategory} from "./answersSelector";
 
-export function getCategories(buildingId, state) {
+export function getCategoriesForBuilding(buildingId, state) {
   //we only want the categories associated with a specific building
   return Object.keys(state.categories).filter(id => {
     return state.categories[id].building_type_id == state.buildings[buildingId].building_type_id
@@ -20,7 +20,7 @@ export function getCurrentCategory(cId, state) {
 // loops through the categories and outputs the first category that has more than 0 unanswered questions
 export function getFirstUnansweredCategory(categories, questions, buildingId, state) {
   for (let currCategory in categories) {
-    let cQuestions = getQuestionsByCategory(currCategory.id, questions);
+    let cQuestions = getQuestionsByCategory(categories[currCategory].id, questions);
     if (getRemainingAnswersforCategory(cQuestions, buildingId, state) > 0) {
       return currCategory;
     }
