@@ -41,7 +41,7 @@ async function doFetchRequest(route, method, body) {
       'Content-Type': 'application/json'
     },
     credentials: 'same-origin'
-  }).then(function success(response) {
+  }).then((response) => {
     if (response.ok) {
       return response.json();
     }
