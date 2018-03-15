@@ -11,6 +11,10 @@ class QuestionResultContainer extends React.Component {
   }
 
   render() {
+    if (!this.props.answer) {
+      return "";
+    }
+
     const result = (() => {
       switch (this.props.question_type) {
         case "dropdown":

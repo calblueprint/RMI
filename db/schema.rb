@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213031518) do
+ActiveRecord::Schema.define(version: 20180304014419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(version: 20180213031518) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
+    t.string "delegation_email"
+    t.string "delegation_first_name"
+    t.string "delegation_last_name"
     t.index ["building_id"], name: "index_answers_on_building_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
@@ -109,13 +112,15 @@ ActiveRecord::Schema.define(version: 20180213031518) do
   end
 
   create_table "delegations", force: :cascade do |t|
-    t.bigint "building_operator_id"
     t.bigint "answer_id"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "source_id"
+    t.bigint "building_operator_id"
     t.index ["answer_id"], name: "index_delegations_on_answer_id"
     t.index ["building_operator_id"], name: "index_delegations_on_building_operator_id"
+    t.index ["source_id"], name: "index_delegations_on_source_id"
   end
 
   create_table "dropdown_options", force: :cascade do |t|
@@ -197,6 +202,7 @@ ActiveRecord::Schema.define(version: 20180213031518) do
   add_foreign_key "buildings", "portfolios"
   add_foreign_key "delegations", "answers"
   add_foreign_key "delegations", "building_operators"
+  add_foreign_key "delegations", "building_operators", column: "source_id"
   add_foreign_key "dropdown_options", "questions"
   add_foreign_key "file_options", "questions"
   add_foreign_key "portfolios", "asset_managers"
