@@ -26,11 +26,11 @@ class QuestionnaireRoutes extends React.Component {
 
         <Switch>
           <Route path={`${currentPath}/edit/:cId?`}
-                 component={renderWithProps(AnswerModeContainer, propsToPass)} />
+                 render={renderWithProps(AnswerModeContainer, propsToPass)} />
           <Route path={`${currentPath}/delegate`}
-                 component={renderWithProps(DelegateModeContainer, propsToPass)} />
+                 render={renderWithProps(DelegateModeContainer, propsToPass)} />
           <Route path={`${currentPath}/review`}
-                 component={renderWithProps(ReviewModeContainer, propsToPass)} />
+                 render={renderWithProps(ReviewModeContainer, propsToPass)} />
         </Switch>
       </div>
     );
