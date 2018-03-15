@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import QuestionContainer  from './QuestionContainer';
 import { getDependentQuestionsForOptionIds } from '../../selectors/questionsSelector';
+import PropTypes from 'prop-types'
 
 class DepQuestionContainer extends React.Component {
   render() {
@@ -78,3 +79,8 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(DepQuestionContainer);
+
+DepQuestionContainer.propTypes = {
+  question: PropTypes.object.isRequired,
+  optionsList: PropTypes.array.isRequired
+};

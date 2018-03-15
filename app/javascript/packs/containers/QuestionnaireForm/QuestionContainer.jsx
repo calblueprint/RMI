@@ -8,9 +8,11 @@ import {
   questionFetchInProgress,
   questionPreFetchSave,
   questionFetchSuccess,
-  questionFetchFailure
+  questionFetchFailure,
+  removeQuestion
 } from '../../actions/questions';
-import {patch} from '../../fetch/requester';
+import {patch, post} from '../../fetch/requester';
+import PropTypes from 'prop-types'
 
 class QuestionContainer extends React.Component {
 
@@ -23,6 +25,27 @@ class QuestionContainer extends React.Component {
       this.props.questionFetchSuccess(response.data);
     } catch (error) {
       this.props.questionFetchFailure(error);
+    }
+  }
+
+  async createQuestion(id, args) {
+    const newQuestion = {...this.props.question, ...args};
+    const tempQuestion = this.props.question
+    this.props.questionFetchInProgress(newQuestion);
+    try {
+      let response = await post('/api/questions', {'question': newQuestion});
+      this.props.questionFetchSuccess(response.data);
+      this.props.removeQuestion(tempQuestion);
+    } catch (error) {
+      this.props.questionFetchFailure(error);
+    }
+  }
+
+  handleOnBlur(id, args) {
+    if (this.props.question.temp) {
+      this.createQuestion(id, args);
+    } else {
+      this.updateQuestion(id, args)
     }
   }
 
@@ -50,8 +73,12 @@ class QuestionContainer extends React.Component {
         )
       });
       return (
-        <select onChange={ e => this.selectQtype(e.target.value) }>
+        <select
+          onChange={ e => this.selectQtype(e.target.value) }
+          value={1}
+        >
           { options }
+          <option disabled value={1}>Select an Option</option>
         </select>
       )
     }
@@ -60,7 +87,7 @@ class QuestionContainer extends React.Component {
       <div style={{border: "1px solid black"}}>
         <Question
           question={this.props.question}
-          updateQuestion={this.updateQuestion.bind(this)}
+          handleOnBlur={this.handleOnBlur.bind(this)}
           handleOnChange={this.handleOnChange.bind(this)}
           focus={focus}
         />
@@ -88,7 +115,8 @@ function mapDispatchToProps(dispatch) {
     questionPreFetchSave: question => { dispatch(questionPreFetchSave(question)) },
     beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
     questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
-    questionFetchFailure: (question) => { dispatch(questionFetchFailure(question)) }
+    questionFetchFailure: (question) => { dispatch(questionFetchFailure(question)) },
+    removeQuestion: (question) => { dispatch(removeQuestion(question))}
   };
 }
 
@@ -96,3 +124,7 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(QuestionContainer);
+
+QuestionContainer.propTypes = {
+  question: PropTypes.object.isRequired,
+};

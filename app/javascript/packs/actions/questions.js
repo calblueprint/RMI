@@ -7,7 +7,8 @@ import {
   FETCH_FAILURE,
   FETCH_SUCCESS,
   QUESTION_FETCH_FAILURE,
-  QUESTION_FETCH_SUCCESS
+  QUESTION_FETCH_SUCCESS,
+  REMOVE_QUESTION
 } from '../constants';
 
 
@@ -54,5 +55,12 @@ export function questionFetchFailure(error) {
     building_type_id: error.building_type_id,
     response: error
   };
+}
+
+export function removeQuestion(question) {
+  return {
+    type: REMOVE_QUESTION,
+    question
+  }
 }
 

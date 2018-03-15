@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Question extends React.Component {
 
@@ -13,7 +14,7 @@ class Question extends React.Component {
    * @param { string } text - the text of the question
    */
   handleOnBlur(text) {
-    this.props.updateQuestion(this.props.question.id, { text })
+    this.props.handleOnBlur(this.props.question.id, { text })
   }
 
   /**
@@ -44,3 +45,9 @@ class Question extends React.Component {
 
 export default Question
 
+Question.propTypes = {
+  handleOnBlur: PropTypes.func.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  focus: PropTypes.bool.isRequired,
+  question: PropTypes.object.isRequired
+};

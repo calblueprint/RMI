@@ -1,10 +1,11 @@
 class Api::QuestionsController < ApplicationController
-  load_and_authorize_resource
+  # load_and_authorize_resource
 
   def create
     question = Question.new(question_params)
     if question.save
-      render_json_message(:ok, message: "New Question: #{question.id} created", data: question)
+      new_question = QuestionSerializer.new(question)
+      render_json_message(:ok, message: "New Question: #{question.id} created", data: new_question)
     else
       render_json_message(:forbidden, errors: question.errors.full_messages)
     end
@@ -18,8 +19,8 @@ class Api::QuestionsController < ApplicationController
   def update
     question = Question.find(params[:id])
     if question.update(question_params)
-      updatedQuestion = QuestionSerializer.new(question)
-      render_json_message(:ok, message: "Question #{question.id} successfully updated", data: updatedQuestion)
+      updated_question = QuestionSerializer.new(question)
+      render_json_message(:ok, message: "Question #{question.id} successfully updated", data: updated_question)
     else
       render_json_message(:forbidden, errors: question.errors.full_messages)
     end
@@ -49,7 +50,6 @@ class Api::QuestionsController < ApplicationController
   def question_params
     params.require(:question)
           .permit(
-            :id,
             :text,
             :question_type,
             :status,

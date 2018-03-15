@@ -4,19 +4,23 @@ import { getQuestionsByBuildingType } from '../../selectors/questionsSelector';
 import { getBuildingType } from '../../selectors/buildingTypesSelector';
 import QuestionContainer from './QuestionContainer';
 import { beforeCreateNewQuestion } from '../../actions/questions';
+import { generateTempId } from '../../utils/TempIdUtil';
+import PropTypes from 'prop-types';
 
 class QuestionnaireFormContainer extends React.Component {
   onNewQuestion() {
     const newQuestion = {
-      id: 'TEMPID' + Date.now(),
+      id: generateTempId(),
       text: "",
-      building_type_id: this.props.building_type.id,
+      building_type_id: this.props.buildingType.id,
       category_id: 1,
       options: {},
-      question_type: null
+      question_type: null,
+      parameter: "default"
     };
     this.props.beforeCreateNewQuestion(newQuestion)
   }
+
   render() {
     const questions_display = Object.keys(this.props.questions).map((id)=>{
       const question = this.props.questions[id];
@@ -32,7 +36,7 @@ class QuestionnaireFormContainer extends React.Component {
     });
 
     return (<div>
-      <h2>QUESTIONS FOR #{this.props.building_type.name}</h2>
+      <h2>QUESTIONS FOR #{this.props.buildingType.name}</h2>
       <div>
         {questions_display}
         <button
@@ -48,7 +52,7 @@ class QuestionnaireFormContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     questions: getQuestionsByBuildingType(ownProps.match.params.id, state),
-    building_type: getBuildingType(ownProps.match.params.id, state)
+    buildingType: getBuildingType(ownProps.match.params.id, state)
   };
 }
 
@@ -63,3 +67,7 @@ export default connect(
   mapDispatchToProps
 )(QuestionnaireFormContainer);
 
+QuestionnaireFormContainer.propTypes = {
+  questions: PropTypes.array.isRequired,
+  buildingType: PropTypes.object.isRequired
+};

@@ -1,5 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 class RangeOption extends React.Component {
+  componentDidMount(){
+    if (this.props.focus) {
+      this.optionInput.focus();
+    }
+  }
 
   /**
    * Validates min <= max before triggering fetch request onBlur
@@ -9,7 +16,7 @@ class RangeOption extends React.Component {
     const num = parseInt(rawNum);
     if (num && num <= this.props.option.max) {
       //trigger fetch function
-      this.props.updateOption(this.props.option.id, {min: num});
+      this.props.handleOnBlur(this.props.option.id, {min: num});
     }
   }
 
@@ -19,9 +26,9 @@ class RangeOption extends React.Component {
    */
   checkMax (rawNum) {
     const num = parseInt(rawNum);
-    if (num && num >= this.props.options.min) {
+    if (num && num >= this.props.option.min) {
       //trigger fetch function
-      this.props.updateOption(this.props.option.id, {max: num})
+      this.props.handleOnBlur(this.props.option.id, {max: num})
     }
   }
 
@@ -53,6 +60,8 @@ class RangeOption extends React.Component {
           defaultValue={this.props.option.min}
           onBlur={(e) => this.checkMin(e.target.value)}
           onChange={(e) => this.tempUpdateMin(e.target.value)}
+          placeholder={0}
+          ref={(input) => { this.optionInput = input; }}
         />
         max:
         <input
@@ -60,6 +69,7 @@ class RangeOption extends React.Component {
           defaultValue={this.props.option.max}
           onBlur={(e) => this.checkMax(e.target.value)}
           onChange={(e) => this.tempUpdateMax(e.target.value)}
+          placeholder={100}
         />
       </div>
     );
@@ -68,3 +78,10 @@ class RangeOption extends React.Component {
 }
 
 export default RangeOption
+
+RangeOption.propTypes = {
+  option: PropTypes.object.isRequired,
+  handleOnBlur: PropTypes.func.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  focus: PropTypes.bool.isRequired
+};

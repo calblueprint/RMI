@@ -1,5 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 class DropdownOption extends React.Component {
+  componentDidMount(){
+    if (this.props.focus) {
+      this.optionInput.focus();
+    }
+  }
   //props: option, updateOption, handleOnChange
 
   /**
@@ -7,7 +14,7 @@ class DropdownOption extends React.Component {
    * @param { string } text - the text of the dropdown option
    */
   handleOnBlur(text) {
-    this.props.updateOption(this.props.option.id, { text })
+    this.props.handleOnBlur(this.props.option.id, { text })
   }
 
   /**
@@ -23,9 +30,11 @@ class DropdownOption extends React.Component {
       <div>
         <input
           type="text"
-          value={this.props.option.text}
+          defaultValue={this.props.option.text}
           onBlur={(e) => this.handleOnBlur(e.target.value)}
           onChange={(e) => this.onChange(e.target.value)}
+          placeholder={"New Dropdown Option"}
+          ref={(input) => { this.optionInput = input; }}
         />
       </div>
     )
@@ -33,3 +42,10 @@ class DropdownOption extends React.Component {
 }
 
 export default DropdownOption
+
+DropdownOption.propTypes = {
+  option: PropTypes.object.isRequired,
+  handleOnBlur: PropTypes.func.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  focus: PropTypes.bool.isRequired
+};
