@@ -15,15 +15,27 @@ import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answer
 
 class OptionsContainer extends React.Component {
   /**
+   * Returns answer data in the format expected for a fetch request.
+   */
+  getAnswerData(option_id, value) {
+    return {
+      building_id: this.props.building_id,
+      question_id: this.props.question_id,
+      selected_option_id: option_id,
+      text: value
+    };
+  }
+
+  /**
    * Callback for when an answer field has been modified in any way.
+   * Answer will be updated in store.
    *
    * @param option_id   id of the selected option
    * @param value       The data of the updated answer. For range options, this is the number the user inputted;
    *                      for dropdown options, it's the text of the option that was selected.
    */
   onChange(option_id, value) {
-    // Set up answer data to send in action and fetch request
-    const answer = getAnswerData(option_id, value);
+    const answer = this.getAnswerData(option_id, value);
     this.props.updateLocalAnswer(this.props.building_id, answer);
   }
 
@@ -36,10 +48,10 @@ class OptionsContainer extends React.Component {
    *                      for dropdown options, it's the text of the option that was selected.
    */
   onSave(option_id, value) {
-    const answer = getAnswerData(option_id, value);
+    const answer = this.getAnswerData(option_id, value);
 
     // Dispatch an action to update answer in the database and in store
-    if (!this.props.answer) {
+    if (!this.props.answer || !this.props.answer.id) {
       this.props.createAnswer(answer.building_id, answer);
     }
     else {
@@ -57,18 +69,6 @@ class OptionsContainer extends React.Component {
     if (answer) {
       this.onSave(answer.selected_option_id, answer.text);
     }
-  }
-
-  /**
-   * Returns answer data in the form expected for a fetch request.
-   */
-  getAnswerData(option_id, value) {
-    return {
-      building_id: this.props.building_id,
-      question_id: this.props.question_id,
-      selected_option_id: option_id,
-      text: value
-    };
   }
 
   render() {
@@ -122,12 +122,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: debounce(function (buildingId, answer) {
-      return createAnswer(buildingId, answer, dispatch);
-    }, 3000),
-    updateAnswer: debounce(function (buildingId, answer) {
-      return updateAnswer(buildingId, answer, dispatch);
-    }, 3000),
+    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
+    updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
     updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }
 }
