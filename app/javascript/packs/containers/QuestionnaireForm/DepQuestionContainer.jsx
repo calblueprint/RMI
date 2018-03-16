@@ -3,8 +3,73 @@ import { connect } from 'react-redux';
 import QuestionContainer  from './QuestionContainer';
 import { getDependentQuestionsForOptionIds } from '../../selectors/questionsSelector';
 import PropTypes from 'prop-types'
+import {generateTempId} from '../../utils/TempIdUtil';
+import {beforeCreateNewQuestion} from '../../actions/questions';
 
 class DepQuestionContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {newDepQuestion: false}
+  }
+
+  selectParentOption(optionId) {
+    const newDepQuestion = {
+      id: generateTempId(),
+      text: "",
+      building_type_id: this.props.question.building_type_id,
+      category_id: 1,
+      options: {},
+      question_type: null,
+      parameter: "default",
+      parent_option_type: this.props.question.question_type,
+      parent_option_id: optionId
+    };
+    this.props.beforeCreateNewQuestion(newDepQuestion);
+    this.optionSelect.remove();
+  }
+
+  onNewDepQuestion() {
+    if (!this.state.newDepQuestion) {
+      return null;
+    }
+    const parentOptionType = this.props.question.question_type;
+    const parentOptions = Object.keys(this.props.question.options).map((optionId) => {
+      if (parentOptionType === 'dropdown') {
+        const option = this.props.question.options[optionId];
+        return(
+          <option
+            value={optionId}
+            key={optionId}
+          >
+            {option.text}
+          </option>
+        );
+      } else if (parentOptionType === 'range') {
+        return(
+          <option
+            value={optionId}
+            key={optionId}
+          >
+            min: {option.min} max: {option.max}
+          </option>
+        )
+      } else {return null}
+
+    });
+    return(
+      <div>
+        <select
+          value={'default'}
+          onChange={e => this.selectParentOption(e.target.value)}
+          ref={(select) => { this.optionSelect = select; }}
+        >
+          { parentOptions }
+          <option disabled value={'default'}>Select a Parent Option</option>
+        </select>
+      </div>
+    );
+  }
+
   render() {
     if (Object.keys(this.props.options_to_questions).length === 0) {
       return(
@@ -60,6 +125,12 @@ class DepQuestionContainer extends React.Component {
       <div style={{marginLeft: 50, border:"1px solid black"}}>
         <p>Dependent Questions</p>
         {all_dependent_questions}
+        { this.onNewDepQuestion() }
+        <button
+          onClick={e => this.setState({newDepQuestion: true})}
+        >
+          Add Dependent Question
+        </button>
       </div>);
   }
 }
@@ -72,6 +143,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))}
   };
 }
 

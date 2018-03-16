@@ -127,4 +127,5 @@ export default connect(
 
 QuestionContainer.propTypes = {
   question: PropTypes.object.isRequired,
+  dependent: PropTypes.bool
 };
