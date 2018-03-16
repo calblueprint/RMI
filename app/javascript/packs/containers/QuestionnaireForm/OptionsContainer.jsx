@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 class OptionsContainer extends React.Component {
 
   /**
-   * Returns the correct questionnaire form option component given quesiton type
+   * Returns the correct Components/QuestionnaireForm/<option> component given question type
    * @param { string } questionType - question.question_type
    * @returns react component
    */
@@ -29,6 +29,11 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  /**
+   * Passes async fetch function into option container to handle onBlur event.
+   * @param {object} option - option object
+   * @returns {function} async fetch
+   */
   handleOnBlur(option) {
     if (option.temp) {
       return this.createOption;
@@ -36,6 +41,10 @@ class OptionsContainer extends React.Component {
     return this.updateOption;
   }
 
+  /**
+   * Returns the url constant for range options or dropdown options.
+   * @returns {string} url pattern for range or dropdown option.
+   */
   optionUrl() {
     if (this.props.question.question_type === 'range') {
       return '/api/range_options';
@@ -47,7 +56,7 @@ class OptionsContainer extends React.Component {
   }
 
   /**
-   * Function handling fetch request to post an option and redux update
+   * Handles fetch request to post an option and redux update
    * @param { string } id - optionId to update
    * @param { Object } args - any option parameters
    */
@@ -66,7 +75,7 @@ class OptionsContainer extends React.Component {
   }
 
   /**
-   * Function handling fetch request to update an option and redux update
+   * Handles fetch request to update an option and redux update
    * @param { string } id - optionId to update
    * @param { Object } args - any option parameters
    */
@@ -83,11 +92,9 @@ class OptionsContainer extends React.Component {
     }
   }
 
-
-
   /**
    * Handles event for onChange which is updating redux temporarily.
-   * If create new option, create a temp option in question redux.
+   * If create new option, create a temp option in question store.
    * @param { string } id - optionId that is updating
    * @param { string } args - any option parameters
    */
@@ -97,21 +104,21 @@ class OptionsContainer extends React.Component {
   }
 
   /**
-   * If focusing on option input to create new option, create a temp option in question
-   * @param id
-   * @param args
+   * Handles onFocus for new option input to create a temp option for question
+   * Creates a new temp option in store
    */
   onNewOption() {
     const newtempOption = {
       id: generateTempId(),
       question_id: this.props.question.id
     };
-    if (this.props.question.question_type) {
-
-    }
     this.props.beforeCreateNewOption(newtempOption);
   }
 
+  /**
+   * Returns an input box that when clicked, creates a new temp range or dropdown option
+   * @returns {html} input box that triggers a new temp option when focused.
+   */
   newOptionPlaceholder () {
     switch (this.props.question.question_type) {
       case "dropdown":

@@ -12,6 +12,11 @@ class DepQuestionContainer extends React.Component {
     this.state = {newDepQuestion: false}
   }
 
+  /**
+   * Handles creating a new temp question with selected parent_option_id.
+   * Triggered by onChange in onNewDepQuestion select.
+   * @param {string} optionId - parent_option_id for pending new dep. question
+   */
   selectParentOption(optionId) {
     const newDepQuestion = {
       id: generateTempId(),
@@ -28,14 +33,19 @@ class DepQuestionContainer extends React.Component {
     this.optionSelect.remove();
   }
 
+  /**
+   * Returns a select box that is called in render when choosing parent_option for new
+   * dependent question creation.
+   * @returns {html} a select box with options corresponding to parent option choices
+   */
   onNewDepQuestion() {
     if (!this.state.newDepQuestion) {
       return null;
     }
     const parentOptionType = this.props.question.question_type;
     const parentOptions = Object.keys(this.props.question.options).map((optionId) => {
+      const option = this.props.question.options[optionId];
       if (parentOptionType === 'dropdown') {
-        const option = this.props.question.options[optionId];
         return(
           <option
             value={optionId}
@@ -69,6 +79,7 @@ class DepQuestionContainer extends React.Component {
       </div>
     );
   }
+
 
   render() {
     if (Object.keys(this.props.options_to_questions).length === 0) {

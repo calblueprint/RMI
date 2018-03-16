@@ -8,6 +8,10 @@ import { generateTempId } from '../../utils/TempIdUtil';
 import PropTypes from 'prop-types';
 
 class QuestionnaireFormContainer extends React.Component {
+
+  /**
+   * Handles creating a new temp question when Add Question button is clicked.
+   */
   onNewQuestion() {
     const newQuestion = {
       id: generateTempId(),

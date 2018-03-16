@@ -16,6 +16,11 @@ import PropTypes from 'prop-types'
 
 class QuestionContainer extends React.Component {
 
+  /**
+   * Handles fetch request to update a question and redux update
+   * @param { string } id - questionId to update
+   * @param { Object } args - any question parameters
+   */
   async updateQuestion(id, args) {
     const updatedQuestion = {...this.props.question, ...args};
     this.props.questionFetchInProgress(updatedQuestion);
@@ -28,6 +33,11 @@ class QuestionContainer extends React.Component {
     }
   }
 
+  /**
+   * Handles fetch request to post a question and redux update
+   * @param { string } id - questionId to update
+   * @param { Object } args - any question parameters
+   */
   async createQuestion(id, args) {
     const newQuestion = {...this.props.question, ...args};
     const tempQuestion = this.props.question
@@ -41,6 +51,11 @@ class QuestionContainer extends React.Component {
     }
   }
 
+  /**
+   * Calls async fetch function during onBlur to create or update question object.
+   * @param {string} id - questionId to update
+   * @param {object} args - any question parameters
+   */
   handleOnBlur(id, args) {
     if (this.props.question.temp) {
       this.createQuestion(id, args);
@@ -49,12 +64,22 @@ class QuestionContainer extends React.Component {
     }
   }
 
+  /**
+   * Handles event for onChange which is updating redux temporarily.
+   * If create new question, create a temp question in question store.
+   * @param { string } id - questionId that is updating
+   * @param { string } args - any question parameters
+   */
   handleOnChange(id, args) {
     const updatedQuestion = {...this.props.question, ...args}
     this.props.questionPreFetchSave(updatedQuestion)
   }
-  //props: question
 
+  /**
+   * Handles onChange even for selecting new question type by creating
+   * temporary question in store.
+   * @param {string} qType - question_type
+   */
   selectQtype(qType) {
     const question = { ...this.props.question, question_type: qType };
     this.props.beforeCreateNewQuestion(question);
@@ -65,9 +90,12 @@ class QuestionContainer extends React.Component {
 
     if (!this.props.question.question_type) {
       const qTypes = ['range', 'dropdown', 'free'];
-      const options = qTypes.map((qType) => {
+      const options = qTypes.map((qType, index) => {
         return (
-          <option value={qType}>
+          <option
+            value={qType}
+            key={index}
+          >
             {qType}
           </option>
         )
@@ -127,5 +155,4 @@ export default connect(
 
 QuestionContainer.propTypes = {
   question: PropTypes.object.isRequired,
-  dependent: PropTypes.bool
 };
