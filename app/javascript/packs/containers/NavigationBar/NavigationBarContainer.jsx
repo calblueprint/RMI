@@ -6,7 +6,11 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
 import {getName, getEmail} from '../../selectors/usersSelector'
-import {getCurrentCategory, getCategoriesForBuilding, getFirstUnansweredCategory} from "../../selectors/categoriesSelector";
+import {
+  getCurrentCategory,
+  getCategoriesForBuilding,
+  getFirstUnansweredCategory
+} from "../../selectors/categoriesSelector";
 import CategoryContainer from './CategoryContainer';
 import {getQuestionsByBuilding, getQuestionsByCategory} from "../../selectors/questionsSelector";
 import {getRemainingAnswersforCategory} from "../../selectors/answersSelector";
@@ -84,7 +88,6 @@ function mapStateToProps(state, ownProps) {
     remainingQuestions: remainingQuestions,
   };
 }
-
 
 
 export default connect(

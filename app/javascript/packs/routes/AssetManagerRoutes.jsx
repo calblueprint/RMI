@@ -17,11 +17,11 @@ class AssetManagerRoutes extends React.Component {
       <div>
         <Route path="/:entity?/:id?/:mode?/:cId?" component={NavigationBarContainer}/>
         <Switch>
-          <Route path="/portfolios/:pId" component={PortfolioContainer} />
+          <Route path="/portfolios/:pId" component={PortfolioContainer}/>
 
           {/* If no questionnaire mode is specified, the default should be /edit */}
-          <Route exact path="/buildings/:bId" component={CategoryRerouter} />
-          <Route path="/buildings/:bId" component={QuestionnaireRoutes} />
+          <Route exact path="/buildings/:bId" component={CategoryRerouter}/>
+          <Route path="/buildings/:bId" component={QuestionnaireRoutes}/>
         </Switch>
       </div>
     )

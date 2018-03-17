@@ -35,8 +35,9 @@ function fetchPortfolios(state, action) {
 export default function portfolios(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
-    case FETCH_PORTFOLIOS: return fetchPortfolios(state, action);
-  default:
-    return state;
+    case FETCH_PORTFOLIOS:
+      return fetchPortfolios(state, action);
+    default:
+      return state;
   }
 }

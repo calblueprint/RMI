@@ -2,12 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux'
 
 import {Redirect} from 'react-router-dom';
-import {getCurrentCategory, getFirstUnansweredCategory, getCategoriesForBuilding} from "../selectors/categoriesSelector";
+import {
+  getCurrentCategory,
+  getFirstUnansweredCategory,
+  getCategoriesForBuilding
+} from "../selectors/categoriesSelector";
 
 class CategoryRerouter extends React.Component {
   render() {
     return (
-      (this.props.categoryId ? <Redirect to={`${this.props.match.url}/edit/${this.props.categoryId}`} /> : <Redirect to={`${this.props.match.url}/review`} />)
+      (this.props.categoryId ? <Redirect to={`${this.props.match.url}/edit/${this.props.categoryId}`}/> :
+        <Redirect to={`${this.props.match.url}/review`}/>)
     )
   }
 }

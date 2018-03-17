@@ -13,8 +13,9 @@ export function getCategoriesForBuilding(buildingId, state) {
 
 //returns the category that we are viewing currently
 export function getCurrentCategory(cId, state) {
-    return state.categories[cId];
+  return state.categories[cId];
 }
+
 // takes in a list of categories for a user
 // also takes in a building and its respective questions for filtering
 // loops through the categories and outputs the first category that has more than 0 unanswered questions

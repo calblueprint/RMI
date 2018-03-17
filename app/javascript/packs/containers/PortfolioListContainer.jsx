@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { loadInitialState } from '../actions/initialState';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import {loadInitialState} from '../actions/initialState';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 class PortfolioListContainer extends React.Component {
   componentDidMount() {
@@ -44,7 +44,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    initActions: bindActionCreators({ loadInitialState }, dispatch)
+    initActions: bindActionCreators({loadInitialState}, dispatch)
   };
 }
 

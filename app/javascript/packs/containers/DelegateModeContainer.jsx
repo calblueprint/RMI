@@ -22,9 +22,9 @@ class DelegateModeContainer extends React.Component {
           // Only display non-dependent questions initially
           if (!question.parent_option_id) {
             return (<QuestionContainer mode="delegation"
-                            key={question.id}
-                            building_id={this.props.building.id}
-                            {...question} />);
+                                       key={question.id}
+                                       building_id={this.props.building.id}
+                                       {...question} />);
           }
         })
         }
@@ -40,12 +40,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-
-  }
+  return {}
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(DelegateModeContainer);

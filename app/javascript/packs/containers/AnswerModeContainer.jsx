@@ -1,4 +1,4 @@
-  /**
+/**
  * The default mode that allows the user to answer questions about a building.
  * ROUTE - /buildings/:bId/edit
  */
@@ -7,8 +7,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {getQuestionsByCategory, getQuestionsByBuilding} from '../selectors/questionsSelector';
+
 class AnswerModeContainer extends React.Component {
   render() {
     return (
