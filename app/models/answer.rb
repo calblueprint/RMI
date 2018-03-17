@@ -32,4 +32,8 @@ class Answer < ApplicationRecord
 
   validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 2.megabytes
   do_not_validate_attachment_file_type :attachment
+
+  def has_no_delegation
+    delegation_email.blank? and delegation_first_name.blank? and delegation_last_name.blank?
+  end
 end
