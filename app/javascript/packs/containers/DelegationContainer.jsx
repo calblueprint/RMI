@@ -30,6 +30,8 @@ class DelegationContainer extends React.Component {
         email: "",
         firstName: "",
         lastName: "",
+        showNameInputs: false,
+        finished: false,
       };
     }
   }
@@ -47,6 +49,16 @@ class DelegationContainer extends React.Component {
     }
   }
 
+  handleClickCreateContact() {
+    this.setState({ showNameInputs: true });
+  }
+
+  handleClickSaveContact() {
+    this.setState({ finished: true }, (() => {
+      this.createOrUpdateContactsIfValid(null);
+    }));
+  }
+
   handleExistingContactSelect(value) {
     const contact = this.props.contacts.find(
         (contact) => (contact.email == value));
@@ -57,16 +69,13 @@ class DelegationContainer extends React.Component {
       email: value[0],
       firstName: contact.first_name,
       lastName: contact.last_name,
+      finished: true,
     }, this.updateAnswer);
   }
 
   // Need tp dispatch actions to update answer in redux, then send to backend
   handleContactInfoChange(key, value) {
-    var oldState = this.state;
-    this.setState({ [key]: value }, (() => {
-      this.createOrUpdateContactsIfValid(oldState);
-      this.updateAnswer();
-    }).bind(this));
+    this.setState({ [key]: value }, this.updateAnswer);
   }
 
   // If email, firstname and lastname are valid pair, then
@@ -111,17 +120,11 @@ class DelegationContainer extends React.Component {
     }
   }
 
-  showNameInputs() {
-    // TODO: use a proper standard
-    // I don't think any good standard exists, if we allow user to reuse contacts
-    // from the form already filled in.
-    return true;
-  }
-
   renderUnanswered() {
     const currentEmail = this.state.email;
 
-    const inputs = this.showNameInputs() ? this.renderNameInputs() : "";
+    const inputs = this.state.showNameInputs ? this.renderNameInputs() : "";
+    const select = !this.state.showNameInputs ? this.renderSelectAndCreateButton() : "";
 
     return (
     <div>
@@ -133,6 +136,32 @@ class DelegationContainer extends React.Component {
         onChange={(e) => this.handleContactInfoChange("email", e.target.value)}
       /><br></br>
 
+      {select}
+
+      {inputs}
+
+    </div>)
+  }
+
+  renderCreateContactButton() {
+    const hasMatchContact = (this.props.contacts.filter((contact) =>
+        contact.email == this.state.email).length == 1);
+    if (validateEmail(this.state.email) && !hasMatchContact) {
+      const buttonValue = "Create new contact " + this.state.email;
+      return (
+        <div>
+          <button type="submit" value={buttonValue}
+            onClick={(e) => this.handleClickCreateContact()}
+          >{buttonValue}</button>
+        </div>)
+    }
+  }
+
+  renderSelectAndCreateButton() {
+    const currentEmail = this.state.email;
+
+    return (
+    <div>
       <select onChange={(e) => this.handleExistingContactSelect([e.target.value])}
               defaultValue={currentEmail}>
         <option value="" key="">New target</option>
@@ -141,9 +170,7 @@ class DelegationContainer extends React.Component {
               {contact.first_name + " " + contact.last_name + "<" + contact.email + ">"}</option>)
         })}
       </select><br></br>
-
-      {inputs}
-
+      {this.renderCreateContactButton()}
     </div>)
   }
 
@@ -161,6 +188,10 @@ class DelegationContainer extends React.Component {
       <input type="text" value={currentLastName}
         onChange={(e) => this.handleContactInfoChange("lastName", e.target.value)}
       /><br></br>
+
+      <button type="submit" value="Create contact and assign"
+        onClick={(e) => this.handleClickSaveContact()}
+      >Create contact and assign</button>
     </div>)
   }
 
@@ -182,9 +213,32 @@ class DelegationContainer extends React.Component {
     return (<div>{dependentQuestions}</div>);
   }
 
+  handleClickChangeContact() {
+    this.setState({
+      email: "",
+      firstName: "",
+      lastName: "",
+      showNameInputs: false,
+      finished: false,
+    }, this.updateAnswer);
+  }
+
+  renderDelegated() {
+    const delegated_string = this.state.firstName + " " + this.state.lastName + " " + this.state.email;
+    return (
+        <div>
+          <p>Delegated to {delegated_string}</p>
+          <button type="button" value="Change"
+            onClick={(e) => this.handleClickChangeContact()}
+          >Change</button>
+        </div>)
+  }
+
   render() {
     if (this.answerValid()) {
       return this.renderAnswered();
+    } else if (this.state.finished) {
+      return this.renderDelegated();
     } else {
       return this.renderUnanswered();
     }
