@@ -19,6 +19,7 @@ class OptionsContainer extends React.Component {
    */
   getAnswerData(option_id, value) {
     return {
+      ...this.props.answer,
       building_id: this.props.building_id,
       question_id: this.props.question_id,
       selected_option_id: option_id,

@@ -12,22 +12,25 @@ class RangeOption extends React.Component {
     }
   }
 
-  updateAnswer(id, num) {
+  updateAnswer(id, num, force) {
     this.props.onChange(id, num);
     this.trySaveAnswer(id, num);
+    if (force) {
+      this.trySaveAnswer.flush();
+    }
   }
 
-  onChange(num) {
+  onChange(num, force) {
     for (let id in this.props.options) {
       const option = this.props.options[id];
       if (num && num >= option.min && num <= option.max) {
-        this.updateAnswer(id, num);
+        this.updateAnswer(id, num, force);
         return;
       }
     }
 
     // No dependent range hit, but we still want to update answer
-    this.updateAnswer(null, num);
+    this.updateAnswer(null, num, force);
   }
 
   render() {
@@ -37,6 +40,7 @@ class RangeOption extends React.Component {
         type="number"
         value={currentValue}
         onChange={(e) => this.onChange(e.target.value)}
+        onBlur={(e) => this.onChange(e.target.value, true)}
       />
     </div>)
   }

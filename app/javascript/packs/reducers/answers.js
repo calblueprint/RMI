@@ -39,13 +39,20 @@ function beforeFetchAnswer(state, action) {
   };
 }
 
+/**
+ * Upon receiving a response from the fetch request, modify the updated_at time and save status,
+ * but don't change the answer itself. The reason for this is because we're debouncing fetch requests
+ * for certain input types, so we want to keep the local answer as the most up-to-date one.
+ */
 function answerFetchSuccess(state, action) {
   const answer = action.response;
+  const localAnswer = state[answer.question_id];
 
   return {
     ...state,
     [answer.question_id]: {
-      ...answer,
+      ...localAnswer,
+      updated_at: answer.updated_at || localAnswer.updated_at,
       saved: true,
       fetching: false,
       error: false
