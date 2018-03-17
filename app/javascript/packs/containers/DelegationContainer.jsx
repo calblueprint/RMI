@@ -53,17 +53,17 @@ class DelegationContainer extends React.Component {
     if (!contact) {
       return;
     }
-    this.setState((state) => ({
+    this.setState({
       email: value[0],
       firstName: contact.first_name,
       lastName: contact.last_name,
-    }), this.updateAnswer);
+    }, this.updateAnswer);
   }
 
   // Need tp dispatch actions to update answer in redux, then send to backend
   handleContactInfoChange(key, value) {
     var oldState = this.state;
-    this.setState((state) => ({ [key]: value }), (() => {
+    this.setState({ [key]: value }, (() => {
       this.createOrUpdateContactsIfValid(oldState);
       this.updateAnswer();
     }).bind(this));

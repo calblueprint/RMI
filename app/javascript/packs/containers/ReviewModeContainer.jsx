@@ -80,12 +80,12 @@ class ReviewModeContainer extends React.Component {
       });
     }
 
-    this.setState((state) => ({ status_string: "Saving delegations!" }));
+    this.setState({ status_string: "Saving delegations!" });
     postDelegations(delegations, ((success) => {
       if (success) {
-        this.setState((state) => ({ status_string: "Delegations saved." }));
+        this.setState({ status_string: "Delegations saved." });
       } else {
-        this.setState((state) => ({ status_string: "Saving delegations failed. Try again?" }));
+        this.setState({ status_string: "Saving delegations failed. Try again?" });
       }
     }).bind(this));
   }
