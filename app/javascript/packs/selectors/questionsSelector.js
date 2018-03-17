@@ -83,7 +83,6 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
 //if no category is specified we return all of the questions
 
 export function getQuestionsByCategory(categoryId, questions) {
-  debugger;
   if (categoryId) {
     return questions.filter(question => {
       return question.category_id == categoryId;

@@ -4,10 +4,8 @@ import React from 'react'
 
 class CategoryContainer extends React.Component {
     render() {
-        const currentCategory = this.props.currentCategory;
-        const categories = this.props.categories;
+        const {currentCategory, categories, remainingQuestions} = this.props;
         const currentBuildingId = this.props.currentBuilding ? this.props.currentBuilding.id : null;
-        const remainingQuestions = this.props.remainingQuestions;
         return (
             <div>
                 <h1>{currentCategory ? currentCategory.name : null}</h1>

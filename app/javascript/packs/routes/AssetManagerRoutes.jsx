@@ -8,6 +8,8 @@ import NavigationBarContainer from '../containers/NavigationBar/NavigationBarCon
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 
+import CategoryRerouter from "../containers/CategoryRerouter";
+
 class AssetManagerRoutes extends React.Component {
   render() {
     return (
@@ -17,7 +19,7 @@ class AssetManagerRoutes extends React.Component {
           <Route path="/portfolios/:pId" component={PortfolioContainer} />
 
           {/* If no questionnaire mode is specified, the default should be /edit */}
-          <Route exact path="/buildings/:bId" render={({match}) => (<Redirect to={`${match.url}/edit`} />)} />
+          <Route exact path="/buildings/:bId" component={CategoryRerouter} />
           <Route path="/buildings/:bId" component={QuestionnaireRoutes} />
         </Switch>
       </div>

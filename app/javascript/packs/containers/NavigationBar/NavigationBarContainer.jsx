@@ -48,7 +48,7 @@ function mapStateToProps(state, ownProps) {
   const buildingView = ownProps.match.params.entity == "buildings";
   const questions = buildingView && ownProps.match.params.id ?
     getQuestionsByBuilding(ownProps.match.params.id, state) : [];
-  const categoryId = ownProps.match.params.cId ? ownProps.match.params.cId : null;
+  const categoryId = buildingView ? ownProps.match.params.cId : null;
   const questionsByCategory = getQuestionsByCategory(categoryId, questions);
 
   let remainingQuestions;
@@ -63,14 +63,8 @@ function mapStateToProps(state, ownProps) {
   let loadCategory;
   if (!buildingView) {
     loadCategory = null;
-  }
-  else if (!ownProps.match.params.cId) {
-    // need category ids
-    //need questions by their categories
-    let categories = getCategoriesForBuilding(ownProps.match.params.id, state);
-    loadCategory = getFirstUnansweredCategory(categories, questions, ownProps.match.params.id, state);
   } else {
-    getCurrentCategory(ownProps.match.params.cId, state)
+    loadCategory = getCurrentCategory(ownProps.match.params.cId, state);
   }
   return {
     buildings: getBuildings(state),

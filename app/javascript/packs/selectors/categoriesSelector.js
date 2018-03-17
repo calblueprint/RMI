@@ -25,5 +25,5 @@ export function getFirstUnansweredCategory(categories, questions, buildingId, st
       return currCategory;
     }
   }
-  return categories[0];
+  return null;
 }
