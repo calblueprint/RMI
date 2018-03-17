@@ -17,10 +17,6 @@ class RangeOption < ApplicationRecord
   validates :min, :max, presence: true
   validate :is_valid_min_max
 
-  def type
-    'range'
-  end
-
   private
 
   def is_valid_min_max

@@ -4,7 +4,7 @@ import { getQuestionsByBuildingType } from '../../selectors/questionsSelector';
 import { getBuildingType } from '../../selectors/buildingTypesSelector';
 import QuestionContainer from './QuestionContainer';
 import { beforeCreateNewQuestion } from '../../actions/questions';
-import { generateTempId } from '../../utils/TempIdUtil';
+import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import PropTypes from 'prop-types';
 
 class QuestionnaireFormContainer extends React.Component {

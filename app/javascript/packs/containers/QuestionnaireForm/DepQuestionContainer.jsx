@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import QuestionContainer  from './QuestionContainer';
 import { getDependentQuestionsForOptionIds } from '../../selectors/questionsSelector';
 import PropTypes from 'prop-types'
-import {generateTempId} from '../../utils/TempIdUtil';
+import {generateTempId} from '../../utils/TemporaryObjectUtil';
 import {beforeCreateNewQuestion} from '../../actions/questions';
 
 class DepQuestionContainer extends React.Component {
@@ -18,6 +18,13 @@ class DepQuestionContainer extends React.Component {
    * @param {string} optionId - parent_option_id for pending new dep. question
    */
   selectParentOption(optionId) {
+    let parentOptionType;
+    if (this.props.question.question_type === 'range') {
+      parentOptionType = 'RangeOption';
+    } else {
+      parentOptionType = 'DropdownOption';
+    }
+
     const newDepQuestion = {
       id: generateTempId(),
       text: "",
@@ -26,7 +33,7 @@ class DepQuestionContainer extends React.Component {
       options: {},
       question_type: null,
       parameter: "default",
-      parent_option_type: this.props.question.question_type,
+      parent_option_type: parentOptionType,
       parent_option_id: optionId
     };
     this.props.beforeCreateNewQuestion(newDepQuestion);
@@ -82,7 +89,7 @@ class DepQuestionContainer extends React.Component {
 
 
   render() {
-    if (Object.keys(this.props.options_to_questions).length === 0) {
+    if (Object.keys(this.props.question.options).length === 0) {
       return(
         <div></div>
       )
@@ -165,5 +172,6 @@ export default connect(
 
 DepQuestionContainer.propTypes = {
   question: PropTypes.object.isRequired,
-  optionsList: PropTypes.array.isRequired
+  optionsList: PropTypes.array.isRequired,
+  options_to_questions: PropTypes.object.isRequired
 };

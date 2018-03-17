@@ -214,7 +214,7 @@ def _make_question(q_hash, b_type)
     if o.key?(:dep_questions)
       o[:dep_questions].each do |q|
         q[:question][:parent_option_id] = option.id
-        q[:question][:parent_option_type] = option.type
+        q[:question][:parent_option_type] = option.class.name
         _make_question(q, b_type)
       end
     end
