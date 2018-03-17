@@ -22,8 +22,6 @@ class QuestionnaireRoutes extends React.Component {
 
         <QuestionnaireControls currentPath={currentPath} />
 
-        <hr />
-
         <Switch>
           <Route path={`${currentPath}/edit`}
                  render={renderWithProps(AnswerModeContainer, propsToPass)} />
