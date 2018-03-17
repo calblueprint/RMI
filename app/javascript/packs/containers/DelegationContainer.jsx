@@ -35,7 +35,7 @@ class DelegationContainer extends React.Component {
   }
 
   componentDidMount() {
-    createOrUpdateContactsIfValid();
+    this.createOrUpdateContactsIfValid();
   }
 
   // determine whether answers are available
@@ -47,7 +47,7 @@ class DelegationContainer extends React.Component {
     }
   }
 
-  handleSelect(value) {
+  handleExistingContactSelect(value) {
     const contact = this.props.contacts.find(
         (contact) => (contact.email == value));
     if (!contact) {
@@ -66,9 +66,11 @@ class DelegationContainer extends React.Component {
   }
 
   // Need tp dispatch actions to update answer in redux, then send to backend
-  // XXX: Blocked on answer actions by Kevin Li
-  handleChange(key, value) {
-    this.setState((state) => ({ [key]: value}), this.afterUpdateState);
+  handleContactInfoChange(key, value) {
+    this.setState((state) => ({ [key]: value}), (() => {
+      this.createOrUpdateContactsIfValid();
+      this.updateAnswer();
+    }).bind(this));
   }
 
   // If email, firstname and lastname are valid pair, then
@@ -114,10 +116,10 @@ class DelegationContainer extends React.Component {
 
       Email:<br></br>
       <input type="text" value={currentEmail}
-        onChange={(e) => this.handleChange("email", e.target.value)}
+        onChange={(e) => this.handleContactInfoChange("email", e.target.value)}
       /><br></br>
 
-      <select onChange={(e) => this.handleSelect([e.target.value])}
+      <select onChange={(e) => this.handleExistingContactSelect([e.target.value])}
               defaultValue={currentEmail}>
         <option value="" key="">New target</option>
         {Object.values(this.props.contacts).map((contact) => {
@@ -128,12 +130,12 @@ class DelegationContainer extends React.Component {
 
       First name:<br></br>
       <input type="text" value={currentFirstName}
-        onChange={(e) => this.handleChange("firstName", e.target.value)}
+        onChange={(e) => this.handleContactInfoChange("firstName", e.target.value)}
       /><br></br>
 
       Last name:<br></br>
       <input type="text" value={currentLastName}
-        onChange={(e) => this.handleChange("lastName", e.target.value)}
+        onChange={(e) => this.handleContactInfoChange("lastName", e.target.value)}
       /><br></br>
     </div>)
   }
