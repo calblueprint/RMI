@@ -24,6 +24,8 @@ class DelegationContainer extends React.Component {
         email: this.props.answer.delegation_email,
         firstName: this.props.answer.delegation_first_name,
         lastName: this.props.answer.delegation_last_name,
+        showNameInputs: false,
+        finished: validateEmail(this.props.answer.delegation_email),
       };
     } else {
       this.state = {
@@ -55,6 +57,7 @@ class DelegationContainer extends React.Component {
 
   handleClickSaveContact() {
     this.setState({ finished: true }, (() => {
+      this.updateAnswer();
       this.createOrUpdateContactsIfValid(null);
     }));
   }
@@ -73,9 +76,8 @@ class DelegationContainer extends React.Component {
     }, this.updateAnswer);
   }
 
-  // Need tp dispatch actions to update answer in redux, then send to backend
   handleContactInfoChange(key, value) {
-    this.setState({ [key]: value }, this.updateAnswer);
+    this.setState({ [key]: value });
   }
 
   // If email, firstname and lastname are valid pair, then
