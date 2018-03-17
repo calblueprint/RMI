@@ -3,6 +3,7 @@ import React from 'react';
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 import NavigationBarContainer from "../containers/NavigationBarContainer"
 import BuildingListContainer from "../containers/BuildingListContainer";
+import CategoryRerouter from "../containers/CategoryRerouter";
 
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
@@ -16,7 +17,7 @@ class BuildingOperatorRoutes extends React.Component {
           <Route exact path="/buildings" component={BuildingListContainer} />
 
           {/* If no questionnaire mode is specified, the default should be /edit */}
-          <Route exact path="/buildings/:bId" render={({match}) => (<Redirect to={`${match.url}/edit`} />)} />
+          <Route exact path="/buildings/:bId" component={CategoryRerouter} />
           <Route path="/buildings/:bId" component={QuestionnaireRoutes} />
         </Switch>
       </div>
