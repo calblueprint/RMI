@@ -1,37 +1,28 @@
 import {
     ADD_CONTACT,
-    EDIT_CONTACT
+    DELETE_CONTACT,
 } from '../constants';
 
 function attachContact(state, action) {
-  var found = false;
-  for (var i = 0; i < state.length; i++) {
-    if (state[i].email == action.email) {
-      state[i] = {
-        email: action.email,
-        firstName: action.firstName,
-        lastName: action.lastName
-      };
-      found = true;
-      break;
-    }
-  }
-  if (!found) {
-    state.push({
-      email: action.email,
-      firstName: action.firstName,
-      lastName: action.lastName
-    });
-  }
+  state.push({
+    email: action.email,
+    firstName: action.firstName,
+    lastName: action.lastName
+  });
   return state;
+}
+
+function deleteContact(state, action) {
+  return state.filter(contact => contact.email != action.email);
 }
 
 export default function contacts(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
     case ADD_CONTACT:
-    case EDIT_CONTACT:
       return attachContact(state, action);
+    case DELETE_CONTACT:
+      return deleteContact(state, action);
     default:
       return state;
   }

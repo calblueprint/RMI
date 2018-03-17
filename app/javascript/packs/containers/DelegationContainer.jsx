@@ -35,7 +35,7 @@ class DelegationContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.createOrUpdateContactsIfValid();
+    this.createOrUpdateContactsIfValid(null);
   }
 
   // determine whether answers are available
@@ -60,15 +60,11 @@ class DelegationContainer extends React.Component {
     }), this.updateAnswer);
   }
 
-  afterUpdateState() {
-    this.createOrUpdateContactsIfValid();
-    this.updateAnswer();
-  }
-
   // Need tp dispatch actions to update answer in redux, then send to backend
   handleContactInfoChange(key, value) {
+    var oldState = this.state;
     this.setState((state) => ({ [key]: value}), (() => {
-      this.createOrUpdateContactsIfValid();
+      this.createOrUpdateContactsIfValid(oldState);
       this.updateAnswer();
     }).bind(this));
   }
@@ -76,8 +72,10 @@ class DelegationContainer extends React.Component {
   // If email, firstname and lastname are valid pair, then
   // this function should be called to update contacts stored
   // in redux, and make it available in future references
-  createOrUpdateContactsIfValid() {
-    // TODO: should validate for valid email address here
+  createOrUpdateContactsIfValid(oldState) {
+    if (oldState && validateEmail(oldState.email)) {
+      this.props.contactActions.deleteContact(oldState.email);
+    }
     if (validateEmail(this.state.email) &&
         this.state.firstName && this.state.lastName) {
       this.props.contactActions.addContact(
