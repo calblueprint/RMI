@@ -7,8 +7,8 @@ export function addContact(contactEmail, contactFirstName, contactLastName) {
   return {
     type: ADD_CONTACT,
     email: contactEmail,
-    firstName: contactFirstName,
-    lastName: contactLastName
+    first_name: contactFirstName,
+    last_name: contactLastName,
   };
 }
 

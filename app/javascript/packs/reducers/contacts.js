@@ -6,8 +6,8 @@ import {
 function attachContact(state, action) {
   state.push({
     email: action.email,
-    firstName: action.firstName,
-    lastName: action.lastName
+    first_name: action.first_name,
+    last_name: action.last_name
   });
   return state;
 }

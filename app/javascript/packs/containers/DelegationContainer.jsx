@@ -63,7 +63,7 @@ class DelegationContainer extends React.Component {
   // Need tp dispatch actions to update answer in redux, then send to backend
   handleContactInfoChange(key, value) {
     var oldState = this.state;
-    this.setState((state) => ({ [key]: value}), (() => {
+    this.setState((state) => ({ [key]: value }), (() => {
       this.createOrUpdateContactsIfValid(oldState);
       this.updateAnswer();
     }).bind(this));
@@ -102,10 +102,26 @@ class DelegationContainer extends React.Component {
     }
   }
 
+  filterContacts() {
+    if (this.state.email) {
+      return this.props.contacts.filter(
+          contact => contact.email.includes(this.state.email));
+    } else {
+      return this.props.contacts;
+    }
+  }
+
+  showNameInputs() {
+    // TODO: use a proper standard
+    // I don't think any good standard exists, if we allow user to reuse contacts
+    // from the form already filled in.
+    return true;
+  }
+
   renderUnanswered() {
     const currentEmail = this.state.email;
-    const currentFirstName = this.state.firstName;
-    const currentLastName = this.state.lastName;
+
+    const inputs = this.showNameInputs() ? this.renderNameInputs() : "";
 
     return (
     <div>
@@ -120,12 +136,22 @@ class DelegationContainer extends React.Component {
       <select onChange={(e) => this.handleExistingContactSelect([e.target.value])}
               defaultValue={currentEmail}>
         <option value="" key="">New target</option>
-        {Object.values(this.props.contacts).map((contact) => {
+        {Object.values(this.filterContacts()).map((contact) => {
           return (<option value={contact.email} key={contact.email}>
               {contact.first_name + " " + contact.last_name + "<" + contact.email + ">"}</option>)
         })}
       </select><br></br>
 
+      {inputs}
+
+    </div>)
+  }
+
+  renderNameInputs() {
+    const currentFirstName = this.state.firstName;
+    const currentLastName = this.state.lastName;
+    return (
+    <div>
       First name:<br></br>
       <input type="text" value={currentFirstName}
         onChange={(e) => this.handleContactInfoChange("firstName", e.target.value)}
