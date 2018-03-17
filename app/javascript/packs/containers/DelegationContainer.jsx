@@ -54,7 +54,7 @@ class DelegationContainer extends React.Component {
       return;
     }
     this.setState((state) => ({
-      email: value,
+      email: value[0],
       firstName: contact.first_name,
       lastName: contact.last_name,
     }), this.updateAnswer);

@@ -56,7 +56,7 @@ class ReviewModeContainer extends React.Component {
   submitDelegation() {
     var parentQuestionsForDelegations = this.props.questions.filter((question) => {
       answer = this.props.getAnswer(question.id);
-      return !answer.text;
+      return !answer.text && answer.delegation_email;
     });
 
     var delegations = [];
