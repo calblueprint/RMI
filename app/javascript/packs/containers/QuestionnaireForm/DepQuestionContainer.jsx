@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import QuestionContainer  from './QuestionContainer';
 import { getDependentQuestionsForOptionIds } from '../../selectors/questionsSelector';
 import PropTypes from 'prop-types'
 import {generateTempId} from '../../utils/TemporaryObjectUtil';
 import {beforeCreateNewQuestion} from '../../actions/questions';
+import DepQuestionDisplay from '../../components/QuestionnaireForm/DepQuestionDisplay';
+
 
 class DepQuestionContainer extends React.Component {
   constructor(props) {
@@ -14,17 +15,10 @@ class DepQuestionContainer extends React.Component {
 
   /**
    * Handles creating a new temp question with selected parent_option_id.
-   * Triggered by onChange in onNewDepQuestion select.
+   * Triggered by onChange in renderNewDepQuestion() select.
    * @param {string} optionId - parent_option_id for pending new dep. question
    */
   selectParentOption(optionId) {
-    let parentOptionType;
-    if (this.props.question.question_type === 'range') {
-      parentOptionType = 'RangeOption';
-    } else {
-      parentOptionType = 'DropdownOption';
-    }
-
     const newDepQuestion = {
       id: generateTempId(),
       text: "",
@@ -33,11 +27,11 @@ class DepQuestionContainer extends React.Component {
       options: {},
       question_type: null,
       parameter: "default",
-      parent_option_type: parentOptionType,
+      parent_option_type: this.props.question.question_type,
       parent_option_id: optionId
     };
     this.props.beforeCreateNewQuestion(newDepQuestion);
-    this.optionSelect.remove();
+    this.setState({newDepQuestion: false})
   }
 
   /**
@@ -45,14 +39,14 @@ class DepQuestionContainer extends React.Component {
    * dependent question creation.
    * @returns {html} a select box with options corresponding to parent option choices
    */
-  onNewDepQuestion() {
+  renderNewDepQuestion() {
     if (!this.state.newDepQuestion) {
       return null;
     }
     const parentOptionType = this.props.question.question_type;
     const parentOptions = Object.keys(this.props.question.options).map((optionId) => {
       const option = this.props.question.options[optionId];
-      if (parentOptionType === 'dropdown') {
+      if (parentOptionType === 'DropdownOption') {
         return(
           <option
             value={optionId}
@@ -61,7 +55,7 @@ class DepQuestionContainer extends React.Component {
             {option.text}
           </option>
         );
-      } else if (parentOptionType === 'range') {
+      } else if (parentOptionType === 'RangeOption') {
         return(
           <option
             value={optionId}
@@ -94,56 +88,23 @@ class DepQuestionContainer extends React.Component {
         <div></div>
       )
     }
-    const all_dependent_questions = Object.keys(this.props.options_to_questions).map((optionId) => {
-      const displayOption = () => {
-        const option = this.props.question.options[optionId];
-        switch (this.props.question.question_type) {
-          case "range": {
-            return(
-              <p>
-                min: {option.min} max:{option.max}
-              </p>
-            )
-          }
-          case "dropdown": {
-            return(
-              <p>
-                {option.text}
-              </p>
-            )
-          }
-          default:
-        }
-      }
-
-      const dependent_questions_list = this.props.options_to_questions[optionId];
-
-      const dependent_questions_display = dependent_questions_list.map((dependent_question) => {
-        return (
-          <div key={dependent_question.id}>
-            <QuestionContainer
-              question={dependent_question}
-            />
-          </div>
-        )}
-      );
-
+    const DependentQuestionsDisplay = Object.keys(this.props.depQuestionsForOptions).map((optionId) => {
       return(
         <div key={optionId}>
-          {displayOption.apply(this)}
-          <div>
-            {dependent_questions_display}
-          </div>
+          <DepQuestionDisplay
+            option={this.props.question.options[optionId]}
+            question={this.props.question}
+            depQuestionsForOptions={this.props.depQuestionsForOptions}
+          />
         </div>
-
-      )}
-    );
+      )
+    });
 
     return (
       <div style={{marginLeft: 50, border:"1px solid black"}}>
         <p>Dependent Questions</p>
-        {all_dependent_questions}
-        { this.onNewDepQuestion() }
+        {DependentQuestionsDisplay}
+        { this.renderNewDepQuestion() }
         <button
           onClick={e => this.setState({newDepQuestion: true})}
         >
@@ -155,7 +116,7 @@ class DepQuestionContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    options_to_questions: getDependentQuestionsForOptionIds(ownProps.optionsList, ownProps.question.question_type, state)
+    depQuestionsForOptions: getDependentQuestionsForOptionIds(ownProps.optionsList, ownProps.question.question_type, state)
   };
 }
 
@@ -173,5 +134,5 @@ export default connect(
 DepQuestionContainer.propTypes = {
   question: PropTypes.object.isRequired,
   optionsList: PropTypes.array.isRequired,
-  options_to_questions: PropTypes.object.isRequired
+  depQuestionsForOptions: PropTypes.object.isRequired
 };

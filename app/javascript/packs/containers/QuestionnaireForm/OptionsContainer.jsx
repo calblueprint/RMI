@@ -24,8 +24,8 @@ class OptionsContainer extends React.Component {
    */
   getComponentName(questionType) {
     switch (questionType) {
-      case "dropdown": return DropdownOption;
-      case "range": return RangeOption;
+      case "DropdownOption": return DropdownOption;
+      case "RangeOption": return RangeOption;
       default: return
     }
   }
@@ -47,12 +47,24 @@ class OptionsContainer extends React.Component {
    * @returns {string} url pattern for range or dropdown option.
    */
   optionUrl() {
-    if (this.props.question.question_type === 'range') {
+    if (this.props.question.question_type === 'RangeOption') {
       return '/api/range_options';
-    } else if (this.props.question.question_type === 'dropdown') {
+    } else if (this.props.question.question_type === 'DropdownOption') {
       return '/api/dropdown_options';
     } else {
       return
+    }
+  }
+
+  /**
+   * Returns the option key required by strong params in rails controller
+   * @returns {string} option key
+   */
+  optionKey() {
+    switch (this.props.question.question_type) {
+      case "RangeOption": return 'range_option';
+      case "DropdownOption": return 'dropdown_option';
+      default: return null;
     }
   }
 
@@ -65,9 +77,9 @@ class OptionsContainer extends React.Component {
     const newOption = {...this.props.question.options[id], ...args};
     const tempOption = this.props.question.options[id];
     this.props.optionFetchInProgress(newOption);
-    const optionKey = this.props.question.question_type;
+
     try {
-      let response = await post(this.optionUrl(), { [optionKey + '_option']: newOption });
+      let response = await post(this.optionUrl(), { [this.optionKey()]: newOption });
       this.props.optionFetchSuccess(response.data);
       this.props.removeOption(tempOption);
     } catch (error) {
@@ -83,10 +95,9 @@ class OptionsContainer extends React.Component {
   async updateOption(id, args) {
     const updatedOption = {...this.props.question.options[id], ...args};
     this.props.optionFetchInProgress(updatedOption);
-    const optionKey = this.props.question.question_type;
     try {
       let response = await patch(this.optionUrl() + '/' + updatedOption.id,
-        {[optionKey + '_option']: updatedOption});
+        {[this.optionKey()]: updatedOption});
       this.props.optionFetchSuccess(response.data);
     } catch (error) {
       this.props.optionFetchFailure(error);
@@ -122,7 +133,7 @@ class OptionsContainer extends React.Component {
    */
   newOptionPlaceholder () {
     switch (this.props.question.question_type) {
-      case "dropdown":
+      case "DropdownOption":
         return(
           <div>
             <input
@@ -132,7 +143,7 @@ class OptionsContainer extends React.Component {
             />
           </div>
         );
-      case "range":
+      case "RangeOption":
         return(
           <div>
             min:
@@ -155,7 +166,7 @@ class OptionsContainer extends React.Component {
 
   render () {
     const question = this.props.question;
-    const ComponentName = this.getComponentName(question.question_type);
+    const OptionType = this.getComponentName(question.question_type);
 
     const optionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
       const option = this.props.question.options[optionId];
@@ -163,7 +174,7 @@ class OptionsContainer extends React.Component {
       const focus = option.temp || false;
       return (
         <div key={optionId}>
-          <ComponentName
+          <OptionType
             option={option}
             handleOnBlur={handleOnBlur.bind(this)}
             handleOnChange={this.handleOnChange.bind(this)}

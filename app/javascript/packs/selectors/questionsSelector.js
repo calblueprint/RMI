@@ -28,7 +28,7 @@ export function getQuestionsByBuildingType(buildingTypeId, state) {
  * where the keys are option ids and values are arrays of question objects.
  *
  * @param { Array[] } optionIds       An array of option IDs whose dependent questions we want to find
- * @param { String }  questionType    The type of question (dropdown, range, or free)
+ * @param { String }  questionType    The type of question (DropdownOption, RangeOption, or free)
  * @param { Object }  state           state in store
  *
  * @returns { Object } hash of option ids to dependent question arrays
@@ -53,7 +53,7 @@ export function getDependentQuestionsForOption(optionId, optionType, state) {
     // We need to check that the option's type matches what is expected by the potential dependent question,
     // because there could be a DropdownOption and RangeOption with the same id.
     return state.questions[questionId].parent_option_id == optionId &&
-            state.questions[questionId].parent_option_type.toLowerCase().includes(optionType);
+            state.questions[questionId].parent_option_type.includes(optionType);
   }).map((questionId) => {
     return state.questions[questionId];
   });

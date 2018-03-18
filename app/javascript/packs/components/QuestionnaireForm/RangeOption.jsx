@@ -33,21 +33,11 @@ class RangeOption extends React.Component {
   }
 
   /**
-   * Handles event for onChange which stores min value in redux temporarily
+   * Handles event for onChange which stores min/max value in redux temporarily
    * @param { string } rawNum - the raw text input value for min
    */
-  tempUpdateMin (rawNum) {
-    const num = parseInt(rawNum);
-    this.props.handleOnChange(this.props.option.id, {min: num})
-  }
-
-  /**
-   * Handles event for onChange which stores max value in redux temporarily
-   * @param { string } rawNum - the raw text input value for max
-   */
-  tempUpdateMax (rawNum) {
-    const num = parseInt(rawNum);
-    this.props.handleOnChange(this.props.option.id, {max: num})
+  tempUpdateMinMax (args) {
+    this.props.handleOnChange(this.props.option.id, args)
   }
 
 
@@ -59,7 +49,7 @@ class RangeOption extends React.Component {
           type="number"
           defaultValue={this.props.option.min}
           onBlur={(e) => this.checkMin(e.target.value)}
-          onChange={(e) => this.tempUpdateMin(e.target.value)}
+          onChange={ (e) => this.tempUpdateMinMax({min: parseInt(e.target.value)}) }
           placeholder={0}
           ref={(input) => { this.optionInput = input; }}
         />
@@ -68,7 +58,7 @@ class RangeOption extends React.Component {
           type="number"
           defaultValue={this.props.option.max}
           onBlur={(e) => this.checkMax(e.target.value)}
-          onChange={(e) => this.tempUpdateMax(e.target.value)}
+          onChange={(e) => this.tempUpdateMinMax({max: parseInt(e.target.value)})}
           placeholder={100}
         />
       </div>

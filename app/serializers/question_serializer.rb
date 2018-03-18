@@ -30,9 +30,9 @@ class QuestionSerializer < ActiveModel::Serializer
   # instead of separate attributes like dropdown_options and range_options.
   def options
     case object.question_type
-    when 'dropdown'
+    when 'DropdownOption'
       object.dropdown_options
-    when 'range'
+    when 'RangeOption'
       object.range_options
     when 'file'
       object.file_option

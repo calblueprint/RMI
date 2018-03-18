@@ -17,9 +17,9 @@ class QuestionResultContainer extends React.Component {
 
     const result = (() => {
       switch (this.props.question_type) {
-        case "dropdown":
+        case "DropdownOption":
           return (<p>{this.props.answer.selected_option_id}</p>);
-        case "range":
+        case "RangeOption":
           return (<p>{this.props.answer.text}</p>);
         case "file":
           return (<a href={this.getFileLink}>{this.props.answer.attachment_file_name}</a>)

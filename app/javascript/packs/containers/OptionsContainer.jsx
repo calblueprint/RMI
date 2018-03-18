@@ -59,9 +59,9 @@ class OptionsContainer extends React.Component {
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
-        case "dropdown":
+        case "DropdownOption":
           return <DropdownOption {...optionProps} />;
-        case "range":
+        case "RangeOption":
           return <RangeOption {...optionProps} />;
         case "file":
           return <FileOption {...optionProps} />;

@@ -89,14 +89,17 @@ class QuestionContainer extends React.Component {
     const focus = this.props.question.temp || false;
 
     if (!this.props.question.question_type) {
-      const qTypes = ['range', 'dropdown', 'free'];
-      const options = qTypes.map((qType, index) => {
+      const qTypesDisplay = {
+        'RangeOption': 'numeric',
+        'DropdownOption': 'dropdown',
+        'free': 'free response'};
+      const options = Object.keys(qTypesDisplay).map((qType, index) => {
         return (
           <option
             value={qType}
             key={index}
           >
-            {qType}
+            {qTypesDisplay[qType]}
           </option>
         )
       });
