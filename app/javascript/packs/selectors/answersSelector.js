@@ -1,6 +1,14 @@
-export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
-  return state.buildings[buildingId].answers[questionId]
-}
+/* @flow */
+
+import type { Answer } from 'rmi';
+
+export function getAnswerForQuestionAndBuilding(
+  questionId: string,
+  buildingId: string, 
+  state: any
+): Answer {
+  return state.buildings[buildingId].answers[questionId];
+};
 
 //##returns (from the questions provided) how many are remaining to answer
 //##if no buildingId is provided, we are not viewing a specific building
@@ -16,4 +24,3 @@ export function getRemainingAnswersforCategory(questions, buildingId, state) {
     return count;
   }, 0);
 }
-

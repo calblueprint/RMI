@@ -12,13 +12,17 @@ import type { Match } from 'react-router-dom';
 import type { Building } from 'rmi';
 
 type Props = {
-  buildings: [ Building ],
-  match: Match
+  buildings: Array<Building>,
+  match: Match,
 };
-
 
 class PortfolioContainer extends React.Component<Props> {
   render() {
+    let portfolioId: ?string = this.props.match.params.pId;
+    if (typeof portfolioId !== 'string') {
+      portfolioId = '';
+    }
+
     return (<div>
       <h2>Portfolio</h2>
       <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
