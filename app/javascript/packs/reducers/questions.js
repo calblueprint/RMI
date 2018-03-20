@@ -118,6 +118,7 @@ function questionFetchSuccess(state, action) {
       ...question,
       saved: true,
       fetching: false,
+      temp: false,
     }
   }
 }

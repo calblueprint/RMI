@@ -49,7 +49,7 @@ class Question < ApplicationRecord
     end
   end
 
-  def options
+  def get_options
     case question_type
       when :DropdownOption
         dropdown_options
