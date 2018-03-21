@@ -41,5 +41,9 @@ class Ability
     #   user.read_question(question)
     # end
 
+    can :read, Building do |building|
+      user.buildings.include?(building)
+    end
+
   end
 end
