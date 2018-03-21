@@ -50,7 +50,7 @@ class OptionsContainer extends React.Component {
       selected: false
     };
 
-    this.focusFirstDependent = () => console.warn('No');
+    this.focusFirstDependent = () => 0;
   }
   /**
    * Returns answer data in the format expected for a fetch request.
@@ -146,7 +146,7 @@ class OptionsContainer extends React.Component {
       const selectedOption = answer.selected_option_id;
 
       const shownDependents = dependentQuestions[selectedOption];
-      const firstShownDependent = shownDependents.length > 0
+      const firstShownDependent = shownDependents && shownDependents.length > 0
           ? shownDependents[0]
           : null;
 
@@ -155,6 +155,7 @@ class OptionsContainer extends React.Component {
         if (firstShownDependent) {
           focus = question.id === firstShownDependent.id ? {
             setFocusFunc: (focusFunc) => {
+              // debugger;
               this.focusFirstDependent = focusFunc;
             }
           } : {};
@@ -169,9 +170,9 @@ class OptionsContainer extends React.Component {
                 key={question.id}
                 style={{...styles, ...transitionStyles[state]}}
               >
-                <OptionsContainer
+                <QuestionContainer
+                  mode="answer"
                   building_id={this.props.building_id}
-                  question_id={question.id}
                   {...question}
                   {...focus}
                 />

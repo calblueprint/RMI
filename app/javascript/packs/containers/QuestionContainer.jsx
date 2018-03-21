@@ -19,6 +19,7 @@ class QuestionContainer extends React.Component {
         question_type={this.props.question_type}
         options={this.props.options}
         text={this.props.text}
+        setFocusFunc={this.props.setFocusFunc}
       />
     );
   }
