@@ -16,7 +16,7 @@
 #
 
 class Question < ApplicationRecord
-  enum question_type: %i[free dropdown range file]
+  enum question_type: %i[free DropdownOption RangeOption file]
   enum status: %i[draft published]
 
   belongs_to :building_type
@@ -49,11 +49,11 @@ class Question < ApplicationRecord
     end
   end
 
-  def options
+  def get_options
     case question_type
-      when "dropdown"
+      when :DropdownOption
         dropdown_options
-      when "range"
+      when :RangeOption
         range_options
       else
         nil

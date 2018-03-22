@@ -17,14 +17,10 @@ class FreeOption extends React.Component {
     }
   }
 
-  test(e) {
-    this.onChange(e.target.value);
-  }
-
   render() {
     return (<div>
       <textarea value={this.props.answer ? this.props.answer.text : ""}
-                onChange={this.test.bind(this)}
+                onChange={(e) => this.onChange(e.target.value)}
                 onBlur={(e) => this.onChange(e.target.value, true)} />
     </div>)
   }
