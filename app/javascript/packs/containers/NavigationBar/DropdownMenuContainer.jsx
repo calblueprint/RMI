@@ -28,16 +28,4 @@ class DropdownMenuContainer extends React.Component {
 
 }
 
-// function mapStateToProps(state, ownProps) {
-//     return {
-//         buildings: getBuildings(state),
-//         currentBuilding: getNavBarBuildings(ownProps.match.params.entity, ownProps.match.params.id, state),
-//     };
-// }
-
-
-function mapDispatchToProps(dispatch) {
-    return {};
-}
-
-export default DropdownMenuContainer
+export default DropdownMenuContainer;

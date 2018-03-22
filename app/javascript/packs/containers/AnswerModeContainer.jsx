@@ -7,8 +7,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 
-import {connect} from 'react-redux';
-import {getQuestionsByCategory, getQuestionsByBuilding} from '../selectors/questionsSelector';
+import { connect } from 'react-redux';
+import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+import { getQuestionsByCategory } from '../util/util'
 
 class AnswerModeContainer extends React.Component {
   render() {

@@ -1,6 +1,6 @@
 //takes in an entity to check that we are in a specific building and returns the categories associated with a specific building
-import {getQuestionsByCategory} from "./questionsSelector";
-import {getRemainingAnswersforCategory} from "./answersSelector";
+import { getQuestionsByCategory } from "../util/util";
+import { getRemainingAnswersforCategory } from "./answersSelector";
 
 export function getCategoriesForBuilding(buildingId, state) {
   //we only want the categories associated with a specific building

@@ -3,11 +3,11 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import {initializeStore} from '../store';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import { initializeStore } from '../store';
 
-import {PersistGate} from 'redux-persist/es/integration/react'
+import { PersistGate } from 'redux-persist/es/integration/react'
 import {
   BrowserRouter as Router,
   Switch,

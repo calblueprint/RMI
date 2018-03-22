@@ -1,11 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
   getCurrentCategory,
   getFirstUnansweredCategory,
-  getCategoriesForBuilding
+  getCategoriesForBuilding 
 } from "../selectors/categoriesSelector";
 
 class CategoryRerouter extends React.Component {
@@ -16,7 +16,8 @@ class CategoryRerouter extends React.Component {
     )
   }
 }
-
+//takes in your current building and reroutes the page to the first unanswered category that persists in the state
+//under this building
 function mapStateToProps(state, ownProps) {
   const buildingView = ownProps.match.params.entity == "buildings";
   const questions = buildingView && ownProps.match.params.id ?

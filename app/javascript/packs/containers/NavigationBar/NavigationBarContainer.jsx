@@ -1,19 +1,16 @@
 import React from 'react';
-
-import {loadInitialState} from '../../actions/initialState';
-import {getBuildings, getBuildingById} from '../../selectors/buildingsSelector';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { getBuildings, getBuildingById } from '../../selectors/buildingsSelector';
+import { connect } from 'react-redux';
 import DropdownMenuContainer from './DropdownMenuContainer'
-import {getName, getEmail} from '../../selectors/usersSelector'
+import { getName, getEmail } from '../../selectors/usersSelector'
 import {
   getCurrentCategory,
   getCategoriesForBuilding,
-  getFirstUnansweredCategory
 } from "../../selectors/categoriesSelector";
 import CategoryContainer from './CategoryContainer';
-import {getQuestionsByBuilding, getQuestionsByCategory} from "../../selectors/questionsSelector";
-import {getRemainingAnswersforCategory} from "../../selectors/answersSelector";
+import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
+import { getRemainingAnswersforCategory } from "../../selectors/answersSelector";
+import { getQuestionsByCategory } from "../util/util";
 
 
 class NavigationBarContainer extends React.Component {
