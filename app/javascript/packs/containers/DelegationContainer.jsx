@@ -229,6 +229,7 @@ class DelegationContainer extends React.Component {
     const delegated_string = this.state.firstName + " " + this.state.lastName + " " + this.state.email;
     return (
         <div>
+          <p>{this.props.text}</p>
           <p>Delegated to {delegated_string}</p>
           <button type="button" value="Change"
             onClick={(e) => this.handleClickChangeContact()}
