@@ -1,14 +1,15 @@
 import React from 'react';
 import { debounce } from 'lodash';
+import { PAUSE_INTERVAL_BEFORE_SAVE } from '../constants/index';
 
 class FreeOption extends React.Component {
   componentDidMount() {
     this.trySaveAnswer = debounce(function (value) {
       this.props.onSave(null, value);
-    }, 3000);
+    }, PAUSE_INTERVAL_BEFORE_SAVE);
   }
 
-  onChange(value, force) {
+  onChange(value, force=false) {
     this.props.onChange(null, value);
     this.trySaveAnswer(value);
     if (force) {
@@ -16,10 +17,14 @@ class FreeOption extends React.Component {
     }
   }
 
+  test(e) {
+    this.onChange(e.target.value);
+  }
+
   render() {
     return (<div>
       <textarea value={this.props.answer ? this.props.answer.text : ""}
-                onChange={(e) => this.onChange(e.target.value)}
+                onChange={this.test.bind(this)}
                 onBlur={(e) => this.onChange(e.target.value, true)} />
     </div>)
   }

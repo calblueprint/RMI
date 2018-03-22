@@ -2,6 +2,10 @@ import {
   ANSWER_FETCH_IN_PROGRESS,
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
+  FETCH_IN_PROGRESS,
+  FETCH_NEEDED,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
   UPDATE_LOCAL_ANSWER
 } from '../constants';
 
@@ -17,8 +21,7 @@ function updateLocalAnswer(state, action) {
     ...state,
     [answer.question_id]: {
       ...answer,
-      saved: false,
-      fetching: false,
+      fetchStatus: FETCH_NEEDED,
       buildingId: buildingId
     }
   };
@@ -34,7 +37,7 @@ function beforeFetchAnswer(state, action) {
     ...state,
     [answer.question_id]: {
       ...answer,
-      fetching: true
+      fetchStatus: FETCH_IN_PROGRESS
     }
   };
 }
@@ -53,9 +56,8 @@ function answerFetchSuccess(state, action) {
     [answer.question_id]: {
       ...localAnswer,
       updated_at: answer.updated_at || localAnswer.updated_at,
-      saved: true,
-      fetching: false,
-      error: false
+      fetchStatus: FETCH_SUCCESS,
+      error: null
     }
   };
 }
@@ -70,8 +72,8 @@ function answerFetchFailure(state, action) {
     ...state,
     [action.questionId]: {
       ...state[action.questionId],
-      error: errorMessage,
-      fetching: false
+      fetchStatus: FETCH_FAILURE,
+      error: errorMessage
     }
   };
 }

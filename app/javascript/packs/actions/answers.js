@@ -14,8 +14,7 @@ import { post, patch } from '../fetch/requester';
 function answerFetchInProgress(buildingId, answer) {
   return {
     type: ANSWER_FETCH_IN_PROGRESS,
-    // TODO: no longer need fetch status because we have separate actions for each stage
-    status: FETCH_IN_PROGRESS,
+    fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
     answer
   };
@@ -24,7 +23,7 @@ function answerFetchInProgress(buildingId, answer) {
 function answerFetchSuccess(response) {
   return {
     type: ANSWER_FETCH_SUCCESS,
-    status: FETCH_SUCCESS,
+    fetchStatus: FETCH_SUCCESS,
     buildingId: response.building_id,
     response
   };
@@ -33,7 +32,7 @@ function answerFetchSuccess(response) {
 function answerFetchFailure(buildingId, questionId, error) {
   return {
     type: ANSWER_FETCH_FAILURE,
-    status: FETCH_FAILURE,
+    fetchStatus: FETCH_FAILURE,
     response: error,
     buildingId,
     questionId
