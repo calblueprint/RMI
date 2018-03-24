@@ -1,7 +1,7 @@
 import {
   FETCH_IN_PROGRESS,
   OPTION_FETCH_IN_PROGRESS,
-  OPTION_SAVE_IN_PROGRESS,
+  UPDATE_LOCAL_OPTION,
   PRE_FETCH_SAVE,
   CREATE_UNSAVED_OPTION,
   FETCH_FAILURE,
@@ -22,7 +22,7 @@ export function optionFetchInProgress(option) {
 
 export function optionPreFetchSave(option) {
   return {
-    type: OPTION_SAVE_IN_PROGRESS,
+    type: UPDATE_LOCAL_OPTION,
     fetching: false,
     status: PRE_FETCH_SAVE,
     option

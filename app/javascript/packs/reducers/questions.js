@@ -7,9 +7,9 @@ import {
   REMOVE_OPTION,
   SAVE_QUESTION,
   OPTION_FETCH_IN_PROGRESS,
-  OPTION_SAVE_IN_PROGRESS,
+  UPDATE_LOCAL_OPTION,
   QUESTION_FETCH_IN_PROGRESS,
-  QUESTION_SAVE_IN_PROGRESS,
+  UPDATE_LOCAL_QUESTION,
   CREATE_UNSAVED_QUESTION,
   QUESTION_FETCH_SUCCESS,
   QUESTION_FETCH_FAILURE,
@@ -175,9 +175,9 @@ export default function questions(state = {}, action) {
     case REMOVE_QUESTION: return detachQuestion(state, action);
     case REMOVE_OPTION: return detachOptionFromQuestion(state, action);
     case QUESTION_FETCH_IN_PROGRESS: return beforeFetchQuestion(state, action);
-    case QUESTION_SAVE_IN_PROGRESS: return beforeFetchQuestion(state, action);
+    case UPDATE_LOCAL_QUESTION: return beforeFetchQuestion(state, action);
     case OPTION_FETCH_IN_PROGRESS: return beforeFetchOption(state, action);
-    case OPTION_SAVE_IN_PROGRESS: return beforeFetchOption(state, action);
+    case UPDATE_LOCAL_OPTION: return beforeFetchOption(state, action);
     case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);
     case QUESTION_FETCH_SUCCESS: return questionFetchSuccess(state, action);
     case QUESTION_FETCH_FAILURE: return questionFetchFailure(state, action);

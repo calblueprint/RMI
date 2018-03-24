@@ -1,7 +1,7 @@
 import {
   FETCH_IN_PROGRESS,
   QUESTION_FETCH_IN_PROGRESS,
-  QUESTION_SAVE_IN_PROGRESS,
+  UPDATE_LOCAL_QUESTION,
   PRE_FETCH_SAVE,
   CREATE_UNSAVED_QUESTION,
   FETCH_FAILURE,
@@ -23,7 +23,7 @@ export function questionFetchInProgress(question) {
 
 export function questionPreFetchSave(question) {
   return {
-    type: QUESTION_SAVE_IN_PROGRESS,
+    type: UPDATE_LOCAL_QUESTION,
     fetching: false,
     status: PRE_FETCH_SAVE,
     question
