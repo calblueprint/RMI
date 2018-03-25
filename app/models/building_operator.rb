@@ -55,7 +55,8 @@ class BuildingOperator < ApplicationRecord
 
   def buildings
     buildings = Set.new []
-    delegations.each do |delegation|
+    d = delegations.includes(answer: :building).load.to_a
+    d.each do |delegation|
       if delegation.status == 'active'
         buildings << delegation.answer.building
       end
@@ -88,6 +89,24 @@ class BuildingOperator < ApplicationRecord
     # Returns
     # questions: array of question objects that are accessible to read
     questions = []
+    d = delegations.includes(
+      answer: [:building, question: [{ parent_option: :question }, :dropdown_options, :range_options ]]
+    ).load.to_a
+    d.each do |delegation|
+      if delegation.status == 'active' &&
+        delegation.answer.building.id == building_id
+        question = delegation.answer.question
+        questions << question
+        questions = questions + Question.get_all_parents(question)
+      end
+    end
+    questions
+  end
+
+  def questions_by_building_with_delegations(building_id, delegations)
+    # Returns
+    # questions: array of question objects that are accessible to read
+    questions = []
     delegations.each do |delegation|
       if delegation.status == 'active' &&
         delegation.answer.building.id == building_id
@@ -99,11 +118,25 @@ class BuildingOperator < ApplicationRecord
     questions
   end
 
-  def questions
+  def questions_by_buildings(building_ids)
+    # Returns
+    # questions: array of question objects that are accessible to read
     questions = Set.new
-    buildings.each do |building|
-      questions.merge(questions_by_building(building.id))
+    d = delegations.includes(
+      answer: [:building, question: [{ parent_option: :question }, :dropdown_options, :range_options ]]
+    ).load.to_a
+    d.each do |delegation|
+      if delegation.status == 'active' &&
+        building_ids.include?(delegation.answer.building.id)
+        question = delegation.answer.question
+        questions << question
+        questions = questions + Question.get_all_parents(question)
+      end
     end
-    questions
+    questions.to_a
+  end
+
+  def questions
+    questions_by_buildings(buildings.map { |b| b.id })
   end
 end

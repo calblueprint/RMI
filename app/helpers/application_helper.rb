@@ -49,12 +49,29 @@ module ApplicationHelper
       })
     end
 
+    buildings =
+      Building
+        .includes(:answers, building_type: :questions)
+        .where(id: current_building_operator.buildings.map { |b| b.id })
+
     {
       user: current_building_operator,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-       current_building_operator.buildings, each_serializer: BuildingSerializer,
-       scope: {user_id: current_building_operator.id,
-               user_type: 'BuildingOperator'}
+       buildings, each_serializer: BuildingSerializer,
+       scope: {
+        user_id: current_building_operator.id,
+        user_type: 'BuildingOperator',
+        questions: Question
+          .where(id: current_building_operator.questions.map { |q| q.id }).load.to_a,
+        delegations: Delegation
+          .includes(answer: [:question, :building])
+          .where(
+            answer: Answer.where(building: buildings),
+            building_operator: current_building_operator,
+            status: "active"
+          )
+          .load.to_a,
+       }
       ),
       userType: 'BuildingOperator',
       contacts: contacts,
