@@ -10,7 +10,7 @@ export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
 export function getRemainingAnswersforCategory(questions, buildingId, state) {
   return questions.reduce((count, question) => {
     let answer = state.buildings[buildingId].answers[question.id];
-    if (!answer.text.trim() && !answer.attachment_file_name) {
+    if (!answer && !answer.text.trim() && !answer.attachment_file_name) {
       return count + 1;
     }
     return count;

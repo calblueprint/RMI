@@ -10,7 +10,7 @@ import {
 import CategoryContainer from './CategoryContainer';
 import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
 import { getRemainingAnswersforCategory } from "../../selectors/answersSelector";
-import { getQuestionsByCategory } from "../util/util";
+import { getQuestionsByCategory } from "../../utils/QuestionsFilter";
 
 
 class NavigationBarContainer extends React.Component {
@@ -45,13 +45,17 @@ class NavigationBarContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  //WE NEED THE ID TO BE A BUILDING ID SO WE CHECK ENTITY REPEATEDLY
+  //The navigation system for categories and questions requires us to be in a building view
   const buildingView = ownProps.match.params.entity == "buildings";
+  //gather questions for the building making sure we are in a building view and taking it from the id in the url
   const questions = buildingView && ownProps.match.params.id ?
     getQuestionsByBuilding(ownProps.match.params.id, state) : [];
+  //likewise gathering the specific category from params of url
   const categoryId = buildingView ? ownProps.match.params.cId : null;
   const questionsByCategory = getQuestionsByCategory(categoryId, questions);
-
+  //remaining questions is the number of questions for the category that we are viewing for a specific building
+  //we check for the questions through answers of a building and a category requiring a check for the building id and
+  //questions
   let remainingQuestions;
   if (!ownProps.match.params.id) {
     remainingQuestions = null;
@@ -60,7 +64,8 @@ function mapStateToProps(state, ownProps) {
   } else {
     remainingQuestions = getRemainingAnswersforCategory(questionsByCategory, ownProps.match.params.id, state);
   }
-
+  //we check to see the category provided by the params of url (which should always happen through the category rerouter if we are in
+  //a building view)
   let loadCategory;
   if (!buildingView) {
     loadCategory = null;

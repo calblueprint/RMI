@@ -3,6 +3,7 @@ import React from 'react';
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 import NavigationBarContainer from "../containers/NavigationBarContainer"
 import BuildingListContainer from "../containers/BuildingListContainer";
+import NavigationBarContainer from '../containers/NavigationBar/NavigationBarContainer';
 import CategoryRerouter from "../containers/CategoryRerouter";
 
 import { Route, Switch, Redirect } from 'react-router-dom';
