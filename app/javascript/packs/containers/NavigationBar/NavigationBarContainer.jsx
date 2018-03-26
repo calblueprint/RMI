@@ -23,15 +23,15 @@ class NavigationBarContainer extends React.Component {
         <DropdownMenuContainer
           buildings={this.props.buildings}
           currentBuilding={this.props.currentBuilding}
-          history={this.props.history}>
-        </DropdownMenuContainer>
+          history={this.props.history}
+        />
 
         <CategoryContainer
           categories={this.props.categories}
           currentCategory={this.props.currentCategory}
           currentBuilding={this.props.currentBuilding}
-          remainingQuestions={this.props.remainingQuestions}>
-        </CategoryContainer>
+          remainingQuestions={this.props.remainingQuestions}
+        />
 
         <div
           className="userInfo">
