@@ -16,7 +16,7 @@ class AnswerModeContainer extends React.Component {
       <div>
         {this.props.questions.map((question) => {
           // Only display non-dependent questions initially
-          if (!question.parent_option_id) {
+          if (question.parent_option_id == null) {
             return (<QuestionContainer mode="answer"
                               key={question.id}
                               building_id={this.props.building.id}
