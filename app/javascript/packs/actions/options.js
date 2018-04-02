@@ -14,8 +14,7 @@ import {
 export function optionFetchInProgress(option) {
   return {
     type: OPTION_FETCH_IN_PROGRESS,
-    status: FETCH_IN_PROGRESS,
-    fetching: true,
+    fetchStatus: FETCH_IN_PROGRESS,
     option
   }
 }
@@ -23,8 +22,7 @@ export function optionFetchInProgress(option) {
 export function optionPreFetchSave(option) {
   return {
     type: UPDATE_LOCAL_OPTION,
-    fetching: false,
-    status: PRE_FETCH_SAVE,
+    fetchStatus: PRE_FETCH_SAVE,
     option
   }
 }
@@ -32,8 +30,7 @@ export function optionPreFetchSave(option) {
 export function beforeCreateNewOption(option) {
   return {
     type: CREATE_UNSAVED_OPTION,
-    fetching: false,
-    status: PRE_FETCH_SAVE,
+    fetchStatus: PRE_FETCH_SAVE,
     option
   }
 }
@@ -41,7 +38,7 @@ export function beforeCreateNewOption(option) {
 export function optionFetchSuccess(response) {
   return {
     type: OPTION_FETCH_SUCCESS,
-    status: FETCH_SUCCESS,
+    fetchStatus: FETCH_SUCCESS,
     response
   };
 }
@@ -49,7 +46,7 @@ export function optionFetchSuccess(response) {
 export function optionFetchFailure(error) {
   return {
     type: OPTION_FETCH_FAILURE,
-    status: FETCH_FAILURE,
+    fetchStatus: FETCH_FAILURE,
     response: error
   };
 }

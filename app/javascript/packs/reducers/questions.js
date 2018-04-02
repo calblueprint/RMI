@@ -16,8 +16,6 @@ import {
   CREATE_UNSAVED_OPTION,
   OPTION_FETCH_FAILURE,
   OPTION_FETCH_SUCCESS
-
-
 } from '../constants';
 
 function attachOptionToQuestion(state, action) {
@@ -59,23 +57,13 @@ function detachOptionFromQuestion(state, action) {
   }
 }
 
-function saveQuestion(state, action) {
-  const questionId = action.question.id;
-  return {
-    ...state,
-    [questionId]: {
-      saved: true
-    }
-  }
-}
-
 function beforeFetchQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,
     [questionId]: {
       ...state[questionId],
-      saved: false
+      fetchStatus: action.fetchStatus
     }
   }
 }
@@ -87,8 +75,7 @@ function beforeFetchOption(state, action) {
     ...state,
     [questionId]: {
       ...state[questionId],
-      fetching: action.fetching,
-      saved: false,
+      fetchStatus: action.fetchStatus,
       options: {
         ...state[questionId].options,
         [optionId]: action.option
@@ -103,7 +90,7 @@ function beforeCreateQuestion(state, action) {
     ...state,
     [questionId]: {
       ...action.question,
-      saved: false,
+      fetchStatus: action.fetchStatus,
       temp: true
     }
   }
@@ -116,9 +103,8 @@ function questionFetchSuccess(state, action) {
     ...state,
     [questionId]: {
       ...question,
-      saved: true,
-      fetching: false,
-      temp: false,
+      fetchStatus: action.fetchStatus,
+      temp: false
     }
   }
 }
@@ -134,6 +120,7 @@ function optionFetchSuccess(state, action) {
     ...state,
     [questionId]: {
       ...state[questionId],
+      fetchStatus: action.fetchStatus,
       options: {
         ...state[questionId].options,
         [optionId]:{
@@ -155,8 +142,7 @@ function beforeCreateOption(state, action) {
     ...state,
     [questionId]: {
       ...state[questionId],
-      fetching: action.fetching,
-      saved: false,
+      fetchStatus: action.fetchStatus,
       options: {
         ...state[questionId].options,
         [optionId]: {

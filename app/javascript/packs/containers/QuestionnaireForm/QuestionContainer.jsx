@@ -2,7 +2,7 @@ import React from 'react';
 import Question from '../../components/QuestionnaireForm/Question';
 import DepQuestionContainer from './DepQuestionContainer';
 import OptionsContainer from './OptionsContainer'
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
   beforeCreateNewQuestion,
   questionFetchInProgress,
@@ -11,7 +11,7 @@ import {
   questionFetchFailure,
   removeQuestion
 } from '../../actions/questions';
-import {patch, post} from '../../fetch/requester';
+import { patch, post } from '../../fetch/requester';
 import PropTypes from 'prop-types'
 
 class QuestionContainer extends React.Component {

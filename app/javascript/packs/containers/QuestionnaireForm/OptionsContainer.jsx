@@ -9,11 +9,11 @@ import {
   optionFetchFailure,
   removeOption
 } from '../../actions/options';
-import {connect} from 'react-redux';
-import {patch, post} from '../../fetch/requester';
-import {generateTempId} from '../../utils/TemporaryObjectUtil';
+import { connect } from 'react-redux';
+import { patch, post } from '../../fetch/requester';
+import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import PropTypes from 'prop-types';
-import {isEmptyText} from '../../utils/InputComponentUtil';
+import { isEmptyText } from '../../utils/InputComponentUtil';
 
 class OptionsContainer extends React.Component {
 

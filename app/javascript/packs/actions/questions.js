@@ -15,8 +15,7 @@ import {
 export function questionFetchInProgress(question) {
   return {
     type: QUESTION_FETCH_IN_PROGRESS,
-    status: FETCH_IN_PROGRESS,
-    fetching: true,
+    fetchStatus: FETCH_IN_PROGRESS,
     question
   }
 }
@@ -24,8 +23,7 @@ export function questionFetchInProgress(question) {
 export function questionPreFetchSave(question) {
   return {
     type: UPDATE_LOCAL_QUESTION,
-    fetching: false,
-    status: PRE_FETCH_SAVE,
+    fetchStatus: PRE_FETCH_SAVE,
     question
   }
 }
@@ -33,8 +31,7 @@ export function questionPreFetchSave(question) {
 export function beforeCreateNewQuestion(question) {
   return {
     type: CREATE_UNSAVED_QUESTION,
-    fetching: false,
-    status: PRE_FETCH_SAVE,
+    fetchStatus: PRE_FETCH_SAVE,
     question
   }
 }
@@ -42,7 +39,7 @@ export function beforeCreateNewQuestion(question) {
 export function questionFetchSuccess(response) {
   return {
     type: QUESTION_FETCH_SUCCESS,
-    status: FETCH_SUCCESS,
+    fetchStatus: FETCH_SUCCESS,
     building_type_id: response.building_type_id,
     response
   };
@@ -51,7 +48,7 @@ export function questionFetchSuccess(response) {
 export function questionFetchFailure(error) {
   return {
     type: QUESTION_FETCH_FAILURE,
-    status: FETCH_FAILURE,
+    fetchStatus: FETCH_FAILURE,
     building_type_id: error.building_type_id,
     response: error
   };

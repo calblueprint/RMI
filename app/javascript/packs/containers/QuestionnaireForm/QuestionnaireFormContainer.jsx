@@ -40,7 +40,7 @@ class QuestionnaireFormContainer extends React.Component {
     });
 
     return (<div>
-      <h2>QUESTIONS FOR #{this.props.buildingType.name}</h2>
+      <h2>QUESTIONS FOR {this.props.buildingType.name}</h2>
       <div>
         {questions_display}
         <button
