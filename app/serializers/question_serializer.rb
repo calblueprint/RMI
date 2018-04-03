@@ -13,6 +13,8 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  parameter          :string           not null
+#
+include SerializerHelper
 
 class QuestionSerializer < ActiveModel::Serializer
   attributes :id,
@@ -29,15 +31,17 @@ class QuestionSerializer < ActiveModel::Serializer
   # The serialized object will have a single array 'options' with all associated options,
   # instead of separate attributes like dropdown_options and range_options.
   def options
-    case object.question_type
-    when 'dropdown'
-      object.dropdown_options
-    when 'range'
-      object.range_options
-    when 'file'
-      object.file_option
-    else
-      []
-    end
+    options =
+      case object.question_type
+      when 'DropdownOption'
+        object.dropdown_options
+      when 'RangeOption'
+        object.range_options
+      when 'file'
+        object.file_option
+      else
+        []
+      end
+    to_object_by_id(options)
   end
 end
