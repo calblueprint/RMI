@@ -45,12 +45,13 @@ export function questionFetchSuccess(response) {
   };
 }
 
-export function questionFetchFailure(error) {
+export function questionFetchFailure(error, question) {
   return {
     type: QUESTION_FETCH_FAILURE,
     fetchStatus: FETCH_FAILURE,
-    building_type_id: error.building_type_id,
-    response: error
+    building_type_id: question.building_type_id,
+    error,
+    question
   };
 }
 

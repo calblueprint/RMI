@@ -12,4 +12,6 @@
 class DropdownOption < ApplicationRecord
   has_many :child_questions, class_name: 'Question', as: :parent_option, :dependent => :destroy
   belongs_to :question
+
+  validates :text, presence: true
 end
