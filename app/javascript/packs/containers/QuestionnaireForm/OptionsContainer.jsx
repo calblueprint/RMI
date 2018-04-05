@@ -83,7 +83,7 @@ class OptionsContainer extends React.Component {
       this.props.optionFetchSuccess(response.data);
       this.props.removeOption(tempOption);
     } catch (error) {
-      this.props.optionFetchFailure(error);
+      this.props.optionFetchFailure(error, newOption);
     }
   }
 
@@ -100,7 +100,7 @@ class OptionsContainer extends React.Component {
         {[this.optionKey()]: updatedOption});
       this.props.optionFetchSuccess(response.data);
     } catch (error) {
-      this.props.optionFetchFailure(error);
+      this.props.optionFetchFailure(error, updatedOption);
     }
   }
 
@@ -201,12 +201,12 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    optionFetchInProgress: option => {dispatch(optionFetchInProgress(option))},
-    optionPreFetchSave: option => {dispatch(optionPreFetchSave(option))},
-    beforeCreateNewOption: option => {dispatch(beforeCreateNewOption(option))},
-    optionFetchSuccess: response => {dispatch(optionFetchSuccess(response))},
-    removeOption: option => {dispatch(removeOption(option))},
-    optionFetchFailure: response => {dispatch(optionFetchFailure(response))}
+    optionFetchInProgress: (option) => {dispatch(optionFetchInProgress(option))},
+    optionPreFetchSave: (option) => {dispatch(optionPreFetchSave(option))},
+    beforeCreateNewOption: (option) => {dispatch(beforeCreateNewOption(option))},
+    optionFetchSuccess: (response) => {dispatch(optionFetchSuccess(response))},
+    removeOption: (option) => {dispatch(removeOption(option))},
+    optionFetchFailure: (error, option) => {dispatch(optionFetchFailure(error, option))}
   };
 }
 

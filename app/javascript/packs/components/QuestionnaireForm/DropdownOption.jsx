@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import InputValidation from '../InputValidation';
 
 class DropdownOption extends React.Component {
   componentDidMount(){
@@ -36,6 +37,11 @@ class DropdownOption extends React.Component {
           placeholder={"New Dropdown Option"}
           ref={(input) => { this.optionInput = input; }}
         />
+        <div>
+          <InputValidation
+            errors={this.props.option.error}
+          />
+        </div>
       </div>
     )
   }
@@ -47,5 +53,6 @@ DropdownOption.propTypes = {
   option: PropTypes.object.isRequired,
   handleOnBlur: PropTypes.func.isRequired,
   handleOnChange: PropTypes.func.isRequired,
-  focus: PropTypes.bool.isRequired
+  focus: PropTypes.bool.isRequired,
+  errors: PropTypes.array
 };

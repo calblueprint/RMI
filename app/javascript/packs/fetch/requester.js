@@ -33,6 +33,7 @@ export async function patch(route, body) {
  */
 async function doFetchRequest(route, method, body) {
   const bodyData = JSON.stringify(body);
+  let responseObj;
   return await fetch(route, {
     method: method,
     body: bodyData,
@@ -45,6 +46,10 @@ async function doFetchRequest(route, method, body) {
     if (response.ok) {
       return response.json();
     }
-    throw new Error(response.status + " " + response.statusText);
-  });
+    responseObj = response;
+    throw new Error(responseObj.status + " failed request error");
+  }).catch(_error => responseObj.json())
+    .then(errorJson => {
+      throw errorJson.errors
+    });
 }

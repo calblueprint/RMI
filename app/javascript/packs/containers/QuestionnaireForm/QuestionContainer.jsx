@@ -24,12 +24,11 @@ class QuestionContainer extends React.Component {
   async updateQuestion(id, args) {
     const updatedQuestion = {...this.props.question, ...args};
     this.props.questionFetchInProgress(updatedQuestion);
-
     try {
       let response = await patch('/api/questions/' + updatedQuestion.id, {'question': updatedQuestion});
       this.props.questionFetchSuccess(response.data);
     } catch (error) {
-      this.props.questionFetchFailure(error);
+      this.props.questionFetchFailure(error, updatedQuestion);
     }
   }
 
@@ -40,14 +39,14 @@ class QuestionContainer extends React.Component {
    */
   async createQuestion(id, args) {
     const newQuestion = {...this.props.question, ...args};
-    const tempQuestion = this.props.question
+    const tempQuestion = this.props.question;
     this.props.questionFetchInProgress(newQuestion);
     try {
       let response = await post('/api/questions', {'question': newQuestion});
       this.props.questionFetchSuccess(response.data);
       this.props.removeQuestion(tempQuestion);
     } catch (error) {
-      this.props.questionFetchFailure(error);
+      this.props.questionFetchFailure(error, newQuestion);
     }
   }
 
@@ -142,11 +141,11 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    questionFetchInProgress: question => { dispatch(questionFetchInProgress(question)) },
-    questionPreFetchSave: question => { dispatch(questionPreFetchSave(question)) },
+    questionFetchInProgress: (question) => { dispatch(questionFetchInProgress(question)) },
+    questionPreFetchSave: (question) => { dispatch(questionPreFetchSave(question)) },
     beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
     questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
-    questionFetchFailure: (question) => { dispatch(questionFetchFailure(question)) },
+    questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
     removeQuestion: (question) => { dispatch(removeQuestion(question))}
   };
 }
