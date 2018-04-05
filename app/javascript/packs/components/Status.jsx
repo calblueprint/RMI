@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
+import {
+  FETCH_IN_PROGRESS,
+  FETCH_FAILURE
+} from '../constants/index';
+
 /**
  * Displays the save status of an answer, and allows the user
  * to resubmit if saving failed.
@@ -16,8 +21,10 @@ class Status extends React.Component {
       </div>);
     }
 
+    const fetchStatus = this.props.fetchObject.fetchStatus;
+
     // Currently saving
-    if (this.props.fetchObject.fetching) {
+    if (fetchStatus === FETCH_IN_PROGRESS) {
       return (<div>
         <p>Saving answer...</p>
         <hr />
@@ -25,7 +32,7 @@ class Status extends React.Component {
     }
 
     // Failed to save answer
-    if (this.props.fetchObject.error) {
+    if (fetchStatus === FETCH_FAILURE) {
       return (<div>
         <p>There was an error saving your answer.</p>
         <button onClick={this.props.onRetry}>Retry</button>

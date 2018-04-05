@@ -10,28 +10,49 @@ import Status from '../components/Status';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
-import { createAnswer, updateAnswer } from '../actions/answers';
+import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 
 class OptionsContainer extends React.Component {
   /**
-   * Callback for when an option has been triggered. Will update the answer in database and store.
+   * Returns answer data in the format expected for a fetch request.
+   */
+  getAnswerData(optionId, value) {
+    return {
+      ...this.props.answer,
+      building_id: this.props.building_id,
+      question_id: this.props.question_id,
+      selected_option_id: optionId,
+      text: value
+    };
+  }
+
+  /**
+   * Callback for when an answer field has been modified in any way.
+   * Answer will be updated in store.
    *
-   * @param option_id   id of the selected option
+   * @param optionId    id of the selected option
    * @param value       The data of the updated answer. For range options, this is the number the user inputted;
    *                      for dropdown options, it's the text of the option that was selected.
    */
-  handleSelect(option_id, value) {
-    // Set up answer data to send in fetch request
-    const answer = {
-      building_id: this.props.building_id,
-      question_id: this.props.question_id,
-      selected_option_id: option_id,
-      text: value
-    };
+  onChange(optionId, value) {
+    const answer = this.getAnswerData(optionId, value);
+    this.props.updateLocalAnswer(this.props.building_id, answer);
+  }
+
+  /**
+   * Callback for when the answer should be saved remotely.
+   * Some answer components (such as FreeOption) may debounce this, while others (like DropdownOption) don't need to.
+   *
+   * @param optionId    id of the selected option
+   * @param value       The data of the updated answer. For range options, this is the number the user inputted;
+   *                      for dropdown options, it's the text of the option that was selected.
+   */
+  onSave(optionId, value) {
+    const answer = this.getAnswerData(optionId, value);
 
     // Dispatch an action to update answer in the database and in store
-    if (!this.props.answer) {
+    if (!this.props.answer || !this.props.answer.id) {
       this.props.createAnswer(answer.building_id, answer);
     }
     else {
@@ -47,7 +68,7 @@ class OptionsContainer extends React.Component {
   onRetry() {
     const answer = this.props.answer;
     if (answer) {
-      this.handleSelect(answer.selected_option_id, answer.text);
+      this.onSave(answer.selected_option_id, answer.text);
     }
   }
 
@@ -55,7 +76,8 @@ class OptionsContainer extends React.Component {
     const optionProps = {
       options: this.props.options,
       answer: this.props.answer,
-      onSelect: this.handleSelect.bind(this)
+      onChange: this.onChange.bind(this),
+      onSave: this.onSave.bind(this)
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -101,12 +123,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: function (buildingId, answer) {
-      return createAnswer(buildingId, answer, dispatch);
-    },
-    updateAnswer: function (buildingId, answer) {
-      return updateAnswer(buildingId, answer, dispatch);
-    }
+    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
+    updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
+    updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }
 }
 

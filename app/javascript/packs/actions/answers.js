@@ -6,14 +6,15 @@ import {
   ANSWER_FETCH_IN_PROGRESS,
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
+  UPDATE_LOCAL_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
 import { post, patch } from '../fetch/requester';
 
-export function answerFetchInProgress(buildingId, answer) {
+function answerFetchInProgress(buildingId, answer) {
   return {
     type: ANSWER_FETCH_IN_PROGRESS,
-    status: FETCH_IN_PROGRESS,
+    fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
     answer
   };
@@ -22,7 +23,7 @@ export function answerFetchInProgress(buildingId, answer) {
 function answerFetchSuccess(response) {
   return {
     type: ANSWER_FETCH_SUCCESS,
-    status: FETCH_SUCCESS,
+    fetchStatus: FETCH_SUCCESS,
     buildingId: response.building_id,
     response
   };
@@ -31,13 +32,20 @@ function answerFetchSuccess(response) {
 function answerFetchFailure(buildingId, questionId, error) {
   return {
     type: ANSWER_FETCH_FAILURE,
-    status: FETCH_FAILURE,
+    fetchStatus: FETCH_FAILURE,
     response: error,
     buildingId,
     questionId
   };
 }
 
+export function updateLocalAnswer(buildingId, answer) {
+  return {
+    type: UPDATE_LOCAL_ANSWER,
+    buildingId,
+    answer
+  };
+}
 
 /**
  * Creates a new answer in the database,
