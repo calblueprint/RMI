@@ -23,7 +23,9 @@ class RangeOption extends React.Component {
    * @param { Object } args - attributes of the range option to update
    */
   updateMinMax(args) {
-    this.props.handleOnBlur(this.props.options.id, args)
+    if (this.props.option.min && this.props.option.max) {
+      this.props.handleOnBlur(this.props.option.id, args)
+    }
   }
 
 

@@ -43,13 +43,16 @@ async function doFetchRequest(route, method, body) {
     },
     credentials: 'same-origin'
   }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
     responseObj = response;
-    throw new Error(responseObj.status + " failed request error");
-  }).catch(_error => responseObj.json())
-    .then(errorJson => {
-      throw errorJson.errors
-    });
+    if (!response.ok) {
+      throw new Error(responseObj.status + " failed request error")
+    }
+    return responseObj.json()
+    ;
+  }).catch(_ => {
+    return responseObj.json().then( response => {
+      throw response.errors;
+    })
+  })
+
 }
