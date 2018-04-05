@@ -7,17 +7,15 @@ import {
   REMOVE_OPTION,
   SAVE_QUESTION,
   OPTION_FETCH_IN_PROGRESS,
-  OPTION_SAVE_IN_PROGRESS,
+  UPDATE_LOCAL_OPTION,
   QUESTION_FETCH_IN_PROGRESS,
-  QUESTION_SAVE_IN_PROGRESS,
+  UPDATE_LOCAL_QUESTION,
   CREATE_UNSAVED_QUESTION,
   QUESTION_FETCH_SUCCESS,
   QUESTION_FETCH_FAILURE,
   CREATE_UNSAVED_OPTION,
   OPTION_FETCH_FAILURE,
   OPTION_FETCH_SUCCESS
-
-
 } from '../constants';
 
 function attachOptionToQuestion(state, action) {
@@ -59,12 +57,99 @@ function detachOptionFromQuestion(state, action) {
   }
 }
 
-function saveQuestion(state, action) {
+function beforeFetchQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,
     [questionId]: {
-      saved: true
+      ...state[questionId],
+      fetchStatus: action.fetchStatus
+    }
+  }
+}
+
+function beforeFetchOption(state, action) {
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      fetchStatus: action.fetchStatus,
+      options: {
+        ...state[questionId].options,
+        [optionId]: action.option
+      }
+    }
+  }
+}
+
+function beforeCreateQuestion(state, action) {
+  const questionId = action.question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...action.question,
+      fetchStatus: action.fetchStatus,
+      temp: true
+    }
+  }
+}
+
+function questionFetchSuccess(state, action) {
+  const question = action.response;
+  const questionId = question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...question,
+      fetchStatus: action.fetchStatus,
+      temp: false
+    }
+  }
+}
+
+function questionFetchFailure(state, action) {
+  return state
+}
+
+function optionFetchSuccess(state, action) {
+  const questionId = action.response.question_id;
+  const optionId = action.response.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      fetchStatus: action.fetchStatus,
+      options: {
+        ...state[questionId].options,
+        [optionId]:{
+          ...action.response
+        }
+      }
+    }
+  }
+}
+
+function optionFetchFailure(state, action) {
+  return state
+}
+
+function beforeCreateOption(state, action) {
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      fetchStatus: action.fetchStatus,
+      options: {
+        ...state[questionId].options,
+        [optionId]: {
+          ...action.option,
+          temp: true
+        }
+      }
     }
   }
 }
@@ -175,9 +260,9 @@ export default function questions(state = {}, action) {
     case REMOVE_QUESTION: return detachQuestion(state, action);
     case REMOVE_OPTION: return detachOptionFromQuestion(state, action);
     case QUESTION_FETCH_IN_PROGRESS: return beforeFetchQuestion(state, action);
-    case QUESTION_SAVE_IN_PROGRESS: return beforeFetchQuestion(state, action);
+    case UPDATE_LOCAL_QUESTION: return beforeFetchQuestion(state, action);
     case OPTION_FETCH_IN_PROGRESS: return beforeFetchOption(state, action);
-    case OPTION_SAVE_IN_PROGRESS: return beforeFetchOption(state, action);
+    case UPDATE_LOCAL_OPTION: return beforeFetchOption(state, action);
     case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);
     case QUESTION_FETCH_SUCCESS: return questionFetchSuccess(state, action);
     case QUESTION_FETCH_FAILURE: return questionFetchFailure(state, action);

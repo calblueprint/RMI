@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
+import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import QuestionContainer from "./QuestionContainer";
 
 class QuestionResultContainer extends React.Component {
@@ -52,7 +52,7 @@ class QuestionResultContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state)
+    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state)
   }
 }
 
