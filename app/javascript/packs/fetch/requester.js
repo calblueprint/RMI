@@ -50,7 +50,7 @@ async function doFetchRequest(route, method, body) {
     return responseObj.json()
     ;
   }).catch(_ => {
-    return responseObj.json().then( response => {
+    return responseObj.json().then(response => {
       throw response.errors;
     })
   })
