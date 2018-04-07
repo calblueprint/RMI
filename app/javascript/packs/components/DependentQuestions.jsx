@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import OptionsContainer from '../containers/OptionsContainer';
@@ -25,41 +26,43 @@ function DependentQuestions({
       ? visibleDependents[0]
       : null;
 
-  return (<div className="questions__nested">
-    {
-      allDependentQuestions.map((question, i) => {
-        const visibleQuestion = question.parent_option_id === selectedOption;
-        const isActive = visibleQuestion && !parentIsHidden;
+  return (
+    <div className="questions__nested">
+      {
+        allDependentQuestions.map((question, i) => {
+          const visibleQuestion = question.parent_option_id == selectedOption;
+          const isActive = visibleQuestion && !parentIsHidden;
 
-        return (<CSSTransition
-          in={isActive}
-          timeout={{
-            enter: 0,
-            exit: TRANSITION_DURATION * 1000,
-          }}
-          classNames="questions__nested-"
-          unmountOnExit={true}
-          key={question.id}
-        >
-          {(state) => (
-            <div
-              style={{...styles, ...transitionStyles[state]}}
-            >
-              <OptionsContainer
-                building_id={buildingId}
-                question_id={question.id}
-                focusOnMount={
-                  !!firstVisibleDependent && question.id === firstVisibleDependent.id
-                }
-                parentIsHidden={!isActive}
-                {...question}
-              />
-            </div>
-          )}
-        </CSSTransition>);
-      })
-    }
-  </div>);
+          return (<CSSTransition
+            in={isActive}
+            timeout={{
+              enter: 0,
+              exit: TRANSITION_DURATION * 1000,
+            }}
+            classNames="questions__nested-"
+            unmountOnExit={true}
+            key={question.id}
+          >
+            {(state) => (
+              <div
+                style={{...styles, ...transitionStyles[state]}}
+              >
+                <OptionsContainer
+                  building_id={buildingId}
+                  question_id={question.id}
+                  focusOnMount={
+                    !!firstVisibleDependent && question.id === firstVisibleDependent.id
+                  }
+                  parentIsHidden={!isActive}
+                  {...question}
+                />
+              </div>
+            )}
+          </CSSTransition>);
+        })
+      }
+    </div>
+  );
 };
 
 const styles = {
@@ -89,6 +92,19 @@ const transitionStyles = {
   exited: {
     visibility: 'hidden',
   }
+};
+
+DependentQuestions.propTypes = {
+  answer: PropTypes.shape({ // Optional - new questions can have no answer
+
+  }),
+  dependentQuestions: PropTypes.object.isRequired,
+  buildingId: PropTypes.number.isRequired,
+  parentIsHidden: PropTypes.boolean.isRequired,
+};
+
+DependentQuestions.defaultProps = {
+  parentIsHidden: false,
 };
 
 export { TRANSITION_DURATION };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import fontawesome from '@fortawesome/fontawesome';
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 
@@ -29,8 +30,7 @@ class DropdownOption extends React.Component {
   saveAnswer(optionId, text) {
     if (this.currentValue() == optionId) {
       // For unselecting an option (through the button control scheme)
-      optionId = null;
-      text = null;
+      return this.props.onChange(null, null);
     }
     this.props.onChange(optionId, text);
     this.props.onSave(optionId, text);
@@ -49,17 +49,17 @@ class DropdownOption extends React.Component {
           <button
             key={option.id}
             value={option.id}
-            onClick={(e) => this.handleChange(e)}
+            onClick={(e) => this.onChange(e.target.value)}
             onFocus={(e) => this.props.onEnter()}
             onBlur={(e) => this.props.onLeave()}
             className={`input__dropdown ${
-              currentValue === option.id ? 'input__dropdown--selected' : ''
+              currentValue == option.id ? 'input__dropdown--selected' : ''
             }`}
             ref={(ref) => this.ref = i === 0 ? ref : this.ref}
           >
             {option.text}
             {
-              currentValue === option.id ?
+              currentValue == option.id ?
               <i
                 style={{ marginLeft: '10px' }}
                 dangerouslySetInnerHTML={{
@@ -73,21 +73,35 @@ class DropdownOption extends React.Component {
       );
     }
 
-    return (<div>
-      <select
-        value={currentValue}
-        onChange={(e) => this.onChange(e.target.value)}
-        onFocus={(e) => this.props.onEnter()}
-        onBlur={(e) => this.props.onLeave()}
-        ref={(ref) => this.ref = ref}
-      >
-        <option value="unselected" disabled>Select an option</option>
-        {options.map((option) => {
-          return (<option value={option.id} key={option.id}>{option.text}</option>)
-        })}
-      </select>
-    </div>);
+    return (
+      <div>
+        <select
+          value={currentValue}
+          onChange={(e) => this.onChange(e.target.value)}
+          onFocus={(e) => this.props.onEnter()}
+          onBlur={(e) => this.props.onLeave()}
+          ref={(ref) => this.ref = ref}
+        >
+          <option value="unselected" disabled>Select an option</option>
+          {options.map((option) => {
+            return (<option value={option.id} key={option.id}>{option.text}</option>)
+          })}
+        </select>
+      </div>
+    );
   }
 }
+
+DropdownOption.propTypes = {
+  answer: PropTypes.shape({ // Optional - new questions can have no answer
+
+  }),
+  focusOnMount: PropTypes.boolean.isRequired,
+  options: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onEnter: PropTypes.func.isRequired,
+  onLeave: PropTypes.func.isRequired,
+};
 
 export default DropdownOption;
