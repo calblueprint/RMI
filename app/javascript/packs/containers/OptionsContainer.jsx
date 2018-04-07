@@ -15,34 +15,6 @@ import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
 import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
-const styles = {
-  transition: 'all 0.4s ease',
-  overflowY: 'hidden'
-};
-
-const transitionStyles = {
-  entering: {
-    maxHeight: 0,
-    transform: 'translateX(-20px)',
-    marginLeft: 0,
-    opacity: 0
-  },
-  entered: {
-    maxHeight: 800,
-    marginLeft: 20,
-    opacity: 1
-  },
-  exiting: {
-    maxHeight: 800,
-    opacity: 1
-  },
-  exited: {
-    maxHeight: 0,
-    marginLeft: 0,
-    opacity: 0
-  }
-};
-
 class OptionsContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -231,6 +203,35 @@ OptionsContainer.propTypes = {
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
   })
+};
+
+const styles = {
+  transition: 'all 0.4s ease',
+  overflowY: 'hidden'
+};
+
+const transitionStyles = {
+  entering: {
+    maxHeight: 0,
+    transform: 'translateX(-20px)',
+    marginLeft: 0,
+    opacity: 0
+  },
+  entered: {
+    maxHeight: 800,
+    marginLeft: 20,
+    opacity: 1
+  },
+  exiting: {
+    maxHeight: 800,
+    opacity: 1
+  },
+  exited: {
+    maxHeight: 0,
+    marginLeft: 0,
+    opacity: 0,
+    display: 'none'
+  }
 };
 
 export default connect(
