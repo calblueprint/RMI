@@ -28,8 +28,16 @@ class Api::DelegationsController < ApplicationController
             old_delegation.update(status: :delegated)
         end
 
+        answer = Answer.find(delegation_params[:answer_id]);
+        unless answer.has_no_delegation
+          answer.delegation_email = ""
+          answer.delegation_first_name = ""
+          answer.delegation_last_name = ""
+          answer.save!
+        end
+
         Delegation.new(
-          answer: Answer.find(delegation_params[:answer_id]),
+          answer: answer,
           source: current_building_operator,
           building_operator: operator,
           status: :active

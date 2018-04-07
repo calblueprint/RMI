@@ -20,7 +20,6 @@ Rails.application.routes.draw do
     resources :questions, only: %i[show create update destroy]
     resources :portfolios, only: %i[index create update show]
     resources :delegations, only: %i[create]
-    resources :contacts, only: %i[index]
     resources :dropdown_options, only: %i[create update destroy]
     resources :range_options, only: %i[create update destroy]
     # Can change route with:
