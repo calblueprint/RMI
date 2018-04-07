@@ -58,3 +58,23 @@ export function getDependentQuestionsForOption(optionId, optionType, state) {
     return state.questions[questionId];
   });
 }
+
+/**
+ * Recursively find all potentially dependent questions on the given question.
+ *
+ */
+export function getPotentialDependentQuestions(parentQuestion, state) {
+  var potentialChildren = [].concat(
+    ...Object.values(parentQuestion.options).map((option) => {
+      return getDependentQuestionsForOption(option.id, parentQuestion.question_type, state);
+    })
+  );
+
+  if (potentialChildren.length == 0) {
+    return [];
+  } else {
+    return potentialChildren.concat(potentialChildren.map(
+      (child) => getPotentialDependentQuestions(child, state)
+    ));
+  }
+}

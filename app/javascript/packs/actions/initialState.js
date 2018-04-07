@@ -64,6 +64,9 @@ const formatState = {
         ['id', 'name', 'asset_manager_id']
       )
     );
+  },
+  contacts: function(contacts) {
+    return contacts;
   }
 }
 
@@ -99,6 +102,13 @@ export function loadInitialState(initialState) {
         }
       };
     });
+  }
+
+  if (initialState.contacts) {
+    formattedState = {
+      ...formattedState,
+      contacts: initialState.contacts,
+    }
   }
 
   return {

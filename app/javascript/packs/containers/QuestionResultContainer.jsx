@@ -15,6 +15,16 @@ class QuestionResultContainer extends React.Component {
       return "";
     }
 
+    if (!this.props.answer.text) {
+      // Empty answer => there should be delegations to display
+      const contactString = this.props.answer.delegation_first_name + " " +
+        this.props.answer.delegation_last_name;
+      return (
+          <div>
+            <p>Delegated to: {contactString}</p>
+          </div>)
+    }
+
     const result = (() => {
       switch (this.props.question_type) {
         case "DropdownOption":

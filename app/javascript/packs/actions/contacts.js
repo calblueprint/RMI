@@ -1,22 +1,20 @@
 import {
   ADD_CONTACT,
-  EDIT_CONTACT
+  DELETE_CONTACT
 } from '../constants';
 
 export function addContact(contactEmail, contactFirstName, contactLastName) {
   return {
     type: ADD_CONTACT,
     email: contactEmail,
-    firstName: contactFirstName,
-    lastName: contactLastName
+    first_name: contactFirstName,
+    last_name: contactLastName,
   };
 }
 
-export function editContact(contactEmail, contactFirstName, contactLastName) {
+export function deleteContact(contactEmail) {
   return {
-    type: EDIT_CONTACT,
+    type: DELETE_CONTACT,
     email: contactEmail,
-    firstName: contactFirstName,
-    lastName: contactLastName
   };
 }
