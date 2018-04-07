@@ -64,7 +64,7 @@ RangeOption.propTypes = {
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
   }),
-  focusOnMount: PropTypes.boolean.isRequired,
+  focusOnMount: PropTypes.bool.isRequired,
   options: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

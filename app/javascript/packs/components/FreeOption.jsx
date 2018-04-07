@@ -46,7 +46,7 @@ FreeOption.propTypes = {
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
   }),
-  focusOnMount: PropTypes.boolean.isRequired,
+  focusOnMount: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onEnter: PropTypes.func.isRequired,

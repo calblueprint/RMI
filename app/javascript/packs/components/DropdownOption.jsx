@@ -25,7 +25,11 @@ class DropdownOption extends React.Component {
    * @returns { String } Option ID or "unselected"
    */
   currentValue() {
-    return this.props.answer ? this.props.answer.selected_option_id : "unselected";
+    if (this.props.answer && this.props.answer.selected_option_id) {
+      return this.props.answer.selected_option_id;
+    } else {
+      return "unselected";
+    }
   }
 
   onChange(optionId) {
@@ -107,7 +111,7 @@ DropdownOption.propTypes = {
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
   }),
-  focusOnMount: PropTypes.boolean.isRequired,
+  focusOnMount: PropTypes.bool.isRequired,
   options: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

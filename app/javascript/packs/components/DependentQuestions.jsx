@@ -100,7 +100,7 @@ DependentQuestions.propTypes = {
   }),
   dependentQuestions: PropTypes.object.isRequired,
   buildingId: PropTypes.number.isRequired,
-  parentIsHidden: PropTypes.boolean.isRequired,
+  parentIsHidden: PropTypes.bool.isRequired,
 };
 
 DependentQuestions.defaultProps = {
