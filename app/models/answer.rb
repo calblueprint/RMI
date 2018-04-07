@@ -36,4 +36,19 @@ class Answer < ApplicationRecord
   def has_no_delegation
     delegation_email.blank? and delegation_first_name.blank? and delegation_last_name.blank?
   end
+
+  def not_delegated
+    delegations.length == 0
+  end
+
+  def delegated_to(user)
+    result = false
+    delegations.each do |delegation|
+      if delegation.building_operator = user and delegation.status = "active"
+        result = true
+        break
+      end
+    end
+    result
+  end
 end

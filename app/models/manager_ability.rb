@@ -53,16 +53,19 @@ class ManagerAbility < ApplicationRecord
 
     cannot :index, Building
 
-    can :update, Answer do |answer|
-      user.answer.include?(answer) && answer.status != 'delegated'
-    end
-
-    can :read, Answer do |answer|
+    # asset managers are granted full access to answers
+    # only controller / frontend validation to handle
+    # delegations
+    can [:create, :update, :read], Answer do |answer|
       user.read_answer(answer)
     end
 
     can :read, Question do |question|
       user.read_question(question)
+    end
+
+    can :create, Delegation do |delegation|
+      user.read_answer(delegation.answer)
     end
 
   end
