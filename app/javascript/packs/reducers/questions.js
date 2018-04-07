@@ -110,106 +110,15 @@ function questionFetchSuccess(state, action) {
 }
 
 function questionFetchFailure(state, action) {
-  return state
-}
-
-function optionFetchSuccess(state, action) {
-  const questionId = action.response.question_id;
-  const optionId = action.response.id;
-  return {
-    ...state,
-    [questionId]: {
-      ...state[questionId],
-      fetchStatus: action.fetchStatus,
-      options: {
-        ...state[questionId].options,
-        [optionId]:{
-          ...action.response
-        }
-      }
-    }
-  }
-}
-
-function optionFetchFailure(state, action) {
-  return state
-}
-
-function beforeCreateOption(state, action) {
-  const questionId = action.option.question_id;
-  const optionId = action.option.id;
-  return {
-    ...state,
-    [questionId]: {
-      ...state[questionId],
-      fetchStatus: action.fetchStatus,
-      options: {
-        ...state[questionId].options,
-        [optionId]: {
-          ...action.option,
-          temp: true
-        }
-      }
-    }
-  }
-}
-
-function beforeFetchQuestion(state, action) {
-  const questionId = action.question.id;
-  return {
-    ...state,
-    [questionId]: {
-      ...state[questionId],
-      saved: false
-    }
-  }
-}
-
-function beforeFetchOption(state, action) {
-  const questionId = action.option.question_id;
-  const optionId = action.option.id;
-  return {
-    ...state,
-    [questionId]: {
-      ...state[questionId],
-      fetching: action.fetching,
-      saved: false,
-      options: {
-        ...state[questionId].options,
-        [optionId]: action.option
-      }
-    }
-  }
-}
-
-function beforeCreateQuestion(state, action) {
   const questionId = action.question.id;
   return {
     ...state,
     [questionId]: {
       ...action.question,
-      saved: false,
-      temp: true
+      fetchStatus: action.fetchStatus,
+      error: action.error
     }
   }
-}
-
-function questionFetchSuccess(state, action) {
-  const question = action.response;
-  const questionId = question.id;
-  return {
-    ...state,
-    [questionId]: {
-      ...question,
-      saved: true,
-      fetching: false,
-      temp: false,
-    }
-  }
-}
-
-function questionFetchFailure(state, action) {
-  return state
 }
 
 function optionFetchSuccess(state, action) {
@@ -222,7 +131,8 @@ function optionFetchSuccess(state, action) {
       options: {
         ...state[questionId].options,
         [optionId]:{
-          ...action.response
+          ...action.response,
+          fetchStatus: action.fetchStatus,
         }
       }
     }
@@ -230,7 +140,22 @@ function optionFetchSuccess(state, action) {
 }
 
 function optionFetchFailure(state, action) {
-  return state
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      options: {
+        ...state[questionId].options,
+        [optionId]: {
+          ...action.option,
+          error: action.error,
+          fetchStatus: action.fetchStatus
+        }
+      }
+    }
+  }
 }
 
 function beforeCreateOption(state, action) {
@@ -240,8 +165,7 @@ function beforeCreateOption(state, action) {
     ...state,
     [questionId]: {
       ...state[questionId],
-      fetching: action.fetching,
-      saved: false,
+      fetchStatus: action.fetchStatus,
       options: {
         ...state[questionId].options,
         [optionId]: {

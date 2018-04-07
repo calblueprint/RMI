@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import InputValidation from '../InputValidation';
 
 class Question extends React.Component {
 
@@ -36,6 +37,11 @@ class Question extends React.Component {
           ref={(input) => { this.questionInput = input; }}
         />
         <div>
+          <InputValidation
+            errors={this.props.question.error}
+          />
+        </div>
+        <div>
           {this.props.question.question_type}
         </div>
       </div>
@@ -49,5 +55,5 @@ Question.propTypes = {
   handleOnBlur: PropTypes.func.isRequired,
   handleOnChange: PropTypes.func.isRequired,
   focus: PropTypes.bool.isRequired,
-  question: PropTypes.object.isRequired
+  question: PropTypes.object.isRequired,
 };

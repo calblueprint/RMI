@@ -43,11 +43,12 @@ export function optionFetchSuccess(response) {
   };
 }
 
-export function optionFetchFailure(error) {
+export function optionFetchFailure(error, option) {
   return {
     type: OPTION_FETCH_FAILURE,
     fetchStatus: FETCH_FAILURE,
-    response: error
+    error: error,
+    option
   };
 }
 
