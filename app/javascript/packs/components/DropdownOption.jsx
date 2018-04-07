@@ -19,6 +19,11 @@ class DropdownOption extends React.Component {
     }
   }
 
+  /**
+   * Returns current option ID being displayed by this DropdownOption component
+   * or the string "unselected" if null.
+   * @returns { String } Option ID or "unselected"
+   */
   currentValue() {
     return this.props.answer ? this.props.answer.selected_option_id : "unselected";
   }
@@ -27,6 +32,12 @@ class DropdownOption extends React.Component {
     this.saveAnswer(optionId, this.props.options[optionId].text);
   }
 
+  /**
+   * Updates the Redux store with a bound onChange function paseed from
+   * OptionsContainer and attempts to save it to the backend.
+   * @param { String } optionId - Option ID to save
+   * @param { String } text - Text value of this selected option
+   */
   saveAnswer(optionId, text) {
     if (this.currentValue() == optionId) {
       // For unselecting an option (through the button control scheme)
