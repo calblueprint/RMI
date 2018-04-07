@@ -37,8 +37,8 @@ class RangeOption extends React.Component {
           <input
             type="number"
             defaultValue={this.props.option.min}
-            onBlur={ (e) => this.updateMinMax({min: parseInt(e.target.value)}) }
-            onChange={ (e) => this.tempUpdateMinMax({min: parseInt(e.target.value)}) }
+            onBlur={(e) => this.updateMinMax({min: parseInt(e.target.value)})}
+            onChange={(e) => this.tempUpdateMinMax({min: parseInt(e.target.value)})}
             placeholder={0}
             ref={(input) => { this.optionInput = input; }}
           />
@@ -46,8 +46,8 @@ class RangeOption extends React.Component {
           <input
             type="number"
             defaultValue={this.props.option.max}
-            onBlur={ (e) => this.updateMinMax({max: parseInt(e.target.value)}) }
-            onChange={ (e) => this.tempUpdateMinMax({max: parseInt(e.target.value)}) }
+            onBlur={(e) => this.updateMinMax({max: parseInt(e.target.value)})}
+            onChange={(e) => this.tempUpdateMinMax({max: parseInt(e.target.value)})}
             placeholder={100}
           />
         </div>
