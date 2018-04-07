@@ -45,6 +45,13 @@ class Question extends React.Component {
           onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
           onChange={(e) => this.onChange({parameter: e.target.value})}
         />
+        <p>Helper Text</p>
+        <textarea
+          placeholder={"Add supplemental information for this question"}
+          defaultValue={this.props.question.helper_text}
+          onBlur={(e) => this.handleOnBlur({helper_text: e.target.value})}
+          onChange={(e) => this.onChange({helper_text: e.target.value})}
+        />
         <div>
           <InputValidation
             errors={this.props.question.error}
