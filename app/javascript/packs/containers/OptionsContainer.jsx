@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Transition from 'react-transition-group/Transition';
-
 import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 import DropdownOption from '../components/DropdownOption';
@@ -9,6 +7,7 @@ import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
 import Status from '../components/Status';
+import DependentQuestions from '../components/DependentQuestions';
 
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
@@ -92,7 +91,7 @@ class OptionsContainer extends React.Component {
       onSave: this.onSave.bind(this)
       onEnter: () => this.setState({ selected: true }),
       onLeave: () => this.setState({ selected: false }),
-      setFocusFunc: this.props.setFocusFunc
+      focusOnMount: this.props.focusOnMount,
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -105,54 +104,6 @@ class OptionsContainer extends React.Component {
         default:
           return <FreeOption {...optionProps} />;
       }
-    })();
-    const dependentQuestions = (() => {
-      if (!this.props.answer) return null;
-      const { dependentQuestions, answer } = this.props;
-
-      const dependentOptionIds = Object.keys(dependentQuestions);
-      const allDependentQuestions = dependentOptionIds.reduce((arr, key) => {
-        const questions = dependentQuestions[key];
-        return arr.concat(questions);
-      }, []);
-      const selectedOption = answer.selected_option_id;
-
-      const shownDependents = dependentQuestions[selectedOption];
-      const firstShownDependent = shownDependents && shownDependents.length > 0
-          ? shownDependents[0]
-          : null;
-
-      return allDependentQuestions.map((question, i) => {
-        let focus;
-        if (firstShownDependent) {
-          focus = question.id === firstShownDependent.id ? {
-            setFocusFunc: (focusFunc) => {
-              // debugger;
-              this.focusFirstDependent = focusFunc;
-            }
-          } : {};
-        }
-        return (
-          <Transition
-            in={question.parent_option_id === selectedOption}
-            timeout={0}
-          >
-            {(state) => (
-              <div
-                key={question.id}
-                style={{...styles, ...transitionStyles[state]}}
-              >
-                <QuestionContainer
-                  mode="answer"
-                  building_id={this.props.building_id}
-                  {...question}
-                  {...focus}
-                />
-              </div>
-            )}
-          </Transition>
-        );
-      });
     })();
 
     return (<div class="question__block">
@@ -169,12 +120,14 @@ class OptionsContainer extends React.Component {
         <Status fetchObject={this.props.answer}
                 onRetry={this.onRetry.bind(this)} />
       </div>
-      {dependentQuestions ?
-        <div className="questions__nested">
-          {dependentQuestions}
-        </div>
+      {this.props.answer ?
+        <DependentQuestions
+          answer={this.props.answer}
+          dependentQuestions={this.props.dependentQuestions}
+          buildingId={this.props.building_id}
+          parentIsHidden={this.props.parentIsHidden}
+        />
       : null}
-
     </div>);
   }
 }
@@ -202,36 +155,7 @@ OptionsContainer.propTypes = {
   dependentQuestions: PropTypes.object.isRequired,
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
-  })
-};
-
-const styles = {
-  transition: 'all 0.4s ease',
-  overflowY: 'hidden'
-};
-
-const transitionStyles = {
-  entering: {
-    maxHeight: 0,
-    transform: 'translateX(-20px)',
-    marginLeft: 0,
-    opacity: 0
-  },
-  entered: {
-    maxHeight: 800,
-    marginLeft: 20,
-    opacity: 1
-  },
-  exiting: {
-    maxHeight: 800,
-    opacity: 1
-  },
-  exited: {
-    maxHeight: 0,
-    marginLeft: 0,
-    opacity: 0,
-    display: 'none'
-  }
+  }),
 };
 
 export default connect(
