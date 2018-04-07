@@ -4,7 +4,8 @@ class Api::QuestionsController < ApplicationController
   def create
     question = Question.new(question_params)
     if question.save
-      render_json_message(:ok, message: "New Question: #{question.id} created", data: question)
+      new_question = QuestionSerializer.new(question)
+      render_json_message(:ok, message: "New Question: #{question.id} created", data: new_question)
     else
       render_json_message(:forbidden, errors: question.errors.full_messages)
     end
@@ -18,7 +19,8 @@ class Api::QuestionsController < ApplicationController
   def update
     question = Question.find(params[:id])
     if question.update(question_params)
-      render_json_message(:ok, message: "Question #{question.id} successfully updated", data: question)
+      updated_question = QuestionSerializer.new(question)
+      render_json_message(:ok, message: "Question #{question.id} successfully updated", data: updated_question)
     else
       render_json_message(:forbidden, errors: question.errors.full_messages)
     end
@@ -51,8 +53,11 @@ class Api::QuestionsController < ApplicationController
             :text,
             :question_type,
             :status,
-            :building_type,
-            :category
+            :building_type_id,
+            :category_id,
+            :parent_option_type,
+            :parent_option_id,
+            :parameter
           )
   end
 end

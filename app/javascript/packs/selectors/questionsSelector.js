@@ -1,6 +1,24 @@
+/**
+ * Gets array of question objects for a building by building ID.
+ * @param { number } buildingId - the building ID of the questionnaire
+ * @param { Object } state - state in store
+ * @returns { Array[] } the array of question objects
+ */
 export function getQuestionsByBuilding(buildingId, state) {
   const questions = state.buildings[buildingId].questions;
   return questions.map((questionId) => {
+    return state.questions[questionId];
+  });
+}
+
+/**
+ * Gets array of question objects for a buildingType by buildingType ID.
+ * @param { number } buildingTypeId - the buildingType ID
+ * @param { Object } state - state in store
+ * @returns { Array[] } the array of question objects
+ */
+export function getQuestionsByBuildingType(buildingTypeId, state) {
+  return state.building_types[buildingTypeId].questions.map((questionId) => {
     return state.questions[questionId];
   });
 }
@@ -10,7 +28,7 @@ export function getQuestionsByBuilding(buildingId, state) {
  * where the keys are option ids and values are arrays of question objects.
  *
  * @param { Array[] } optionIds       An array of option IDs whose dependent questions we want to find
- * @param { String }  questionType    The type of question (dropdown, range, or free)
+ * @param { String }  questionType    The type of question (DropdownOption, RangeOption, or free)
  * @param { Object }  state           state in store
  *
  * @returns { Object } hash of option ids to dependent question arrays
@@ -19,10 +37,13 @@ export function getQuestionsByBuilding(buildingId, state) {
  *         option_id: [{ <question> }, { <question> }, { <question> }],
  *      }
  */
-export function getDependentQuestionsForOptions(optionIds, questionType, state) {
+export function getDependentQuestionsForOptionIds(optionIds, questionType, state) {
   const questions = {};
-  for (let id in optionIds) {
-    questions[id] = getDependentQuestionsForOption(id, questionType, state);
+  for (let id of optionIds) {
+    const dependent_questions = getDependentQuestionsForOption(id, questionType, state);
+    if (dependent_questions.length != 0) {
+      questions[id] = dependent_questions
+    }
   }
   return questions;
 }
@@ -32,7 +53,7 @@ export function getDependentQuestionsForOption(optionId, optionType, state) {
     // We need to check that the option's type matches what is expected by the potential dependent question,
     // because there could be a DropdownOption and RangeOption with the same id.
     return state.questions[questionId].parent_option_id == optionId &&
-            state.questions[questionId].parent_option_type.toLowerCase().includes(optionType);
+            state.questions[questionId].parent_option_type.includes(optionType);
   }).map((questionId) => {
     return state.questions[questionId];
   });

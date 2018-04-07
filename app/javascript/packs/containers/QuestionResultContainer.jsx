@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { getDependentQuestionsForOptions } from "../selectors/questionsSelector";
+import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import QuestionContainer from "./QuestionContainer";
 
 class QuestionResultContainer extends React.Component {
@@ -27,9 +27,9 @@ class QuestionResultContainer extends React.Component {
 
     const result = (() => {
       switch (this.props.question_type) {
-        case "dropdown":
+        case "DropdownOption":
           return (<p>{this.props.answer.selected_option_id}</p>);
-        case "range":
+        case "RangeOption":
           return (<p>{this.props.answer.text}</p>);
         case "file":
           return (<a href={this.getFileLink}>{this.props.answer.attachment_file_name}</a>)
@@ -62,7 +62,7 @@ class QuestionResultContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptions(ownProps.options, ownProps.question_type, state)
+    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state)
   }
 }
 

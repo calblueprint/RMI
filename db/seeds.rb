@@ -14,7 +14,7 @@ CATEGORIES = [
 # DO NOT CHANGE THE ORDER OF THESE QUESTIONS. IF YOU WANT TO ADD MORE, APPEND TO BOTTOM.
 QUESTIONS = [
   { question:
-    { question_type: 'dropdown', category_id: 1, text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
+    { question_type: 'DropdownOption', category_id: 1, text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
     options: [
       { option:
           {text: 'yes' },
@@ -28,21 +28,21 @@ QUESTIONS = [
       { option: {text: 'no' }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'What is the area in ft2 of the office space?', status: 'published', parameter: 'cfs_area' },
+    { question_type: 'RangeOption', category_id: 1, text: 'What is the area in ft2 of the office space?', status: 'published', parameter: 'cfs_area' },
     options: [
       { option:
           {min: 1, max: 100 },
         dep_questions: [
           {
             question:
-              { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
+              { question_type: 'RangeOption', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
             options: [
               { option: { min: 1, max: 100 }}
             ]
           },
           {
             question:
-              { question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
+              { question_type: 'RangeOption', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
             options: [
               { option: { min: 1, max: 100 }}
             ]
@@ -51,63 +51,40 @@ QUESTIONS = [
       }
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the office space accounts for in the building in percentage.', status: 'published', parameter: 'perc_office_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the office space accounts for in the building in percentage.', status: 'published', parameter: 'perc_office_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the Back of House space accounts for in the building in percentage.', status: 'published', parameter: 'perc_boh_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the Back of House space accounts for in the building in percentage.', status: 'published', parameter: 'perc_boh_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the retail space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ret_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the retail space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ret_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the restaurant/dining/kitchen space accounts for in the building in percentage.', status: 'published', parameter: 'perc_din_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the restaurant/dining/kitchen space accounts for in the building in percentage.', status: 'published', parameter: 'perc_din_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the data center space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ds_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the data center space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ds_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'range', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
+    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] }
-].freeze
-
-# DO NOT CHANGE THE ORDER OF THESE QUESTIONS. IF YOU WANT TO ADD MORE, APPEND BOTTOM
-DEPENDENT_QUESTIONS = [
-  {
-    # DEPENDENT QUESTIONS
-    q1:
-      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
-    options: [
-      { min: 1, max: 100}
-    ]
-  },
-  {
-    q2:
-      { question_type: 'range', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
-    options: [
-      { min: 1, max: 100}
-    ]
-  },
-  {
-    q3:
-      { question_type: 'free', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
-  }
 ].freeze
 
 # Seed functions
@@ -205,16 +182,16 @@ def _make_question(q_hash, b_type)
   q_hash[:options].each do |o|
     option =
       case question.question_type
-        when 'dropdown'
+        when 'DropdownOption'
           question.dropdown_options.create(o[:option])
-        when 'range'
+        when 'RangeOption'
           question.range_options.create(o[:option])
       end
     option.save
     if o.key?(:dep_questions)
       o[:dep_questions].each do |q|
         q[:question][:parent_option_id] = option.id
-        q[:question][:parent_option_type] = option.type
+        q[:question][:parent_option_type] = option.class.name
         _make_question(q, b_type)
       end
     end
@@ -251,10 +228,10 @@ def make_answers
     b.questions.each do |q|
       answer = Answer.new(building_id: b.id, question_id: q.id)
       case q.question_type
-      when 'dropdown'
+      when 'DropdownOption'
         answer[:selected_option_id] = q.dropdown_options.first.id
         answer[:text] = q.dropdown_options.first.text
-      when 'range'
+      when 'RangeOption'
         answer[:selected_option_id] = q.range_options.last.id
         answer[:text] = 55
       when 'free'
