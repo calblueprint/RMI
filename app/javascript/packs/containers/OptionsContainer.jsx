@@ -20,8 +20,6 @@ class OptionsContainer extends React.Component {
     this.state = {
       selected: false
     };
-
-    this.focusFirstDependent = () => 0;
   }
   /**
    * Returns answer data in the format expected for a fetch request.
@@ -68,8 +66,6 @@ class OptionsContainer extends React.Component {
       answer.id = this.props.answer.id;
       this.props.updateAnswer(answer.building_id, answer);
     }
-
-    setTimeout(() => this.focusFirstDependent(), 500);
   }
 
   /**
@@ -88,7 +84,7 @@ class OptionsContainer extends React.Component {
       options: this.props.options,
       answer: this.props.answer,
       onChange: this.onChange.bind(this),
-      onSave: this.onSave.bind(this)
+      onSave: this.onSave.bind(this),
       onEnter: () => this.setState({ selected: true }),
       onLeave: () => this.setState({ selected: false }),
       focusOnMount: this.props.focusOnMount,
@@ -106,7 +102,7 @@ class OptionsContainer extends React.Component {
       }
     })();
 
-    return (<div class="question__block">
+    return (<div className="question__block">
       <div
         className={
           `question \
@@ -156,6 +152,13 @@ OptionsContainer.propTypes = {
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
   }),
+  focusOnMount: PropTypes.bool.isRequired,
+  parentIsHidden: PropTypes.bool.isRequired,
+};
+
+OptionsContainer.defaultProps = {
+  focusOnMount: false,
+  parentIsHidden: false,
 };
 
 export default connect(

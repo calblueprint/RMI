@@ -1,7 +1,8 @@
 import React from 'react';
-
 import fontawesome from '@fortawesome/fontawesome';
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
+
+import { TRANSITION_DURATION } from './DependentQuestions';
 
 class DropdownOption extends React.Component {
   componentDidMount() {
@@ -12,8 +13,8 @@ class DropdownOption extends React.Component {
       }
     }
 
-    if (this.props.setFocusFunc) {
-      this.props.setFocusFunc(() => this.ref.focus());
+    if (this.props.focusOnMount) {
+      setTimeout(() => this.ref.focus(), TRANSITION_DURATION * 2);
     }
   }
 
@@ -39,27 +40,37 @@ class DropdownOption extends React.Component {
     const currentValue = this.currentValue();
     const options = Object.values(this.props.options);
     if (options.length <= 5) {
-      return options.map((option) => (
-        <button
-          key={option.id}
-          value={option.id}
-          onClick={(e) => this.handleChange(e)}
-          className={`input__dropdown ${
-            currentValue === option.id ? 'input__dropdown--selected' : ''
-          }`}
+      return (
+        <div
+          onMouseOver={(e) => this.props.onEnter()}
+          onMouseOut={(e) => this.props.onLeave()}
         >
-          {option.text}
-          {
-            currentValue === option.id ?
-            <i
-              style={{ marginLeft: '10px' }}
-              dangerouslySetInnerHTML={{
-                __html: fontawesome.icon(faCheck).html[0]
-              }}
-            /> : null
-          }
-        </button>
-      ));
+        {options.map((option, i) => (
+          <button
+            key={option.id}
+            value={option.id}
+            onClick={(e) => this.handleChange(e)}
+            onFocus={(e) => this.props.onEnter()}
+            onBlur={(e) => this.props.onLeave()}
+            className={`input__dropdown ${
+              currentValue === option.id ? 'input__dropdown--selected' : ''
+            }`}
+            ref={(ref) => this.ref = i === 0 ? ref : this.ref}
+          >
+            {option.text}
+            {
+              currentValue === option.id ?
+              <i
+                style={{ marginLeft: '10px' }}
+                dangerouslySetInnerHTML={{
+                  __html: fontawesome.icon(faCheck).html[0]
+                }}
+              /> : null
+            }
+          </button>
+        ))}
+        </div>
+      );
     }
 
     return (<div>

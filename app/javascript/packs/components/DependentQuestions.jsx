@@ -33,19 +33,23 @@ function DependentQuestions({
 
         return (<CSSTransition
           in={isActive}
-          timeout={0}
+          timeout={{
+            enter: 0,
+            exit: TRANSITION_DURATION * 1000,
+          }}
           classNames="questions__nested-"
+          unmountOnExit={true}
+          key={question.id}
         >
           {(state) => (
             <div
-              key={question.id}
               style={{...styles, ...transitionStyles[state]}}
             >
               <OptionsContainer
                 building_id={buildingId}
                 question_id={question.id}
                 focusOnMount={
-                  firstVisibleDependent && question.id === firstVisibleDependent.id
+                  !!firstVisibleDependent && question.id === firstVisibleDependent.id
                 }
                 parentIsHidden={!isActive}
                 {...question}
@@ -57,8 +61,6 @@ function DependentQuestions({
     }
   </div>);
 };
-
-
 
 const styles = {
   transition: `all ${TRANSITION_DURATION}s ease`,
@@ -80,14 +82,14 @@ const transitionStyles = {
   },
   exiting: {
     maxHeight: 800,
-    opacity: 1,
-  },
-  exited: {
     maxHeight: 0,
     marginLeft: 0,
     opacity: 0,
+  },
+  exited: {
     visibility: 'hidden',
   }
 };
 
+export { TRANSITION_DURATION };
 export default DependentQuestions;

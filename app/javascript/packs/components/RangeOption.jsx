@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { debounce } from 'lodash';
 import { PAUSE_INTERVAL_BEFORE_SAVE } from '../constants/index';
+import { TRANSITION_DURATION } from './DependentQuestions';
 
 class RangeOption extends React.Component {
   componentDidMount() {
@@ -10,6 +12,10 @@ class RangeOption extends React.Component {
 
     if (this.props.answer) {
       this.onChange(this.props.answer.text);
+    }
+
+    if (this.props.focusOnMount) {
+      setTimeout(() => this.ref.focus(), TRANSITION_DURATION * 2);
     }
   }
 
@@ -46,6 +52,7 @@ class RangeOption extends React.Component {
           this.onChange(e.target.value, true);
           this.props.onLeave();
         }}
+        ref={(ref) => this.ref = ref}
       />
     </div>);
   }
