@@ -88,5 +88,20 @@ input:focus, textarea:focus {
 
 .input__range input {
   
+}
 
+.input__dropdown {
+  min-width: 75px;
+  padding: 7.5px 10px 7.5px 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 2px solid $primary;
+  color: $primary;
+  font-size: 14pt;
+  transition: all 0.25s ease;
+}
+
+.input__dropdown--selected {
+  color: white;
+  background-color: $primary;
 }
