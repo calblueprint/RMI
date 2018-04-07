@@ -41,6 +41,7 @@ class Api::RangeOptionsController < ApplicationController
         :min,
         :max,
         :question_id,
+        :unit
       )
   end
 end
