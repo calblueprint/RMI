@@ -18,6 +18,8 @@ import {
 import withInitialState from '../reducers/initialState';
 import { loadInitialState } from '../actions/initialState';
 
+import '../stylesheets';
+
 const { userType } = window.INITIAL_STATE;
 const rootReducer = require(`../reducers/roots/${userType}Reducer`).default;
 const Routes = require(`../routes/${userType}Routes`).default;
@@ -29,8 +31,13 @@ if (window.INITIAL_STATE) {
   store.dispatch(loadInitialState(window.INITIAL_STATE));
 }
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
+    <div>
     <Provider store={store}>
     <PersistGate persistor={persistor}>
       <Router>
@@ -41,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </Switch>
       </Router>
     </PersistGate>
-    </Provider>,
+    </Provider>
+    </div>,
     document.body.appendChild(document.createElement('div')),
   )
 });

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 import DropdownOption from '../components/DropdownOption';
@@ -6,14 +7,20 @@ import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
 import FreeOption from '../components/FreeOption';
 import Status from '../components/Status';
+import DependentQuestions from '../components/DependentQuestions';
 
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
 import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
-
 class OptionsContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: false
+    };
+  }
   /**
    * Returns answer data in the format expected for a fetch request.
    */
@@ -77,7 +84,10 @@ class OptionsContainer extends React.Component {
       options: this.props.options,
       answer: this.props.answer,
       onChange: this.onChange.bind(this),
-      onSave: this.onSave.bind(this)
+      onSave: this.onSave.bind(this),
+      onEnter: () => this.setState({ selected: true }),
+      onLeave: () => this.setState({ selected: false }),
+      focusOnMount: this.props.focusOnMount,
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -91,26 +101,30 @@ class OptionsContainer extends React.Component {
           return <FreeOption {...optionProps} />;
       }
     })();
-    const dependentQuestions = (() => {
-      if (this.props.answer) {
-        const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
-        if (dependents) {
-          return dependents.map(question => {
-            return (<div key={question.id}>
-              <QuestionContainer mode="answer"
-                   building_id={this.props.building_id} {...question} />
-            </div>);
-          });
-        }
-      }
-    })();
 
-    return (<div>
-      {optionsComponent}
-      <Status fetchObject={this.props.answer}
-              onRetry={this.onRetry.bind(this)} />
-      {dependentQuestions}
-    </div>)
+    return (<div className="question__block">
+      <div
+        className={
+          `question \
+          ${this.state.selected ? 'question--selected' : '' } \
+          ${this.props.answer
+            && this.props.answer.error ? 'question--error' : ''}`
+        }
+      >
+        <p>{this.props.text}</p>
+        {optionsComponent}
+        <Status fetchObject={this.props.answer}
+                onRetry={this.onRetry.bind(this)} />
+      </div>
+      {this.props.answer ?
+        <DependentQuestions
+          answer={this.props.answer}
+          dependentQuestions={this.props.dependentQuestions}
+          buildingId={this.props.building_id}
+          parentIsHidden={this.props.parentIsHidden}
+        />
+      : null}
+    </div>);
   }
 }
 
@@ -137,7 +151,14 @@ OptionsContainer.propTypes = {
   dependentQuestions: PropTypes.object.isRequired,
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
-  })
+  }),
+  focusOnMount: PropTypes.bool.isRequired,
+  parentIsHidden: PropTypes.bool.isRequired,
+};
+
+OptionsContainer.defaultProps = {
+  focusOnMount: false,
+  parentIsHidden: false,
 };
 
 export default connect(

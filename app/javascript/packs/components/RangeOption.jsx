@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import { PAUSE_INTERVAL_BEFORE_SAVE } from '../constants/index';
+import { TRANSITION_DURATION } from './DependentQuestions';
 
 class RangeOption extends React.Component {
   componentDidMount() {
@@ -10,6 +12,10 @@ class RangeOption extends React.Component {
 
     if (this.props.answer) {
       this.onChange(this.props.answer.text);
+    }
+
+    if (this.props.focusOnMount) {
+      setTimeout(() => this.ref.focus(), TRANSITION_DURATION * 2);
     }
   }
 
@@ -36,15 +42,34 @@ class RangeOption extends React.Component {
 
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
-    return (<div>
-      <input
-        type="number"
-        value={currentValue}
-        onChange={(e) => this.onChange(e.target.value)}
-        onBlur={(e) => this.onChange(e.target.value, true)}
-      />
-    </div>)
+    return (
+      <div className="input__range">
+        <input
+          type="number"
+          value={currentValue}
+          onChange={(e) => this.onChange(e.target.value)}
+          onFocus={(e) => this.props.onEnter()}
+          onBlur={(e) => {
+            this.onChange(e.target.value, true);
+            this.props.onLeave();
+          }}
+          ref={(ref) => this.ref = ref}
+        />
+      </div>
+    );
   }
 }
+
+RangeOption.propTypes = {
+  answer: PropTypes.shape({ // Optional - new questions can have no answer
+
+  }),
+  focusOnMount: PropTypes.bool.isRequired,
+  options: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onEnter: PropTypes.func.isRequired,
+  onLeave: PropTypes.func.isRequired,
+};
 
 export default RangeOption;

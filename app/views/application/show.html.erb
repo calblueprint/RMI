@@ -1,5 +1,4 @@
 <%= javascript_pack_tag 'containers/RootContainer.js' %>
-<%= stylesheet_pack_tag 'stylesheets/index' %>
 <%=
   if asset_manager_signed_in?
     link_to 'sign out asset_manager', destroy_asset_manager_session_path, method: :delete
