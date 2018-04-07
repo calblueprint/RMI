@@ -17,7 +17,6 @@ class QuestionnaireRoutes extends React.Component {
 
     return (
       <div>
-        <button onClick={() => this.props.history.goBack()}>Back</button>
         <h1>{this.props.building.name}</h1>
 
         <QuestionnaireControls currentPath={currentPath} />

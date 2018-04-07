@@ -39,11 +39,11 @@
 }
 
 @keyframes error-pulse {
-  from {
+  0% {
     border-left: 3px solid #ff3f3f;
   }
 
-  to {
+  100% {
     border-left: 3px solid #fca037;
   }
 }
