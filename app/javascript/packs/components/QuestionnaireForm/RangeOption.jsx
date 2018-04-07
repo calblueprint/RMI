@@ -14,7 +14,7 @@ class RangeOption extends React.Component {
    * @param { Object } args - attributes of the range option to update
    *
    */
-  tempUpdateMinMax (args) {
+  tempUpdate (args) {
     this.props.handleOnChange(this.props.option.id, args)
   }
 
@@ -28,6 +28,13 @@ class RangeOption extends React.Component {
     }
   }
 
+  /**
+   * Handles fetch request onBlur for units
+   * @param { Object } args - attributes of units to update
+   */
+  updateUnit(args) {
+    this.props.handleOnBlur(this.props.option.id, args)
+  }
 
   render() {
     return(
@@ -47,14 +54,15 @@ class RangeOption extends React.Component {
             type="number"
             defaultValue={this.props.option.max}
             onBlur={(e) => this.updateMinMax({max: parseInt(e.target.value)})}
-            onChange={(e) => this.tempUpdateMinMax({max: parseInt(e.target.value)})}
+            onChange={(e) => this.tempUpdate({max: parseInt(e.target.value)})}
             placeholder={100}
           />
           unit:
           <input
             defaultValue={this.props.option.unit}
-            onBlur={(e)}
             placeholder={'Feet'}
+            onBlur={(e) => this.updateUnit({unit: e.target.value})}
+            onChange={(e) => this.tempUpdate({unit: e.target.value})}
           />
         </div>
         <div>
