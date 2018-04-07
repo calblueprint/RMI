@@ -11,7 +11,8 @@ class Question extends React.Component {
 
   /**
    * Handles event for onBlur which is making fetch request
-   * @param { string } text - the text of the question
+   * @param { object } args - any attributes of Question to update
+   *                          in the form {attr: value}
    */
   handleOnBlur(args) {
     this.props.handleOnBlur(this.props.question.id, args)
@@ -19,7 +20,8 @@ class Question extends React.Component {
 
   /**
    * Handles event for onChange which is updating redux temporarily
-   * @param { string } text - the text of the question
+   * @param { object } args - any attributes of Question to update
+   *                          in the form {attr: value}
    */
   onChange(args) {
     this.props.handleOnChange(this.props.question.id, args)
