@@ -14,16 +14,14 @@ import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 
 import { post, patch } from '../fetch/requester';
 
-async function postDelegations(delegations, callback) {
-  var body = {
-    "delegations": delegations,
-  };
+async function postDelegations(delegations) {
+  var body = { delegations };
 
   try {
     let resp = await post('/api/delegations', body);
-    callback(true);
+    return true;
   } catch (error) {
-    callback(false);
+    return false;
   }
 }
 
@@ -47,13 +45,15 @@ class ReviewModeContainer extends React.Component {
     if (potentialChildren.length == 0) {
       return [];
     } else {
-      return potentialChildren.concat(potentialChildren.map(this.getDependentQuestion));
+      return potentialChildren.concat(potentialChildren.map(
+            (child) => this.getDependentQuestion(child)
+            ));
     }
   }
 
   // called when delegation should be submitted
   // should synchronously submit delegations since user expects success
-  submitDelegation() {
+  async submitDelegation() {
     var parentQuestionsForDelegations = this.props.questions.filter((question) => {
       answer = this.props.getAnswer(question.id);
       return answer && !answer.text && answer.delegation_email;
@@ -81,13 +81,12 @@ class ReviewModeContainer extends React.Component {
     }
 
     this.setState({ status_string: "Saving delegations!" });
-    postDelegations(delegations, ((success) => {
-      if (success) {
-        this.setState({ status_string: "Delegations saved." });
-      } else {
-        this.setState({ status_string: "Saving delegations failed. Try again?" });
-      }
-    }).bind(this));
+    var success = await postDelegations(delegations);
+    if (success) {
+      this.setState({ status_string: "Delegations saved." });
+    } else {
+      this.setState({ status_string: "Saving delegations failed. Try again?" });
+    }
   }
 
   render() {
