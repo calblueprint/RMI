@@ -44,7 +44,7 @@ class Answer < ApplicationRecord
   def delegated_to(user)
     result = false
     delegations.each do |delegation|
-      if delegation.building_operator = user and delegation.status = "active"
+      if delegation.building_operator == user and delegation.status == "active"
         result = true
         break
       end
