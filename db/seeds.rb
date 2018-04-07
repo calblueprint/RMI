@@ -92,7 +92,6 @@ QUESTIONS = [
 def make_rmi_user
   1.upto(NUM_USERS) do |n|
     rmi_user = RmiUser.create(
-      id: n,
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
@@ -109,7 +108,6 @@ end
 def make_asset_manager
   1.upto(NUM_USERS) do |n|
     asset_manager = AssetManager.create(
-      id: n,
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
@@ -248,7 +246,6 @@ end
 def make_building_operator
   1.upto(NUM_USERS) do |n|
     building_operator = BuildingOperator.create(
-      id: n,
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
