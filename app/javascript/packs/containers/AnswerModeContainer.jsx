@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 
 import { connect } from 'react-redux';
@@ -40,6 +40,11 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {};
 }
+
+AnswerModeContainer.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired, // TODO: Question Flow type
+  building: PropTypes.object.isRequired, // TODO: Building Flow type
+};
 
 export default connect(
   mapStateToProps,
