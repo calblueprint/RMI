@@ -20,7 +20,7 @@ class QuestionnaireFormContainer extends React.Component {
       category_id: 1,
       options: {},
       question_type: null,
-      parameter: "default"
+      parameter: null
     };
     this.props.beforeCreateNewQuestion(newQuestion)
   }
