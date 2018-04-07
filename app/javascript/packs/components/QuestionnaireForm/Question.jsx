@@ -13,16 +13,16 @@ class Question extends React.Component {
    * Handles event for onBlur which is making fetch request
    * @param { string } text - the text of the question
    */
-  handleOnBlur(text) {
-    this.props.handleOnBlur(this.props.question.id, { text })
+  handleOnBlur(args) {
+    this.props.handleOnBlur(this.props.question.id, args)
   }
 
   /**
    * Handles event for onChange which is updating redux temporarily
    * @param { string } text - the text of the question
    */
-  onChange(text) {
-    this.props.handleOnChange(this.props.question.id, { text })
+  onChange(args) {
+    this.props.handleOnChange(this.props.question.id, args)
   }
 
   render() {
@@ -31,9 +31,16 @@ class Question extends React.Component {
         <input
           defaultValue={this.props.question.text}
           style={{width: 500}}
-          onBlur={(e) => this.handleOnBlur(e.target.value)}
-          onChange={(e) => this.onChange(e.target.value)}
+          onBlur={(e) => this.handleOnBlur({text: e.target.value})}
+          onChange={(e) => this.onChange({text: e.target.value})}
           ref={(input) => { this.questionInput = input; }}
+        />
+        <span> Parameter: </span>
+        <input
+          placeholder={"param1"}
+          defaultValue={this.props.question.parameter}
+          onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
+          onChange={(e) => this.onChange({parameter: e.target.value})}
         />
         <div>
           {this.props.question.question_type}
