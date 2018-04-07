@@ -45,7 +45,8 @@ class DropdownOption extends React.Component {
   saveAnswer(optionId, text) {
     if (this.currentValue() == optionId) {
       // For unselecting an option (through the button control scheme)
-      return this.props.onChange(null, null);
+      // TODO: This is currently broken. See #191.
+      // return this.props.onChange(null, null);
     }
     this.props.onChange(optionId, text);
     this.props.onSave(optionId, text);
