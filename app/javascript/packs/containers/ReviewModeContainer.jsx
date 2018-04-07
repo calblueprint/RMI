@@ -8,7 +8,7 @@ import React from 'react';
 import QuestionContainer from './QuestionContainer';
 
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import { getDependentQuestionsForOption } from "../selectors/questionsSelector";
+import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 
@@ -34,23 +34,6 @@ class ReviewModeContainer extends React.Component {
     }
   }
 
-  // recursively find all dependent questions, return a list
-  getDependentQuestion(parentQuestion) {
-    var potentialChildren = [].concat(
-        ...Object.values(parentQuestion.options).map((option) => {
-          return this.props.getDependentQuestion(option.id, parentQuestion.question_type);
-        })
-    );
-
-    if (potentialChildren.length == 0) {
-      return [];
-    } else {
-      return potentialChildren.concat(potentialChildren.map(
-            (child) => this.getDependentQuestion(child)
-            ));
-    }
-  }
-
   // called when delegation should be submitted
   // should synchronously submit delegations since user expects success
   async submitDelegation() {
@@ -63,7 +46,7 @@ class ReviewModeContainer extends React.Component {
     for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
       var question = parentQuestionsForDelegations[i];
       var answer = this.props.getAnswer(question.id);
-      var allDependentQuestions = this.getDependentQuestion(question);
+      var allDependentQuestions = this.props.getPotentialDependentQuestions(question);
       allDependentQuestions.push(question);
 
       allDependentQuestions.map((currentQuestion) => {
@@ -77,7 +60,8 @@ class ReviewModeContainer extends React.Component {
           }
           delegations.push(delegation);
         }
-      });
+      })
+      ;
     }
 
     this.setState({ status_string: "Saving delegations!" });
@@ -113,13 +97,9 @@ class ReviewModeContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    getDependentQuestion: (optionId, optionType) => {
-      return getDependentQuestionsForOption(optionId, optionType, state);
-    },
+    getPotentialDependentQuestions: (question) => getPotentialDependentQuestions(question, state),
     questions: getQuestionsByBuilding(ownProps.building.id, state),
-    getAnswer: (questionId) => {
-      return getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state);
-    },
+    getAnswer: (questionId) => getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
   };
 }
 
