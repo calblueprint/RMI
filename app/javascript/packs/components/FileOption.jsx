@@ -1,10 +1,9 @@
 import React from 'react';
 
 class FileOption extends React.Component {
-
-  // TODO: handle click of upload button
-  handleUpload() {
-
+  handleUpload(e) {
+    const file = e.target.files[0];
+    this.props.onFileUpload(file);
   }
 
   // get link to file already uploaded
@@ -31,12 +30,7 @@ class FileOption extends React.Component {
     return (
     <div>
       File uploaded:
-      <a href= {currentFileLink} >{currentFileName}</a> {filler} <br></br>
-      <input type="file" />
-      <button
-        type="submit" value="Upload"
-        onClick={this.handleUpload}
-      >Upload</button>
+      <input type="file" onChange={(e) => this.handleUpload(e)} />
     </div>)
   }
 }

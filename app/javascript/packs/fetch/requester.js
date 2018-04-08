@@ -15,32 +15,47 @@ export async function destroy(route) {
   return doFetchRequest(route, 'DELETE');
 }
 
-export async function post(route, body) {
-  return doFetchRequest(route, 'POST', body);
+export async function post(route, body, headers) {
+  return doFetchRequest(route, 'POST', JSON.stringify(body), headers);
+}
+
+/**
+ * Sends a post request with a file rather than JSON as its contents.
+ *
+ * @param route     API route
+ * @param body      A FormData object with the request params
+ */
+export async function postFile(route, body) {
+  return doFetchRequest(route, 'POST', body, true);
 }
 
 export async function patch(route, body) {
-  return doFetchRequest(route, 'PATCH', body);
+  return doFetchRequest(route, 'PATCH', JSON.stringify(body));
 }
 
 /**
  *
- * @param route         Route for the request (e.g. /answers/11)
- * @param method        Method to use ('GET', 'POST', etc.)
- * @param body          Request body. Can be left undefined, for example for GET requests.
+ * @param route               Route for the request (e.g. /answers/11)
+ * @param method              Method to use ('GET', 'POST', etc.)
+ * @param body                Request body. Can be left undefined, for example for GET requests.
+ * @param ignoreContentType   If true, will send the request without a specified content type. Can be helpful
+ *                              for things like form data, where we want it to infer the type and settings.
  *
  * @returns {Promise.<*>}   A promise that resolves to the JSON response if the request was successful.
  */
-async function doFetchRequest(route, method, body) {
-  const bodyData = JSON.stringify(body);
+async function doFetchRequest(route, method, body, ignoreContentType=false) {
   let responseObj;
+  const headers = {
+    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+  };
+  if (!ignoreContentType) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   return await fetch(route, {
-    method: method,
-    body: bodyData,
-    headers: {
-      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
-      'Content-Type': 'application/json'
-    },
+    method,
+    body,
+    headers,
     credentials: 'same-origin'
   }).then((response) => {
     responseObj = response;

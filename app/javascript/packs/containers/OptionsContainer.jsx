@@ -10,8 +10,7 @@ import Status from '../components/Status';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
-import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
-
+import { createAnswer, uploadFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
   /**
@@ -61,6 +60,10 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  onFileUpload(file) {
+    this.props.uploadFile(this.props.building_id, this.props.question_id, file);
+  }
+
   /**
    * Called when the user clicks the "retry" button. Will attempt to save
    * the answer again if it previously failed due to connection issues.
@@ -77,7 +80,8 @@ class OptionsContainer extends React.Component {
       options: this.props.options,
       answer: this.props.answer,
       onChange: this.onChange.bind(this),
-      onSave: this.onSave.bind(this)
+      onSave: this.onSave.bind(this),
+      onFileUpload: this.onFileUpload.bind(this)
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -85,7 +89,7 @@ class OptionsContainer extends React.Component {
           return <DropdownOption {...optionProps} />;
         case "RangeOption":
           return <RangeOption {...optionProps} />;
-        case "file":
+        case "FileOption":
           return <FileOption {...optionProps} />;
         default:
           return <FreeOption {...optionProps} />;
@@ -123,7 +127,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
+    createAnswer: (buildingId, answer, headers) => createAnswer(buildingId, answer, headers, dispatch),
+    uploadFile: (buildingId, questionId, file) => uploadFile(buildingId, questionId, file, dispatch),
     updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
     updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }

@@ -9,7 +9,7 @@ import {
   UPDATE_LOCAL_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
-import { post, patch } from '../fetch/requester';
+import { post, postFile, patch } from '../fetch/requester';
 
 function answerFetchInProgress(buildingId, answer) {
   return {
@@ -77,5 +77,21 @@ export async function updateAnswer(buildingId, answer, dispatch) {
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
+  }
+}
+
+export async function uploadFile(buildingId, questionId, file, dispatch) {
+  dispatch(answerFetchInProgress(buildingId, {}));
+
+  const formData = new FormData();
+  formData.append('answer[attachment]', file);
+  formData.append('answer[building_id]', buildingId);
+  formData.append('answer[question_id]', questionId);
+  try {
+    let response = await postFile('/api/answers', formData);
+    dispatch(answerFetchSuccess(response.data));
+  }
+  catch (error) {
+    dispatch(answerFetchFailure(buildingId, questionId, error));
   }
 }
