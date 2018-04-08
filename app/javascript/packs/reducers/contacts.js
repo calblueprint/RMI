@@ -1,6 +1,6 @@
 import {
   ADD_CONTACT,
-  EDIT_CONTACT
+  DELETE_CONTACT
 } from '../constants';
 
 function attachContact(state, action) {

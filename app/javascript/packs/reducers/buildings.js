@@ -10,7 +10,7 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE
 } from '../constants';
-import {answers} from './answers';
+import { answers } from './answers';
 
 /////////////////////////////////////////////////////////////////
 // BUILDINGS ////////////////////////////////////////////////////
@@ -102,17 +102,11 @@ export default function buildings(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
     // Buildings
-    case ADD_BUILDING:
-      return addBuilding(state, action);
-    case EDIT_BUILDING:
-      return editBuilding(state, action);
-    case REMOVE_BUILDING:
-      return removeBuilding(state, action);
-    case CREATE_BUILDING:
-      return saveBuilding(state, action);
-    case UPDATE_BUILDING:
-      return saveBuilding(state, action);
-    default:
-      return tryAnswersReducer(state, action);
+    case ADD_BUILDING: return addBuilding(state, action);
+    case EDIT_BUILDING: return editBuilding(state, action);
+    case REMOVE_BUILDING: return removeBuilding(state, action);
+    case CREATE_BUILDING: return saveBuilding(state, action);
+    case UPDATE_BUILDING: return saveBuilding(state, action);
+    default: return tryAnswersReducer(state, action);
   }
 }

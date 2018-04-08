@@ -32,8 +32,10 @@ class QuestionContainer extends React.Component {
           question_id={this.props.id}
           building_id={this.props.building_id}
           question_type={this.props.question_type}
-          options={this.props.options}/>
-      </div>);
+          options={this.props.options}
+        />
+      </div>
+    );
   }
 
   renderDelegationMode() {
@@ -44,8 +46,10 @@ class QuestionContainer extends React.Component {
           question_id={this.props.id}
           question_type={this.props.question_type}
           options={this.props.options}
-          building_id={this.props.building_id}/>
-      </div>);
+          building_id={this.props.building_id}
+        />
+      </div>
+    );
   }
 
   render() {

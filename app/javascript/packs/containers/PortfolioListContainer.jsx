@@ -44,7 +44,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    initActions: bindActionCreators({loadInitialState}, dispatch)
+    initActions: bindActionCreators({ loadInitialState }, dispatch)
   };
 }
 

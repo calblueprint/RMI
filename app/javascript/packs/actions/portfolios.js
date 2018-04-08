@@ -26,7 +26,6 @@ export async function fetchPortfolios(dispatch) {
       status: FETCH_FAILURE,
       response: err
     });
-  }
-  ;
+  };
 };
 

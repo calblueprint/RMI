@@ -1,15 +1,12 @@
 import React from 'react';
 
 import PortfolioContainer from '../containers/PortfolioContainer';
-import NavigationBarContainer from '../containers/NavigationBarContainer';
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 import NavigationBarContainer from '../containers/NavigationBar/NavigationBarContainer';
 import CategoryRerouter from "../containers/CategoryRerouter";
 
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
-
-import CategoryRerouter from "../containers/CategoryRerouter";
 
 class AssetManagerRoutes extends React.Component {
   render() {

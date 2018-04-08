@@ -1,6 +1,4 @@
-import {getBuildings, getNavBarBuildings} from '../selectors/buildingsSelector'
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
 
 class DropdownMenuContainer extends React.Component {
   //event.target.value should be a building ID (user clicks on a building in a dropdown and we extract the id)

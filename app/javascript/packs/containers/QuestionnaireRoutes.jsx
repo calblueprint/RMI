@@ -13,23 +13,20 @@ class QuestionnaireRoutes extends React.Component {
     const currentPath = this.props.match.url;
     const propsToPass = {
       building: this.props.building,
-
-
     };
 
     return (
       <div>
-        <h1>{this.props.building.name}</h1>
 
         <QuestionnaireControls currentPath={currentPath}/>
 
         <Switch>
           <Route path={`${currentPath}/edit/:cId?`}
-                 render={renderWithProps(AnswerModeContainer, propsToPass)}/>
+                 render={renderWithProps(AnswerModeContainer, propsToPass)} />
           <Route path={`${currentPath}/delegate`}
-                 render={renderWithProps(DelegateModeContainer, propsToPass)}/>
+                 render={renderWithProps(DelegateModeContainer, propsToPass)} />
           <Route path={`${currentPath}/review`}
-                 render={renderWithProps(ReviewModeContainer, propsToPass)}/>
+                 render={renderWithProps(ReviewModeContainer, propsToPass)} />
         </Switch>
       </div>
     );
