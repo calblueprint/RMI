@@ -9,7 +9,7 @@ import {
   UPDATE_LOCAL_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
-import { post, postFile, patch } from '../fetch/requester';
+import { post, postFile, patch, destroy } from '../fetch/requester';
 
 function answerFetchInProgress(buildingId, answer) {
   return {
@@ -81,7 +81,7 @@ export async function updateAnswer(buildingId, answer, dispatch) {
 }
 
 export async function uploadFile(buildingId, questionId, file, dispatch) {
-  dispatch(answerFetchInProgress(buildingId, {}));
+  dispatch(answerFetchInProgress(buildingId, {question_id: questionId}));
 
   const formData = new FormData();
   formData.append('answer[attachment]', file);
@@ -89,9 +89,23 @@ export async function uploadFile(buildingId, questionId, file, dispatch) {
   formData.append('answer[question_id]', questionId);
   try {
     let response = await postFile('/api/answers', formData);
+    dispatch(updateLocalAnswer(buildingId, response.data));
     dispatch(answerFetchSuccess(response.data));
   }
   catch (error) {
     dispatch(answerFetchFailure(buildingId, questionId, error));
+  }
+}
+
+export async function deleteFile(buildingId, answer, dispatch) {
+  dispatch(updateLocalAnswer(buildingId, {...answer, attachment_file_name: undefined}));
+
+  try {
+    let response = await destroy('/api/answers/' + answer.id + '/attachment');
+    dispatch(updateLocalAnswer(buildingId, response.data));
+    dispatch(answerFetchSuccess(response.data));
+  }
+  catch (error) {
+    dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }

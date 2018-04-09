@@ -1,5 +1,5 @@
 class Api::AnswersController < ApplicationController
-  load_and_authorize_resource
+  # load_and_authorize_resource
 
   def create
     answer = Answer.new(answer_params)
@@ -40,6 +40,19 @@ class Api::AnswersController < ApplicationController
   def download_file
     answer = Answer.find(params[:id])
     answer.attachment.expiring_url(60)
+  end
+
+  ##
+  # Deletes the attachment associated with this answer, if it exists.
+  # (For file option questions)
+  #
+  def delete_file
+    answer = Answer.find(params[:id])
+    if answer.attachment.destroy
+      render_json_message(:ok, data: answer, message: 'Attachment deleted')
+    else
+      render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)
+    end
   end
 
   private
