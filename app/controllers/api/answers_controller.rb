@@ -49,6 +49,7 @@ class Api::AnswersController < ApplicationController
   def delete_file
     answer = Answer.find(params[:id])
     if answer.attachment.destroy
+      answer.save
       render_json_message(:ok, data: answer, message: 'Attachment deleted')
     else
       render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)

@@ -40,14 +40,8 @@ class FileOption extends React.Component {
 
     if (this.currentFileExists()) {
       return (<div>
-          <button onClick={this.downloadFile.bind(this)}
-                  style={{background: 'none',
-                          border: 'none',
-                          textDecoration: 'underline',
-                          color: 'blue'}}>
-            {this.props.answer.attachment_file_name}
-          </button>
-          ({this.humanFileSize(this.props.answer.attachment_file_size)})
+        <a target="_blank" href={currentFileLink} download>{currentFileName}
+        ({this.humanFileSize(this.props.answer.attachment_file_size)})</a>
         <button onClick={this.props.onFileDelete}>Delete</button>
       </div>)
     }
