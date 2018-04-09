@@ -58,7 +58,8 @@ class Api::QuestionsController < ApplicationController
             :parent_option_type,
             :parent_option_id,
             :parameter,
-            :helper_text
+            :helper_text,
+            :unit
           )
   end
 end
