@@ -29,6 +29,17 @@ class Question extends React.Component {
   }
 
   render() {
+    const rangeUnit = this.props.question.question_type == 'RangeOption' ? (
+      <input
+        defaultValue={this.props.question.unit}
+        onBlur={(e) => this.handleOnBlur({unit: e.target.value})}
+        onChange={(e) => this.onChange({unit: e.target.value})}
+        placeholder={"Feet"}
+      />
+    ) : (
+      null
+    );
+
     return (
       <div>
         <input
@@ -45,6 +56,7 @@ class Question extends React.Component {
           onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
           onChange={(e) => this.onChange({parameter: e.target.value})}
         />
+        {rangeUnit}
         <p>Helper Text</p>
         <textarea
           placeholder={"Add supplemental information for this question"}

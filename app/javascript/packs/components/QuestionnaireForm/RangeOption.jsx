@@ -57,13 +57,6 @@ class RangeOption extends React.Component {
             onChange={(e) => this.tempUpdate({max: parseInt(e.target.value)})}
             placeholder={100}
           />
-          unit:
-          <input
-            defaultValue={this.props.option.unit}
-            placeholder={'Feet'}
-            onBlur={(e) => this.updateUnit({unit: e.target.value})}
-            onChange={(e) => this.tempUpdate({unit: e.target.value})}
-          />
         </div>
         <div>
           <InputValidation
