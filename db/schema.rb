@@ -109,8 +109,6 @@ ActiveRecord::Schema.define(version: 20180407220149) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "building_type_id"
-    t.index ["building_type_id"], name: "index_categories_on_building_type_id"
   end
 
   create_table "delegations", force: :cascade do |t|
@@ -204,7 +202,6 @@ ActiveRecord::Schema.define(version: 20180407220149) do
   add_foreign_key "answers", "questions"
   add_foreign_key "buildings", "building_types"
   add_foreign_key "buildings", "portfolios"
-  add_foreign_key "categories", "building_types"
   add_foreign_key "delegations", "answers"
   add_foreign_key "delegations", "building_operators"
   add_foreign_key "delegations", "building_operators", column: "source_id"

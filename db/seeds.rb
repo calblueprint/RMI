@@ -151,7 +151,7 @@ def make_categories
   count = 0
   total = CATEGORIES.length
   CATEGORIES.each do |c|
-    category = Category.create(name: c[:name], building_type: BuildingType.first)
+    category = Category.create(c)
     category.save
     count += 1
     printf("#{count}/#{total} Categories \r")

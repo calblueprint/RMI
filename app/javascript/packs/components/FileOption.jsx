@@ -29,16 +29,15 @@ class FileOption extends React.Component {
     const filler = this.currentFileExists() ? "" : "None";
 
     return (
-      <div>
-        File uploaded:
-        <a href={currentFileLink}>{currentFileName}</a> {filler} <br></br>
-        <input type="file"/>
-        <button
-          type="submit" value="Upload"
-          onClick={this.handleUpload}
-        >Upload
-        </button>
-      </div>)
+    <div>
+      File uploaded:
+      <a href= {currentFileLink} >{currentFileName}</a> {filler} <br></br>
+      <input type="file" />
+      <button
+        type="submit" value="Upload"
+        onClick={this.handleUpload}
+      >Upload</button>
+    </div>)
   }
 }
 

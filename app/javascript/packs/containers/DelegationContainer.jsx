@@ -90,7 +90,7 @@ class DelegationContainer extends React.Component {
     if (validateEmail(this.state.email) &&
         this.state.firstName && this.state.lastName) {
       this.props.contactActions.addContact(
-        this.state.email, this.state.firstName, this.state.lastName);
+          this.state.email, this.state.firstName, this.state.lastName);
     }
   }
 
@@ -205,7 +205,7 @@ class DelegationContainer extends React.Component {
           return dependents.map(question => {
             return (<div key={question.id}>
               <QuestionContainer mode="delegation"
-                                 building_id={this.props.building_id} {...question} />
+                   building_id={this.props.building_id} {...question} />
             </div>);
           });
         }
@@ -267,7 +267,6 @@ function mapDispatchToProps(dispatch) {
     }
   }
 }
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps

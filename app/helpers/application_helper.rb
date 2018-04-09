@@ -18,16 +18,13 @@ module ApplicationHelper
     end
 
     {
-      user: current_asset_manager,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
-          portfolio.buildings, each_serializer: BuildingSerializer,
-          scope: {user_id: current_asset_manager.id,
-                  user_type: 'AssetManager'}
+        portfolio.buildings, each_serializer: BuildingSerializer,
+        scope: {user_id: current_asset_manager.id,
+                user_type: 'AssetManager'}
       ),
-      portfolios: portfolio,
-      contacts: contacts,
-      categories: current_asset_manager.categories,
-      userType: current_asset_manager.class.name,
+      userType: 'AssetManager',
+      contacts: contacts
     }
   end
 
@@ -50,22 +47,18 @@ module ApplicationHelper
     end
 
     {
-      user: current_building_operator,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
        current_building_operator.buildings, each_serializer: BuildingSerializer,
        scope: {user_id: current_building_operator.id,
                user_type: 'BuildingOperator'}
       ),
       userType: 'BuildingOperator',
-      contacts: contacts,
-      categories: current_building_operator.categories,
-      userType: current_building_operator.class.name,
+      contacts: contacts
     }
   end
 
   def rmi_user_initial_state
     {
-      user: current_rmi_user,
       portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         Building.all, each_serializer: BuildingSerializer,

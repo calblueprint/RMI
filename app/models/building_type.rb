@@ -11,7 +11,6 @@
 class BuildingType < ApplicationRecord
   has_many :questions
   has_many :buildings
-  has_many :categories
 
   def building_operator_questions(building_operator)
     # Input
