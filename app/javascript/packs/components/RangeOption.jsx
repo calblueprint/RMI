@@ -55,6 +55,9 @@ class RangeOption extends React.Component {
           }}
           ref={(ref) => this.ref = ref}
         />
+        <input
+          value={}
+        />
       </div>
     );
   }
