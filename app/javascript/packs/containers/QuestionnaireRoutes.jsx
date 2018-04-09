@@ -12,17 +12,16 @@ class QuestionnaireRoutes extends React.Component {
   render() {
     const currentPath = this.props.match.url;
     const propsToPass = {
-      building: this.props.building
+      building: this.props.building,
     };
 
     return (
       <div>
-        <h1>{this.props.building.name}</h1>
 
-        <QuestionnaireControls currentPath={currentPath} />
+        <QuestionnaireControls currentPath={currentPath}/>
 
         <Switch>
-          <Route path={`${currentPath}/edit`}
+          <Route path={`${currentPath}/edit/:cId?`}
                  render={renderWithProps(AnswerModeContainer, propsToPass)} />
           <Route path={`${currentPath}/delegate`}
                  render={renderWithProps(DelegateModeContainer, propsToPass)} />
@@ -39,14 +38,14 @@ class QuestionnaireRoutes extends React.Component {
  * Used by Routes.
  */
 function renderWithProps(ComponentName, props) {
-  return () => (
-    <ComponentName {...props} />
+  return (navProps) => (
+    <ComponentName {...navProps} {...props} />
   );
 }
 
 function mapStateToProps(state, ownProps) {
   return {
-    building: state.buildings[ownProps.match.params.bId]
+    building: state.buildings[ownProps.match.params.bId],
   };
 }
 

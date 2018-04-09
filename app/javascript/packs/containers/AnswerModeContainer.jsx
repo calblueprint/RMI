@@ -9,6 +9,7 @@ import QuestionContainer from './QuestionContainer';
 
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+import { getQuestionsByCategory } from '../utils/QuestionsFilter'
 
 class AnswerModeContainer extends React.Component {
   render() {
@@ -33,7 +34,7 @@ class AnswerModeContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    questions: getQuestionsByBuilding(ownProps.building.id, state)
+    questions: getQuestionsByCategory(ownProps.match.params.cId, getQuestionsByBuilding(ownProps.building.id, state)),
   };
 }
 
