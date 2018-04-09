@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
 import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
+import { downloadFile } from '../fetch/requester';
 
 class OptionsContainer extends React.Component {
   /**
@@ -68,6 +69,10 @@ class OptionsContainer extends React.Component {
     this.props.deleteFile(this.props.building_id, this.props.answer);
   }
 
+  onFileDownload(url) {
+    downloadFile(url);
+  }
+
   /**
    * Called when the user clicks the "retry" button. Will attempt to save
    * the answer again if it previously failed due to connection issues.
@@ -86,7 +91,8 @@ class OptionsContainer extends React.Component {
       onChange: this.onChange.bind(this),
       onSave: this.onSave.bind(this),
       onFileUpload: this.onFileUpload.bind(this),
-      onFileDelete: this.onFileDelete.bind(this)
+      onFileDelete: this.onFileDelete.bind(this),
+      onFileDownload: this.onFileDownload.bind(this)
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -135,6 +141,7 @@ function mapDispatchToProps(dispatch) {
     createAnswer: (buildingId, answer, headers) => createAnswer(buildingId, answer, headers, dispatch),
     uploadFile: (buildingId, questionId, file) => uploadFile(buildingId, questionId, file, dispatch),
     deleteFile: (buildingId, answer) => deleteFile(buildingId, answer, dispatch),
+    downloadFile: (url, fileName) => downloadFile(url, fileName),
     updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
     updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }

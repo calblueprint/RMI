@@ -26,7 +26,7 @@ class FileOption extends React.Component {
   }
 
   downloadFile() {
-    console.log("DOWNLOAD FILE");
+    this.props.onFileDownload(this.getFileLink(), this.props.answer.attachment_file_name);
   }
 
   humanFileSize(size) {
@@ -40,7 +40,7 @@ class FileOption extends React.Component {
 
     if (this.currentFileExists()) {
       return (<div>
-          <button onClick={this.downloadFile}
+          <button onClick={this.downloadFile.bind(this)}
                   style={{background: 'none',
                           border: 'none',
                           textDecoration: 'underline',

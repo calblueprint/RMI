@@ -34,16 +34,29 @@ export async function patch(route, body) {
 }
 
 /**
+ * Gets and downloads a file to the user's computer.
+ *
+ * @param route         URL of the file to download
+ * @returns {Promise}
+ */
+export async function downloadFile(route) {
+  let response = await doFetchRequest(route, 'GET', undefined, false, false);
+  let data = await response.blob();
+  return download(data);
+}
+
+/**
  *
  * @param route               Route for the request (e.g. /answers/11)
  * @param method              Method to use ('GET', 'POST', etc.)
  * @param body                Request body. Can be left undefined, for example for GET requests.
  * @param ignoreContentType   If true, will send the request without a specified content type. Can be helpful
  *                              for things like form data, where we want it to infer the type and settings.
+ * @param toJson              If true, will convert response to JSON
  *
  * @returns {Promise.<*>}   A promise that resolves to the JSON response if the request was successful.
  */
-async function doFetchRequest(route, method, body, ignoreContentType=false) {
+async function doFetchRequest(route, method, body, ignoreContentType=false, toJson=true) {
   let responseObj;
   const headers = {
     'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
@@ -62,8 +75,9 @@ async function doFetchRequest(route, method, body, ignoreContentType=false) {
     if (!response.ok) {
       throw new Error(responseObj.status + " failed request error")
     }
-    return responseObj.json()
-    ;
+
+    if (toJson) return responseObj.json();
+    else return responseObj;
   }).catch(_ => {
     return responseObj.json().then(response => {
       throw response.errors;
