@@ -15,8 +15,8 @@ export async function destroy(route) {
   return doFetchRequest(route, 'DELETE');
 }
 
-export async function post(route, body, headers) {
-  return doFetchRequest(route, 'POST', JSON.stringify(body), headers);
+export async function post(route, body) {
+  return doFetchRequest(route, 'POST', JSON.stringify(body));
 }
 
 /**

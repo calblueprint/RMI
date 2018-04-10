@@ -98,6 +98,8 @@ export async function uploadFile(buildingId, questionId, file, dispatch) {
 }
 
 export async function deleteFile(buildingId, answer, dispatch) {
+  // Get rid of the attachment name locally to give the user the appearance that it was deleted
+  // immediately. However, we need wait for the DELETE request to go through to be fully finished
   dispatch(updateLocalAnswer(buildingId, {...answer, attachment_file_name: undefined}));
 
   try {
