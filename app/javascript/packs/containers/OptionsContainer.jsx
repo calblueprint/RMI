@@ -1,7 +1,6 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import QuestionContainer from './QuestionContainer';
 import DropdownOption from '../components/DropdownOption';
 import RangeOption from '../components/RangeOption';
 import FileOption from '../components/FileOption';
@@ -94,6 +93,7 @@ class OptionsContainer extends React.Component {
         case "DropdownOption":
           return <DropdownOption {...optionProps} />;
         case "RangeOption":
+          optionProps['unit'] = this.props.unit;
           return <RangeOption {...optionProps} />;
         case "file":
           return <FileOption {...optionProps} />;
@@ -154,6 +154,7 @@ OptionsContainer.propTypes = {
   }),
   focusOnMount: PropTypes.bool.isRequired,
   parentIsHidden: PropTypes.bool.isRequired,
+  unit: PropTypes.string
 };
 
 OptionsContainer.defaultProps = {

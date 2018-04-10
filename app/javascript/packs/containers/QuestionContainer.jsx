@@ -3,6 +3,7 @@ import React from 'react';
 import OptionsContainer from './OptionsContainer';
 import QuestionResultContainer from './QuestionResultContainer';
 import DelegationContainer from './DelegationContainer';
+import PropTypes from 'prop-types';
 
 class QuestionContainer extends React.Component {
 
@@ -20,6 +21,7 @@ class QuestionContainer extends React.Component {
         options={this.props.options}
         text={this.props.text}
         setFocusFunc={this.props.setFocusFunc}
+        unit={this.props.unit}
       />
     );
   }
@@ -69,3 +71,13 @@ class QuestionContainer extends React.Component {
 }
 
 export default QuestionContainer;
+
+QuestionContainer.propTypes = {
+  id: PropTypes.number.isRequired,
+  building_id: PropTypes.number.isRequired,
+  question_type: PropTypes.string.isRequired,
+  options: PropTypes.object.isRequired,
+  text: PropTypes.string.isRequired,
+  mode: PropTypes.string.isRequired,
+  unit: PropTypes.string
+};

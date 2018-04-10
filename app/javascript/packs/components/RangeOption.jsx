@@ -43,7 +43,10 @@ class RangeOption extends React.Component {
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
     return (
-      <div className="input__range">
+      <div
+        className="input__range"
+        onClick={(e) => this.ref.focus()}
+      >
         <input
           type="number"
           value={currentValue}
@@ -55,9 +58,7 @@ class RangeOption extends React.Component {
           }}
           ref={(ref) => this.ref = ref}
         />
-        <input
-          value={}
-        />
+        <label>{this.props.unit}</label>
       </div>
     );
   }
@@ -73,6 +74,7 @@ RangeOption.propTypes = {
   onSave: PropTypes.func.isRequired,
   onEnter: PropTypes.func.isRequired,
   onLeave: PropTypes.func.isRequired,
+  unit: PropTypes.string
 };
 
 export default RangeOption;
