@@ -86,7 +86,7 @@ export function answers(state = {}, action) {
     case ANSWER_FETCH_SUCCESS: return answerFetchSuccess(state, action);
     case ANSWER_FETCH_FAILURE: return answerFetchFailure(state, action);
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }

@@ -53,7 +53,7 @@ export function getDependentQuestionsForOption(optionId, optionType, state) {
     // We need to check that the option's type matches what is expected by the potential dependent question,
     // because there could be a DropdownOption and RangeOption with the same id.
     return state.questions[questionId].parent_option_id == optionId &&
-            state.questions[questionId].parent_option_type.includes(optionType);
+      state.questions[questionId].parent_option_type.includes(optionType);
   }).map((questionId) => {
     return state.questions[questionId];
   });

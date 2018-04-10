@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
+
 import QuestionContainer from "./QuestionContainer";
 
 class QuestionResultContainer extends React.Component {
@@ -45,7 +47,7 @@ class QuestionResultContainer extends React.Component {
           return dependents.map(question => {
             return (<div key={question.id}>
               <QuestionContainer mode="review"
-                building_id={this.props.building_id} {...question} />
+                                 building_id={this.props.building_id} {...question} />
             </div>);
           });
         }
@@ -53,9 +55,9 @@ class QuestionResultContainer extends React.Component {
     })();
 
     return (<div>
-        {result}
-        {dependentQuestions}
-        </div>);
+      {result}
+      {dependentQuestions}
+    </div>);
   }
 };
 
@@ -67,10 +69,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-
-  }
+  return {}
 }
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

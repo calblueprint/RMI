@@ -29,6 +29,9 @@ const mapFilterKeys = (objs, keys) => {
 };
 
 const formatState = {
+  user: function(user) {
+      return filterKeys(user[0], ['id', 'email', 'first_name', 'last_name']);
+  },
   buildings: function(buildings) {
     return toObjectById(
       mapFilterKeys(
@@ -57,6 +60,9 @@ const formatState = {
       })
     );
   },
+  categories: function(categories) {
+    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id']));
+  },
   portfolios: function(portfolios) {
     return toObjectById(
       mapFilterKeys(
@@ -68,7 +74,7 @@ const formatState = {
   contacts: function(contacts) {
     return contacts;
   }
-}
+};
 
 export function loadInitialState(initialState) {
   const types = Object.keys(initialState);

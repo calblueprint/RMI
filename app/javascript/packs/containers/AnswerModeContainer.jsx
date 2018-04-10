@@ -4,24 +4,28 @@
  */
 
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import QuestionContainer from './QuestionContainer';
 
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+import { getQuestionsByCategory } from '../utils/QuestionsFilter'
 
 class AnswerModeContainer extends React.Component {
   render() {
     return (
-      <div>
+      <div className="question__container">
         {this.props.questions.map((question) => {
           // Only display non-dependent questions initially
-          if (question.parent_option_id == null) {
-            return (<QuestionContainer mode="answer"
-                              key={question.id}
-                              building_id={this.props.building.id}
-                              {...question} />);
-          }
+          if (question.parent_option_id) return null;
+            return (
+              <QuestionContainer
+                mode="answer"
+                key={question.id}
+                building_id={this.props.building.id}
+                {...question}
+              />
+            );
         })}
       </div>
     );
@@ -30,13 +34,18 @@ class AnswerModeContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    questions: getQuestionsByBuilding(ownProps.building.id, state)
+    questions: getQuestionsByCategory(ownProps.match.params.cId, getQuestionsByBuilding(ownProps.building.id, state)),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {};
 }
+
+AnswerModeContainer.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired, // TODO: Question Flow type
+  building: PropTypes.object.isRequired, // TODO: Building Flow type
+};
 
 export default connect(
   mapStateToProps,

@@ -1,5 +1,4 @@
 class Api::DelegationsController < ApplicationController
-  load_and_authorize_resource
 
   # XXX: dependent questions are not automatically delegated, user should post
   # a batch that includes all dependent questions known
@@ -36,13 +35,16 @@ class Api::DelegationsController < ApplicationController
           answer.save!
         end
 
-        Delegation.new(
+        delegation = Delegation.new(
           answer: answer,
           source: current_building_operator,
           building_operator: operator,
           status: :active
-        ).save!
+        )
 
+        authorize! :create, delegation
+
+        delegation.save!
       end
       render_json_message(:ok, message: 'New delegations created')
     end

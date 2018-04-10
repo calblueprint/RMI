@@ -9,3 +9,8 @@ export function getBuildingsByPortfolio(portfolioId, state) {
 export function getBuildings(state) {
   return state.buildings
 };
+
+export function getBuildingById(buildingId, state) {
+  return state.buildings[buildingId]
+
+}

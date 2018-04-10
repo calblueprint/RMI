@@ -95,7 +95,6 @@ QUESTIONS = [
 def make_rmi_user
   1.upto(NUM_USERS) do |n|
     rmi_user = RmiUser.create(
-      id: n,
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
@@ -112,7 +111,6 @@ end
 def make_asset_manager
   1.upto(NUM_USERS) do |n|
     asset_manager = AssetManager.create(
-      id: n,
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
@@ -156,7 +154,7 @@ def make_categories
   count = 0
   total = CATEGORIES.length
   CATEGORIES.each do |c|
-    category = Category.create(c)
+    category = Category.create(name: c[:name], building_type: BuildingType.first)
     category.save
     count += 1
     printf("#{count}/#{total} Categories \r")
@@ -251,7 +249,6 @@ end
 def make_building_operator
   1.upto(NUM_USERS) do |n|
     building_operator = BuildingOperator.create(
-      id: n,
       first_name: Faker::Name.unique.first_name,
       last_name: Faker::Name.unique.last_name,
       password: 'password',
