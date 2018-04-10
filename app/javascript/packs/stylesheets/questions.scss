@@ -93,24 +93,24 @@ input:focus, textarea:focus, .input__range.input__range--focused {
 }
 
 .input__range {
-  display: flex;
-  flex-direction: row;
+  display: inline-block;
   outline: none;
   font-size: 14pt;
   border: 2px solid $secondary;
   border-radius: 5px;
   padding: 5px;
-  width: 200px;
-  justify-content: space-between;
+  min-width: 200px;
 
-  input {
-    border: 0px;
-    padding: 0px;
-    width: 40%;
+  span {
+    outline: none;
+    // min-width: 50px;
+    float: left;
+    display: inline-block;
+    margin-right: 5px;
   }
+
   label {
-    width: 60%;
-    text-align: right;
+    float: right;
     color: $secondary;
   }
 }

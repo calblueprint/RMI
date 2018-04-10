@@ -54,21 +54,22 @@ class RangeOption extends React.Component {
         className={`input__range ${this.state.focused ? 'input__range--focused' : ''}`}
         onClick={(e) => this.ref.focus()}
       >
-        <input
-          type="number"
-          value={currentValue}
-          onChange={(e) => this.onChange(e.target.value)}
+        <span
+          onChange={(e) => this.onChange(e.target.innerHTML)}
           onFocus={(e) => {
             this.setState({ focused: true });
             this.props.onEnter();
           }}
           onBlur={(e) => {
-            this.onChange(e.target.value, true);
+            this.onChange(e.target.innerHTML, true);
             this.setState({ focused: false });
             this.props.onLeave();
           }}
           ref={(ref) => this.ref = ref}
-        />
+          contentEditable
+        >
+          {currentValue}
+        </span>
         <label>{this.props.unit}</label>
       </div>
     );
