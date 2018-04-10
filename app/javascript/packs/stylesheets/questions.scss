@@ -83,7 +83,7 @@ input::-webkit-inner-spin-button {
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, .input__range.input__range--focused {
   border: 3px solid $primary;
 }
 

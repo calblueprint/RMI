@@ -5,6 +5,13 @@ import { PAUSE_INTERVAL_BEFORE_SAVE } from '../constants/index';
 import { TRANSITION_DURATION } from './DependentQuestions';
 
 class RangeOption extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      focused: false,
+    };
+  }
+
   componentDidMount() {
     this.trySaveAnswer = debounce(function (id, num) {
       this.props.onSave(id, num);
@@ -44,16 +51,20 @@ class RangeOption extends React.Component {
     const currentValue = this.props.answer ? this.props.answer.text : "";
     return (
       <div
-        className="input__range"
+        className={`input__range ${this.state.focused ? 'input__range--focused' : ''}`}
         onClick={(e) => this.ref.focus()}
       >
         <input
           type="number"
           value={currentValue}
           onChange={(e) => this.onChange(e.target.value)}
-          onFocus={(e) => this.props.onEnter()}
+          onFocus={(e) => {
+            this.setState({ focused: true });
+            this.props.onEnter();
+          }}
           onBlur={(e) => {
             this.onChange(e.target.value, true);
+            this.setState({ focused: false });
             this.props.onLeave();
           }}
           ref={(ref) => this.ref = ref}
