@@ -18,8 +18,9 @@ class RangeOption extends React.Component {
       this.props.onSave(id, num);
     }, PAUSE_INTERVAL_BEFORE_SAVE);
 
+    // Check if dependent questions should be triggered initially
     if (this.props.answer) {
-      this.onChange(this.props.answer.text);
+      this.props.onChange(this.props.answer.text);
     }
 
     if (this.props.focusOnMount) {

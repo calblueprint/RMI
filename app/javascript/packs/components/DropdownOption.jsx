@@ -10,7 +10,7 @@ class DropdownOption extends React.Component {
     if (this.props.answer) {
       const selected_option_id = this.props.answer.selected_option_id;
       if (selected_option_id) {
-        this.saveAnswer(selected_option_id, this.props.answer.text);
+        this.props.onChange(selected_option_id, this.props.answer.text);
       }
     }
 
@@ -37,7 +37,7 @@ class DropdownOption extends React.Component {
   }
 
   /**
-   * Updates the Redux store with a bound onChange function paseed from
+   * Updates the Redux store with a bound onChange function passed from
    * OptionsContainer and attempts to save it to the backend.
    * @param { String } optionId - Option ID to save
    * @param { String } text - Text value of this selected option
