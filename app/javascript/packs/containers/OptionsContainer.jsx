@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
 import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
-import { downloadFile } from '../fetch/requester';
 
 class OptionsContainer extends React.Component {
   constructor(props) {
@@ -77,10 +76,6 @@ class OptionsContainer extends React.Component {
     this.props.deleteFile(this.props.building_id, this.props.answer);
   }
 
-  onFileDownload(url) {
-    downloadFile(url);
-  }
-
   /**
    * Called when the user clicks the "retry" button. Will attempt to save
    * the answer again if it previously failed due to connection issues.
@@ -100,7 +95,6 @@ class OptionsContainer extends React.Component {
       onSave: this.onSave.bind(this),
       onFileUpload: this.onFileUpload.bind(this),
       onFileDelete: this.onFileDelete.bind(this),
-      onFileDownload: this.onFileDownload.bind(this),
       onEnter: () => this.setState({ selected: true }),
       onLeave: () => this.setState({ selected: false }),
       focusOnMount: this.props.focusOnMount

@@ -25,10 +25,6 @@ class FileOption extends React.Component {
     return this.props.answer && this.props.answer.fetchStatus === FETCH_IN_PROGRESS;
   }
 
-  downloadFile() {
-    this.props.onFileDownload(this.getFileLink(), this.props.answer.attachment_file_name);
-  }
-
   humanFileSize(size) {
     const i = size == 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
     return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];

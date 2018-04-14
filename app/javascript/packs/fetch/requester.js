@@ -34,18 +34,6 @@ export async function patch(route, body) {
 }
 
 /**
- * Gets and downloads a file to the user's computer.
- *
- * @param route         URL of the file to download
- * @returns {Promise}
- */
-export async function downloadFile(route) {
-  let response = await doFetchRequest(route, 'GET', undefined, false, false);
-  let data = await response.blob();
-  return download(data);
-}
-
-/**
  *
  * @param route               Route for the request (e.g. /answers/11)
  * @param method              Method to use ('GET', 'POST', etc.)
