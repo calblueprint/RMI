@@ -7,8 +7,8 @@ BUILDING_TYPES = [
   { name: 'Small Office' }
 ]
 CATEGORIES = [
-  { name: 'Spaces' },
-  { name: 'Lighting - Interior' }
+  { name: 'Spaces', description: 'Questions about the amount of space in your building' },
+  { name: 'Lighting - Interior', description: 'Questions about the amount of light in your building' }
 ].freeze
 
 # DO NOT CHANGE THE ORDER OF THESE QUESTIONS. IF YOU WANT TO ADD MORE, APPEND TO BOTTOM.
