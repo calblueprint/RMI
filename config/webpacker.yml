@@ -25,6 +25,12 @@ default: &default
     - .gif
     - .jpeg
     - .jpg
+    - .sass
+    - .scss
+    - .css
+    - .module.sass
+    - .module.scss
+    - .module.css
 
 development:
   <<: *default
@@ -35,6 +41,11 @@ development:
     port: 8080
     hmr: true
     https: false
+    inline: true
+    overlay: true
+    compress: true
+    watch_options:
+      ignored: /node_modules/
 
 test:
   <<: *default

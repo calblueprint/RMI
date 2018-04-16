@@ -3,7 +3,7 @@ import {
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
   FETCH_IN_PROGRESS,
-  FETCH_NEEDED,
+  PRE_FETCH_SAVE,
   FETCH_SUCCESS,
   FETCH_FAILURE,
   UPDATE_LOCAL_ANSWER
@@ -22,7 +22,7 @@ function updateLocalAnswer(state, action) {
     [answer.question_id]: {
       ...state[answer.question_id],
       ...answer,
-      fetchStatus: FETCH_NEEDED,
+      fetchStatus: PRE_FETCH_SAVE,
       buildingId: buildingId
     }
   };

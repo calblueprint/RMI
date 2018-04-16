@@ -6,7 +6,6 @@ const config = environment.toWebpackConfig();
 config.devtool = 'cheap-module-eval-source-map';
 
 config.devServer.quiet = true;
-config.devServer.overlay = true;
 
 config.plugins.push(new FriendlyErrorsWebpack());
 
