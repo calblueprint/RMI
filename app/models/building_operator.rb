@@ -55,11 +55,9 @@ class BuildingOperator < ApplicationRecord
 
   def buildings
     buildings = Set.new []
-    d = delegations.includes(answer: :building).load.to_a
+    d = delegations.where(status: 'active').includes(answer: :building).load.to_a
     d.each do |delegation|
-      if delegation.status == 'active'
-        buildings << delegation.answer.building
-      end
+      buildings << delegation.answer.building
     end
     buildings.to_a
   end
@@ -89,12 +87,11 @@ class BuildingOperator < ApplicationRecord
     # Returns
     # questions: array of question objects that are accessible to read
     questions = []
-    d = delegations.includes(
+    d = delegations.where(status: 'active').includes(
       answer: [:building, question: [{ parent_option: :question }, :dropdown_options, :range_options ]]
     ).load.to_a
     d.each do |delegation|
-      if delegation.status == 'active' &&
-        delegation.answer.building.id == building_id
+      if delegation.answer.building.id == building_id
         question = delegation.answer.question
         questions << question
         questions = questions + Question.get_all_parents(question)
@@ -122,12 +119,11 @@ class BuildingOperator < ApplicationRecord
     # Returns
     # questions: array of question objects that are accessible to read
     questions = Set.new
-    d = delegations.includes(
+    d = delegations.where(status: 'active').includes(
       answer: [:building, question: [{ parent_option: :question }, :dropdown_options, :range_options ]]
     ).load.to_a
     d.each do |delegation|
-      if delegation.status == 'active' &&
-        building_ids.include?(delegation.answer.building.id)
+      if building_ids.include?(delegation.answer.building.id)
         question = delegation.answer.question
         questions << question
         questions = questions + Question.get_all_parents(question)
