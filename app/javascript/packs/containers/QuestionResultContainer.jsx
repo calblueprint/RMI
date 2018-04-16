@@ -48,6 +48,7 @@ class QuestionResultContainer extends React.Component {
             return (<div key={question.id}>
               <QuestionContainer mode="review"
                                  building_id={this.props.building_id} {...question} />
+              {/*<Link to = this.props.currentBuilding/edit/this.props.selectedCategory /> */}
             </div>);
           });
         }
@@ -70,6 +71,7 @@ function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
     dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state)
+    category: getCurrentCategory(),
   }
 }
 
