@@ -3,11 +3,12 @@
 # Table name: delegations
 #
 #  id                   :integer          not null, primary key
-#  building_operator_id :integer
 #  answer_id            :integer
 #  status               :integer          default("predelegated")
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  source_id            :integer
+#  building_operator_id :integer
 #
 
 require 'test_helper'

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :delegations, only: %i[create]
     resources :dropdown_options, only: %i[create update destroy]
     resources :range_options, only: %i[create update destroy]
+    resources :categories, only: %i[create update show destroy]
     # Can change route with:
     patch 'questions/publish', to: 'questions#publish'
   end

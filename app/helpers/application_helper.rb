@@ -77,7 +77,10 @@ module ApplicationHelper
         scope: {user_id: current_rmi_user.id,
                 user_type: 'RmiUser'}
       ),
-      userType: 'RMIUser'
+      userType: 'RMIUser',
+      categories: ActiveModel::Serializer::CollectionSerializer.new(
+        Category.all, each_serializer: CategorySerializer
+      )
     }
   end
   # rubocop:enable AlignHash

@@ -9,9 +9,13 @@
 #  building_type_id :integer
 #
 
-class Category < ApplicationRecord
-  has_many :questions
-  belongs_to :building_type
+class CategorySerializer < ActiveModel::Serializer
+  attributes :id,
+             :name,
+             :building_type_id,
+             :questions
 
-  validates :name, presence: true
+  def questions
+    object.questions.map { |q| q.id }
+  end
 end

@@ -13,7 +13,10 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  parameter          :string           not null
+#  helper_text        :text
+#  unit               :string
 #
+
 include SerializerHelper
 
 class QuestionSerializer < ActiveModel::Serializer

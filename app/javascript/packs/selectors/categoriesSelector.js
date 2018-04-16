@@ -28,3 +28,17 @@ export function getFirstUnansweredCategory(categories, questions, buildingId, st
   }
   return null;
 }
+
+/**
+ * Gets an array of category objects given building ID
+ * @param {Number} btId - id for building_type
+ * @param {Object} state - state
+ * returns a list of category objects belonging to this building ID
+ */
+
+export function getCategoryByBuildingTypeId(btId, state) {
+  const categories = state.building_types[btId].categories;
+  return categories.map((categoryId) => {
+    return state.categories[categoryId];
+  });
+}

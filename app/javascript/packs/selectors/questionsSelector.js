@@ -78,3 +78,15 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
     ));
   }
 }
+
+/**
+ * Get an array of question objects given categoryID
+ * @param {Number} categoryId - id for category
+ * @param {Object} state - state
+ * returns a list questions
+ */
+export function getQuestionsByCategoryId(categoryId, state) {
+  return state.categories[categoryId].questions.map((questionId) => {
+    return state.questions[questionId];
+  });
+}
