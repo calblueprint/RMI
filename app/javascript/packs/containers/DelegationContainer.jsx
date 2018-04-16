@@ -118,8 +118,13 @@ class DelegationContainer extends React.Component {
 
   filterContacts() {
     if (this.state.email) {
+      const query = this.state.email.toLowerCase();
       return this.props.contacts.filter(
-          contact => contact.email.includes(this.state.email));
+          contact =>
+            contact.email.toLowerCase().includes(query) ||
+            contact.first_name.toLowerCase().includes(query) ||
+            contact.last_name.toLowerCase().includes(query)
+      );
     } else {
       return this.props.contacts;
     }
@@ -163,7 +168,7 @@ class DelegationContainer extends React.Component {
     const currentEmail = this.state.email;
 
     const renderContact = (contact, { handleClick, modifiers, query }) => {
-      const text = contact.first_name + " " + contact.last_name + "<" + contact.email + ">";
+      const text = contact.first_name + " " + contact.last_name;
       return (
           <MenuItem
             active={modifiers.active}
