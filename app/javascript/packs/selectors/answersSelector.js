@@ -38,4 +38,3 @@ export function isDelegated(question, buildingId, state) {
     return true;
   }
 }
-
