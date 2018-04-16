@@ -22,7 +22,7 @@ class CategoryContainer extends React.Component {
           })}
         </div>
         <div>
-          <p> {remainingQuestions} Questions Remaining</p>
+          <p> {this.props.currentBuilding ? remainingQuestions + ' Questions Remaining' : null} </p>
         </div>
       </div>
 

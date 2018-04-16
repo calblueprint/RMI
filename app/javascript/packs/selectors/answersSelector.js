@@ -10,7 +10,8 @@ export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
 //## if no questions are provided, the building did not have any questions for the users so they have no questions
 //to answer for that building
 export function getRemainingAnswersforCategory(questions, buildingId, state) {
-  let dependentQuestions = [];
+  //questions.filter((question) => )
+
   return questions.reduce((count, question) => {
     if (isUnanswered(question, buildingId, state) && !dependentQuestions.includes(question)) {
         if (isDelegated(question, buildingId, state)) {
