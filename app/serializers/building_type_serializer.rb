@@ -11,7 +11,8 @@
 class BuildingTypeSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
-             :questions
+             :questions,
+             :categories
 
   # Questions are stored as a hash, where the key is the id and the value is the serialized question
   def questions
@@ -24,5 +25,15 @@ class BuildingTypeSerializer < ActiveModel::Serializer
     _questions.each_with_object({}) do |q, hsh|
       hsh[q.id] = QuestionSerializer.new(q).as_json
     end
+  end
+
+  def categories
+    categories =
+    if scope[:user_type] == 'RmiUser' or scope[:user_type] == 'AssetManager'
+      object.categories.map { |cat| cat.id }
+    else
+      []
+    end
+    categories
   end
 end

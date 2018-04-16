@@ -17,35 +17,35 @@ QUESTIONS = [
     { question_type: 'FileOption', category_id: 1, text: 'Please upload a file.', status: 'published', parameter: 'isupload' }
   },
   { question:
-    { question_type: 'DropdownOption', category_id: 1, text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
+    { question_type: 'DropdownOption', text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
     options: [
       { option:
           {text: 'yes' },
         dep_questions: [
           {
             question:
-              { question_type: 'FreeOption', category_id: 1, text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
+              { question_type: 'FreeOption', text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
           }
         ]
       },
       { option: {text: 'no' }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'What is the area in ft2 of the office space?', status: 'published', parameter: 'cfs_area' },
+    { question_type: 'RangeOption', text: 'What is the area in ft2 of the office space?', status: 'published', parameter: 'cfs_area' },
     options: [
       { option:
           {min: 1, max: 100 },
         dep_questions: [
           {
             question:
-              { question_type: 'RangeOption', category_id: 1, text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
+              { question_type: 'RangeOption', text: 'What percentage of the office space is leased to tenants?', status: 'published', parameter: 'perc_os_tenents', parent_option_type: 'RangeOption' },
             options: [
               { option: { min: 1, max: 100 }}
             ]
           },
           {
             question:
-              { question_type: 'RangeOption', category_id: 1, text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
+              { question_type: 'RangeOption', text: 'What percentage of the office space is occupied by owner?', status: 'published', parameter: 'perc_os_owner', parent_option_type: 'RangeOption' },
             options: [
               { option: { min: 1, max: 100 }}
             ]
@@ -54,37 +54,37 @@ QUESTIONS = [
       }
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the office space accounts for in the building in percentage.', status: 'published', parameter: 'perc_office_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the office space accounts for in the building in percentage.', status: 'published', parameter: 'perc_office_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the Back of House space accounts for in the building in percentage.', status: 'published', parameter: 'perc_boh_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the Back of House space accounts for in the building in percentage.', status: 'published', parameter: 'perc_boh_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the retail space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ret_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the retail space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ret_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the restaurant/dining/kitchen space accounts for in the building in percentage.', status: 'published', parameter: 'perc_din_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the restaurant/dining/kitchen space accounts for in the building in percentage.', status: 'published', parameter: 'perc_din_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the data center space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ds_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the data center space accounts for in the building in percentage.', status: 'published', parameter: 'perc_ds_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] },
   { question:
-    { question_type: 'RangeOption', category_id: 1, text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
+    { question_type: 'RangeOption', text: 'Please estimate how much space the garage space accounts for in the building in percentage.', status: 'published', parameter: 'perc_gar_space' },
     options: [
       { option: { min: 1, max: 100 }}
     ] }
@@ -152,12 +152,14 @@ end
 
 def make_categories
   count = 0
-  total = CATEGORIES.length
-  CATEGORIES.each do |c|
-    category = Category.create(name: c[:name], building_type: BuildingType.first)
-    category.save
-    count += 1
-    printf("#{count}/#{total} Categories \r")
+  total = CATEGORIES.length * BUILDING_TYPES.length
+  BuildingType.all.each do |bt|
+    CATEGORIES.each do |c|
+      category = Category.create(name: c[:name], building_type: bt)
+      category.save
+      count += 1
+      printf("#{count}/#{total} Categories \r")
+    end
   end
   puts
 end
@@ -175,7 +177,9 @@ def make_questions_options
   puts
 end
 
-def _make_question(q_hash, b_type)
+def _make_question(q_hash, b_type, category_id=nil)
+  category_id ||= b_type.categories.sample.id
+  q_hash[:question][:category_id] = category_id
   question = b_type.questions.create(q_hash[:question])
   question.status = 'published'
   question.save
@@ -193,7 +197,7 @@ def _make_question(q_hash, b_type)
       o[:dep_questions].each do |q|
         q[:question][:parent_option_id] = option.id
         q[:question][:parent_option_type] = option.class.name
-        _make_question(q, b_type)
+        _make_question(q, b_type, category_id)
       end
     end
   end
