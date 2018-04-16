@@ -20,6 +20,7 @@ function updateLocalAnswer(state, action) {
   return {
     ...state,
     [answer.question_id]: {
+      ...state[answer.question_id],
       ...answer,
       fetchStatus: FETCH_NEEDED,
       buildingId: buildingId
@@ -36,6 +37,7 @@ function beforeFetchAnswer(state, action) {
   return {
     ...state,
     [answer.question_id]: {
+      ...state[answer.question_id],
       ...answer,
       fetchStatus: FETCH_IN_PROGRESS
     }

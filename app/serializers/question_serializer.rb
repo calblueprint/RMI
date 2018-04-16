@@ -39,8 +39,6 @@ class QuestionSerializer < ActiveModel::Serializer
         object.dropdown_options
       when 'RangeOption'
         object.range_options
-      when 'file'
-        object.file_option
       else
         []
       end

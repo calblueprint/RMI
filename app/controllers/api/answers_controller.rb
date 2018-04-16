@@ -42,6 +42,20 @@ class Api::AnswersController < ApplicationController
     answer.attachment.expiring_url(60)
   end
 
+  ##
+  # Deletes the attachment associated with this answer, if it exists.
+  # (For file option questions)
+  #
+  def delete_file
+    answer = Answer.find(params[:id])
+    if answer.attachment.destroy
+      answer.save
+      render_json_message(:ok, data: answer, message: 'Attachment deleted')
+    else
+      render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)
+    end
+  end
+
   private
 
   def answer_params

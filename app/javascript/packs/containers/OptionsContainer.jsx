@@ -11,7 +11,7 @@ import DependentQuestions from '../components/DependentQuestions';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
-import { createAnswer, updateAnswer, updateLocalAnswer } from '../actions/answers';
+import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
   constructor(props) {
@@ -67,6 +67,14 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  onFileUpload(file) {
+    this.props.uploadFile(this.props.building_id, this.props.question_id, file);
+  }
+
+  onFileDelete(file) {
+    this.props.deleteFile(this.props.building_id, this.props.answer);
+  }
+
   /**
    * Called when the user clicks the "retry" button. Will attempt to save
    * the answer again if it previously failed due to connection issues.
@@ -84,9 +92,11 @@ class OptionsContainer extends React.Component {
       answer: this.props.answer,
       onChange: this.onChange.bind(this),
       onSave: this.onSave.bind(this),
+      onFileUpload: this.onFileUpload.bind(this),
+      onFileDelete: this.onFileDelete.bind(this),
       onEnter: () => this.setState({ selected: true }),
       onLeave: () => this.setState({ selected: false }),
-      focusOnMount: this.props.focusOnMount,
+      focusOnMount: this.props.focusOnMount
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -95,7 +105,7 @@ class OptionsContainer extends React.Component {
         case "RangeOption":
           optionProps['unit'] = this.props.unit;
           return <RangeOption {...optionProps} />;
-        case "file":
+        case "FileOption":
           return <FileOption {...optionProps} />;
         default:
           return <FreeOption {...optionProps} />;
@@ -137,7 +147,10 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
+    createAnswer: (buildingId, answer, headers) => createAnswer(buildingId, answer, headers, dispatch),
+    uploadFile: (buildingId, questionId, file) => uploadFile(buildingId, questionId, file, dispatch),
+    deleteFile: (buildingId, answer) => deleteFile(buildingId, answer, dispatch),
+    downloadFile: (url, fileName) => downloadFile(url, fileName),
     updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
     updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
   }

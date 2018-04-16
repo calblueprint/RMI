@@ -9,7 +9,7 @@ import {
   UPDATE_LOCAL_ANSWER,
   REMOVE_ANSWER,
 } from '../constants';
-import { post, patch } from '../fetch/requester';
+import { post, postFile, patch, destroy } from '../fetch/requester';
 
 function answerFetchInProgress(buildingId, answer) {
   return {
@@ -76,6 +76,38 @@ export async function updateAnswer(buildingId, answer, dispatch) {
     let response = await patch('/api/answers/' + answer.id, {'answer': answer});
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
+    dispatch(answerFetchFailure(buildingId, answer.question_id, error));
+  }
+}
+
+export async function uploadFile(buildingId, questionId, file, dispatch) {
+  dispatch(answerFetchInProgress(buildingId, {question_id: questionId}));
+
+  const formData = new FormData();
+  formData.append('answer[attachment]', file);
+  formData.append('answer[building_id]', buildingId);
+  formData.append('answer[question_id]', questionId);
+  try {
+    let response = await postFile('/api/answers', formData);
+    dispatch(updateLocalAnswer(buildingId, response.data));
+    dispatch(answerFetchSuccess(response.data));
+  }
+  catch (error) {
+    dispatch(answerFetchFailure(buildingId, questionId, error));
+  }
+}
+
+export async function deleteFile(buildingId, answer, dispatch) {
+  // Get rid of the attachment name locally to give the user the appearance that it was deleted
+  // immediately. However, we need wait for the DELETE request to go through to be fully finished
+  dispatch(updateLocalAnswer(buildingId, {...answer, attachment_file_name: undefined}));
+
+  try {
+    let response = await destroy('/api/answers/' + answer.id + '/attachment');
+    dispatch(updateLocalAnswer(buildingId, response.data));
+    dispatch(answerFetchSuccess(response.data));
+  }
+  catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }
