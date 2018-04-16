@@ -25,7 +25,7 @@ class PortfolioContainer extends React.Component<Props> {
 
     return (<div>
       <h2>Portfolio</h2>
-      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
+      <a href={`download/${portfolioId}`}>Download as CSV</a>
       <hr />
       <div className="building__container">
       {this.props.buildings.map(building => {

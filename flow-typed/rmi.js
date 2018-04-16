@@ -27,4 +27,21 @@ declare module "rmi" {
     delegation_first_name?: string,
     delegation_last_name?: string
   }
+
+  declare type OptionType = "DropdownOption" | "RangeOption" | "FileOption" | "free";
+
+  declare export class Question {
+    id: number,
+    question_type: OptionType,
+    building_type_id: number,
+    parent_option_type?: OptionType,
+    parent_option_id?: number,
+    category_id: number,
+    text: string,
+    status: "draft" | "published",
+    parameter: string,
+    options: Array<number>,
+    helper_text?: string,
+    unit?: string
+  }
 }

@@ -73,7 +73,6 @@ module ApplicationHelper
           .load.to_a,
        }
       ),
-      userType: 'BuildingOperator',
       contacts: contacts,
       categories: current_building_operator.categories,
       userType: current_building_operator.class.name,

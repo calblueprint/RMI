@@ -18,7 +18,7 @@ export function getBuildings(state: any): {
   return state.buildings
 };
 
-export function getBuildingById(buildingId, state) {
+export function getBuildingById(buildingId: number, state: any): Building {
   return state.buildings[buildingId]
 
 }

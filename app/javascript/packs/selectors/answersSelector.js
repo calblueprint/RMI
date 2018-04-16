@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { Answer } from 'rmi';
+import type { Answer, Question } from 'rmi';
 
 export function getAnswerForQuestionAndBuilding(
   questionId: string,
@@ -15,7 +15,11 @@ export function getAnswerForQuestionAndBuilding(
 // so we should not render how many questions are remaining for a building
 //## if no questions are provided, the building did not have any questions for the users so they have no questions
 //to answer for that building
-export function getRemainingAnswersforCategory(questions, buildingId, state) {
+export function getRemainingAnswersforCategory(
+  questions: Array<Question>,
+  buildingId: number,
+  state: any
+): number {
   return questions.reduce((count, question) => {
     let answer = state.buildings[buildingId].answers[question.id];
     if (!answer || !answer.text.trim() && !answer.attachment_file_name) {
