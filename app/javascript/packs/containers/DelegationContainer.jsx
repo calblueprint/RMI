@@ -150,20 +150,6 @@ class DelegationContainer extends React.Component {
     </div>)
   }
 
-  renderCreateContactButton() {
-    const hasMatchContact = (this.props.contacts.filter((contact) =>
-        contact.email == this.state.email).length == 1);
-    if (validateEmail(this.state.email) && !hasMatchContact) {
-      const buttonValue = "Create new contact " + this.state.email;
-      return (
-        <div>
-          <button type="submit" value={buttonValue}
-            onClick={(e) => this.handleClickCreateContact()}
-          >{buttonValue}</button>
-        </div>)
-    }
-  }
-
   renderSelectAndCreateButton() {
     const currentEmail = this.state.email;
 
@@ -180,6 +166,16 @@ class DelegationContainer extends React.Component {
       );
     };
 
+    const noResults = validateEmail(this.state.email) ?
+      (<MenuItem
+         text="Create new contact "
+         key={this.state.email}
+         label={this.state.email}
+         disabled={false}
+         onClick={(e) => this.handleClickCreateContact()}
+       />) :
+      (<MenuItem disabled={true} text="No contact found, create user by giving a valid email." />);
+
     return (
     <div>
       <Suggest
@@ -194,10 +190,9 @@ class DelegationContainer extends React.Component {
           value: this.state.email,
         } }
         popoverProps={{ minimal: true }}
-        noResults={<MenuItem disabled={true} text="No contact found." />}
+        noResults={noResults}
       />
       <br></br>
-      {this.renderCreateContactButton()}
     </div>)
   }
 
