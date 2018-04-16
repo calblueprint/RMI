@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ContentEditable from 'react-sane-contenteditable';
 import { debounce } from 'lodash';
 import { PAUSE_INTERVAL_BEFORE_SAVE } from '../constants/index';
 import { TRANSITION_DURATION } from './DependentQuestions';
@@ -54,8 +55,8 @@ class RangeOption extends React.Component {
         className={`input__range ${this.state.focused ? 'input__range--focused' : ''}`}
         onClick={(e) => this.ref.focus()}
       >
-        <span
-          onChange={(e) => this.onChange(e.target.innerHTML)}
+        <ContentEditable
+          onChange={(e, value) => this.onChange(value)}
           onFocus={(e) => {
             this.setState({ focused: true });
             this.props.onEnter();
@@ -65,11 +66,10 @@ class RangeOption extends React.Component {
             this.setState({ focused: false });
             this.props.onLeave();
           }}
-          ref={(ref) => this.ref = ref}
-          contentEditable
-        >
-          {currentValue}
-        </span>
+          innerRef={(ref) => this.ref = ref}
+          tagName="span"
+          content={currentValue}
+        />
         <label>{this.props.unit}</label>
       </div>
     );
