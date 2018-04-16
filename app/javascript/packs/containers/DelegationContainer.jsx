@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { MenuItem } from "@blueprintjs/core";
+import { Suggest } from "@blueprintjs/select";
+
 import QuestionContainer from './QuestionContainer';
 
 import * as ContactActions from '../actions/contacts';
@@ -162,8 +165,30 @@ class DelegationContainer extends React.Component {
   renderSelectAndCreateButton() {
     const currentEmail = this.state.email;
 
+    const renderContact = (contact, { handleClick, modifiers, query }) => {
+      const text = contact.first_name + " " + contact.last_name + "<" + contact.email + ">";
+      return (
+          <MenuItem
+            active={modifiers.active}
+            label={contact.email}
+            key={contact.email}
+            onClick={handleClick}
+            text={text}
+          />
+      );
+    };
+
     return (
     <div>
+      <Suggest
+        inputValueRender={(contact) => contact.email}
+        itemRenderer={renderContact}
+        items={Object.values(this.filterContacts())}
+        onItemSelect={
+          (contact, e) => this.handleExistingContactSelect(contact.email)
+        }
+      />
+
       <select onChange={(e) => this.handleExistingContactSelect([e.target.value])}
               defaultValue={currentEmail}>
         <option value="" key="">New target</option>
