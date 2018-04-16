@@ -72,7 +72,7 @@ class DelegationContainer extends React.Component {
       return;
     }
     this.setState({
-      email: value[0],
+      email: value,
       firstName: contact.first_name,
       lastName: contact.last_name,
       finished: true,
@@ -136,10 +136,7 @@ class DelegationContainer extends React.Component {
       <p>{this.props.text}</p>
       Assign to other users:<br></br>
 
-      Email:<br></br>
-      <input type="text" value={currentEmail}
-        onChange={(e) => this.handleContactInfoChange("email", e.target.value)}
-      /><br></br>
+      Email:
 
       {select}
 
@@ -181,22 +178,20 @@ class DelegationContainer extends React.Component {
     return (
     <div>
       <Suggest
-        inputValueRender={(contact) => contact.email}
+        inputValueRenderer={(contact) => contact.email}
         itemRenderer={renderContact}
         items={Object.values(this.filterContacts())}
         onItemSelect={
           (contact, e) => this.handleExistingContactSelect(contact.email)
         }
+        inputProps={ {
+          onChange: (e) => this.handleContactInfoChange("email", e.target.value),
+          value: this.state.email,
+        } }
+        popoverProps={{ minimal: true }}
+        noResults={<MenuItem disabled={true} text="No contact found." />}
       />
-
-      <select onChange={(e) => this.handleExistingContactSelect([e.target.value])}
-              defaultValue={currentEmail}>
-        <option value="" key="">New target</option>
-        {Object.values(this.filterContacts()).map((contact) => {
-          return (<option value={contact.email} key={contact.email}>
-              {contact.first_name + " " + contact.last_name + "<" + contact.email + ">"}</option>)
-        })}
-      </select><br></br>
+      <br></br>
       {this.renderCreateContactButton()}
     </div>)
   }
