@@ -103,6 +103,8 @@ function mapStateToProps(state, ownProps) {
     getPotentialDependentQuestions: (question) => getPotentialDependentQuestions(question, state),
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: (questionId) => getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
+    categories: state.categories,
+
   };
 }
 
