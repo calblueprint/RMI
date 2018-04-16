@@ -33,12 +33,12 @@ class BuildingSerializer < ActiveModel::Serializer
 
   def questions
     questions = object.questions.ids
-    delegations_for_building = scope[:delegations].select do |d|
-      d.answer.building.id == object.id
-    end
-    ids_from_delegations = delegations_for_building.map { |d| d.answer.question.id }
     _questions =
       if scope[:user_type] == 'BuildingOperator'
+        delegations_for_building = scope[:delegations].select do |d|
+          d.answer.building.id == object.id
+        end
+        ids_from_delegations = delegations_for_building.map { |d| d.answer.question.id }
         scope[:questions].select do |q|
           ids_from_delegations.include?(q.id)
         end
