@@ -8,7 +8,8 @@ import {
   FETCH_SUCCESS,
   CATEGORY_FETCH_FAILURE,
   CATEGORY_FETCH_SUCCESS,
-  REMOVE_CATEGORY
+  REMOVE_CATEGORY,
+  SET_CATEGORY_TO_NEW
 } from '../constants';
 
 
@@ -59,6 +60,13 @@ export function removeCategory(category) {
   return {
     type: REMOVE_CATEGORY,
     category
+  }
+}
+
+export function categorySetNew(categoryId) {
+  return {
+    type: SET_CATEGORY_TO_NEW,
+    categoryId
   }
 }
 

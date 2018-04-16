@@ -13,6 +13,8 @@ import {
   beforeCreateNewQuestion
 } from '../../actions/questions';
 import { patch } from '../../fetch/requester';
+import { getCategoryById } from '../../selectors/categoriesSelector';
+
 class CategoryQuestionsContainer extends React.Component {
 
   /**
@@ -23,7 +25,7 @@ class CategoryQuestionsContainer extends React.Component {
       id: generateTempId(),
       text: "",
       building_type_id: this.props.buildingType.id,
-      category_id: 1,
+      category_id: this.props.categoryId,
       options: {},
       question_type: null,
       parameter: null,
@@ -38,7 +40,7 @@ class CategoryQuestionsContainer extends React.Component {
    * @param { Object } args - any question parameters
    */
   async updateCategory(id, args) {
-    const updatedCategory = {...this.state.currentCategory, ...args};
+    const updatedCategory = {...this.props.category, ...args};
     this.props.categoryFetchInProgress(updatedCategory);
     try {
       let response = await patch('/api/categories/' + updatedCategory.id, {'category': updatedCategory});
@@ -64,7 +66,7 @@ class CategoryQuestionsContainer extends React.Component {
    * @param { string } args - any question parameters
    */
   handleOnChange(id, args) {
-    const updatedCategory = {...this.state.currentCategory, ...args};
+    const updatedCategory = {...this.props.category, ...args};
     this.props.categoryPreFetchSave(updatedCategory)
   }
 
@@ -83,18 +85,20 @@ class CategoryQuestionsContainer extends React.Component {
       }
     });
 
+    const select = this.props.category.new || false;
+
     return (
     <div>
-      {/*<div>*/}
-        {/*<CategoryDisplay*/}
-          {/*category={this.props.category}*/}
-          {/*errors={this.props.category.error}*/}
-          {/*select={this.props.select}*/}
-          {/*handleOnBlur={this.handleOnBlur.bind(this)}*/}
-          {/*handleOnChange={this.handleOnChange.bind(this)}*/}
-          {/*key={this.props.category.id}*/}
-        {/*/>*/}
-      {/*</div>*/}
+      <div>
+        <CategoryDisplay
+          category={this.props.category}
+          errors={this.props.category.error}
+          select={select}
+          handleOnBlur={this.handleOnBlur.bind(this)}
+          handleOnChange={this.handleOnChange.bind(this)}
+          key={this.props.category.id}
+        />
+      </div>
       <h2>QUESTIONS FOR {this.props.category.name}</h2>
       <div>
         {questions_display}
@@ -111,7 +115,8 @@ class CategoryQuestionsContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    questions: getQuestionsByCategoryId(ownProps.category.id, state),
+    questions: getQuestionsByCategoryId(ownProps.categoryId, state),
+    category: getCategoryById(ownProps.categoryId, state)
   };
 }
 
@@ -136,5 +141,5 @@ CategoryQuestionsContainer.propTypes = {
   questions: PropTypes.array.isRequired,
   buildingType: PropTypes.object.isRequired,
   category: PropTypes.object.isRequired,
-  select: PropTypes.bool.isRequired
+  categoryId: PropTypes.number.isRequired
 };

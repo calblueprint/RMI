@@ -4,7 +4,7 @@ import {
   CATEGORY_FETCH_IN_PROGRESS,
   CATEGORY_FETCH_SUCCESS,
   REMOVE_CATEGORY,
-  UPDATE_LOCAL_CATEGORY, QUESTION_FETCH_SUCCESS, CREATE_UNSAVED_QUESTION, REMOVE_QUESTION
+  UPDATE_LOCAL_CATEGORY, QUESTION_FETCH_SUCCESS, CREATE_UNSAVED_QUESTION, REMOVE_QUESTION, SET_CATEGORY_TO_NEW
 } from '../constants';
 
 
@@ -51,7 +51,17 @@ function categoryFetchSuccess(state, action) {
     [categoryId]: {
       ...category,
       fetchStatus: action.fetchStatus,
-      temp: false
+      new: false
+    }
+  }
+}
+
+function categorySetToNew(state, action) {
+  return {
+    ...state,
+    [action.categoryId]: {
+      ...state[action.categoryId],
+      new: true
     }
   }
 }
@@ -63,7 +73,8 @@ function categoryFetchFailure(state, action) {
     [categoryId]: {
       ...action.category,
       fetchStatus: action.fetchStatus,
-      error: action.error
+      error: action.error,
+      new: false
     }
   }
 }
@@ -113,6 +124,8 @@ function addQuestionId(state, action) {
   }
 }
 
+
+
 export default function categories(state = {}, action) {
   if (!action) {
     return state;
@@ -125,6 +138,7 @@ export default function categories(state = {}, action) {
     case REMOVE_CATEGORY: return detachCategory(state, action);
     case CATEGORY_FETCH_SUCCESS: return categoryFetchSuccess(state, action);
     case CATEGORY_FETCH_FAILURE: return categoryFetchFailure(state, action);
+    case SET_CATEGORY_TO_NEW: return categorySetToNew(state, action);
     // questions
     case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);
     case REMOVE_QUESTION: return removeQuestion(state, action);

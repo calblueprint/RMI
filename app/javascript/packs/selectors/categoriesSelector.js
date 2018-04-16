@@ -42,3 +42,13 @@ export function getCategoryByBuildingTypeId(btId, state) {
     return state.categories[categoryId];
   });
 }
+
+/**
+ * Gets category given its id
+ * @param {String} cId - category id
+ * @param {Object} state - state
+ * @returns {Object} category object in store corresponding to cId
+ */
+export function getCategoryById(cId, state) {
+  return state.categories[cId];
+}
