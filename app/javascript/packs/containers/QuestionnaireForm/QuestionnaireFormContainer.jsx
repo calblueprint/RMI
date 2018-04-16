@@ -8,7 +8,7 @@ import {generateTempId} from '../../utils/TemporaryObjectUtil';
 import {patch, post} from '../../fetch/requester';
 import {
   categoryFetchFailure, categoryFetchInProgress, categoryFetchSuccess, categoryPreFetchSave,
-  removeCategory
+  removeCategory,categorySetNew
 } from '../../actions/categories';
 
 import CategoryDisplay from '../../components/QuestionnaireForm/CategoryDisplay';
@@ -20,10 +20,6 @@ class QuestionnaireFormContainer extends React.Component {
       currentCategory: this.props.categories[0],
       select: false
     };
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    this.setState({currentCategory: categories })
   }
 
   toggleCategory(category) {
@@ -48,46 +44,11 @@ class QuestionnaireFormContainer extends React.Component {
     try {
       let response = await post('/api/categories', {'category': newCategory});
       this.props.categoryFetchSuccess(response.data);
-      this.setState({currentCategory: response.data, select:true})
+      this.props.categorySetNew(response.data.id);
+      this.setState({currentCategory: response.data})
     } catch (error) {
       this.props.categoryFetchFailure(error, newCategory);
     }
-  }
-
-  /**
-   * Handles fetch request to update a question and redux update
-   * @param { string } id - questionId to update
-   * @param { Object } args - any question parameters
-   */
-  async updateCategory(id, args) {
-    const updatedCategory = {...this.state.currentCategory, ...args};
-    this.props.categoryFetchInProgress(updatedCategory);
-    try {
-      let response = await patch('/api/categories/' + updatedCategory.id, {'category': updatedCategory});
-      this.props.categoryFetchSuccess(response.data);
-    } catch (error) {
-      this.props.categoryFetchFailure(error, updatedCategory);
-    }
-  }
-
-  /**
-   * Calls async fetch function during onBlur to create or update question object.
-   * @param {string} id - questionId to update
-   * @param {object} args - any question parameters
-   */
-  handleOnBlur(id, args) {
-    this.updateCategory(id, args)
-  }
-
-  /**
-   * Handles event for onChange which is updating redux temporarily.
-   * If create new question, create a temp question in question store.
-   * @param { string } id - questionId that is updating
-   * @param { string } args - any question parameters
-   */
-  handleOnChange(id, args) {
-    const updatedCategory = {...this.state.currentCategory, ...args};
-    this.props.categoryPreFetchSave(updatedCategory)
   }
 
   render() {
@@ -116,20 +77,9 @@ class QuestionnaireFormContainer extends React.Component {
             New Category
           </button>
         </div>
-        <div>
-          <CategoryDisplay
-            category={this.state.currentCategory}
-            errors={this.state.currentCategory.error}
-            select={this.props.select}
-            handleOnBlur={this.handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            key={this.state.currentCategory.id}
-          />
-        </div>
         <CategoryQuestionsContainer
           buildingType={this.props.buildingType}
-          category={this.state.currentCategory}
-          select={this.state.select}
+          categoryId={this.state.currentCategory.id}
         />
       </div>
     );
@@ -149,7 +99,8 @@ function mapDispatchToProps(dispatch) {
     categoryPreFetchSave: (category) => { dispatch(categoryPreFetchSave(category)) },
     categoryFetchSuccess: (category) => {dispatch(categoryFetchSuccess(category))},
     categoryFetchFailure: (error, category) => { dispatch(categoryFetchFailure(error, category)) },
-    removeCategory: (category) => { dispatch(removeCategory(category))}
+    removeCategory: (category) => { dispatch(removeCategory(category))},
+    categorySetNew: (categoryId) => { dispatch(categorySetNew(categoryId))}
   };
 }
 
