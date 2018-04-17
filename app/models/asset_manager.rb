@@ -55,6 +55,10 @@ class AssetManager < ApplicationRecord
     contains
   end
 
+  def create_answer(answer)
+    portfolio.buildings.include?(answer.building)
+  end
+
   def building_types
     portfolio.building_types
   end

@@ -56,8 +56,12 @@ class ManagerAbility < ApplicationRecord
     # asset managers are granted full access to answers
     # only controller / frontend validation to handle
     # delegations
-    can [:create, :update, :read], Answer do |answer|
+    can [:update, :read], Answer do |answer|
       user.read_answer(answer)
+    end
+
+    can :create, Answer do |answer|
+      user.create_answer(answer)
     end
 
     can :read, Question do |question|
