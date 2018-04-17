@@ -52,12 +52,11 @@ class QuestionnaireFormContainer extends React.Component {
   }
 
   render() {
-    const categoryToggle = Object.keys(this.props.categories).map((categoryId) => {
-      const category = this.props.categories[categoryId];
+    const categoryToggle = this.props.categories.map((category) => {
       const currentColor = category.id == this.state.currentCategory.id ? 'red' : 'transparent';
       return(
         <div
-          key={categoryId}
+          key={category.id}
         >
           <button
             onClick={(e) => this.toggleCategory(category)}

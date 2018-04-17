@@ -72,11 +72,10 @@ class CategoryQuestionsContainer extends React.Component {
 
 
   render() {
-    const questions_display = Object.keys(this.props.questions).map((id)=>{
-      const question = this.props.questions[id];
+    const questions_display = this.props.questions.map((question)=>{
       if (!question.parent_option_id) {
         return(
-          <div key={id}>
+          <div key={question.id}>
             <QuestionContainer
               question={question}
             />

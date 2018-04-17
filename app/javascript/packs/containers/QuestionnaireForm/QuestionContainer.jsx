@@ -91,7 +91,7 @@ class QuestionContainer extends React.Component {
       const qTypesDisplay = {
         'RangeOption': 'numeric',
         'DropdownOption': 'dropdown',
-        'free': 'free response'};
+        'FreeOption': 'free response'};
       const options = Object.keys(qTypesDisplay).map((qType, index) => {
         return (
           <option

@@ -80,7 +80,7 @@ function removeCategory(state, action) {
 
 function addCategoryId(state, action) {
   const buildingTypeId = action.response.building_type_id;
-  const categoryId = action.response.id.toString();
+  const categoryId = action.response.id;
   if (state[buildingTypeId].categories.includes(categoryId)) {
     return state
   }
