@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { MenuItem } from "@blueprintjs/core";
+import { Suggest } from "@blueprintjs/select";
+
 import QuestionContainer from './QuestionContainer';
 
 import * as ContactActions from '../actions/contacts';
@@ -69,7 +72,7 @@ class DelegationContainer extends React.Component {
       return;
     }
     this.setState({
-      email: value[0],
+      email: value,
       firstName: contact.first_name,
       lastName: contact.last_name,
       finished: true,
@@ -115,8 +118,13 @@ class DelegationContainer extends React.Component {
 
   filterContacts() {
     if (this.state.email) {
+      const query = this.state.email.toLowerCase();
       return this.props.contacts.filter(
-          contact => contact.email.includes(this.state.email));
+          contact =>
+            contact.email.toLowerCase().includes(query) ||
+            contact.first_name.toLowerCase().includes(query) ||
+            contact.last_name.toLowerCase().includes(query)
+      );
     } else {
       return this.props.contacts;
     }
@@ -129,72 +137,87 @@ class DelegationContainer extends React.Component {
     const select = !this.state.showNameInputs ? this.renderSelectAndCreateButton() : "";
 
     return (
-    <div>
-      <p>{this.props.text}</p>
-      Assign to other users:<br></br>
+      <div>
+        <p>{this.props.text}</p>
+        Assign to other users:<br></br>
 
-      Email:<br></br>
-      <input type="text" value={currentEmail}
-        onChange={(e) => this.handleContactInfoChange("email", e.target.value)}
-      /><br></br>
+        Email:
 
-      {select}
+        {select}
 
-      {inputs}
+        {inputs}
 
-    </div>)
-  }
-
-  renderCreateContactButton() {
-    const hasMatchContact = (this.props.contacts.filter((contact) =>
-        contact.email == this.state.email).length == 1);
-    if (validateEmail(this.state.email) && !hasMatchContact) {
-      const buttonValue = "Create new contact " + this.state.email;
-      return (
-        <div>
-          <button type="submit" value={buttonValue}
-            onClick={(e) => this.handleClickCreateContact()}
-          >{buttonValue}</button>
-        </div>)
-    }
+      </div>
+    );
   }
 
   renderSelectAndCreateButton() {
     const currentEmail = this.state.email;
 
+    const renderContact = (contact, { handleClick, modifiers, query }) => {
+      const text = contact.first_name + " " + contact.last_name;
+      return (
+        <MenuItem
+          active={modifiers.active}
+          label={contact.email}
+          key={contact.email}
+          onClick={handleClick}
+          text={text}
+        />
+      );
+    };
+
+    const noResults = validateEmail(this.state.email) ?
+      (<MenuItem
+         text="Create new contact "
+         key={this.state.email}
+         label={this.state.email}
+         disabled={false}
+         onClick={(e) => this.handleClickCreateContact()}
+       />) :
+      (<MenuItem disabled={true} text="No contact found, create user by giving a valid email." />);
+
     return (
-    <div>
-      <select onChange={(e) => this.handleExistingContactSelect([e.target.value])}
-              defaultValue={currentEmail}>
-        <option value="" key="">New target</option>
-        {Object.values(this.filterContacts()).map((contact) => {
-          return (<option value={contact.email} key={contact.email}>
-              {contact.first_name + " " + contact.last_name + "<" + contact.email + ">"}</option>)
-        })}
-      </select><br></br>
-      {this.renderCreateContactButton()}
-    </div>)
+      <div>
+        <Suggest
+          inputValueRenderer={(contact) => contact.email}
+          itemRenderer={renderContact}
+          items={Object.values(this.filterContacts())}
+          onItemSelect={
+            (contact, e) => this.handleExistingContactSelect(contact.email)
+          }
+          inputProps={ {
+            onChange: (e) => this.handleContactInfoChange("email", e.target.value),
+            value: this.state.email,
+          } }
+          popoverProps={{ minimal: true }}
+          noResults={noResults}
+        />
+        <br></br>
+      </div>
+    );
   }
 
   renderNameInputs() {
     const currentFirstName = this.state.firstName;
     const currentLastName = this.state.lastName;
     return (
-    <div>
-      First name:<br></br>
-      <input type="text" value={currentFirstName}
-        onChange={(e) => this.handleContactInfoChange("firstName", e.target.value)}
-      /><br></br>
+      <div>
+        First name:<br></br>
+        <input type="text" value={currentFirstName}
+          onChange={(e) => this.handleContactInfoChange("firstName", e.target.value)}
+        /><br></br>
 
-      Last name:<br></br>
-      <input type="text" value={currentLastName}
-        onChange={(e) => this.handleContactInfoChange("lastName", e.target.value)}
-      /><br></br>
+        Last name:<br></br>
+        <input type="text" value={currentLastName}
+          onChange={(e) => this.handleContactInfoChange("lastName", e.target.value)}
+        /><br></br>
 
-      <button type="submit" value="Create contact and assign"
-        onClick={(e) => this.handleClickSaveContact()}
-      >Create contact and assign</button>
-    </div>)
+        <button type="submit" value="Create contact and assign"
+          onClick={(e) => this.handleClickSaveContact()}
+        >Create contact and assign</button>
+      </div>
+    );
   }
 
   renderAnswered() {
@@ -228,13 +251,14 @@ class DelegationContainer extends React.Component {
   renderDelegated() {
     const delegated_string = this.state.firstName + " " + this.state.lastName + " " + this.state.email;
     return (
-        <div>
-          <p>{this.props.text}</p>
-          <p>Delegated to {delegated_string}</p>
-          <button type="button" value="Change"
-            onClick={(e) => this.handleClickChangeContact()}
-          >Change</button>
-        </div>)
+      <div>
+        <p>{this.props.text}</p>
+        <p>Delegated to {delegated_string}</p>
+        <button type="button" value="Change"
+          onClick={(e) => this.handleClickChangeContact()}
+        >Change</button>
+      </div>
+    );
   }
 
   render() {

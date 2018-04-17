@@ -32,11 +32,18 @@ class BuildingSerializer < ActiveModel::Serializer
   end
 
   def questions
+    questions = object.questions.ids
     _questions =
       if scope[:user_type] == 'BuildingOperator'
-        BuildingOperator.find(scope[:user_id]).questions_by_building(object.id)
+        delegations_for_building = scope[:delegations].select do |d|
+          d.answer.building.id == object.id
+        end
+        ids_from_delegations = delegations_for_building.map { |d| d.answer.question.id }
+        scope[:questions].select do |q|
+          ids_from_delegations.include?(q.id)
+        end
       else
-        object.questions
+        Building.includes(:building_type).find(object.id).questions
       end
     _questions.each_with_object({}) do |q, hsh|
       hsh[q.id] = QuestionSerializer.new(q).as_json

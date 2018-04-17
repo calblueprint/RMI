@@ -7,12 +7,15 @@ BUILDING_TYPES = [
   { name: 'Small Office' }
 ]
 CATEGORIES = [
-  { name: 'Spaces' },
-  { name: 'Lighting - Interior' }
+  { name: 'Spaces', description: 'Questions about the amount of space in your building' },
+  { name: 'Lighting - Interior', description: 'Questions about the amount of light in your building' }
 ].freeze
 
 # DO NOT CHANGE THE ORDER OF THESE QUESTIONS. IF YOU WANT TO ADD MORE, APPEND TO BOTTOM.
 QUESTIONS = [
+  { question:
+    { question_type: 'FileOption', text: 'Please upload a file.', status: 'published', parameter: 'isupload' }
+  },
   { question:
     { question_type: 'DropdownOption', text: 'Do you have a full set of building drawings available in electronic format you can share?', status: 'published', parameter: 'isupload' },
     options: [
@@ -21,7 +24,7 @@ QUESTIONS = [
         dep_questions: [
           {
             question:
-              { question_type: 'free', text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
+              { question_type: 'FreeOption', text: 'Please upload building drawings.', status: 'published', parameter: 'upload_url', parent_option_type: 'DropdownOption' }
           }
         ]
       },
@@ -180,7 +183,7 @@ def _make_question(q_hash, b_type, category_id=nil)
   question = b_type.questions.create(q_hash[:question])
   question.status = 'published'
   question.save
-  return if question.question_type == 'free'
+  return if question.question_type == 'FreeOption' || question.question_type == 'FileOption'
   q_hash[:options].each do |o|
     option =
       case question.question_type
@@ -236,7 +239,7 @@ def make_answers
       when 'RangeOption'
         answer[:selected_option_id] = q.range_options.last.id
         answer[:text] = 55
-      when 'free'
+      when 'FreeOption'
         answer[:text] = 'Text free range answer'
       end
       answer.save

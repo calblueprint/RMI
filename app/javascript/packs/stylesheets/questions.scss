@@ -77,7 +77,13 @@ input, textarea {
   padding: 5px;
 }
 
-input:focus, textarea:focus {
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input:focus, textarea:focus, .input__range.input__range--focused {
   border: 3px solid $primary;
 }
 
@@ -86,8 +92,27 @@ input:focus, textarea:focus {
   width: 100%;
 }
 
-.input__range input {
-  
+.input__range {
+  display: inline-block;
+  outline: none;
+  font-size: 14pt;
+  border: 2px solid $secondary;
+  border-radius: 5px;
+  padding: 5px;
+  min-width: 200px;
+
+  span {
+    outline: none;
+    // min-width: 50px;
+    float: left;
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  label {
+    float: right;
+    color: $secondary;
+  }
 }
 
 .input__dropdown {

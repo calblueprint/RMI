@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :categories, only: %i[create update show destroy]
     # Can change route with:
     patch 'questions/publish', to: 'questions#publish'
+    delete 'answers/:id/attachment', to: 'answers#delete_file'
   end
 
   # Redirect everything else to the entry point for React;
