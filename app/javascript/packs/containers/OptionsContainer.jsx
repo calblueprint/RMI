@@ -147,7 +147,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: (buildingId, answer, headers) => createAnswer(buildingId, answer, headers, dispatch),
+    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
     uploadFile: (buildingId, questionId, file) => uploadFile(buildingId, questionId, file, dispatch),
     deleteFile: (buildingId, answer) => deleteFile(buildingId, answer, dispatch),
     downloadFile: (url, fileName) => downloadFile(url, fileName),
