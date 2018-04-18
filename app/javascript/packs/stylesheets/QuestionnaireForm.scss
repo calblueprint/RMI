@@ -29,8 +29,21 @@
     background-color: white;
   }
 
-  input {
+  .question_block__param {
+    font-size: 10pt;
+    font-family: Consolas;
+    width: auto;
     margin-bottom: 10px;
+    border: 0;
+    background-color: transparent;
+    min-width: 150px;
+    width: 20%;
+  }
+
+  .question_block__param:focus{
+    border: $inputBorder;
+    border-radius: 5px;
+    background-color: white;
   }
 }
 
@@ -72,6 +85,10 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 
+  border: 1px solid $backgroundGray;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+
   button {
     border: $border-primary;
     border-radius: 2px;
@@ -97,5 +114,6 @@
   .dropdown-block:focus {
     background-color: white;
     width: 80%;
+    padding: 2px;
   }
 }
