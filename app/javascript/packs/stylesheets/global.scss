@@ -6,9 +6,8 @@ $backgroundGray: #f4f4f4;
 $inputBorder: 2px solid $secondary;
 
 $border-primary: 2px solid $primary;
-$background-primary: lighten($primary, 25);
-
 $param-font: Consolas 12px;
+$background-primary: rgba($primary, 0.15);
 
 body {
   background-color: white;
