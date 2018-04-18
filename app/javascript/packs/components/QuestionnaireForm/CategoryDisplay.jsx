@@ -9,7 +9,6 @@ class CategoryDisplay extends React.Component {
       this.categoryInput.select();
     }
   }
-  //props: option, updateOption, handleOnChange
 
   /**
    * Handles event for onBlur which is making fetch request

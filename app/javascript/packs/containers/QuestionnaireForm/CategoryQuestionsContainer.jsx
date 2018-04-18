@@ -72,7 +72,7 @@ class CategoryQuestionsContainer extends React.Component {
 
 
   render() {
-    const questions_display = this.props.questions.map((question)=>{
+    const questions_display = this.props.questionList.map((question)=>{
       if (!question.parent_option_id) {
         return(
           <div key={question.id}>
@@ -114,7 +114,7 @@ class CategoryQuestionsContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    questions: getQuestionsByCategoryId(ownProps.categoryId, state),
+    questionList: getQuestionsByCategoryId(ownProps.categoryId, state),
     category: getCategoryById(ownProps.categoryId, state)
   };
 }
@@ -137,7 +137,7 @@ export default connect(
 )(CategoryQuestionsContainer);
 
 CategoryQuestionsContainer.propTypes = {
-  questions: PropTypes.array.isRequired,
+  questionList: PropTypes.array.isRequired,
   buildingType: PropTypes.object.isRequired,
   category: PropTypes.object.isRequired,
   categoryId: PropTypes.number.isRequired

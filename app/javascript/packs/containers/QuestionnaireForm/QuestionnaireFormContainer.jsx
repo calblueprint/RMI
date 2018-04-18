@@ -17,7 +17,7 @@ class QuestionnaireFormContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentCategory: this.props.categories[0],
+      currentCategory: this.props.categoryList[0],
       select: false
     };
   }
@@ -52,7 +52,7 @@ class QuestionnaireFormContainer extends React.Component {
   }
 
   render() {
-    const categoryToggle = this.props.categories.map((category) => {
+    const categoryToggle = this.props.categoryList.map((category) => {
       const currentColor = category.id == this.state.currentCategory.id ? 'red' : 'transparent';
       return(
         <div
@@ -89,7 +89,7 @@ class QuestionnaireFormContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    categories: getCategoryByBuildingTypeId(ownProps.match.params.id, state),
+    categoryList: getCategoryByBuildingTypeId(ownProps.match.params.id, state),
     buildingType: getBuildingType(ownProps.match.params.id, state)
   };
 }
@@ -111,6 +111,6 @@ export default connect(
 )(QuestionnaireFormContainer);
 
 QuestionnaireFormContainer.propTypes = {
-  categories: PropTypes.array.isRequired,
+  categoryList: PropTypes.array.isRequired,
   buildingType: PropTypes.object.isRequired
 };
