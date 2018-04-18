@@ -11,8 +11,21 @@
   flex-direction: column;
   padding: 10px;
 
-  input {
+  .question_block__param {
+    font-size: 10pt;
+    font-family: Consolas;
+    width: auto;
     margin-bottom: 10px;
+    border: 0;
+    background-color: transparent;
+    min-width: 150px;
+    width: 20%;
+  }
+
+  .question_block__param:focus{
+    border: $inputBorder;
+    border-radius: 5px;
+    background-color: white;
   }
 }
 
@@ -24,8 +37,8 @@
 .question_block__body__main {
   background-color: white;
   border: 1px solid white;
-  border-radius-topleft: 5px;
-  border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
   flex: 4;
 
   textarea {
@@ -45,11 +58,16 @@
   align-items: center;
   flex-direction: column;
 
+  border: 1px solid $backgroundGray;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+
   button {
     border: $border-primary;
     border-radius: 2px;
     background-color: transparent;
     color: $primary;
     width: 80%;
+    padding: 2px;
   }
 }
