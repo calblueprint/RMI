@@ -1,0 +1,96 @@
+.navbar__category-container {
+  width: 80%;
+  background: linear-gradient(
+                  to bottom,
+                  rgba(255, 255, 255, 0) 45%,
+                  #009dff 45%,
+                  #009dff 55%,
+                  rgba(255, 255, 255, 0) 55%
+  );
+  height: 100px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 75px;
+}
+
+.category__info {
+  height: 100px;
+  width: 250px;
+  position: absolute;
+  top: 50px;
+}
+
+.category--active p {
+  display: block;
+  font-family: BlinkMacSystemFont;
+  position: absolute;
+  color: gray;
+  width: 200px;
+  left: 170px;
+  font-weight: 100;
+}
+
+.category--active h3 {
+  font-family: BlinkMacSystemFont;
+  color: gray;
+  font-size: 10pt;
+}
+
+.category h1 {
+  font-family: BlinkMacSystemFont;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.category--inactive h1 {
+  top: 60px;
+  font-size: 12pt;
+  font-weight: 400;
+  color: gray;
+  width: 100px;
+  line-height: 1.5;
+  position: absolute;
+}
+
+.category__circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20pt;
+  font-weight: bold;
+  font-family: sans-serif;
+  position: absolute;
+}
+
+.category--active {
+  flex: 2;
+  position: relative;
+  height: 50px;
+}
+
+.category__container--finished {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  height: 50px;
+}
+
+.category--inactive {
+  position: relative;
+  height: 50px;
+  flex: 0.5;
+}
+
+.category--active .category__circle {
+  background-color: #009dff;
+  color: white;
+}
+
+.category--inactive .category__circle {
+  background-color: lightgray;
+  color: gray;
+}
