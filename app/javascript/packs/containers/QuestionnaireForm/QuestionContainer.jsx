@@ -1,7 +1,7 @@
 import React from 'react';
 import Question from '../../components/QuestionnaireForm/Question';
 import DepQuestionContainer from './DepQuestionContainer';
-import OptionsContainer from './OptionsContainer'
+
 import { connect } from 'react-redux';
 import {
   beforeCreateNewQuestion,
@@ -114,16 +114,17 @@ class QuestionContainer extends React.Component {
     }
 
     return (
-      <div style={{border: "1px solid black"}}>
-        <Question
-          question={this.props.question}
-          handleOnBlur={this.handleOnBlur.bind(this)}
-          handleOnChange={this.handleOnChange.bind(this)}
-          focus={focus}
-        />
-        <OptionsContainer
-          question={this.props.question}
-        />
+      <div>
+        <div
+          className={'mega-question-block'}
+        >
+          <Question
+            question={this.props.question}
+            handleOnBlur={this.handleOnBlur.bind(this)}
+            handleOnChange={this.handleOnChange.bind(this)}
+            focus={focus}
+          />
+        </div>
         <DepQuestionContainer
           question={this.props.question}
           optionsList={Object.keys(this.props.question.options)}
