@@ -7,11 +7,19 @@ class CategoryHeader extends React.Component {
     const categoryName = this.props.category.name;
     const categoryDescription = this.props.category.description;
     const categoryNumber = this.props.number;
+    const categoryId = this.props.category.id;
+    const buildingId = this.props.buildingId;
     return (
       <div>
         <p> {categoryNumber} </p>
         <p>{categoryName}</p>
         <p>{categoryDescription}</p>
+        <Link
+          to ={`/buildings/${buildingId}/edit/${categoryId}`}
+          key = {categoryId}>
+          Edit
+        </Link>
+
       </div>
 
     )

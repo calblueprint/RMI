@@ -46,24 +46,24 @@ class QuestionResultContainer extends React.Component {
         const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
         if (dependents) {
           return dependents.map(question => {
-            return (<div key={question.id}>
+            return (<td key={question.id}>
               <QuestionContainer mode="review"
                                  building_id={this.props.building_id} {...question} />
-            </div>);
+            </td>);
           });
         }
       }
     })();
 
-    return (<div>
-      <div className="question">
-        <p>{this.props.text}</p>
+    return (<table>
+      <td className="question">
+        {this.props.text}
         {result}
-      </div>
-      <div className="questions__nested">
+      </td>
+      <td className="questions__nested">
         {dependentQuestions}
-      </div>
-    </div>);
+      </td>
+    </table>);
   }
 };
 

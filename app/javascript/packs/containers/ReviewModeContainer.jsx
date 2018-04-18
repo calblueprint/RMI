@@ -27,6 +27,21 @@ async function postDelegations(delegations) {
   }
 }
 
+function mapCategorytoQuestions(categoryMap, category) {
+  return categoryMap[category].map((question) => {
+    // Only display non-dependent questions initially
+    if (question.parent_option_id) return null;
+    return (
+      <QuestionContainer
+        mode="review"
+        key={question.id}
+        building_id={this.props.building.id}
+        {...question}
+      />
+    );
+  })
+}
+
 class ReviewModeContainer extends React.Component {
 
   constructor(props) {
@@ -77,7 +92,7 @@ class ReviewModeContainer extends React.Component {
 
   populateCategoryMap() {
     let categoryMap = new Map();
-    var count = 0;
+    let count = 0;
     let stack = [];
     for (let category in this.props.categories) {
       count += 1;
@@ -85,8 +100,9 @@ class ReviewModeContainer extends React.Component {
       stack.push(<CategoryHeader
         category = {category}
         number = {count}
-      />)
-      stack.push(mapCategorytoQuestions(categoryMap, category))
+        buildingId = {this.props.buildingId}
+      />);
+      stack.push(mapCategorytoQuestions(categoryMap, category));
     }
     return stack;
   }
@@ -95,10 +111,15 @@ class ReviewModeContainer extends React.Component {
   render() {
     this.populateCategoryMap();
     return (
-      <div className="question__container">
-        {this.props.questions.map((question) => {
-          // Only display non-dependent questions initially
-          if (question.parent_option_id) return null;
+      <div>
+        <button type="submit" value="Submit Delegation"
+          onClick={(e) => this.submitDelegation()}
+        >Submit Delegation</button>
+        <p>{this.state.status_string}</p>
+        <div className="question__container">
+          {this.props.questions.map((question) => {
+            // Only display non-dependent questions initially
+            if (question.parent_option_id) return null;
             return (
               <QuestionContainer
                 mode="review"
@@ -107,20 +128,26 @@ class ReviewModeContainer extends React.Component {
                 {...question}
               />
             );
-        })}
+          })}
 
-        <button type="submit" value="Submit Delegation"
-          onClick={(e) => this.submitDelegation()}
-        >Submit Delegation</button>
-        <p>{this.state.status_string}</p>
+          <button type="submit" value="Submit Delegation"
+                  onClick={(e) => this.submitDelegation()}
+          >Submit Delegation</button>
+          <p>{this.state.status_string}</p>
+        </div>
+        );
+        })
       </div>
     );
-  })
+  }
 }
+
+
 
 function mapStateToProps(state, ownProps) {
   return {
     getPotentialDependentQuestions: (question) => getPotentialDependentQuestions(question, state),
+    buildingId: ownProps.building.id,
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: (questionId) => getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
     categories: state.categories,
