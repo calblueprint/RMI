@@ -110,7 +110,7 @@ function removeQuestion(state, action) {
 
 function addQuestionId(state, action) {
   const categoryId = action.response.category_id;
-  const questionId = action.response.id.toString();
+  const questionId = action.response.id;
   if (state[categoryId].questions.includes(questionId)) {
     return state
   }
