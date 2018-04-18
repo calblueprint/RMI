@@ -42,6 +42,6 @@
   },
   "scripts": {
     "lint": "eslint src",
-    "dev": "NODE_OPTIONS=--max_old_space_size=4096 ./bin/webpack-dev-server"
+    "dev": "NODE_OPTIONS=--max_old_space_size=8192 ./bin/webpack-dev-server"
   }
 }
