@@ -187,7 +187,11 @@ class OptionsContainer extends React.Component {
     return(
       <div>
         {optionsDisplay}
-        {this.newOptionPlaceholder()}
+        <button
+          onClick={(e) => this.onNewOption()}
+        >
+          + Add
+        </button>
       </div>
     )
   }
