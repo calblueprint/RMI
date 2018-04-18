@@ -11,6 +11,8 @@ import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
 import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
+import {getQuestionsByCategory } from "../utils/QuestionsFilter";
+import CategoryHeader from './components/CategoryHeader'
 
 import { post, patch } from '../fetch/requester';
 
@@ -73,7 +75,25 @@ class ReviewModeContainer extends React.Component {
     }
   }
 
+  populateCategoryMap() {
+    let categoryMap = new Map();
+    var count = 0;
+    let stack = [];
+    for (let category in this.props.categories) {
+      count += 1;
+      categoryMap[category] = getQuestionsByCategory(category.id, this.props.questions);
+      stack.push(<CategoryHeader
+        category = {category}
+        number = {count}
+      />)
+      stack.push(mapCategorytoQuestions(categoryMap, category))
+    }
+    return stack;
+  }
+
+
   render() {
+    this.populateCategoryMap();
     return (
       <div className="question__container">
         {this.props.questions.map((question) => {
@@ -95,7 +115,7 @@ class ReviewModeContainer extends React.Component {
         <p>{this.state.status_string}</p>
       </div>
     );
-  }
+  })
 }
 
 function mapStateToProps(state, ownProps) {
