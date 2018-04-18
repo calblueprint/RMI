@@ -82,6 +82,7 @@ class Question extends React.Component {
           className={'question_block'}
         >
           <input
+            className={'question_block__param'}
             placeholder={"param1"}
             defaultValue={this.props.question.parameter}
             onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
