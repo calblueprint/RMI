@@ -101,7 +101,7 @@ class DepQuestionContainer extends React.Component {
     });
 
     return (
-      <div style={{marginLeft: 50, border:"1px solid black"}}>
+      <div>
         <p>Dependent Questions</p>
         {DependentQuestionsDisplay}
         { this.renderNewDepQuestion() }
