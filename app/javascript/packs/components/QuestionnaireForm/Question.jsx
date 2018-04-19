@@ -63,7 +63,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const helperTextButton = this.addButton("Add Helper Text", {helperInput: true});
+    const helperTextButton = this.addButton("+ Add Helper Text", {helperInput: true});
 
     const helperTextInput = (
       <textarea
