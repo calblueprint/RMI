@@ -33,11 +33,12 @@
     font-size: 10pt;
     font-family: Consolas;
     width: auto;
-    margin-bottom: 10px;
-    border: 0;
+    margin-bottom: 5px;
     background-color: transparent;
     min-width: 150px;
     width: 20%;
+    content-box: border-box;
+    border: 2px solid transparent;
   }
 
   .question_block__param:focus{
@@ -80,10 +81,6 @@
   align-items: center;
   flex-direction: column;
   padding: 10px 10px 10px 0px;
-
-  border: 1px solid $backgroundGray;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
 
   border: 1px solid $backgroundGray;
   border-top-right-radius: 5px;
