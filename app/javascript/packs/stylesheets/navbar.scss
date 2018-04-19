@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  margin-bottom: 75px;
+  margin-bottom: 110px;
 }
 
 .category__info {
@@ -41,6 +41,7 @@
   font-family: BlinkMacSystemFont;
   margin-top: 10px;
   margin-bottom: 5px;
+  font-size: 25pt;
 }
 
 .category--inactive h1 {
@@ -77,6 +78,12 @@
   display: flex;
   justify-content: flex-start;
   height: 50px;
+}
+
+.category__container--inactive {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .category--inactive {
