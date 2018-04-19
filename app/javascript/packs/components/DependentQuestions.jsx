@@ -7,7 +7,8 @@ import OptionsContainer from '../containers/OptionsContainer';
 const TRANSITION_DURATION = 0.4;
 
 function DependentQuestions({
-  answer, dependentQuestions, buildingId, parentIsHidden = false
+  answer, dependentQuestions, buildingId,
+  parentIsHidden = false, disableFocusOnMount = false
 }) {
   if (!answer) return null;
 
@@ -51,7 +52,8 @@ function DependentQuestions({
                   building_id={buildingId}
                   question_id={question.id}
                   focusOnMount={
-                    !!firstVisibleDependent && question.id === firstVisibleDependent.id
+                    (!disableFocusOnMount) && !!firstVisibleDependent &&
+                      question.id === firstVisibleDependent.id
                   }
                   parentIsHidden={!isActive}
                   {...question}

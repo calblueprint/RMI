@@ -132,6 +132,7 @@ class OptionsContainer extends React.Component {
           dependentQuestions={this.props.dependentQuestions}
           buildingId={this.props.building_id}
           parentIsHidden={this.props.parentIsHidden}
+          disableFocusOnMount={this.props.question_type == "RangeOption"}
         />
       : null}
     </div>);
