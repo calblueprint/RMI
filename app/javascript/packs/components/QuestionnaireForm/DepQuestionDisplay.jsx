@@ -19,7 +19,9 @@ class DepQuestionDisplay extends React.Component {
     );
 
     return(
-      <div key={optionId}>
+      <div
+        className={'dep-question-block'}
+        key={optionId}>
         <OptionDisplay
           option={option}
           question={this.props.question}
