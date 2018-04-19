@@ -1,12 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {getQuestionsByCategoryId} from '../../selectors/questionsSelector';
-import {generateTempId} from '../../utils/TemporaryObjectUtil';
+import { getQuestionsByCategoryId } from '../../selectors/questionsSelector';
+import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import QuestionContainer from './QuestionContainer';
 import CategoryDisplay from '../../components/QuestionnaireForm/CategoryDisplay';
 import {
-  categoryFetchFailure, categoryFetchInProgress, categoryFetchSuccess, categoryPreFetchSave,
+  categoryFetchFailure,
+  categoryFetchInProgress,
+  categoryFetchSuccess,
+  categoryPreFetchSave,
   removeCategory
 } from '../../actions/categories';
 import {
@@ -31,7 +34,7 @@ class CategoryQuestionsContainer extends React.Component {
       parameter: null,
       helper_text: null
     };
-    this.props.beforeCreateNewQuestion(newQuestion)
+    this.props.beforeCreateNewQuestion(newQuestion);
   }
 
   /**
@@ -74,40 +77,40 @@ class CategoryQuestionsContainer extends React.Component {
   render() {
     const questions_display = this.props.questionList.map((question)=>{
       if (!question.parent_option_id) {
-        return(
+        return (
           <div key={question.id}>
             <QuestionContainer
               question={question}
             />
           </div>
-        )
+        );
       }
     });
 
     const select = this.props.category.new || false;
 
     return (
-    <div>
       <div>
-        <CategoryDisplay
-          category={this.props.category}
-          errors={this.props.category.error}
-          select={select}
-          handleOnBlur={this.handleOnBlur.bind(this)}
-          handleOnChange={this.handleOnChange.bind(this)}
-          key={this.props.category.id}
-        />
+        <div>
+          <CategoryDisplay
+            category={this.props.category}
+            errors={this.props.category.error}
+            select={select}
+            handleOnBlur={this.handleOnBlur.bind(this)}
+            handleOnChange={this.handleOnChange.bind(this)}
+            key={this.props.category.id}
+          />
+        </div>
+        <h2>QUESTIONS FOR {this.props.category.name}</h2>
+        <div>
+          {questions_display}
+          <button
+            onClick={e => this.onNewQuestion()}
+          >
+            Add Question
+          </button>
+        </div>
       </div>
-      <h2>QUESTIONS FOR {this.props.category.name}</h2>
-      <div>
-        {questions_display}
-        <button
-          onClick={e => this.onNewQuestion()}
-        >
-          Add Question
-        </button>
-      </div>
-    </div>
     );
   }
 }
