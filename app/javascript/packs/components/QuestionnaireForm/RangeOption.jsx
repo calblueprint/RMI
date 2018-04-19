@@ -38,10 +38,11 @@ class RangeOption extends React.Component {
 
   render() {
     return(
-      <div>
+      <div
+      >
         <div>
-          min:
           <input
+            className={'range-input'}
             type="number"
             defaultValue={this.props.option.min}
             onBlur={(e) => this.updateMinMax({min: parseInt(e.target.value)})}
@@ -49,7 +50,7 @@ class RangeOption extends React.Component {
             placeholder={0}
             ref={(input) => { this.optionInput = input; }}
           />
-          max:
+          -
           <input
             type="number"
             defaultValue={this.props.option.max}

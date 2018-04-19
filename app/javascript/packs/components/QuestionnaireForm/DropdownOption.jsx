@@ -30,6 +30,7 @@ class DropdownOption extends React.Component {
     return(
       <div>
         <input
+          className={'dropdown-input'}
           type="text"
           defaultValue={this.props.option.text}
           onBlur={(e) => this.handleOnBlur(e.target.value)}
