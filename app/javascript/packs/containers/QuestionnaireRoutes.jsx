@@ -2,7 +2,6 @@ import React from 'react';
 import AnswerModeContainer from './AnswerModeContainer';
 import DelegateModeContainer from './DelegateModeContainer';
 import ReviewModeContainer from "./ReviewModeContainer";
-import QuestionnaireControls from "../components/QuestionnaireControls";
 
 import { connect } from 'react-redux';
 
@@ -17,9 +16,6 @@ class QuestionnaireRoutes extends React.Component {
 
     return (
       <div>
-
-        <QuestionnaireControls currentPath={currentPath}/>
-
         <Switch>
           <Route path={`${currentPath}/edit/:cId?`}
                  render={renderWithProps(AnswerModeContainer, propsToPass)} />

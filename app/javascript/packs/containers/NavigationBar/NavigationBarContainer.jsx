@@ -21,6 +21,7 @@ class NavigationBarContainer extends React.Component {
 
     const categoryContainer = this.props.categories.length ? (<CategoryContainer
       categories={this.props.categories}
+      currentMode={this.props.match.params.mode}
       currentCategory={this.props.currentCategory}
       currentBuilding={this.props.currentBuilding}
       remainingQuestions={this.props.remainingQuestions}

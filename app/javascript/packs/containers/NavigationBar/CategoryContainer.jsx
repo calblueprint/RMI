@@ -1,56 +1,84 @@
 import React from 'react';
-import InactiveCategoryNode from './InactiveCategoryNode';
+import BusMap from './BusMap';
 
 import { findIndex } from 'lodash';
 
+import fontawesome from '@fortawesome/fontawesome';
+import delegateIcon from '@fortawesome/fontawesome-free-solid/faUser';
+import reviewIcon from '@fortawesome/fontawesome-free-solid/faCheck';
+
 class CategoryContainer extends React.Component {
+  getFaIcon(icon) {
+    return (<i
+      dangerouslySetInnerHTML={{
+        __html: fontawesome.icon(icon).html[0]
+      }}
+    />)
+  }
+
   render() {
     const {currentCategory, categories, remainingQuestions} = this.props;
     const currentBuildingId = this.props.currentBuilding ? this.props.currentBuilding.id : null;
-    const currentIndex = !currentCategory ? 0 : findIndex(categories, function (category) {
+    const currentIndex = !currentCategory ? categories.length : findIndex(categories, function (category) {
       return category.id === currentCategory.id;
     });
 
-    console.log(this.props);
-    console.log("categories:::");
-    console.log(categories);
-    console.log("current index - " + currentIndex);
-
-    const finishedCategories = categories.slice(0, currentIndex).map((category, index) => {
-      return (<InactiveCategoryNode category={category}
-                                    index={index}
-                                    buildingId={currentBuildingId}/>);
+    // Create info objects for each category to pass to the BusMap component
+    const categoryInfo = categories.map((category, index) => {
+      return {
+        label: index + 1,
+        path: `/buildings/${currentBuildingId}/edit/${category.id}`,
+        name: category.name
+      }
     });
+    const finishedCategories = categoryInfo.slice(0, currentIndex);
+    const upcomingCategories = categoryInfo.slice(currentIndex + 1, categories.length);
 
-    const currentlyActive = currentCategory ? (
-      <div className="category category--active">
-        <div className="category__circle">
-          {currentIndex + 1}
-        </div>
-        <div className="category__info">
-          <h1>{currentCategory.name}</h1>
-          <h3>{remainingQuestions} questions remaining</h3>
-          <p>{currentCategory.description}</p>
-        </div>
-      </div>
-    ) : null;
+    const delegateInfo = {
+      label: this.getFaIcon(delegateIcon),
+      path: `/buildings/${currentBuildingId}/delegate`,
+      name: "Delegate",
+      subtitle: "Assign remaining questions to other users"
+    };
+    const reviewInfo = {
+      label: this.getFaIcon(reviewIcon),
+      path: `/buildings/${currentBuildingId}/review`,
+      name: "Review and Submit",
+      subtitle: "Final step!"
+    };
 
-    const upcomingCategories = categories.slice(currentIndex + 1, categories.length).map((category, index) => {
-      return (<InactiveCategoryNode category={category}
-                                    index={currentIndex + index + 1}
-                                    buildingId={currentBuildingId}/>);
-    });
+    // Figure out what the current icon should be.
+    // (Either a category, or delegate/review mode)
+    const current = (() => {
+      if (currentIndex === categories.length) {
+        if (this.props.currentMode === "delegate") {
+          upcomingCategories.push(reviewInfo);
+          return delegateInfo;
+        }
+        else if (this.props.currentMode === "review") {
+          finishedCategories.push(delegateInfo);
+          return reviewInfo;
+        }
+      }
+      else {
+        upcomingCategories.push(delegateInfo);
+        upcomingCategories.push(reviewInfo);
+
+        return {
+          label: currentIndex + 1,
+          path: `/buildings/${currentBuildingId}/edit/${currentCategory.id}`,
+          name: currentCategory.name,
+          subtitle: remainingQuestions + " questions remaining"
+        }
+      }
+    })();
 
     return (
-      <div className="navbar__category-container">
-        {finishedCategories}
-        {currentlyActive}
-        <div className="category__container--inactive">
-          {upcomingCategories}
-        </div>
-      </div>
-    )
+      <BusMap completed={finishedCategories}
+              current={current}
+              upcoming={upcomingCategories}/>
+    );
   }
 }
 
-export default CategoryContainer
+export default CategoryContainer;
