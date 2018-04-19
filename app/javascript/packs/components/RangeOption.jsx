@@ -19,7 +19,7 @@ class RangeOption extends React.Component {
 
     // Check if dependent questions should be triggered initially
     if (this.props.answer) {
-      this.props.onChange(this.props.answer.text);
+      this.props.onChange(this.props.answer.selected_option_id, this.props.answer.text);
     }
 
     if (this.props.focusOnMount) {
