@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
-import {getCurrentCategory} from "../selectors/categoriesSelector";
 
 import QuestionContainer from "./QuestionContainer";
 
@@ -15,7 +14,7 @@ class QuestionResultContainer extends React.Component {
 
   render() {
     if (!this.props.answer) {
-      return "";
+      return ("");
     }
 
     if (!this.props.answer.text) {
@@ -23,19 +22,19 @@ class QuestionResultContainer extends React.Component {
       const contactString = this.props.answer.delegation_first_name + " " +
         this.props.answer.delegation_last_name;
       return (
-          <div>
-            <p>Delegated to: {contactString}</p>
-          </div>)
+            "Delegated to:" + {contactString})
     }
 
     const result = (() => {
       switch (this.props.question_type) {
         case "DropdownOption":
-          return (<p>{this.props.answer.selected_option_id}</p>);
+          return (this.props.answer.selected_option_id);
         case "RangeOption":
-          return (<p>{this.props.answer.text}</p>);
+          return (this.props.answer.text);
         case "file":
-          return (<a href={this.getFileLink}>{this.props.answer.attachment_file_name}</a>)
+          return (
+            <a href={this.getFileLink}>{this.props.answer.attachment_file_name}</a>
+          );
         default:
           return this.props.answer.text;
       }
@@ -46,24 +45,21 @@ class QuestionResultContainer extends React.Component {
         const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
         if (dependents) {
           return dependents.map(question => {
-            return (<td key={question.id}>
+            return (
               <QuestionContainer mode="review"
                                  building_id={this.props.building_id} {...question} />
-            </td>);
+            );
           });
         }
       }
     })();
 
-    return (<table>
-      <td className="question">
-        {this.props.text}
+    return (
+      <td>
         {result}
-      </td>
-      <td className="questions__nested">
         {dependentQuestions}
       </td>
-    </table>);
+      );
   }
 };
 

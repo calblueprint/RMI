@@ -28,7 +28,8 @@ class QuestionContainer extends React.Component {
 
   renderReviewMode() {
     return (
-      <div>
+      <tr>
+        <td>{this.props.text}</td>
         <QuestionResultContainer
           text={this.props.text}
           question_id={this.props.id}
@@ -36,7 +37,7 @@ class QuestionContainer extends React.Component {
           question_type={this.props.question_type}
           options={this.props.options}
         />
-      </div>
+      </tr>
     );
   }
 
