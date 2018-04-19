@@ -13,6 +13,9 @@
 #  attachment_content_type :string
 #  attachment_file_size    :integer
 #  attachment_updated_at   :datetime
+#  delegation_email        :string
+#  delegation_first_name   :string
+#  delegation_last_name    :string
 #
 
 require 'test_helper'

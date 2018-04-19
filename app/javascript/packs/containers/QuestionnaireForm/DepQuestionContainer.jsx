@@ -23,7 +23,7 @@ class DepQuestionContainer extends React.Component {
       id: generateTempId(),
       text: "",
       building_type_id: this.props.question.building_type_id,
-      category_id: 1,
+      category_id: this.props.question.category_id,
       options: {},
       question_type: null,
       parameter: "default",
