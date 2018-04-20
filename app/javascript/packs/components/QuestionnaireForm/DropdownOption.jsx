@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputValidation from '../InputValidation';
+import ContentEditable from 'react-sane-contenteditable';
+import randomColor from 'randomcolor';
 
 class DropdownOption extends React.Component {
   componentDidMount(){
@@ -27,17 +29,30 @@ class DropdownOption extends React.Component {
   }
 
   render () {
+    const color = randomColor({
+      luminosity: 'light',
+      hue:  'random',
+      seed: this.props.option.id,
+      format: 'rgba',
+      alpha: 0.5
+    });
     return(
       <div>
-        <input
+        <div
           className={'dropdown-input'}
-          type="text"
-          defaultValue={this.props.option.text}
-          onBlur={(e) => this.handleOnBlur(e.target.value)}
-          onChange={(e) => this.onChange(e.target.value)}
-          placeholder={"New Dropdown Option"}
-          ref={(input) => { this.optionInput = input; }}
-        />
+        >
+          <input
+            // style={{backgroundColor: color}}
+
+            type="text"
+            defaultValue={this.props.option.text}
+            onBlur={(e) => this.handleOnBlur(e.target.value)}
+            onChange={(e) => this.onChange(e.target.value)}
+            placeholder={"New Dropdown Option"}
+            ref={(input) => { this.optionInput = input; }}
+          />
+        </div>
+
         <div>
           <InputValidation
             errors={this.props.option.error}

@@ -15,6 +15,7 @@
     "polyfill": "^0.1.0",
     "postcss-smart-import": "^0.7.6",
     "prop-types": "^15.6.1",
+    "randomcolor": "^0.5.3",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-moment": "^0.7.0",
