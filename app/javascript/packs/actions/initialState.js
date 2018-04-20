@@ -51,7 +51,7 @@ const formatState = {
   },
   building_types: function(buildingTypes) {
     return toObjectById(
-      mapFilterKeys(buildingTypes, ['id', 'name', 'questions'])
+      mapFilterKeys(buildingTypes, ['id', 'name', 'questions', 'categories'])
       .map((filteredBuilding) => {
         return {
           ...filteredBuilding,
@@ -61,7 +61,7 @@ const formatState = {
     );
   },
   categories: function(categories) {
-    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id']));
+    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id', 'questions']));
   },
   portfolios: function(portfolios) {
     return toObjectById(
@@ -77,12 +77,12 @@ const formatState = {
 };
 
 export function loadInitialState(initialState) {
-  const types = Object.keys(initialState);
   const formatters = Object.keys(formatState);
-
-  let formattedState = types.filter((type) => {
+  const types = Object.keys(initialState).filter((type) => {
     return formatters.includes(type);
-  }).map((type) => {
+  });
+
+  let formattedState = types.map((type) => {
     if (!Array.isArray(initialState[type])) {
       initialState[type] = [initialState[type]];
     }
@@ -95,7 +95,6 @@ export function loadInitialState(initialState) {
     result[types[index]] = shaped;
     return result;
   }, {});
-
   // Look for questions inside buildings
   if (initialState.buildings) {
     formattedState.questions = [];

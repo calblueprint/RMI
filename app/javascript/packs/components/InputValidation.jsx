@@ -6,7 +6,7 @@ class InputValidation extends React.Component {
     if (this.props.errors) {
       const errors = this.props.errors.map((error) => {
         return(
-          <div>
+          <div key={error}>
             {error}
           </div>
         )
