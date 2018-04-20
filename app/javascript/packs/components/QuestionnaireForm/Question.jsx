@@ -8,8 +8,8 @@ class Question extends React.Component {
     super(props);
     this.state = {
       helperInput: !!this.props.question.helper_text,
-      unitInput: !!this.props.question.unit
-    }
+      unitInput: !!this.props.question.unit,
+    };
   }
 
   componentDidMount(){
@@ -33,6 +33,7 @@ class Question extends React.Component {
    *                          in the form {attr: value}
    */
   onChange(args) {
+    this.questionInput.style.height= `${this.questionInput.scrollHeight}px`;
     this.props.handleOnChange(this.props.question.id, args)
   }
 
@@ -98,7 +99,8 @@ class Question extends React.Component {
               defaultValue={this.props.question.text}
               onBlur={(e) => this.handleOnBlur({text: e.target.value})}
               onChange={(e) => this.onChange({text: e.target.value})}
-              ref={(input) => { this.questionInput = input; }}
+              ref={(input) => { this.questionInput = input;
+              }}
             />
               <div>
                 <OptionsContainer

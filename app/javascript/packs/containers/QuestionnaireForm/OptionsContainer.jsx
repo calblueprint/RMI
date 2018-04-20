@@ -14,6 +14,7 @@ import { patch, post } from '../../fetch/requester';
 import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import PropTypes from 'prop-types';
 import { isEmptyText } from '../../utils/InputComponentUtil';
+import randomColor from 'randomcolor';
 
 class OptionsContainer extends React.Component {
 
@@ -135,13 +136,13 @@ class OptionsContainer extends React.Component {
     switch (this.props.question.question_type) {
       case "DropdownOption":
         return(
-          <div>
-            <input
-              type="text"
-              placeholder={"Add new dropdown option"}
-              onFocus={e => this.onNewOption()}
-            />
-          </div>
+          <li
+              className={'dropdown-input'}
+              onClick={e => this.onNewOption()}
+              style={{color: 'gray'}}
+            >
+            Add new dropdown option
+          </li>
         );
       case "RangeOption":
         return(
@@ -172,26 +173,33 @@ class OptionsContainer extends React.Component {
       const option = this.props.question.options[optionId];
       const handleOnBlur = this.handleOnBlur(option);
       const focus = option.temp || false;
+      const color = randomColor({
+        luminosity: 'light',
+        hue:  'random',
+        seed: option.id,
+        format: 'rgba',
+        alpha: 0.5
+      });
       return (
-        <div key={optionId}>
-          <OptionType
-            option={option}
-            handleOnBlur={handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            focus={focus}
-          />
-        </div>
+        <li key={option.id}>
+           <OptionType
+             option={option}
+             handleOnBlur={handleOnBlur.bind(this)}
+             handleOnChange={this.handleOnChange.bind(this)}
+             focus={focus}
+           />
+        </li>
       )
     });
 
     return(
-      <div>
-        {optionsDisplay}
-        <button
-          onClick={(e) => this.onNewOption()}
-        >
-          + Add
-        </button>
+      <div
+        className={'option-display-block'}
+      >
+        <ol>
+          {optionsDisplay}
+          {this.newOptionPlaceholder()}
+        </ol>
       </div>
     )
   }
