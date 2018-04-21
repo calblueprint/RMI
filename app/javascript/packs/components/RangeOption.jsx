@@ -58,7 +58,7 @@ class RangeOption extends React.Component {
       >
         <ContentEditable
           onChange={() => 0}
-          onKeyDown={(e) => this.onChange(e.target.innerText)}
+          onKeyDown={(e, val) => this.onChange(val)}
           onFocus={(e) => {
             this.setState({ focused: true });
             this.props.onEnter();
