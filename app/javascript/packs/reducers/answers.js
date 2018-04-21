@@ -56,6 +56,7 @@ function answerFetchSuccess(state, action) {
   return {
     ...state,
     [answer.question_id]: {
+      ...answer,
       ...localAnswer,
       updated_at: answer.updated_at || localAnswer.updated_at,
       fetchStatus: FETCH_SUCCESS,
