@@ -136,30 +136,26 @@ class OptionsContainer extends React.Component {
     switch (this.props.question.question_type) {
       case "DropdownOption":
         return(
-          <li
+          <div
+            className={'option-display-block__counter'}
+          >
+            <div
               className={'dropdown-input'}
               onClick={e => this.onNewOption()}
               style={{color: 'gray'}}
             >
-            Add new dropdown option
-          </li>
+              Add new dropdown option
+            </div>
+          </div>
         );
       case "RangeOption":
         return(
-          <div>
-            min:
-            <input
-              type="number"
-              placeholder={"Add new min"}
-              onFocus={e => this.onNewOption()}
-            />
-            max:
-            <input
-              type="number"
-              placeholder={"Add new max"}
-              onFocus={e => this.onNewOption()}
-            />
-          </div>
+          <button
+            className={'add-option'}
+            onClick={e => this.onNewOption()}
+          >
+            +Add
+          </button>
         );
       default: return null;
     }
@@ -169,7 +165,7 @@ class OptionsContainer extends React.Component {
     const question = this.props.question;
     const OptionType = this.getComponentName(question.question_type);
 
-    const optionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
+    const OptionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
       const option = this.props.question.options[optionId];
       const handleOnBlur = this.handleOnBlur(option);
       const focus = option.temp || false;
@@ -181,14 +177,16 @@ class OptionsContainer extends React.Component {
         alpha: 0.5
       });
       return (
-        <li key={option.id}>
-           <OptionType
-             option={option}
-             handleOnBlur={handleOnBlur.bind(this)}
-             handleOnChange={this.handleOnChange.bind(this)}
-             focus={focus}
-           />
-        </li>
+        <div key={option.id}
+        >
+          <OptionType
+            key={option.id}
+            option={option}
+            handleOnBlur={handleOnBlur.bind(this)}
+            handleOnChange={this.handleOnChange.bind(this)}
+            focus={focus}
+          />
+        </div>
       )
     });
 
@@ -196,10 +194,8 @@ class OptionsContainer extends React.Component {
       <div
         className={'option-display-block'}
       >
-        <ol>
-          {optionsDisplay}
-          {this.newOptionPlaceholder()}
-        </ol>
+        {OptionsDisplay}
+        {this.newOptionPlaceholder()}
       </div>
     )
   }

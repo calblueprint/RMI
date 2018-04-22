@@ -69,7 +69,9 @@ class QuestionnaireFormContainer extends React.Component {
     });
 
     return (
-      <div>
+      <div
+        className={'questionnaire-form-container'}
+      >
         <div>
           {categoryToggle}
           <button

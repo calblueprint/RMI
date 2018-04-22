@@ -37,7 +37,9 @@ class DropdownOption extends React.Component {
       alpha: 0.5
     });
     return(
-      <div>
+      <div
+        className={'option-display-block__counter'}
+      >
         <div
           className={'dropdown-input'}
         >
