@@ -1,11 +1,21 @@
 @import "global";
 
 table {
-  border-collapse: collapse;
+  margin: auto;
 }
 
-table, td {
-  border: 1px solid black;
+tr {
+  height: 30px;
+}
+
+td:nth-child(odd) {
+  font-family: BlinkMacSystemFont;
+  font-weight: 500;
+}
+
+td:nth-child(even) {
+  font-family: BlinkMacSystemFont;
+  font-weight: 100;
 }
 
 tr:nth-child(odd) {
@@ -15,4 +25,5 @@ tr:nth-child(odd) {
 tr:nth-child(even) {
   background-color: $tableGray;
 }
+
 
