@@ -6,11 +6,15 @@ import { LOAD_INITIAL_STATE } from '../constants';
 
 export default { buildings, portfolios, questions };
 
-const toObjectById = (entities) => {
+const toObjectByKey = (entities, key) => {
   return entities.reduce((result, entity) => {
-    result[entity.id] = entity;
+    result[entity[key]] = entity;
     return result;
   }, {});
+};
+
+const toObjectById = (entities) => {
+  return toObjectByKey(entities, "id");
 };
 
 const filterKeys = (obj, keys) => {
@@ -72,7 +76,8 @@ const formatState = {
     );
   },
   contacts: function(contacts) {
-    return contacts;
+    debugger;
+    return toObjectByKey(contacts, 'email');
   }
 };
 
@@ -107,13 +112,6 @@ export function loadInitialState(initialState) {
         }
       };
     });
-  }
-
-  if (initialState.contacts) {
-    formattedState = {
-      ...formattedState,
-      contacts: initialState.contacts,
-    }
   }
 
   return {
