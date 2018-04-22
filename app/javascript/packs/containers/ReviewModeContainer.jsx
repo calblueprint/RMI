@@ -30,7 +30,7 @@ async function postDelegations(delegations) {
 function mapCategorytoQuestions(categoryMap, categoryId, buildingId) {
   return categoryMap[categoryId].map((question) => {
     // Only display non-dependent questions initially
-    if (question.parent_option_id) return null;
+    //if (question.parent_option_id) return null;
     return (
       <QuestionContainer
         mode="review"
@@ -103,7 +103,13 @@ class ReviewModeContainer extends React.Component {
         number = {count}
         buildingId = {buildingId}
       />);
-      stack = stack.concat(<table>{mapCategorytoQuestions(categoryMap, stateCategory.id, buildingId)}</table>);
+      stack = stack.concat(
+        <table>
+          <tbody>
+            {mapCategorytoQuestions(categoryMap, stateCategory.id, buildingId)}
+          </tbody>
+        </table>
+      );
     }
     return stack;
   }

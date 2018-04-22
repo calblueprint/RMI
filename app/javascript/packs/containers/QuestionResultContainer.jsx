@@ -57,7 +57,7 @@ class QuestionResultContainer extends React.Component {
     return (
       <td>
         {result}
-        {dependentQuestions}
+        {/*{dependentQuestions}*/}
       </td>
       );
   }

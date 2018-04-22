@@ -1,2 +1,18 @@
 @import "global";
 
+table {
+  border-collapse: collapse;
+}
+
+table, td {
+  border: 1px solid black;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+tr:nth-child(even) {
+  background-color: $tableGray;
+}
+
