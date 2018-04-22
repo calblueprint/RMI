@@ -18,8 +18,9 @@ class RangeOption extends React.Component {
       this.props.onSave(id, num);
     }, PAUSE_INTERVAL_BEFORE_SAVE);
 
+    // Check if dependent questions should be triggered initially
     if (this.props.answer) {
-      this.onChange(this.props.answer.text);
+      this.props.onChange(this.props.answer.selected_option_id, this.props.answer.text);
     }
 
     if (this.props.focusOnMount) {
@@ -57,7 +58,7 @@ class RangeOption extends React.Component {
       >
         <ContentEditable
           onChange={() => 0}
-          onKeyDown={(e) => this.onChange(e.target.innerText)}
+          onKeyDown={(e, val) => this.onChange(val)}
           onFocus={(e) => {
             this.setState({ focused: true });
             this.props.onEnter();
@@ -70,6 +71,7 @@ class RangeOption extends React.Component {
           innerRef={(ref) => this.ref = ref}
           tagName="span"
           content={currentValue}
+          doNotUpdate={true}
         />
         <label>{this.props.unit}</label>
       </div>
