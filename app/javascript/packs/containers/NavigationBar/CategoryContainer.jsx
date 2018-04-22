@@ -10,6 +10,7 @@ import reviewIcon from '@fortawesome/fontawesome-free-solid/faCheck';
 class CategoryContainer extends React.Component {
   getFaIcon(icon) {
     return (<i
+      style={{ fontSize: '14pt' }}
       dangerouslySetInnerHTML={{
         __html: fontawesome.icon(icon).html[0]
       }}
@@ -37,7 +38,7 @@ class CategoryContainer extends React.Component {
     const delegateInfo = {
       label: this.getFaIcon(delegateIcon),
       path: `/buildings/${currentBuildingId}/delegate`,
-      name: "Delegate",
+      name: "Handoff",
       subtitle: "Assign remaining questions to other users"
     };
     const reviewInfo = {
