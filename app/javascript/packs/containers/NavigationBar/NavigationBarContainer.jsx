@@ -11,6 +11,7 @@ import CategoryContainer from './CategoryContainer';
 import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
 import { getRemainingAnswersforCategory } from "../../selectors/answersSelector";
 import { getQuestionsByCategory } from "../../utils/QuestionsFilter";
+import Logo from "../../rmi-logo.png";
 
 
 class NavigationBarContainer extends React.Component {
@@ -30,6 +31,9 @@ class NavigationBarContainer extends React.Component {
     return (
       <div className="navbar">
         <div className="navbar__content">
+          <div className="navbar__logo">
+            <img src={Logo} />
+          </div>
           {categoryContainer}
 
           <DropdownMenuContainer
