@@ -7,8 +7,11 @@ import OptionsContainer from '../containers/OptionsContainer';
 const TRANSITION_DURATION = 0.4;
 
 function DependentQuestions({
-  answer, dependentQuestions, buildingId,
-  parentIsHidden = false, disableFocusOnMount = false
+  answer,
+  dependentQuestions,
+  buildingId,
+  parentIsHidden = false,
+  disableFocusOnMount = false
 }) {
   if (!answer) return null;
 
