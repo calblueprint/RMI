@@ -7,19 +7,29 @@ class OptionDisplay extends React.Component {
     switch (this.props.question.question_type) {
       case "RangeOption": {
         return(
-          <div>
-            <p>
-              min: {option.min} max:{option.max}
-            </p>
+          <div className={'dep-option-display-block'}>
+            <div>
+              Selected
+            </div>
+            <div
+              className={'selected-option'}
+            >
+              {option.min} - {option.max}
+            </div>
           </div>
         )
       }
       case "DropdownOption": {
         return(
-          <div>
+          <div className={'dep-option-display-block'}>
             <p>
-              {option.text}
+              Selected
             </p>
+            <div
+              className={'selected-option'}
+            >
+              {option.text}
+            </div>
           </div>
         )
       }

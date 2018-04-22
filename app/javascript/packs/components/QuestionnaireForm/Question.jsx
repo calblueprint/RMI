@@ -13,8 +13,14 @@ class Question extends React.Component {
   }
 
   componentDidMount(){
-    if (this.props.focus) {
+    this.questionInput.style.height= 'auto';
+    this.questionInput.style.height= `${this.questionInput.scrollHeight}px`
+  }
+
+  componentDidUpdate() {
+    if (this.props.select) {
       this.questionInput.focus();
+      this.questionInput.select();
     }
   }
 
@@ -132,6 +138,6 @@ export default Question
 Question.propTypes = {
   handleOnBlur: PropTypes.func.isRequired,
   handleOnChange: PropTypes.func.isRequired,
-  focus: PropTypes.bool.isRequired,
+  select: PropTypes.bool.isRequired,
   question: PropTypes.object.isRequired,
 };

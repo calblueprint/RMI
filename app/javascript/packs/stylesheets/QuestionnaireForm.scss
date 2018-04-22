@@ -1,9 +1,32 @@
 @import "global";
 
+input:focus {
+  outline: 0;
+}
+
+p {
+  margin:0;
+}
+
+textarea {
+  font-size: 16pt;
+}
+
+input {
+  font-size: 14px;
+}
+
+.questionnaire-form-container {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .mega-question-block {
   border: $border-primary;
   border-radius: 5px;
   background-color: $background-primary;
+  margin-top: 10px;
 }
 
 .question_block {
@@ -49,6 +72,7 @@
   textarea {
     width: 100%;
     border: 2px solid white;
+    margin-bottom: 15px;
   }
 
   textarea:focus {
@@ -80,21 +104,78 @@
   }
 }
 
-.dep-question-block {
+.dep-q-block {
   margin-left: 40px;
+  background-color: $backgroundGray;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.dep-q-block__option {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.dep-q-block__selected {
+  border-left: 3px solid $primary;
+  padding: 20px;
+}
+
+.dep-q-block__option-display {
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  * {
+    align-self: center;
+  }
+
+  button {
+    margin-left: 5px;
+  }
+
+  .dep-option-display-block {
+    display:flex;
+    flex-direction: row;
+    * {
+      align-self: center;
+    }
+  }
+
+  .selected-option {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 7px;
+    padding-right: 7px;
+    background-color: $background-primary;
+    border: 1px solid $primary;
+    border-radius: 5px;
+    margin-left: 5px;
+  }
 }
 
 .option-display-block {
+  counter-reset: section;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   justify-content: flex-start;
+  padding-left: 5px;
 
-  ol li {
-    padding-left: 5px;
+
+  .option-display-block__counter {
+    display: flex;
+    flex-direction: row;
   }
 
-  .option-display-block__add-option {
+  .option-display-block__counter:before {
+    counter-increment: section;
+    content: counter(section);
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  button {
     border: 2px $primary solid;
     border-radius: 50px;
     background-color: $primary;
@@ -108,6 +189,7 @@
 
 
 .dropdown-input {
+  flex: 1;
   input {
     border:0;
     border-radius: 0px;
@@ -116,25 +198,13 @@
     width: auto;
   }
   border-bottom: 1px solid white;
-  margin-bottom: 5px;
 
   input:focus {
     border:0;
     background-color: white !important;
+    outline:0;
   }
 }
-
-
-  //input::after {
-  //  display:block;
-  //  content: '';
-  //  border-bottom: solid 2px $primary;
-  //  transform: scaleX(0);
-  //  transition: transform 250ms ease-in-out;
-  //  transform-origin:  0% 50%;
-  //}
-
-  //input:focus::after { transform: scaleX(1); }
 
 .dropdown-input:after {
   display:block;
@@ -153,3 +223,53 @@
   border-bottom: 1px solid lightgray;
 }
 
+
+
+.range-input {
+  padding: 5px;
+  margin-bottom: 10px;
+
+  div {
+    align-self: center;
+  }
+
+  p {
+    margin:0;
+    display: none;
+  }
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  content-box: border-box;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  width: 150px;
+
+  input {
+    width: 50px;
+    border: 0px;
+    border-radius:0;
+    background-color: $backgroundGray;
+  }
+
+  #filler {
+    visibility: hidden;
+  }
+  transition: flex-grow 0.4s ease;
+}
+
+.range-input:hover {
+  border: solid 2px $background-primary;
+}
+
+.range-input:focus-within {
+  border: solid 2px $primary;
+  border-radius: 5px;
+  width: 150px;
+  transition: border-color 250ms ease-in-out;
+  p {
+    display: flex;
+    transition: flex 400ms ease;
+  }
+}
