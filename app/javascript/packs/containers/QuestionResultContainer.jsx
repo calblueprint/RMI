@@ -18,7 +18,6 @@ class QuestionResultContainer extends React.Component {
       if (!this.props.answer) {
         return ("");
       }
-
       if (!this.props.answer.text) {
         // Empty answer => there should be delegations to display
         if (!this.props.answer.delegation_email) {
