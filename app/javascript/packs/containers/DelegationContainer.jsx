@@ -29,6 +29,7 @@ class DelegationContainer extends React.Component {
         lastName: this.props.answer.delegation_last_name,
         showNameInputs: false,
         finished: validateEmail(this.props.answer.delegation_email),
+        selected: false,
       };
     } else {
       this.state = {
@@ -37,6 +38,7 @@ class DelegationContainer extends React.Component {
         lastName: "",
         showNameInputs: false,
         finished: false,
+        selected: false,
       };
     }
   }
@@ -137,15 +139,9 @@ class DelegationContainer extends React.Component {
     const select = !this.state.showNameInputs ? this.renderSelectAndCreateButton() : "";
 
     return (
-      <div className="question__block">
-      <div className={
-        `question \
-        ${'question--selected'}`
-      }>
-        <p>{this.props.text}</p>
+      <div>
         {select}
         {inputs}
-      </div>
       </div>
     );
   }
@@ -178,6 +174,7 @@ class DelegationContainer extends React.Component {
 
     return (
       <div>
+        <p className="delegation__label">Handoff</p>
         <Suggest
           inputValueRenderer={(contact) => contact.email}
           itemRenderer={renderContact}
@@ -187,12 +184,17 @@ class DelegationContainer extends React.Component {
           }
           inputProps={ {
             onChange: (e) => this.handleContactInfoChange("email", e.target.value),
+            onFocus: (e) => this.setState({ selected: true }),
+            onBlur: (e) => this.setState({ selected: false }),
             value: this.state.email,
+            placeholder: "Assign Contact",
           } }
           popoverProps={{ minimal: true }}
           noResults={noResults}
         />
-        <br></br>
+        <button className="btn btn--secondary delegation__edit_btn">
+          Edit
+        </button>
       </div>
     );
   }
@@ -250,13 +252,8 @@ class DelegationContainer extends React.Component {
   renderDelegated() {
     const delegated_string = this.state.firstName + " " + this.state.lastName + " " + this.state.email;
     return (
-      <div className="question__block">
-      <div className={
-        `question \
-        ${'question--selected'}`
-      }>
-        <p>{this.props.text}</p>
-        <p className="delegation__label">Delegated</p>
+      <div>
+        <p className="delegation__label">Handing off question to</p>
         <div className="delegation__card">
           <div className="delegation__card_info">
             <h3>{this.state.firstName} {this.state.lastName}</h3>
@@ -271,8 +268,6 @@ class DelegationContainer extends React.Component {
             Change
           </button>
         </div>
-
-      </div>
       </div>
     );
   }
@@ -280,11 +275,27 @@ class DelegationContainer extends React.Component {
   render() {
     if (this.answerValid()) {
       return this.renderAnswered();
-    } else if (this.state.finished) {
-      return this.renderDelegated();
-    } else {
-      return this.renderUnanswered();
     }
+    return (
+      <div className="question__block">
+        <div className={
+          `question \
+          ${this.state.selected ? 'question--selected' : '' }`
+        }>
+          <p>{this.props.text}</p>
+          <div className="delegation__block">
+            {(() => {
+              if (this.state.finished) {
+                return this.renderDelegated();
+              } else {
+                return this.renderUnanswered();
+              }
+            })()}
+          </div>
+        </div>
+      </div>
+    )
+
   }
 }
 
