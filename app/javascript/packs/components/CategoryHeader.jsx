@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import React from 'react'
 
 
@@ -10,14 +10,16 @@ class CategoryHeader extends React.Component {
     const categoryId = this.props.category.id;
     const buildingId = this.props.buildingId;
     return (
-      <div className = "category__header">
-        <div className = "category__number"> {categoryNumber} </div>
-        <div className = "category__name">{categoryName}</div>
-        <div className = "category__description">{categoryDescription}</div>
+      <div className="category__flex">
+        <div className="category__header">
+          <div className="category__number"> {categoryNumber} </div>
+          <div className="category__name">{categoryName}</div>
+          <div className="category__description">{categoryDescription}</div>
+        </div>
         <Link
-          to ={`/buildings/${buildingId}/edit/${categoryId}`}
-          key = {categoryId}
-          className = "btn btn--secondary"
+          to={`/buildings/${buildingId}/edit/${categoryId}`}
+          key={categoryId}
+          className="btn btn--secondary"
         >
           Edit
         </Link>

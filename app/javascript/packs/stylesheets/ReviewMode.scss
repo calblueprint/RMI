@@ -2,20 +2,25 @@
 
 table {
   margin: auto;
+  padding-top: 10px;
 }
 
-tr {
-  height: 30px;
+tr, td {
+  height: 50px;
+}
+
+td {
+  font-family: BlinkMacSystemFont;
+  width: 400px;
 }
 
 td:nth-child(odd) {
-  font-family: BlinkMacSystemFont;
   font-weight: 500;
 }
 
 td:nth-child(even) {
-  font-family: BlinkMacSystemFont;
   font-weight: 100;
+  padding-left: 30px;
 }
 
 tr:nth-child(odd) {
@@ -23,7 +28,7 @@ tr:nth-child(odd) {
 }
 
 tr:nth-child(even) {
-  background-color: $tableGray;
+  background-color: lighten($tableGray, 10);
 }
 
 

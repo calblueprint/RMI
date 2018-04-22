@@ -113,7 +113,7 @@ class ReviewModeContainer extends React.Component {
         buildingId = {building.id}
       />);
       stack = stack.concat(
-        <table>
+        <table CELLSPACING="0">
           <tbody>
             {mapCategorytoQuestions(categoryMap, stateCategory.id, building)}
           </tbody>
