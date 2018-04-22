@@ -1,17 +1,49 @@
+.navbar {
+  background-color: aliceblue;
+  margin-bottom: 15px;
+}
+
+.navbar__content {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: -80px;
+}
+
 .navbar__category-container {
   width: 80%;
   background: linear-gradient(
                   to bottom,
-                  rgba(255, 255, 255, 0) 45%,
-                  #009dff 45%,
-                  #009dff 55%,
-                  rgba(255, 255, 255, 0) 55%
+                  rgba(255, 255, 255, 0) 48%,
+                  #009dff 48%,
+                  #009dff 52%,
+                  rgba(255, 255, 255, 0) 52%
   );
-  height: 100px;
+  height: 250px;
   display: flex;
   align-items: center;
   position: relative;
-  margin-bottom: 110px;
+}
+
+.navbar__dropdown-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-left: 60px;
+  width: 20%;
+}
+
+.navbar__dropdown-container h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.navbar__dropdown {
+  width: 100%;
+  border-color: skyblue;
+  background-color: white;
+  height: 30px;
 }
 
 .category__info {
@@ -35,13 +67,18 @@
   font-family: BlinkMacSystemFont;
   color: gray;
   font-size: 10pt;
+  width: 200px;
+  line-height: 1.7;
+  margin-top: 3px;
 }
 
 .category h1 {
   font-family: BlinkMacSystemFont;
   margin-top: 10px;
-  margin-bottom: 5px;
-  font-size: 25pt;
+  margin-bottom: 0px;
+  font-size: 20pt;
+  width: 150px;
+  line-height: 1.25;
 }
 
 .category--inactive h1 {
@@ -81,7 +118,7 @@
 }
 
 .category__container--inactive {
-  flex: 1;
+  flex: 2;
   display: flex;
   justify-content: flex-end;
 }
@@ -89,7 +126,7 @@
 .category--inactive {
   position: relative;
   height: 50px;
-  flex: 0.5;
+  flex: 1;
 }
 
 .category--active .category__circle {

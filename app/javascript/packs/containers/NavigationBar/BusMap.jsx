@@ -36,7 +36,9 @@ class BusMap extends React.Component {
     return (<div className="navbar__category-container">
       {completed}
       {currentlyActive}
-      {upcoming}
+      <div className="category__container--inactive">
+       {upcoming}
+      </div>
     </div>)
   }
 }

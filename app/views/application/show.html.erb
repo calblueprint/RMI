@@ -1,10 +1,1 @@
 <%= javascript_pack_tag 'containers/RootContainer.js' %>
-<%=
-  if asset_manager_signed_in?
-    link_to 'sign out asset_manager', destroy_asset_manager_session_path, method: :delete
-  elsif rmi_user_signed_in?
-    link_to 'sign out rmi_user', destroy_rmi_user_session_path, method: :delete
-  elsif building_operator_signed_in?
-    link_to 'sign out building_operator', destroy_building_operator_session_path, method: :delete
-  end
-%>
