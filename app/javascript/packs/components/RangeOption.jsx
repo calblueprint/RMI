@@ -71,6 +71,7 @@ class RangeOption extends React.Component {
           innerRef={(ref) => this.ref = ref}
           tagName="span"
           content={currentValue}
+          doNotUpdate={true}
         />
         <label>{this.props.unit}</label>
       </div>
