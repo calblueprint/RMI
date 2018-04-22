@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 import { getQuestionsByCategory } from '../utils/QuestionsFilter'
 
+import { Link } from 'react-router-dom';
+
 class AnswerModeContainer extends React.Component {
   render() {
     return (
@@ -27,6 +29,11 @@ class AnswerModeContainer extends React.Component {
               />
             );
         })}
+        <Link to="/buildings/3/edit/6">
+          <button className="btn btn--primary">
+            {"Next: " + (this.props.match.params.cId == 5 ? "Utilities" : "Interior Lighting")}
+          </button>
+        </Link>
       </div>
     );
   }
