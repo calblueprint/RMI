@@ -13,19 +13,21 @@ class QuestionResultContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.answer) {
-      return ("");
-    }
-
-    if (!this.props.answer.text) {
-      // Empty answer => there should be delegations to display
-      const contactString = this.props.answer.delegation_first_name + " " +
-        this.props.answer.delegation_last_name;
-      return (
-            "Delegated to:" + {contactString})
-    }
 
     const result = (() => {
+      if (!this.props.answer) {
+        return ("");
+      }
+
+      if (!this.props.answer.text) {
+        // Empty answer => there should be delegations to display
+        if (!this.props.answer.delegation_email) {
+          return ("");
+        }
+        const contactString = this.props.answer.delegation_first_name + " " +
+          this.props.answer.delegation_last_name;
+        return ("Delegated to: " + contactString)
+      }
       switch (this.props.question_type) {
         case "DropdownOption":
           return (this.props.answer.selected_option_id);
@@ -40,19 +42,19 @@ class QuestionResultContainer extends React.Component {
       }
     })();
 
-    const dependentQuestions = (() => {
-      if (this.props.answer) {
-        const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
-        if (dependents) {
-          return dependents.map(question => {
-            return (
-              <QuestionContainer mode="review"
-                                 building_id={this.props.building_id} {...question} />
-            );
-          });
-        }
-      }
-    })();
+    // const dependentQuestions = (() => {
+    //   if (this.props.answer) {
+    //     const dependents = this.props.dependentQuestions[this.props.answer.selected_option_id];
+    //     if (dependents) {
+    //       return dependents.map(question => {
+    //         return (
+    //           <QuestionContainer mode="review"
+    //                              building_id={this.props.building_id} {...question} />
+    //         );
+    //       });
+    //     }
+    //   }
+    // })();
 
     return (
       <td>

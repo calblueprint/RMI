@@ -5,5 +5,4 @@ import './questions.scss';
 import './ReviewMode.scss';
 import './navbar.scss';
 import './delegation.scss';
-import './navbar.scss';
-import './ReviewMode.scss'
+import './CategoryHeader.scss'

@@ -1,4 +1,50 @@
 @import "global";
 
 
+.category__header {
+  display: flex;
+  align-items: center;
+}
+.category__header .category__number {
+  font-family: BlinkMacSystemFont;
+  background-color: $primary;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20pt;
+  font-weight: bold;
+}
 
+.category__header .category__description {
+  font-family: BlinkMacSystemFont;
+  height: 110px;
+  position: absolute;
+  top: 50px;
+  justify-content:center;
+  color: $secondary;
+  width: 200px;
+  left: 170px;
+  font-weight: 100;
+}
+
+.category__header .category__name {
+  font-family: BlinkMacSystemFont;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 13pt;
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.25;
+  color: black;
+  font-weight: 700;
+
+}
+
+.category__header .btn .btn--secondary {
+
+}

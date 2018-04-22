@@ -10,16 +10,17 @@ class CategoryHeader extends React.Component {
     const categoryId = this.props.category.id;
     const buildingId = this.props.buildingId;
     return (
-      <div>
-        <div> {categoryNumber} </div>
-        <p>{categoryName}</p>
-        <p>{categoryDescription}</p>
+      <div className = "category__header">
+        <div className = "category__number"> {categoryNumber} </div>
+        <div className = "category__name">{categoryName}</div>
+        <div className = "category__description">{categoryDescription}</div>
         <Link
           to ={`/buildings/${buildingId}/edit/${categoryId}`}
-          key = {categoryId}>
+          key = {categoryId}
+          className = "btn btn--secondary"
+        >
           Edit
         </Link>
-
       </div>
 
     )
