@@ -28,19 +28,15 @@ class NavigationBarContainer extends React.Component {
     />) : null;
 
     return (
-      <div>
-        <DropdownMenuContainer
-          buildings={this.props.buildings}
-          currentBuilding={this.props.currentBuilding}
-          history={this.props.history}
-        />
+      <div className="navbar">
+        <div className="navbar__content">
+          {categoryContainer}
 
-        {categoryContainer}
-
-        <div
-          className="userInfo">
-          {username} <br/>
-          {userEmail}
+          <DropdownMenuContainer
+            buildings={this.props.buildings}
+            currentBuilding={this.props.currentBuilding}
+            history={this.props.history}
+          />
         </div>
       </div>
     )

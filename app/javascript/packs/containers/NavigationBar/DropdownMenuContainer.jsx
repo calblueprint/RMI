@@ -9,9 +9,10 @@ class DropdownMenuContainer extends React.Component {
   render() {
     const buildings = this.props.buildings;
     const currentBuilding = this.props.currentBuilding;
-    return (<div>
-      <h1> {currentBuilding ? currentBuilding.name : null} </h1>
-      <select onChange={this.buildingChange.bind(this)}
+    return (<div className="navbar__dropdown-container">
+      <h3>Current Building</h3>
+      <select className="navbar__dropdown"
+              onChange={this.buildingChange.bind(this)}
               value={currentBuilding ? currentBuilding.id : "Choose a Building"}>
         <option disabled value={"Choose a Building"}> {"Choose a Building"}</option>
         {Object.keys(buildings).map(id => {
