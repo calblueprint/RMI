@@ -12,7 +12,8 @@ import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 import {getQuestionsByCategory } from "../utils/QuestionsFilter";
-import CategoryHeader from '../components/CategoryHeader'
+import {getCategoriesForBuilding} from "../selectors/categoriesSelector";
+import CategoryHeader from '../components/CategoryHeader';
 
 import { post, patch } from '../fetch/requester';
 
@@ -27,15 +28,23 @@ async function postDelegations(delegations) {
   }
 }
 
-function mapCategorytoQuestions(categoryMap, categoryId, buildingId) {
+function mapCategorytoQuestions(categoryMap, categoryId, building, questions) {
   return categoryMap[categoryId].map((question) => {
     // Only display non-dependent questions initially
     //if (question.parent_option_id) return null;
+    if (question.parent_option_id) {
+      let filteredQuestion = questions.filter((question) => {
+        return (question.options.indexOf(parent_option_id) != -1);
+      });
+      if (!filteredQuestion || building.answers[filteredQuestion[0].id].selected_option_id != question.parent_option_id) {
+        return null;
+      }
+    }
     return (
       <QuestionContainer
         mode="review"
         key={question.id}
-        building_id={buildingId}
+        building_id={building.id}
         {...question}
       />
     );
@@ -90,23 +99,24 @@ class ReviewModeContainer extends React.Component {
     }
   }
 
-  populateQuestionStack(buildingId) {
+  populateQuestionStack(building) {
     let categoryMap = new Map();
     let count = 0;
     let stack = [];
+    let questions = this.props.questions;
     for (let category in this.props.categories) {
       let stateCategory = this.props.categories[category]
       count += 1;
-      categoryMap[stateCategory.id] = getQuestionsByCategory(stateCategory.id, this.props.questions);
+      categoryMap[stateCategory.id] = getQuestionsByCategory(stateCategory.id, questions);
       stack.push(<CategoryHeader
         category = {stateCategory}
         number = {count}
-        buildingId = {buildingId}
+        buildingId = {building.id}
       />);
       stack = stack.concat(
         <table>
           <tbody>
-            {mapCategorytoQuestions(categoryMap, stateCategory.id, buildingId)}
+            {mapCategorytoQuestions(categoryMap, stateCategory.id, building, questions)}
           </tbody>
         </table>
       );
@@ -116,10 +126,9 @@ class ReviewModeContainer extends React.Component {
 
 
   render() {
-
     return (
       <div>
-        {this.populateQuestionStack(this.props.buildingId)}
+        {this.populateQuestionStack(this.props.building)}
         <button type="submit" value="Submit Delegation"
           onClick={(e) => this.submitDelegation()}
         >Submit Delegation</button>
@@ -155,11 +164,10 @@ class ReviewModeContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     getPotentialDependentQuestions: (question) => getPotentialDependentQuestions(question, state),
-    buildingId: ownProps.building.id,
+    building: state.buildings[ownProps.building.id],
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: (questionId) => getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
-    categories: state.categories,
-
+    categories: getCategoriesForBuilding(ownProps.building.id, state),
   };
 }
 

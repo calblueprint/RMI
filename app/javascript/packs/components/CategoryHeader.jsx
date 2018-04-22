@@ -11,7 +11,7 @@ class CategoryHeader extends React.Component {
     const buildingId = this.props.buildingId;
     return (
       <div>
-        <div className="category__circle"> {categoryNumber} </div>
+        <div> {categoryNumber} </div>
         <p>{categoryName}</p>
         <p>{categoryDescription}</p>
         <Link
