@@ -1,23 +1,42 @@
+@import "global";
+
 .navbar {
-  background-color: aliceblue;
+  background-color: lighten($primary, 28.5);
   margin-bottom: 15px;
+}
+
+.navbar hr {
+  margin: 0px;
+}
+
+.navbar__logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+
+  img {
+    max-width: 90px;
+  }
 }
 
 .navbar__content {
   display: flex;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: -80px;
+  justify-content: space-between;
+  padding: 20px;
+  padding-left: 0px;
+  margin-top: -100px;
 }
 
 .navbar__category-container {
-  width: 80%;
+  flex: 5;
   background: linear-gradient(
                   to bottom,
                   rgba(255, 255, 255, 0) 48%,
-                  #009dff 48%,
-                  #009dff 52%,
+                  $primary 48%,
+                  $primary 52%,
                   rgba(255, 255, 255, 0) 52%
   );
   height: 250px;
@@ -31,7 +50,7 @@
   justify-content: flex-end;
   flex-direction: column;
   margin-left: 60px;
-  width: 20%;
+  flex: 1;
 }
 
 .navbar__dropdown-container h3 {
@@ -63,12 +82,25 @@
   font-weight: 100;
 }
 
+.category__info > p {
+  @media (max-width: 1000px) {
+    display: none !important;
+  }
+
+  @media (min-width: 1000px) {
+    position: absolute;
+    left: 225px;
+    top: 15px;
+    width: 300px;
+  }
+}
+
 .category--active h3 {
   font-family: BlinkMacSystemFont;
   color: gray;
   font-size: 10pt;
   width: 200px;
-  line-height: 1.7;
+  line-height: 1.5;
   margin-top: 3px;
 }
 
@@ -127,10 +159,12 @@
   position: relative;
   height: 50px;
   flex: 1;
+  max-width: 100px;
 }
 
 .category--active .category__circle {
-  background-color: #009dff;
+  background-color: $primary;
+  box-shadow: 0 5px 10px rgba($secondary, 0.5);
   color: white;
 }
 
