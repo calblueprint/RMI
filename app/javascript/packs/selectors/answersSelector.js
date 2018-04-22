@@ -9,13 +9,15 @@ export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
 // so we should not render how many questions are remaining for a building
 //## if no questions are provided, the building did not have any questions for the users so they have no questions
 //to answer for that building
+
 export function getRemainingAnswersforCategory(questions, buildingId, state) {
   questions = questions.filter((question) => {
     if (question.parent_option_id) {
-      let filteredQuestion = questions.filter((question) => {
-        return (question.options.indexOf(question.parent_option_id) != -1);
-      });
-      return (filteredQuestion && state.buildings[buildingId].answers[filteredQuestion[0].id] == question.parent_option_id);
+      let filteredQuestion = questions.filter((pQuestion) => {
+        return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
+      })[0];
+      let option = state.buildings[buildingId].answers[filteredQuestion.id].selected_option_id;
+      return (!option || option == question.parent_option_id);
     }
     return true;
   });
