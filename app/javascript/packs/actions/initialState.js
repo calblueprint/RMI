@@ -76,7 +76,6 @@ const formatState = {
     );
   },
   contacts: function(contacts) {
-    debugger;
     return toObjectByKey(contacts, 'email');
   }
 };
