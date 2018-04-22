@@ -4,16 +4,22 @@ import {
 } from '../constants';
 
 function attachContact(state, action) {
-  state.push({
-    email: action.email,
-    first_name: action.first_name,
-    last_name: action.last_name
-  });
-  return state;
+  return {
+    ...state,
+    [action.email]: {
+      email: action.email,
+      first_name: action.first_name,
+      last_name: action.last_name
+    }
+  };
 }
 
 function deleteContact(state, action) {
-  return state.filter(contact => contact.email != action.email);
+  return Object.keys(state)
+    .filter(email => email !== action.email)
+    .reduce((newState, email) => {
+      newState[email] = state[email];
+    }, {});
 }
 
 export default function contacts(state = {}, action) {
