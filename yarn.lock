@@ -5687,9 +5687,9 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-sane-contenteditable@^1.2.0:
+"react-sane-contenteditable@github:ethanlee16/react-sane-contenteditable#do-not-update":
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-sane-contenteditable/-/react-sane-contenteditable-1.2.0.tgz#9c3f0a2c1caa90d7b8f54d3a1e20798752689a82"
+  resolved "https://codeload.github.com/ethanlee16/react-sane-contenteditable/tar.gz/82bf2fd6e4c41d4c0cfe3e35d4ba9a24b2a87423"
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.6.0"
