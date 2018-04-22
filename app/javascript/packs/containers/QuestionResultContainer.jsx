@@ -55,8 +55,13 @@ class QuestionResultContainer extends React.Component {
     })();
 
     return (<div>
-      {result}
-      {dependentQuestions}
+      <div className="question">
+        <p>{this.props.text}</p>
+        {result}
+      </div>
+      <div className="questions__nested">
+        {dependentQuestions}
+      </div>
     </div>);
   }
 };

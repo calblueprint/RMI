@@ -137,16 +137,20 @@ class DelegationContainer extends React.Component {
     const select = !this.state.showNameInputs ? this.renderSelectAndCreateButton() : "";
 
     return (
-      <div>
+      <div className="question__block">
+      <div className={
+        `question \
+        ${'question--selected'}`
+      }>
         <p>{this.props.text}</p>
-        Assign to other users:<br></br>
+        <p>Assign to other users:</p>
 
-        Email:
+        <p>Email:
 
-        {select}
+        {select}</p>
 
         {inputs}
-
+      </div>
       </div>
     );
   }
@@ -251,12 +255,17 @@ class DelegationContainer extends React.Component {
   renderDelegated() {
     const delegated_string = this.state.firstName + " " + this.state.lastName + " " + this.state.email;
     return (
-      <div>
+      <div className="question__block">
+      <div className={
+        `question \
+        ${'question--selected'}`
+      }>
         <p>{this.props.text}</p>
         <p>Delegated to {delegated_string}</p>
         <button type="button" value="Change"
           onClick={(e) => this.handleClickChangeContact()}
         >Change</button>
+      </div>
       </div>
     );
   }
