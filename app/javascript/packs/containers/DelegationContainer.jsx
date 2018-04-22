@@ -143,12 +143,7 @@ class DelegationContainer extends React.Component {
         ${'question--selected'}`
       }>
         <p>{this.props.text}</p>
-        <p>Assign to other users:</p>
-
-        <p>Email:
-
-        {select}</p>
-
+        {select}
         {inputs}
       </div>
       </div>
@@ -261,10 +256,22 @@ class DelegationContainer extends React.Component {
         ${'question--selected'}`
       }>
         <p>{this.props.text}</p>
-        <p>Delegated to {delegated_string}</p>
-        <button type="button" value="Change"
-          onClick={(e) => this.handleClickChangeContact()}
-        >Change</button>
+        <p className="delegation__label">Delegated</p>
+        <div className="delegation__card">
+          <div className="delegation__card_info">
+            <h3>{this.state.firstName} {this.state.lastName}</h3>
+            <p>{this.state.email}</p>
+          </div>
+          <button
+            className="btn btn--secondary delegation__card_change"
+            type="button"
+            value="Change"
+            onClick={(e) => this.handleClickChangeContact()}
+          >
+            Change
+          </button>
+        </div>
+
       </div>
       </div>
     );
