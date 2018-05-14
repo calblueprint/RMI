@@ -14,7 +14,7 @@ class DelegateModeContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="question__container">
         {this.props.questions.map((question) => {
           // It's left to DelegationContainer to decide whether this question
           // needs delegation, i.e. is unanswered

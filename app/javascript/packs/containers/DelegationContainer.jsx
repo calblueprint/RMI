@@ -29,6 +29,7 @@ class DelegationContainer extends React.Component {
         lastName: this.props.answer.delegation_last_name,
         showNameInputs: false,
         finished: validateEmail(this.props.answer.delegation_email),
+        selected: false,
       };
     } else {
       this.state = {
@@ -37,6 +38,7 @@ class DelegationContainer extends React.Component {
         lastName: "",
         showNameInputs: false,
         finished: false,
+        selected: false,
       };
     }
   }
@@ -138,15 +140,8 @@ class DelegationContainer extends React.Component {
 
     return (
       <div>
-        <p>{this.props.text}</p>
-        Assign to other users:<br></br>
-
-        Email:
-
         {select}
-
         {inputs}
-
       </div>
     );
   }
@@ -179,6 +174,7 @@ class DelegationContainer extends React.Component {
 
     return (
       <div>
+        <p className="delegation__label">Handoff</p>
         <Suggest
           inputValueRenderer={(contact) => contact.email}
           itemRenderer={renderContact}
@@ -188,12 +184,17 @@ class DelegationContainer extends React.Component {
           }
           inputProps={ {
             onChange: (e) => this.handleContactInfoChange("email", e.target.value),
+            onFocus: (e) => this.setState({ selected: true }),
+            onBlur: (e) => this.setState({ selected: false }),
             value: this.state.email,
+            placeholder: "Assign Contact",
           } }
           popoverProps={{ minimal: true }}
           noResults={noResults}
         />
-        <br></br>
+        <button className="btn btn--secondary delegation__edit_btn">
+          Edit
+        </button>
       </div>
     );
   }
@@ -203,19 +204,29 @@ class DelegationContainer extends React.Component {
     const currentLastName = this.state.lastName;
     return (
       <div>
-        First name:<br></br>
+        <p className="delegation__label">First name</p>
         <input type="text" value={currentFirstName}
           onChange={(e) => this.handleContactInfoChange("firstName", e.target.value)}
         /><br></br>
 
-        Last name:<br></br>
+        <p
+          className="delegation__label"
+          style={{ marginTop: '10px' }}
+        >
+          Last name
+        </p>
         <input type="text" value={currentLastName}
           onChange={(e) => this.handleContactInfoChange("lastName", e.target.value)}
         /><br></br>
 
-        <button type="submit" value="Create contact and assign"
+        <button
+          type="submit"
+          value="Create contact and assign"
           onClick={(e) => this.handleClickSaveContact()}
-        >Create contact and assign</button>
+          className="btn btn--primary delegation__assign_btn"
+        >
+          Create contact and assign
+        </button>
       </div>
     );
   }
@@ -252,11 +263,21 @@ class DelegationContainer extends React.Component {
     const delegated_string = this.state.firstName + " " + this.state.lastName + " " + this.state.email;
     return (
       <div>
-        <p>{this.props.text}</p>
-        <p>Delegated to {delegated_string}</p>
-        <button type="button" value="Change"
-          onClick={(e) => this.handleClickChangeContact()}
-        >Change</button>
+        <p className="delegation__label">Handing off question to</p>
+        <div className="delegation__card">
+          <div className="delegation__card_info">
+            <h3>{this.state.firstName} {this.state.lastName}</h3>
+            <p>{this.state.email}</p>
+          </div>
+          <button
+            className="btn btn--secondary delegation__card_change"
+            type="button"
+            value="Change"
+            onClick={(e) => this.handleClickChangeContact()}
+          >
+            Change
+          </button>
+        </div>
       </div>
     );
   }
@@ -264,11 +285,27 @@ class DelegationContainer extends React.Component {
   render() {
     if (this.answerValid()) {
       return this.renderAnswered();
-    } else if (this.state.finished) {
-      return this.renderDelegated();
-    } else {
-      return this.renderUnanswered();
     }
+    return (
+      <div className="question__block">
+        <div className={
+          `question \
+          ${this.state.selected ? 'question--selected' : '' }`
+        }>
+          <p>{this.props.text}</p>
+          <div className="delegation__block">
+            {(() => {
+              if (this.state.finished) {
+                return this.renderDelegated();
+              } else {
+                return this.renderUnanswered();
+              }
+            })()}
+          </div>
+        </div>
+      </div>
+    )
+
   }
 }
 

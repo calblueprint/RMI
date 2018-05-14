@@ -1,4 +1,6 @@
+import '@blueprintjs/core/lib/css/blueprint.css';
 import './global.scss';
 import './buildings.scss';
 import './questions.scss';
-import '@blueprintjs/core/lib/css/blueprint.css';
+import './delegation.scss';
+import './navbar.scss';
