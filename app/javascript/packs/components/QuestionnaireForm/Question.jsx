@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import InputValidation from '../InputValidation';
 import OptionsContainer from '../../containers/QuestionnaireForm/OptionsContainer';
+import ContentEditable from 'react-sane-contenteditable';
 
 class Question extends React.Component {
   constructor(props) {
@@ -11,16 +12,11 @@ class Question extends React.Component {
       unitInput: !!this.props.question.unit,
     };
   }
-
-  componentDidMount(){
-    this.questionInput.style.height= 'auto';
-    this.questionInput.style.height= `${this.questionInput.scrollHeight}px`
-  }
-
+  
   componentDidUpdate() {
     if (this.props.select) {
       this.questionInput.focus();
-      this.questionInput.select();
+      // this.questionInput.select();
     }
   }
 
@@ -39,7 +35,7 @@ class Question extends React.Component {
    *                          in the form {attr: value}
    */
   onChange(args) {
-    this.questionInput.style.height= `${this.questionInput.scrollHeight}px`;
+    // this.questionInput.style.height= `${this.questionInput.scrollHeight}px`;
     this.props.handleOnChange(this.props.question.id, args)
   }
 
@@ -101,12 +97,14 @@ class Question extends React.Component {
             <div
               className={'question_block__body__main'}
             >
-            <textarea
-              defaultValue={this.props.question.text}
-              onBlur={(e) => this.handleOnBlur({text: e.target.value})}
-              onChange={(e) => this.onChange({text: e.target.value})}
-              ref={(input) => { this.questionInput = input;
-              }}
+            <ContentEditable
+              onChange={() => 0}
+              onKeyDown={(e) => this.onChange({ text: e.target.innerText })}
+              onBlur={(e) => this.handleOnBlur({ text: e.target.innerText })}
+              innerRef={(ref) => this.questionInput = ref}
+              tagName="span"
+              content={this.props.question.text}
+              doNotUpdate={true}
             />
               <div>
                 <OptionsContainer
