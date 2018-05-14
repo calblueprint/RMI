@@ -5,7 +5,6 @@ import {
   EDIT_OPTION,
   REMOVE_QUESTION,
   REMOVE_OPTION,
-  SAVE_QUESTION,
   OPTION_FETCH_IN_PROGRESS,
   UPDATE_LOCAL_OPTION,
   QUESTION_FETCH_IN_PROGRESS,
@@ -15,7 +14,8 @@ import {
   QUESTION_FETCH_FAILURE,
   CREATE_UNSAVED_OPTION,
   OPTION_FETCH_FAILURE,
-  OPTION_FETCH_SUCCESS
+  OPTION_FETCH_SUCCESS,
+  QUESTION_SET_NEW
 } from '../constants';
 
 function detachQuestion(state, action) {
@@ -34,7 +34,8 @@ function beforeFetchQuestion(state, action) {
     ...state,
     [questionId]: {
       ...state[questionId],
-      fetchStatus: action.fetchStatus
+      fetchStatus: action.fetchStatus,
+      new: false
     }
   }
 }
@@ -48,7 +49,7 @@ function beforeCreateQuestion(state, action) {
     [questionId]: {
       ...action.question,
       fetchStatus: action.fetchStatus,
-      temp: true
+      new: false
     }
   }
 }
@@ -61,7 +62,7 @@ function questionFetchSuccess(state, action) {
     [questionId]: {
       ...question,
       fetchStatus: action.fetchStatus,
-      temp: false
+      new: false
     }
   }
 }
@@ -74,6 +75,18 @@ function questionFetchFailure(state, action) {
       ...action.question,
       fetchStatus: action.fetchStatus,
       error: action.error
+    }
+  }
+}
+
+function setNewQuestion(state, action) {
+  const questionId = action.question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      new: true,
+      error: []
     }
   }
 }
@@ -199,6 +212,7 @@ export default function questions(state = {}, action) {
     case REMOVE_QUESTION: return detachQuestion(state, action);
     case QUESTION_FETCH_SUCCESS: return questionFetchSuccess(state, action);
     case QUESTION_FETCH_FAILURE: return questionFetchFailure(state, action);
+    case QUESTION_SET_NEW: return setNewQuestion(state, action);
 
   default:
     return state;

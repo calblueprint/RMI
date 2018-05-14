@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getQuestionsByCategoryId } from '../../selectors/questionsSelector';
-import { generateTempId } from '../../utils/TemporaryObjectUtil';
+import { newDefaultQuestion } from '../../utils/TemporaryObjectUtil';
 import QuestionContainer from './QuestionContainer';
 import CategoryDisplay from '../../components/QuestionnaireForm/CategoryDisplay';
 import {
@@ -13,29 +13,13 @@ import {
   removeCategory
 } from '../../actions/categories';
 import {
-  beforeCreateNewQuestion
+  beforeCreateNewQuestion, questionFetchFailure, questionFetchInProgress, questionFetchSuccess, questionSetNew
 } from '../../actions/questions';
-import { patch } from '../../fetch/requester';
+import {patch, post} from '../../fetch/requester';
 import { getCategoryById } from '../../selectors/categoriesSelector';
+import CreateQuestionButton from '../../components/QuestionnaireForm/CreateQuestionButton';
 
 class CategoryQuestionsContainer extends React.Component {
-
-  /**
-   * Handles creating a new temp question when Add Question button is clicked.
-   */
-  onNewQuestion() {
-    const newQuestion = {
-      id: generateTempId(),
-      text: "",
-      building_type_id: this.props.buildingType.id,
-      category_id: this.props.categoryId,
-      options: {},
-      question_type: null,
-      parameter: null,
-      helper_text: null
-    };
-    this.props.beforeCreateNewQuestion(newQuestion);
-  }
 
   /**
    * Handles fetch request to update a question and redux update
@@ -73,6 +57,13 @@ class CategoryQuestionsContainer extends React.Component {
     this.props.categoryPreFetchSave(updatedCategory)
   }
 
+  newTempQuestion() {
+    const args = {
+      building_type_id: this.props.buildingType.id,
+      category_id: this.props.categoryId
+    };
+    return newDefaultQuestion(args)
+  }
 
   render() {
     const questions_display = this.props.questionList.map((question)=>{
@@ -104,11 +95,13 @@ class CategoryQuestionsContainer extends React.Component {
         <h2>QUESTIONS FOR {this.props.category.name}</h2>
         <div>
           {questions_display}
-          <button
-            onClick={e => this.onNewQuestion()}
-          >
-            Add Question
-          </button>
+          <CreateQuestionButton
+            tempQuestion={this.newTempQuestion()}
+            questionFetchSuccess={this.props.questionFetchSuccess}
+            questionFetchFailure={this.props.questionFetchFailure}
+            questionSetNew={this.props.questionSetNew}
+            questionFetchInProgress={this.props.questionFetchInProgress}
+          />
         </div>
       </div>
     );
@@ -125,12 +118,16 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
-
     categoryFetchInProgress: (category) => { dispatch(categoryFetchInProgress(category)) },
     categoryPreFetchSave: (category) => { dispatch(categoryPreFetchSave(category)) },
     categoryFetchSuccess: (category) => {dispatch(categoryFetchSuccess(category))},
     categoryFetchFailure: (error, category) => { dispatch(categoryFetchFailure(error, category)) },
-    removeCategory: (category) => { dispatch(removeCategory(category))}
+    removeCategory: (category) => { dispatch(removeCategory(category))},
+    questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
+    questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
+    questionSetNew: (question) => { dispatch(questionSetNew(question))},
+    questionFetchInProgress: (question) => { dispatch(questionFetchInProgress(question)) }
+
   };
 }
 
