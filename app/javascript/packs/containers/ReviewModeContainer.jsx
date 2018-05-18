@@ -7,18 +7,18 @@ import React from 'react';
 
 import QuestionContainer from './QuestionContainer';
 
-import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
-import { connect } from 'react-redux';
-import { getQuestionsByBuilding } from '../selectors/questionsSelector';
-import { getQuestionsByCategory } from "../utils/QuestionsFilter";
-import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
+import {getAnswerForQuestionAndBuilding} from '../selectors/answersSelector';
+import {getPotentialDependentQuestions} from "../selectors/questionsSelector";
+import {connect} from 'react-redux';
+import {getQuestionsByBuilding} from '../selectors/questionsSelector';
+import {getQuestionsByCategory} from "../utils/QuestionsFilter";
+import {getCategoriesForBuilding} from "../selectors/categoriesSelector";
 import CategoryHeader from '../components/CategoryHeader';
 
-import { post, patch } from '../fetch/requester';
+import {post, patch} from '../fetch/requester';
 
 async function postDelegations(delegations) {
-  var body = { delegations };
+  var body = {delegations};
 
   try {
     let resp = await post('/api/delegations', body);
@@ -90,12 +90,12 @@ class ReviewModeContainer extends React.Component {
       ;
     }
 
-    this.setState({ status_string: "Saving delegations!" });
+    this.setState({status_string: "Saving delegations!"});
     var success = await postDelegations(delegations);
     if (success) {
-      this.setState({ status_string: "Delegations saved." });
+      this.setState({status_string: "Delegations saved."});
     } else {
-      this.setState({ status_string: "Saving delegations failed. Try again?" });
+      this.setState({status_string: "Saving delegations failed. Try again?"});
     }
   }
 
@@ -108,14 +108,14 @@ class ReviewModeContainer extends React.Component {
       count += 1;
       categoryMap[stateCategory.id] = getQuestionsByCategory(stateCategory.id, questions);
       stack.push(<CategoryHeader
-        category = {stateCategory}
-        number = {count}
-        buildingId = {building.id}
+        category={stateCategory}
+        number={count}
+        buildingId={building.id}
       />);
       stack = stack.concat(
-        <table CELLSPACING="0">
+        <table cellSpacing="0">
           <tbody>
-            {mapCategorytoQuestions(categoryMap, stateCategory.id, building)}
+          {mapCategorytoQuestions(categoryMap, stateCategory.id, building)}
           </tbody>
         </table>
       );
@@ -128,36 +128,19 @@ class ReviewModeContainer extends React.Component {
     return (
       <div>
         {this.populateQuestionStack(this.props.building, this.props.questions)}
-        <button type="submit" value="Submit Delegation"
-          onClick={(e) => this.submitDelegation()}
-        >Submit Delegation</button>
-        <p>{this.state.status_string}</p>
-        <div className="question__container">
-          {this.props.questions.map((question) => {
-            // Only display non-dependent questions initially
-            if (question.parent_option_id) return null;
-            return (
-              <QuestionContainer
-                mode="review"
-                key={question.id}
-                building_id={this.props.building.id}
-                {...question}
-              />
-            );
-          })}
-
-          <button type="submit" value="Submit Delegation"
+        <div className="delegation">
+          <button type="submit"
+                  value="Submit Delegation"
                   onClick={(e) => this.submitDelegation()}
-          >Submit Delegation</button>
+                  className="btn btn--primary"
+          >Submit Delegation
+          </button>
           <p>{this.state.status_string}</p>
         </div>
-        );
-        })
       </div>
     );
   }
 }
-
 
 
 function mapStateToProps(state, ownProps) {
@@ -171,9 +154,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-
-  }
+  return {}
 }
 
 export default connect(
