@@ -32,7 +32,7 @@ class NavigationBarContainer extends React.Component {
       <div className="navbar">
         <div className="navbar__content">
           <div className="navbar__logo">
-            <img src={Logo} />
+            <img src={Logo} onClick={() => window.location = '/'} />
           </div>
 
           {categoryContainer}

@@ -18,6 +18,13 @@
 
   img {
     max-width: 90px;
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7
+    }
   }
 }
 
