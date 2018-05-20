@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import QuestionContainer from './QuestionContainer';
 
@@ -28,6 +29,11 @@ class DelegateModeContainer extends React.Component {
           }
         })
         }
+        <Link to={`/buildings/${this.props.building.id}/review`}>
+          <button className="btn btn--primary">
+            Next: Review and Submit
+          </button>
+        </Link>
       </div>
     );
   }

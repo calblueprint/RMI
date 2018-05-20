@@ -35,6 +35,7 @@ class CategoryContainer extends React.Component {
     const finishedCategories = categoryInfo.slice(0, currentIndex);
     const upcomingCategories = categoryInfo.slice(currentIndex + 1, categories.length);
 
+    // Icons for delegate and review mode (which aren't actual categories)
     const delegateInfo = {
       label: this.getFaIcon(delegateIcon),
       path: `/buildings/${currentBuildingId}/delegate`,
