@@ -1,12 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
   getFirstUnansweredCategory,
   getCategoriesForBuilding
 } from "../selectors/categoriesSelector";
-import {getQuestionsByBuilding} from "../selectors/questionsSelector";
+import { getQuestionsByBuilding } from "../selectors/questionsSelector";
 
 class CategoryRerouter extends React.Component {
   render() {
