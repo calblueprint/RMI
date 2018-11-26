@@ -8,7 +8,7 @@ end
 # Include devise
 gem 'devise'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.2.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -40,7 +40,7 @@ gem 'faker', '~> 1.8.4'
 
 # AWS upload
 gem 'paperclip'
-gem 'aws-sdk', '~> 2.3'
+gem 'aws-sdk-s3', '~> 1.24.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
