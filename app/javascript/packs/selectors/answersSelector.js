@@ -16,7 +16,12 @@ export function getRemainingAnswersforCategory(questions, buildingId, state) {
       let filteredQuestion = questions.filter((pQuestion) => {
         return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
       })[0];
-      let option = state.buildings[buildingId].answers[filteredQuestion.id].selected_option_id;
+
+      if (!filteredQuestion) return false;
+      let answerForFilteredQuestion = state.buildings[buildingId].answers[filteredQuestion.id];
+      if (!answerForFilteredQuestion) return false;
+
+      let option = answerForFilteredQuestion.selected_option_id;
       return (!option || option == question.parent_option_id);
     }
     return true;
@@ -44,7 +49,7 @@ export function isUnanswered(question, buildingId, state) {
 
 export function isDelegated(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  if (answer.delegation_email) {
+  if (answer && answer.delegation_email) {
     return true;
   }
 }
