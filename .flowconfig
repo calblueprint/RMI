@@ -1,0 +1,13 @@
+[ignore]
+
+[include]
+
+[libs]
+./node_modules/fbjs/flow/lib
+./flow-typed/
+
+[lints]
+
+[options]
+
+[strict]

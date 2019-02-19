@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
@@ -6,12 +8,24 @@ import { getBuildingsByPortfolio } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import type { Match } from 'react-router-dom';
+import type { Building } from 'rmi';
 
-class PortfolioContainer extends React.Component {
+type Props = {
+  buildings: Array<Building>,
+  match: Match,
+};
+
+class PortfolioContainer extends React.Component<Props> {
   render() {
+    let portfolioId: ?string = this.props.match.params.pId;
+    if (typeof portfolioId !== 'string') {
+      portfolioId = '';
+    }
+
     return (<div>
       <h2>Portfolio</h2>
-      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
+      <a href={`download/${portfolioId}`}>Download as CSV</a>
       <hr />
       <div className="building__container">
       {this.props.buildings.map(building => {

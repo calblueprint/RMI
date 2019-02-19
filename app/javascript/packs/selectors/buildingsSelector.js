@@ -1,4 +1,10 @@
-export function getBuildingsByPortfolio(portfolioId, state) {
+/* @flow */
+import type { Building } from 'rmi';
+
+export function getBuildingsByPortfolio(
+  portfolioId: string,
+  state: any
+): Array<Building> {
   return Object.keys(state.buildings).filter((buildingId) => {
     return state.buildings[buildingId].portfolio_id == portfolioId;
   }).map((buildingId) => {
@@ -6,11 +12,13 @@ export function getBuildingsByPortfolio(portfolioId, state) {
   });
 };
 
-export function getBuildings(state) {
+export function getBuildings(state: any): {
+  [buildingId: string]: Building
+} {
   return state.buildings
 };
 
-export function getBuildingById(buildingId, state) {
+export function getBuildingById(buildingId: number, state: any): Building {
   return state.buildings[buildingId]
 
 }
