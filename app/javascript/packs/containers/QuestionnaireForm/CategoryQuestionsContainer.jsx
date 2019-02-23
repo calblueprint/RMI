@@ -10,7 +10,9 @@ import {
   categoryFetchInProgress,
   categoryFetchSuccess,
   categoryPreFetchSave,
-  removeCategory
+  categoryRemoveFailure,
+  categoryRemoveInProgress,
+  categoryRemoveSuccess
 } from '../../actions/categories';
 import {
   beforeCreateNewQuestion, questionFetchFailure, questionFetchInProgress, questionFetchSuccess, questionSetNew
@@ -122,7 +124,9 @@ function mapDispatchToProps(dispatch) {
     categoryPreFetchSave: (category) => { dispatch(categoryPreFetchSave(category)) },
     categoryFetchSuccess: (category) => {dispatch(categoryFetchSuccess(category))},
     categoryFetchFailure: (error, category) => { dispatch(categoryFetchFailure(error, category)) },
-    removeCategory: (category) => { dispatch(removeCategory(category))},
+    categoryRemoveInProgress: (category) => { dispatch(categoryRemoveInProgress(category)) },
+    categoryRemoveSuccess: (category) => {dispatch(categoryRemoveSuccess(category))},
+    categoryRemoveFailure: (error, category) => { dispatch(categoryRemoveFailure(error, category)) },
     questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
     questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
     questionSetNew: (question) => { dispatch(questionSetNew(question))},

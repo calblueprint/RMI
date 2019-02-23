@@ -124,6 +124,18 @@ function addQuestionId(state, action) {
   }
 }
 
+function categoryFetchFailure(state, action) {
+  const categoryId = action.category.id;
+  return {
+    ...state,
+    [categoryId]: {
+      ...action.category,
+      fetchStatus: action.fetchStatus,
+      error: action.error,
+      new: false
+    }
+  }
+}
 
 
 export default function categories(state = {}, action) {
@@ -135,7 +147,9 @@ export default function categories(state = {}, action) {
     case UPDATE_LOCAL_CATEGORY: return beforeFetchCategory(state, action);
     case CREATE_UNSAVED_CATEGORY: return beforeCreateCategory(state, action);
     case CATEGORY_FETCH_IN_PROGRESS: return beforeFetchCategory(state, action);
-    case REMOVE_CATEGORY: return detachCategory(state, action);
+    case CATEGORY_REMOVE_IN_PROGRESS: return beforeFetchCategory(state, action);
+    case CATEGORY_REMOVE_SUCCESS: return detachCategory(state, action);
+    case CATEGORY_REMOVE_FAILURE: return categoryRemoveFailure(state, action);
     case CATEGORY_FETCH_SUCCESS: return categoryFetchSuccess(state, action);
     case CATEGORY_FETCH_FAILURE: return categoryFetchFailure(state, action);
     case SET_CATEGORY_TO_NEW: return categorySetToNew(state, action);

@@ -63,6 +63,33 @@ export function removeCategory(category) {
   }
 }
 
+export function categoryRemoveInProgress(category) {
+  return {
+    type: CATEGORY_REMOVE_IN_PROGRESS,
+    fetchStatus: FETCH_IN_PROGRESS,
+    category
+  }
+}
+
+export function categoryRemoveSuccess(response) {
+  return {
+    type: CATEGORY_REMOVE_SUCCESS,
+    fetchStatus: FETCH_SUCCESS,
+    building_type_id: response.building_type_id,
+    response
+  };
+}
+
+export function categoryRemoveFailure(error, category) {
+  return {
+    type: CATEGORY_REMOVE_FAILURE,
+    fetchStatus: FETCH_FAILURE,
+    building_type_id: category.building_type_id,
+    error,
+    category
+  };
+}
+
 export function categorySetNew(categoryId) {
   return {
     type: SET_CATEGORY_TO_NEW,
