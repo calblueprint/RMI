@@ -9,10 +9,10 @@ module ApplicationHelper
       contact_ids[delegation.building_operator_id] = 1
     end
 
-    contacts = []
+    contacts = Set.new
 
     BuildingOperator.where(id: contact_ids.keys).each do |operator|
-      contacts.push({
+      contacts.add({
         email: operator.email, first_name: operator.first_name, last_name: operator.last_name
       })
     end
@@ -25,7 +25,7 @@ module ApplicationHelper
                   user_type: 'AssetManager'}
       ),
       portfolios: portfolio,
-      contacts: contacts,
+      contacts: contacts.to_a,
       categories: current_asset_manager.categories,
       userType: current_asset_manager.class.name,
     }
@@ -41,10 +41,10 @@ module ApplicationHelper
       contact_ids[delegation.building_operator_id] = 1
     end
 
-    contacts = []
+    contacts = Set.new
 
     BuildingOperator.where(id: contact_ids.keys).each do |operator|
-      contacts.push({
+      contacts.add({
         email: operator.email, first_name: operator.first_name, last_name: operator.last_name
       })
     end

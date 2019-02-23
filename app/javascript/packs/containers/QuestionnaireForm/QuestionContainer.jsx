@@ -1,7 +1,7 @@
 import React from 'react';
 import Question from '../../components/QuestionnaireForm/Question';
 import DepQuestionContainer from './DepQuestionContainer';
-import OptionsContainer from './OptionsContainer'
+
 import { connect } from 'react-redux';
 import {
   beforeCreateNewQuestion,
@@ -9,7 +9,6 @@ import {
   questionPreFetchSave,
   questionFetchSuccess,
   questionFetchFailure,
-  removeQuestion
 } from '../../actions/questions';
 import { patch, post } from '../../fetch/requester';
 import PropTypes from 'prop-types'
@@ -29,24 +28,6 @@ class QuestionContainer extends React.Component {
       this.props.questionFetchSuccess(response.data);
     } catch (error) {
       this.props.questionFetchFailure(error, updatedQuestion);
-    }
-  }
-
-  /**
-   * Handles fetch request to post a question and redux update
-   * @param { string } id - questionId to update
-   * @param { Object } args - any question parameters
-   */
-  async createQuestion(id, args) {
-    const newQuestion = {...this.props.question, ...args};
-    const tempQuestion = this.props.question;
-    this.props.questionFetchInProgress(newQuestion);
-    try {
-      let response = await post('/api/questions', {'question': newQuestion});
-      this.props.questionFetchSuccess(response.data);
-      this.props.removeQuestion(tempQuestion);
-    } catch (error) {
-      this.props.questionFetchFailure(error, newQuestion);
     }
   }
 
@@ -74,60 +55,29 @@ class QuestionContainer extends React.Component {
     this.props.questionPreFetchSave(updatedQuestion)
   }
 
-  /**
-   * Handles onChange even for selecting new question type by creating
-   * temporary question in store.
-   * @param {string} qType - question_type
-   */
-  selectQtype(qType) {
-    const question = { ...this.props.question, question_type: qType };
-    this.props.beforeCreateNewQuestion(question);
-  }
+
 
   render() {
-    const focus = this.props.question.temp || false;
 
-    if (!this.props.question.question_type) {
-      const qTypesDisplay = {
-        'RangeOption': 'numeric',
-        'DropdownOption': 'dropdown',
-        'FreeOption': 'free response'};
-      const options = Object.keys(qTypesDisplay).map((qType, index) => {
-        return (
-          <option
-            value={qType}
-            key={index}
-          >
-            {qTypesDisplay[qType]}
-          </option>
-        )
-      });
-      return (
-        <select
-          onChange={ e => this.selectQtype(e.target.value) }
-          value={1}
-        >
-          { options }
-          <option disabled value={1}>Select an Option</option>
-        </select>
-      )
-    }
+    const select = !!this.props.question.new;
 
     return (
-      <div style={{border: "1px solid black"}}>
-        <Question
-          question={this.props.question}
-          handleOnBlur={this.handleOnBlur.bind(this)}
-          handleOnChange={this.handleOnChange.bind(this)}
-          focus={focus}
-        />
-        <OptionsContainer
-          question={this.props.question}
-        />
-        <DepQuestionContainer
-          question={this.props.question}
-          optionsList={Object.keys(this.props.question.options)}
-        />
+      <div>
+        <div
+          className={'mega-question-block'}
+        >
+          <Question
+            question={this.props.question}
+            handleOnBlur={this.handleOnBlur.bind(this)}
+            handleOnChange={this.handleOnChange.bind(this)}
+            select={select}
+          />
+        </div>
+        { Object.keys(this.props.question.options).length !== 0 ?
+          <DepQuestionContainer
+            question={this.props.question}
+            optionIdList={Object.keys(this.props.question.options)}
+          /> : null}
       </div>
     );
   }
@@ -146,7 +96,6 @@ function mapDispatchToProps(dispatch) {
     beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
     questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
     questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
-    removeQuestion: (question) => { dispatch(removeQuestion(question))}
   };
 }
 

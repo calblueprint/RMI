@@ -15,6 +15,7 @@
     "polyfill": "^0.1.0",
     "postcss-smart-import": "^0.7.6",
     "prop-types": "^15.6.1",
+    "randomcolor": "^0.5.3",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-moment": "^0.7.0",
@@ -34,7 +35,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.10",
     "friendly-errors-webpack-plugin": "^1.6.1",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.9.0",
     "react-hot-loader": "^4.0.0",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.2",
@@ -42,6 +43,6 @@
   },
   "scripts": {
     "lint": "eslint src",
-    "dev": "NODE_OPTIONS=--max_old_space_size=4096 ./bin/webpack-dev-server"
+    "dev": "NODE_OPTIONS=--max_old_space_size=8192 ./bin/webpack-dev-server"
   }
 }

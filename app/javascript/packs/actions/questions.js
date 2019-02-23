@@ -8,7 +8,8 @@ import {
   FETCH_SUCCESS,
   QUESTION_FETCH_FAILURE,
   QUESTION_FETCH_SUCCESS,
-  REMOVE_QUESTION
+  REMOVE_QUESTION,
+  QUESTION_SET_NEW
 } from '../constants';
 
 
@@ -43,6 +44,13 @@ export function questionFetchSuccess(response) {
     building_type_id: response.building_type_id,
     response
   };
+}
+
+export function questionSetNew(question) {
+  return {
+    type: QUESTION_SET_NEW,
+    question
+  }
 }
 
 export function questionFetchFailure(error, question) {

@@ -14,6 +14,7 @@ import { patch, post } from '../../fetch/requester';
 import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import PropTypes from 'prop-types';
 import { isEmptyText } from '../../utils/InputComponentUtil';
+import randomColor from 'randomcolor';
 
 class OptionsContainer extends React.Component {
 
@@ -135,30 +136,26 @@ class OptionsContainer extends React.Component {
     switch (this.props.question.question_type) {
       case "DropdownOption":
         return(
-          <div>
-            <input
-              type="text"
-              placeholder={"Add new dropdown option"}
-              onFocus={e => this.onNewOption()}
-            />
+          <div
+            className={'option-display-block__counter'}
+          >
+            <div
+              className={'dropdown-input'}
+              onClick={e => this.onNewOption()}
+              style={{color: 'gray'}}
+            >
+              Add new dropdown option
+            </div>
           </div>
         );
       case "RangeOption":
         return(
-          <div>
-            min:
-            <input
-              type="number"
-              placeholder={"Add new min"}
-              onFocus={e => this.onNewOption()}
-            />
-            max:
-            <input
-              type="number"
-              placeholder={"Add new max"}
-              onFocus={e => this.onNewOption()}
-            />
-          </div>
+          <button
+            className={'add-option'}
+            onClick={e => this.onNewOption()}
+          >
+            +Add
+          </button>
         );
       default: return null;
     }
@@ -168,13 +165,22 @@ class OptionsContainer extends React.Component {
     const question = this.props.question;
     const OptionType = this.getComponentName(question.question_type);
 
-    const optionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
+    const OptionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
       const option = this.props.question.options[optionId];
       const handleOnBlur = this.handleOnBlur(option);
       const focus = option.temp || false;
+      const color = randomColor({
+        luminosity: 'light',
+        hue:  'random',
+        seed: option.id,
+        format: 'rgba',
+        alpha: 0.5
+      });
       return (
-        <div key={optionId}>
+        <div key={option.id}
+        >
           <OptionType
+            key={option.id}
             option={option}
             handleOnBlur={handleOnBlur.bind(this)}
             handleOnChange={this.handleOnChange.bind(this)}
@@ -185,8 +191,10 @@ class OptionsContainer extends React.Component {
     });
 
     return(
-      <div>
-        {optionsDisplay}
+      <div
+        className={'option-display-block'}
+      >
+        {OptionsDisplay}
         {this.newOptionPlaceholder()}
       </div>
     )
