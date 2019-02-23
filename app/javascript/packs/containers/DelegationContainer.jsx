@@ -204,19 +204,29 @@ class DelegationContainer extends React.Component {
     const currentLastName = this.state.lastName;
     return (
       <div>
-        First name:<br></br>
+        <p className="delegation__label">First name</p>
         <input type="text" value={currentFirstName}
           onChange={(e) => this.handleContactInfoChange("firstName", e.target.value)}
         /><br></br>
 
-        Last name:<br></br>
+        <p
+          className="delegation__label"
+          style={{ marginTop: '10px' }}
+        >
+          Last name
+        </p>
         <input type="text" value={currentLastName}
           onChange={(e) => this.handleContactInfoChange("lastName", e.target.value)}
         /><br></br>
 
-        <button type="submit" value="Create contact and assign"
+        <button
+          type="submit"
+          value="Create contact and assign"
           onClick={(e) => this.handleClickSaveContact()}
-        >Create contact and assign</button>
+          className="btn btn--primary delegation__assign_btn"
+        >
+          Create contact and assign
+        </button>
       </div>
     );
   }

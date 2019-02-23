@@ -23,10 +23,9 @@ export function getFirstUnansweredCategory(categories, questions, buildingId, st
   for (let currCategory in categories) {
     let cQuestions = getQuestionsByCategory(categories[currCategory].id, questions);
     if (getRemainingAnswersforCategory(cQuestions, buildingId, state) > 0) {
-      return currCategory;
+      return categories[currCategory];
     }
   }
-  return null;
 }
 
 /**

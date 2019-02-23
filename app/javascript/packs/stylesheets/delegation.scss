@@ -49,6 +49,12 @@ p.delegation__label {
   font-size: 11pt;
 }
 
+.delegation__assign_btn {
+  font-weight: 500;
+  height: 40px;
+  margin-top: 10px;
+}
+
 .pt-input-group:not(.pt-active) {
   &::after {
     content: "";

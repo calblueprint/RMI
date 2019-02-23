@@ -37,13 +37,20 @@ development:
   compile: true
 
   dev_server:
-    host: localhost
-    port: 8080
-    hmr: true
     https: false
+    host: sh
+    port: 3035
+    public: 0.0.0.0:3035
+    hmr: true
+    # Inline should be set to true if using HMR
     inline: true
     overlay: true
     compress: true
+    disable_host_check: true
+    use_local_ip: false
+    quiet: false
+    headers:
+      'Access-Control-Allow-Origin': '*'
     watch_options:
       ignored: /node_modules/
 

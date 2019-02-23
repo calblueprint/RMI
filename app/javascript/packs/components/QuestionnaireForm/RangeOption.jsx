@@ -38,25 +38,36 @@ class RangeOption extends React.Component {
 
   render() {
     return(
-      <div>
-        <div>
-          min:
-          <input
-            type="number"
-            defaultValue={this.props.option.min}
-            onBlur={(e) => this.updateMinMax({min: parseInt(e.target.value)})}
-            onChange={(e) => this.tempUpdate({min: parseInt(e.target.value)})}
-            placeholder={0}
-            ref={(input) => { this.optionInput = input; }}
-          />
-          max:
-          <input
-            type="number"
-            defaultValue={this.props.option.max}
-            onBlur={(e) => this.updateMinMax({max: parseInt(e.target.value)})}
-            onChange={(e) => this.tempUpdate({max: parseInt(e.target.value)})}
-            placeholder={100}
-          />
+      <div
+      >
+        <div
+          className={'range-input'}
+        >
+          <div>
+            <p>min</p>
+            <input
+              type="number"
+              defaultValue={this.props.option.min}
+              onBlur={(e) => this.updateMinMax({min: parseInt(e.target.value)})}
+              onChange={(e) => this.tempUpdate({min: parseInt(e.target.value)})}
+              placeholder={0}
+              ref={(input) => { this.optionInput = input; }}
+            />
+          </div>
+          <div>
+            <p id={'filler'}>l</p>
+            <div>-</div>
+          </div>
+          <div>
+            <p>max</p>
+            <input
+              type="number"
+              defaultValue={this.props.option.max}
+              onBlur={(e) => this.updateMinMax({max: parseInt(e.target.value)})}
+              onChange={(e) => this.tempUpdate({max: parseInt(e.target.value)})}
+              placeholder={100}
+            />
+          </div>
         </div>
         <div>
           <InputValidation
