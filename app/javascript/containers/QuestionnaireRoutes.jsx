@@ -30,7 +30,6 @@ class QuestionnaireRoutes extends React.Component {
             render={renderWithProps(ReviewModeContainer, propsToPass)}
           />
         </Switch>
-        <h1>asdf hello world </h1>
       </div>
     );
   }
