@@ -34,7 +34,7 @@ default: &default
 
 development:
   <<: *default
-  compile: true
+  compile: false
 
   dev_server:
     https: false
@@ -50,7 +50,7 @@ development:
     use_local_ip: false
     quiet: false
     headers:
-      'Access-Control-Allow-Origin': '*'
+      "Access-Control-Allow-Origin": "*"
     watch_options:
       ignored: /node_modules/
 
