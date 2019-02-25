@@ -36,7 +36,7 @@ class NavigationBarContainer extends React.Component {
       <div className="navbar">
         <div className="navbar__content">
           <div className="navbar__logo">
-            <Link to="/buildings">
+            <Link to="/">
               <img src={Logo} draggable={false} />
             </Link>
           </div>
