@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   getBuildings,
   getBuildingById
@@ -35,7 +36,9 @@ class NavigationBarContainer extends React.Component {
       <div className="navbar">
         <div className="navbar__content">
           <div className="navbar__logo">
-            <img src={Logo} />
+            <Link to="/buildings">
+              <img src={Logo} draggable={false} />
+            </Link>
           </div>
           {categoryContainer}
 
