@@ -1,36 +1,41 @@
-import React from 'react'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getQuestionsByCategoryId } from '../../selectors/questionsSelector';
-import { newDefaultQuestion } from '../../utils/TemporaryObjectUtil';
-import QuestionContainer from './QuestionContainer';
-import CategoryDisplay from '../../components/QuestionnaireForm/CategoryDisplay';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getQuestionsByCategoryId } from "../../selectors/questionsSelector";
+import { newDefaultQuestion } from "../../utils/TemporaryObjectUtil";
+import QuestionContainer from "./QuestionContainer";
+import CategoryDisplay from "../../components/QuestionnaireForm/CategoryDisplay";
 import {
   categoryFetchFailure,
   categoryFetchInProgress,
   categoryFetchSuccess,
   categoryPreFetchSave,
   removeCategory
-} from '../../actions/categories';
+} from "../../actions/categories";
 import {
-  beforeCreateNewQuestion, questionFetchFailure, questionFetchInProgress, questionFetchSuccess, questionSetNew
-} from '../../actions/questions';
-import {patch, post} from '../../fetch/requester';
-import { getCategoryById } from '../../selectors/categoriesSelector';
-import CreateQuestionButton from '../../components/QuestionnaireForm/CreateQuestionButton';
+  beforeCreateNewQuestion,
+  questionFetchFailure,
+  questionFetchInProgress,
+  questionFetchSuccess,
+  questionSetNew
+} from "../../actions/questions";
+import { patch, post } from "../../fetch/requester";
+import { getCategoryById } from "../../selectors/categoriesSelector";
+import CreateQuestionButton from "../../components/QuestionnaireForm/CreateQuestionButton";
 
 class CategoryQuestionsContainer extends React.Component {
-
   /**
    * Handles fetch request to update a question and redux update
    * @param { string } id - questionId to update
    * @param { Object } args - any question parameters
    */
   async updateCategory(id, args) {
-    const updatedCategory = {...this.props.category, ...args};
+    const updatedCategory = { ...this.props.category, ...args };
     this.props.categoryFetchInProgress(updatedCategory);
     try {
-      let response = await patch('/api/categories/' + updatedCategory.id, {'category': updatedCategory});
+      let response = await patch("/api/categories/" + updatedCategory.id, {
+        category: updatedCategory
+      });
       this.props.categoryFetchSuccess(response.data);
     } catch (error) {
       this.props.categoryFetchFailure(error, updatedCategory);
@@ -43,7 +48,7 @@ class CategoryQuestionsContainer extends React.Component {
    * @param {object} args - any question parameters
    */
   handleOnBlur(id, args) {
-    this.updateCategory(id, args)
+    this.updateCategory(id, args);
   }
 
   /**
@@ -53,8 +58,8 @@ class CategoryQuestionsContainer extends React.Component {
    * @param { string } args - any question parameters
    */
   handleOnChange(id, args) {
-    const updatedCategory = {...this.props.category, ...args};
-    this.props.categoryPreFetchSave(updatedCategory)
+    const updatedCategory = { ...this.props.category, ...args };
+    this.props.categoryPreFetchSave(updatedCategory);
   }
 
   newTempQuestion() {
@@ -62,17 +67,15 @@ class CategoryQuestionsContainer extends React.Component {
       building_type_id: this.props.buildingType.id,
       category_id: this.props.categoryId
     };
-    return newDefaultQuestion(args)
+    return newDefaultQuestion(args);
   }
 
   render() {
-    const questions_display = this.props.questionList.map((question)=>{
+    const questions_display = this.props.questionList.map(question => {
       if (!question.parent_option_id) {
         return (
           <div key={question.id}>
-            <QuestionContainer
-              question={question}
-            />
+            <QuestionContainer question={question} />
           </div>
         );
       }
@@ -92,7 +95,7 @@ class CategoryQuestionsContainer extends React.Component {
             key={this.props.category.id}
           />
         </div>
-        <h2>QUESTIONS FOR {this.props.category.name}</h2>
+        <h2>Questions for {this.props.category.name}</h2>
         <div>
           {questions_display}
           <CreateQuestionButton
@@ -117,17 +120,36 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
-    categoryFetchInProgress: (category) => { dispatch(categoryFetchInProgress(category)) },
-    categoryPreFetchSave: (category) => { dispatch(categoryPreFetchSave(category)) },
-    categoryFetchSuccess: (category) => {dispatch(categoryFetchSuccess(category))},
-    categoryFetchFailure: (error, category) => { dispatch(categoryFetchFailure(error, category)) },
-    removeCategory: (category) => { dispatch(removeCategory(category))},
-    questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
-    questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
-    questionSetNew: (question) => { dispatch(questionSetNew(question))},
-    questionFetchInProgress: (question) => { dispatch(questionFetchInProgress(question)) }
-
+    beforeCreateNewQuestion: question => {
+      dispatch(beforeCreateNewQuestion(question));
+    },
+    categoryFetchInProgress: category => {
+      dispatch(categoryFetchInProgress(category));
+    },
+    categoryPreFetchSave: category => {
+      dispatch(categoryPreFetchSave(category));
+    },
+    categoryFetchSuccess: category => {
+      dispatch(categoryFetchSuccess(category));
+    },
+    categoryFetchFailure: (error, category) => {
+      dispatch(categoryFetchFailure(error, category));
+    },
+    removeCategory: category => {
+      dispatch(removeCategory(category));
+    },
+    questionFetchSuccess: question => {
+      dispatch(questionFetchSuccess(question));
+    },
+    questionFetchFailure: (error, question) => {
+      dispatch(questionFetchFailure(error, question));
+    },
+    questionSetNew: question => {
+      dispatch(questionSetNew(question));
+    },
+    questionFetchInProgress: question => {
+      dispatch(questionFetchInProgress(question));
+    }
   };
 }
 
