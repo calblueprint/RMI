@@ -69,7 +69,8 @@
   font-weight: 700;
 }
 
-input, textarea {
+input,
+textarea {
   outline: none;
   font-size: 14pt;
   border: 2px solid $secondary;
@@ -83,12 +84,13 @@ input::-webkit-inner-spin-button {
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input:focus, textarea:focus, .input__range.input__range--focused {
+input:focus,
+textarea:focus,
+.input__range.input__range--focused {
   border: 3px solid $primary;
 }
 
 .input__text textarea {
-  
   width: 100%;
 }
 
