@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InactiveCategoryNode from './InactiveCategoryNode';
+import { connect } from 'react-redux';
+import { numUnanswered } from '../../selectors/answersSelector';
 
 /**
  * A "bus map" style component for the navbar that shows progression through the questionnaire
@@ -11,7 +13,8 @@ class BusMap extends React.Component {
     const completed = this.props.completed.map((categoryInfo) => {
       return (<InactiveCategoryNode label={categoryInfo.label}
                                     path={categoryInfo.path}
-                                    name={categoryInfo.name} />);
+                                    name={categoryInfo.name} 
+                                    isDisabled={false}/>);
     });
 
     const currentlyActive = this.props.current ? (
@@ -30,8 +33,9 @@ class BusMap extends React.Component {
     const upcoming = this.props.upcoming.map((categoryInfo) => {
       return (<InactiveCategoryNode label={categoryInfo.label}
                                     path={categoryInfo.path}
-                                    name={categoryInfo.name} />);
-    });
+                                    name={categoryInfo.name}
+                                    isDisabled={ this.props.numUnanswered > 0 && categoryInfo.name === "Review and Submit"} />)
+      ;});
 
     return (<div className="navbar__category-container">
       {completed}
@@ -62,4 +66,18 @@ BusMap.propTypes = {
   buildingId: PropTypes.number.isRequired
 };
 
-export default BusMap;
+function mapStateToProps(state, ownProps) {
+  return {
+    // number of undelegated questions, used to decide when to disable navigation in delegate mode
+    numUnanswered: numUnanswered(ownProps.buildingId, state)
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps)
+  (BusMap);

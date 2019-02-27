@@ -9,8 +9,20 @@ import QuestionContainer from './QuestionContainer';
 
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { numUnanswered } from '../selectors/answersSelector';
 
 class DelegateModeContainer extends React.Component {
+  
+  findNextPage() {
+    return "/buildings/" + String(this.props.building.id)  + "/review"
+  }
+
+  buttonStyle() {
+    if (this.props.numUnanswered > 0) { 
+      return {"pointer-events": "none", "background-color": "#969696"};
+    }
+  }
 
   render() {
     return (
@@ -28,6 +40,7 @@ class DelegateModeContainer extends React.Component {
           }
         })
         }
+        <Link style={this.buttonStyle()} class="to-submit-button" to={this.findNextPage()}>Review and Submit</Link>
       </div>
     );
   }
@@ -35,7 +48,8 @@ class DelegateModeContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    questions: getQuestionsByBuilding(ownProps.building.id, state)
+    questions: getQuestionsByBuilding(ownProps.building.id, state),
+    numUnanswered: numUnanswered(ownProps.building.id, state)
   }
 }
 

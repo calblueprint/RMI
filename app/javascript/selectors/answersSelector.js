@@ -53,3 +53,16 @@ export function isDelegated(question, buildingId, state) {
     return true;
   }
 }
+
+// returns number of undelegated questions for all questions of building 
+export function numUnanswered(buildingId, state) {
+  let unanswered = 0
+  let answers = state.buildings[buildingId].answers;
+
+  for (let key in answers) {
+    if (!(answers[key].text) && !(answers[key].delegation_email)) {
+      unanswered += 1;
+    }
+  }
+  return unanswered
+}
