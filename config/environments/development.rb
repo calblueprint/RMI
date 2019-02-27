@@ -1,4 +1,6 @@
 Rails.application.configure do
+  # Verifies that versions and hashed value of the package contents in the project's package.json
+  config.webpacker.check_yarn_integrity = false 
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -78,5 +80,5 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.rails_logger = true
   end
-
+  config.web_console.whitelisted_ips = %w( 127.0.0.1 192.168.0.0/16 172.0.0.0/8 )
 end
