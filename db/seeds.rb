@@ -1,7 +1,7 @@
 # Constants
 NUM_USERS = 5
-NUM_PORTFOLIOS = 5
-NUM_BUILDINGS = 15
+NUM_PORTFOLIOS = 3
+NUM_BUILDINGS = 5
 BUILDING_TYPES = [
   { name: 'Big Box Retail' },
   { name: 'Small Office' }
@@ -268,9 +268,9 @@ end
 
 def make_delegations
   count = 0
-  total = Answer.all.count * 3
+  total = Answer.all.count * 2
   Answer.all.each do |answer|
-    0.upto(2) do |n|
+    0.upto(1) do |n|
       delegation = Delegation.new
       delegation.source = BuildingOperator.all.sample
       delegation.building_operator = BuildingOperator.all.sample
