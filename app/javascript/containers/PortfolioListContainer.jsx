@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactModal from 'react-modal';
+import { patch, post } from "../../fetch/requester";
 
 class PortfolioListContainer extends React.Component {
   constructor () {
@@ -33,6 +34,12 @@ class PortfolioListContainer extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const typeName = new FormData(event.target);
+    try {
+      let response = await patch('/api/buildings/' + updatedQuestion.id, {'question': updatedQuestion});
+      this.props.questionFetchSuccess(response.data);
+    } catch (error) {
+      console.log("failed");
+    }
   }
 
   render() {
