@@ -19,13 +19,14 @@ class AnswerModeContainer extends React.Component {
     for (let i = 0; i < this.props.categories.length - 1; i++) {
       if (this.props.categories[i].id == this.props.match.params.cId) {
         nextPageURL += "/edit/" + this.props.categories[i + 1].id   
-        return nextPageURL
+        return [nextPageURL, this.props.categories[i + 1].name];
       }
     }
-    return nextPageURL + "/delegate"
+    return [nextPageURL + "/delegate", "Handoff"]
   }
 
   render() {
+    const [next_path, next_category_name] = this.findNextPage();
     return (
       <div className="question__container">
         {this.props.questions.map((question) => {
@@ -40,7 +41,7 @@ class AnswerModeContainer extends React.Component {
               />
             );
         })}
-        <Link class="next-button" to= {this.findNextPage()}>Next</Link>
+        <Link class="next-button" to= {next_path}><b>Next:</b> {next_category_name}</Link>
       </div>
     );
   }
