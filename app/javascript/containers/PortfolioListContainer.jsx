@@ -4,12 +4,35 @@ import { loadInitialState } from '../actions/initialState';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ReactModal from 'react-modal';
 
 class PortfolioListContainer extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      showModal: false
+    };
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
   componentDidMount() {
     if (window.INITIAL_STATE) {
       this.props.initActions.loadInitialState(window.INITIAL_STATE);
     }
+  }
+
+  handleOpenModal () {
+    this.setState({ showModal: true });
+  }
+  
+  handleCloseModal () {
+    this.setState({ showModal: false });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const typeName = new FormData(event.target);
   }
 
   render() {
@@ -17,6 +40,20 @@ class PortfolioListContainer extends React.Component {
     const building_types = this.props.building_types;
     return (<div>
       <h2>Building Types</h2>
+      <input type="button" value="Create New Building Type" onClick={this.handleOpenModal}></input>
+      <ReactModal
+        isOpen={this.state.showModal}
+        ariaHideApp={false}
+        shouldCloseOnEsc={true}>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Add Building Type
+            <input type="text" name="name" />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+        <button onClick={this.handleCloseModal}>Close Modal</button>
+      </ReactModal>
       {Object.keys(building_types).map(id => {
         return (
           <p key={id}>

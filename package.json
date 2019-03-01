@@ -18,6 +18,7 @@
     "randomcolor": "^0.5.3",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
+    "react-modal": "^3.8.1",
     "react-moment": "^0.7.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
