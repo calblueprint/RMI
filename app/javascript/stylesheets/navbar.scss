@@ -11,8 +11,6 @@
   align-items: center;
   justify-content: center;
   margin-top: 50px;
-  // margin-right: 40px;
-  // margin-left: 20px;
 
   img {
     max-width: 90px;
@@ -32,11 +30,11 @@
   // width: 80%;
   flex: 5;
   background: linear-gradient(
-                  to bottom,
-                  rgba(255, 255, 255, 0) 48%,
-                  $primary 48%,
-                  $primary 52%,
-                  rgba(255, 255, 255, 0) 52%
+    to bottom,
+    rgba(255, 255, 255, 0) 48%,
+    $primary 48%,
+    $primary 52%,
+    rgba(255, 255, 255, 0) 52%
   );
   height: 250px;
   display: flex;
