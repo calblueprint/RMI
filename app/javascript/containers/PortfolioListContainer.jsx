@@ -5,7 +5,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactModal from 'react-modal';
-import { patch, post } from "../../fetch/requester";
+import { patch, post } from "../fetch/requester";
+import {
+  addBuildingType
+} from '../actions/building_type';
 
 class PortfolioListContainer extends React.Component {
   constructor () {
@@ -31,12 +34,14 @@ class PortfolioListContainer extends React.Component {
     this.setState({ showModal: false });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     const typeName = new FormData(event.target);
     try {
-      let response = await patch('/api/buildings/' + updatedQuestion.id, {'question': updatedQuestion});
-      this.props.questionFetchSuccess(response.data);
+      let response = await post('/api/building_types', {'building_type': typeName});
+      console.log(response.data);
+      this.props.addBuildingType(typeName);
+      console.log("success");
     } catch (error) {
       console.log("failed");
     }
@@ -88,7 +93,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    initActions: bindActionCreators({ loadInitialState }, dispatch)
+    initActions: bindActionCreators({ loadInitialState }, dispatch),
+    addBuildingType: (name) => {dispatch(addBuildingType(name))}
   };
 }
 
