@@ -1,12 +1,16 @@
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import OptionsContainer from './OptionsContainer';
-import QuestionResultContainer from './QuestionResultContainer';
-import DelegationContainer from './DelegationContainer';
-import PropTypes from 'prop-types';
+import OptionsContainer from "./OptionsContainer";
+import QuestionResultContainer from "./QuestionResultContainer";
+import DelegationContainer from "./DelegationContainer";
+import {
+  getAnswerForQuestionAndBuilding,
+  isDelegatedAnswer
+} from "../selectors/answersSelector";
 
 class QuestionContainer extends React.Component {
-
   // this.props.mode can be
   // "answer": answering mode
   // "review": reviewing mode
@@ -22,6 +26,9 @@ class QuestionContainer extends React.Component {
         text={this.props.text}
         setFocusFunc={this.props.setFocusFunc}
         unit={this.props.unit}
+        answer={this.props.answer}
+        focusOnMount={this.props.focusOnMount}
+        parentIsHidden={this.props.parentIsHidden}
       />
     );
   }
@@ -56,22 +63,30 @@ class QuestionContainer extends React.Component {
   }
 
   render() {
-    if (this.props.mode == "answer") {
-      return this.renderAnswerMode();
-    } else if (this.props.mode == "review") {
+    if (this.props.mode === "review") {
       return this.renderReviewMode();
-    } else if (this.props.mode == "delegation") {
-      return this.renderDelegationMode();
-    } else {
-      console.log("Unknown mode! ");
-      console.log(this.props.mode);
-      return (<p>Error</p>);
     }
+    if (
+      this.props.mode === "delegation" ||
+      isDelegatedAnswer(this.props.answer)
+    ) {
+      return this.renderDelegationMode();
+    }
+    return this.renderAnswerMode();
   }
-
 }
 
-export default QuestionContainer;
+function mapStateToProps(state, ownProps) {
+  return {
+    answer: getAnswerForQuestionAndBuilding(
+      ownProps.id,
+      ownProps.building_id,
+      state
+    )
+  };
+}
+
+export default connect(mapStateToProps)(QuestionContainer);
 
 QuestionContainer.propTypes = {
   id: PropTypes.number.isRequired,
@@ -80,5 +95,10 @@ QuestionContainer.propTypes = {
   options: PropTypes.object.isRequired,
   text: PropTypes.string.isRequired,
   mode: PropTypes.string.isRequired,
-  unit: PropTypes.string
+  unit: PropTypes.string,
+  answer: PropTypes.shape({
+    // Optional - new questions can have no answer
+  }),
+  focusOnMount: PropTypes.bool,
+  parentIsHidden: PropTypes.bool
 };

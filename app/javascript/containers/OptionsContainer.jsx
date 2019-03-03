@@ -1,17 +1,22 @@
-import React from 'react';
+import React from "react";
 
-import PropTypes from 'prop-types';
-import DropdownOption from '../components/DropdownOption';
-import RangeOption from '../components/RangeOption';
-import FileOption from '../components/FileOption';
-import FreeOption from '../components/FreeOption';
-import Status from '../components/Status';
-import DependentQuestions from '../components/DependentQuestions';
+import PropTypes from "prop-types";
+import DropdownOption from "../components/DropdownOption";
+import RangeOption from "../components/RangeOption";
+import FileOption from "../components/FileOption";
+import FreeOption from "../components/FreeOption";
+import Status from "../components/Status";
+import DependentQuestions from "../components/DependentQuestions";
 
-import { connect } from 'react-redux';
-import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
-import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
+import { connect } from "react-redux";
+import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
+import {
+  createAnswer,
+  uploadFile,
+  deleteFile,
+  updateAnswer,
+  updateLocalAnswer
+} from "../actions/answers";
 
 class OptionsContainer extends React.Component {
   constructor(props) {
@@ -42,6 +47,10 @@ class OptionsContainer extends React.Component {
    *                      for dropdown options, it's the text of the option that was selected.
    */
   onChange(optionId, value) {
+    if (!this.props.answer || this.props.answer.text === value) {
+      // No changes have been made
+      return;
+    }
     const answer = this.getAnswerData(optionId, value);
     this.props.updateLocalAnswer(this.props.building_id, answer);
   }
@@ -60,8 +69,7 @@ class OptionsContainer extends React.Component {
     // Dispatch an action to update answer in the database and in store
     if (!this.props.answer || !this.props.answer.id) {
       this.props.createAnswer(answer.building_id, answer);
-    }
-    else {
+    } else {
       answer.id = this.props.answer.id;
       this.props.updateAnswer(answer.building_id, answer);
     }
@@ -103,7 +111,7 @@ class OptionsContainer extends React.Component {
         case "DropdownOption":
           return <DropdownOption {...optionProps} />;
         case "RangeOption":
-          optionProps['unit'] = this.props.unit;
+          optionProps["unit"] = this.props.unit;
           return <RangeOption {...optionProps} />;
         case "FileOption":
           return <FileOption {...optionProps} />;
@@ -112,49 +120,62 @@ class OptionsContainer extends React.Component {
       }
     })();
 
-    return (<div className="question__block">
-      <div
-        className={
-          `question \
-          ${this.state.selected ? 'question--selected' : '' } \
-          ${this.props.answer
-            && this.props.answer.error ? 'question--error' : ''}`
-        }
-      >
-        <p>{this.props.text}</p>
-        {optionsComponent}
-        <Status fetchObject={this.props.answer}
-                onRetry={this.onRetry.bind(this)} />
+    return (
+      <div className="question__block">
+        <div
+          className={`question \
+          ${this.state.selected ? "question--selected" : ""} \
+          ${
+            this.props.answer && this.props.answer.error
+              ? "question--error"
+              : ""
+          }`}
+        >
+          <p>{this.props.text}</p>
+          {optionsComponent}
+          <Status
+            fetchObject={this.props.answer}
+            onRetry={this.onRetry.bind(this)}
+          />
+        </div>
+        {this.props.answer ? (
+          <DependentQuestions
+            answer={this.props.answer}
+            dependentQuestions={this.props.dependentQuestions}
+            buildingId={this.props.building_id}
+            parentIsHidden={this.props.parentIsHidden}
+            disableFocusOnMount={this.props.question_type == "RangeOption"}
+          />
+        ) : null}
       </div>
-      {this.props.answer ?
-        <DependentQuestions
-          answer={this.props.answer}
-          dependentQuestions={this.props.dependentQuestions}
-          buildingId={this.props.building_id}
-          parentIsHidden={this.props.parentIsHidden}
-          disableFocusOnMount={this.props.question_type == "RangeOption"}
-        />
-      : null}
-    </div>);
+    );
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
-    answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state)
-  }
+    dependentQuestions: getDependentQuestionsForOptionIds(
+      Object.keys(ownProps.options),
+      ownProps.question_type,
+      state
+    )
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
-    uploadFile: (buildingId, questionId, file) => uploadFile(buildingId, questionId, file, dispatch),
-    deleteFile: (buildingId, answer) => deleteFile(buildingId, answer, dispatch),
+    createAnswer: (buildingId, answer) =>
+      createAnswer(buildingId, answer, dispatch),
+    uploadFile: (buildingId, questionId, file) =>
+      uploadFile(buildingId, questionId, file, dispatch),
+    deleteFile: (buildingId, answer) =>
+      deleteFile(buildingId, answer, dispatch),
     downloadFile: (url, fileName) => downloadFile(url, fileName),
-    updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
-    updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
-  }
+    updateAnswer: (buildingId, answer) =>
+      updateAnswer(buildingId, answer, dispatch),
+    updateLocalAnswer: (buildingId, answer) =>
+      dispatch(updateLocalAnswer(buildingId, answer))
+  };
 }
 
 OptionsContainer.propTypes = {
@@ -163,8 +184,8 @@ OptionsContainer.propTypes = {
   question_type: PropTypes.string.isRequired,
   options: PropTypes.object.isRequired,
   dependentQuestions: PropTypes.object.isRequired,
-  answer: PropTypes.shape({ // Optional - new questions can have no answer
-
+  answer: PropTypes.shape({
+    // Optional - new questions can have no answer
   }),
   focusOnMount: PropTypes.bool.isRequired,
   parentIsHidden: PropTypes.bool.isRequired,
@@ -173,7 +194,7 @@ OptionsContainer.propTypes = {
 
 OptionsContainer.defaultProps = {
   focusOnMount: false,
-  parentIsHidden: false,
+  parentIsHidden: false
 };
 
 export default connect(
