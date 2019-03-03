@@ -9,10 +9,24 @@ import QuestionContainer from './QuestionContainer';
 
 import { connect } from 'react-redux';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
-import { getQuestionsByCategory } from '../utils/QuestionsFilter'
+import { getQuestionsByCategory } from '../utils/QuestionsFilter';
+import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
+import { Link } from 'react-router-dom';
 
 class AnswerModeContainer extends React.Component {
+  findNextPage() {
+    let nextPageURL = "/buildings/" + String(this.props.building.id)
+    for (let i = 0; i < this.props.categories.length - 1; i++) {
+      if (this.props.categories[i].id == this.props.match.params.cId) {
+        nextPageURL += "/edit/" + this.props.categories[i + 1].id   
+        return [nextPageURL, this.props.categories[i + 1].name];
+      }
+    }
+    return [nextPageURL + "/delegate", "Handoff"]
+  }
+
   render() {
+    const [next_path, next_category_name] = this.findNextPage();
     return (
       <div className="question__container">
         {this.props.questions.map((question) => {
@@ -27,6 +41,7 @@ class AnswerModeContainer extends React.Component {
               />
             );
         })}
+        <Link class="next-button" to= {next_path}><b>Next:</b> {next_category_name}</Link>
       </div>
     );
   }
@@ -35,6 +50,7 @@ class AnswerModeContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     questions: getQuestionsByCategory(ownProps.match.params.cId, getQuestionsByBuilding(ownProps.building.id, state)),
+    categories: getCategoriesForBuilding(ownProps.building.id, state)
   };
 }
 
