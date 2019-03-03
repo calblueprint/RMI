@@ -132,3 +132,22 @@ textarea:focus,
   color: white;
   background-color: $primary;
 }
+
+.next-button {
+  width: 70px;
+  line-height: 30px;
+  display: block;
+  text-align: center;
+  border-radius: 3px;
+  background-color: $primary;
+  color: white;
+  font-size: 16px;
+  font-family: BlinkMacSystemFont;
+  margin-bottom: 15px;
+}
+
+.next-button:hover {
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 5px 15px $secondary;
+}

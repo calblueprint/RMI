@@ -9,6 +9,10 @@ import { numUnanswered } from '../../selectors/answersSelector';
  * with buttons for each category, as well as delegate/review stages.
  */
 class BusMap extends React.Component {
+  isDisabledHelper(categoryInfo) {
+     return this.props.numUnanswered > 0 && categoryInfo.name === "Review and Submit";
+  }
+  
   render() {
     const completed = this.props.completed.map((categoryInfo) => {
       return (<InactiveCategoryNode label={categoryInfo.label}
@@ -34,7 +38,7 @@ class BusMap extends React.Component {
       return (<InactiveCategoryNode label={categoryInfo.label}
                                     path={categoryInfo.path}
                                     name={categoryInfo.name}
-                                    isDisabled={ this.props.numUnanswered > 0 && categoryInfo.name === "Review and Submit"} />)
+                                    isDisabled={this.isDisabledHelper(categoryInfo)} />)
       ;});
 
     return (<div className="navbar__category-container">
@@ -79,5 +83,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps)
-  (BusMap);
+  mapDispatchToProps
+)(BusMap);
