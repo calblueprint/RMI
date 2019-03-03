@@ -17,7 +17,7 @@
   transition: all 0.5s;
 }
 
-.question p {
+.question > p {
   margin: 0 0 0 0;
   margin-bottom: 10px;
   font-size: 16pt;
@@ -52,8 +52,17 @@
   // border-left: 3px solid
 }
 
+.question--in-review {
+  border-left: none;
+
+  p {
+    margin-bottom: 0px;
+  }
+}
+
 .status__container p {
   margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 8.5pt;
   color: $secondary;
 }
@@ -148,6 +157,10 @@ textarea:focus,
   font-family: BlinkMacSystemFont;
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.next-button--submit {
+  font-weight: 800;
 }
 
 .next-button:hover {

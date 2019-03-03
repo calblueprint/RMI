@@ -130,10 +130,10 @@ class ReviewModeContainer extends React.Component {
         {this.populateQuestionStack(this.props.building, this.props.questions)}
         <div className="delegation">
           <button type="submit"
-                  value="Submit Delegation"
+                  value="Submit Form"
                   onClick={(e) => this.submitDelegation()}
-                  className="btn btn--primary"
-          >Submit Delegation
+                  className="next-button next-button--submit"
+          >Submit Form
           </button>
           <p>{this.state.status_string}</p>
         </div>
