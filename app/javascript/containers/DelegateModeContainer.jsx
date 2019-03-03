@@ -40,7 +40,7 @@ class DelegateModeContainer extends React.Component {
           }
         })
         }
-        <Link style={this.buttonStyle()} class="to-submit-button" to={this.findNextPage()}>Review and Submit</Link>
+        <Link style={this.buttonStyle()} class="next-button" to={this.findNextPage()}><b>Next:</b> Review and Submit</Link>
       </div>
     );
   }
