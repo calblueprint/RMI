@@ -65,7 +65,7 @@ const formatState = {
     );
   },
   categories: function(categories) {
-    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id', 'questions']));
+    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id', 'description', 'questions']));
   },
   portfolios: function(portfolios) {
     return toObjectById(
