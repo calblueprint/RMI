@@ -77,7 +77,8 @@ class CategoryContainer extends React.Component {
     return (
       <BusMap completed={finishedCategories}
               current={current}
-              upcoming={upcomingCategories}/>
+              upcoming={upcomingCategories}
+              buildingId={currentBuildingId}/>
     );
   }
 }

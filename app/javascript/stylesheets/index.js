@@ -1,7 +1,9 @@
 import "@blueprintjs/core/lib/css/blueprint.css";
-import "./global.scss";
 import "./buildings.scss";
-import "./questions.scss";
+import "./CategoryHeader.scss";
 import "./delegation.scss";
+import "./global.scss";
 import "./navbar.scss";
 import "./QuestionnaireForm.scss";
+import "./questions.scss";
+import "./ReviewMode.scss";
