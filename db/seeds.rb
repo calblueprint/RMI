@@ -270,7 +270,7 @@ def make_delegations
   count = 0
   total = Answer.all.count * 2
   Answer.all.each do |answer|
-    0.upto(1) do |n|
+    0.upto(2) do |n|
       delegation = Delegation.new
       delegation.source = BuildingOperator.all.sample
       delegation.building_operator = BuildingOperator.all.sample

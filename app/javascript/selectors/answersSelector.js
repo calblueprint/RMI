@@ -66,3 +66,37 @@ export function numUnanswered(buildingId, state) {
   }
   return unanswered;
 }
+
+export function numAnsweredbyCategory(buildingId, categoryId, state) {
+  let answered = 0;
+  let answers = state.buildings[buildingId].answers;
+  for (let i = 0; i < answers.length; i++) {
+    console.log(i)
+
+    let questionId = answers[i].question_id;
+    let question = state.questions[questionId];
+    let answerCategory = question.category_id;
+
+    console.log(answerCategory, categoryId);
+    if (answerCategory === categoryId && (!(isUnanswered(question, buildingId, state) 
+        || isDelegated(question, buildingId, state)))) {
+      answered += 1;
+      break;
+    }
+  }
+  return answered;
+}
+
+/* for each category of questions that the specified building has, it calculates the 
+   number of unanswered questions and returns a dictionary with the category id as 
+   the key and the number of unanswered questions in that category as the value 
+*/
+export function numAnsweredforCategories(buildingId, categoriesArray, state) {
+  let answered = {};
+  for (let i = 0; i < categoriesArray.length; i++) {
+    let categoryId = categoriesArray[i].id;
+    answered[categoryId] = numAnsweredbyCategory(buildingId, categoryId, state);
+  }
+
+  return answered;
+}

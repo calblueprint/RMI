@@ -39,3 +39,39 @@
 .building__row:hover {
   background-color: $backgroundGray;
 }
+
+// for the building operator view
+.building_list_container {
+  background-color: $backgroundGray;
+  //TODO make the boxes appear in grid form
+}
+
+.building_view {
+  margin: 40px;
+  width: 400px;
+  height: 500px;
+  padding: 50px;
+  text-align: center;
+  background-color: white;
+  box-shadow: 0 0 3px #ccc;
+}
+
+.link {
+  height: 100px;
+  text-align: center;
+  border-radius: 3px;
+  background-color: $primary;
+  color: white;
+  font-size: 26px;
+  font-family: BlinkMacSystemFont;
+}
+
+.link:hover {
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 5px 15px $secondary;
+}
+
+.building_view_info {
+  padding: 90px;
+}

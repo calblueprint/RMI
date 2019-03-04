@@ -55,7 +55,7 @@ class NavigationBarContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   //The navigation system for categories and questions requires us to be in a building view
-  const buildingView = ownProps.match.params.entity == "buildings";
+  const buildingView = ownProps.match.params.entity == "buildings" && ownProps.match.params.id;
   //gather questions for the building making sure we are in a building view and taking it from the id in the url
   const questions =
     buildingView && ownProps.match.params.id
