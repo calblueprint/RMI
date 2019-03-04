@@ -35,12 +35,15 @@ class PortfolioListContainer extends React.Component {
   }
 
   async handleSubmit(event) {
+    console.log("reached");
     event.preventDefault();
-    const typeName = new FormData(event.target);
+    const typeName = event.target.name.value;
+    console.log(typeName);
     try {
-      let response = await post('/api/building_types', {'building_type': typeName});
+      let response = await post('/api/building_types', {'name': typeName});
       console.log(response.data);
-      this.props.addBuildingType(typeName);
+      const buildingTypeId = response.data.id;
+      this.props.addBuildingType(typeName, buildingTypeId);
       console.log("success");
     } catch (error) {
       console.log("failed");

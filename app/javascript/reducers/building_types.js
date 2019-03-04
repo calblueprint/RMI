@@ -96,9 +96,10 @@ function addCategoryId(state, action) {
 }
 
 function addBuildingType(state, action) {
-  const buildingTypeId = action.response.building_type_id;
-  const questionId = action.response.id.toString();
-  if (state[buildingTypes].includes(buildingTypeId)) {
+  console.log("addBuilding Reached");
+  const buildingTypeId = action.building_type_id;
+  console.log(state);
+  if (buildingTypeId in state) {
     return state
   }
 
