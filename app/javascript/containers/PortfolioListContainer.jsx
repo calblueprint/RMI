@@ -45,6 +45,7 @@ class PortfolioListContainer extends React.Component {
       const buildingTypeId = response.data.id;
       this.props.addBuildingType(typeName, buildingTypeId);
       console.log("success");
+      this.props.history.push('/building_type/'+ buildingTypeId);
     } catch (error) {
       console.log("failed");
     }
