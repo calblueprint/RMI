@@ -62,7 +62,7 @@ function mapStateToProps(state, ownProps) {
       ? getQuestionsByBuilding(ownProps.match.params.id, state)
       : [];
   //likewise gathering the specific category from params of url
-  const categoryId = buildingView ? ownProps.match.params.cId ? ownProps.match.params.cId : 'review_mode' : null;
+  const categoryId = buildingView ? (ownProps.match.params.cId ? ownProps.match.params.cId : 'review_mode') : null;
   const questionsByCategory = categoryId != 'review_mode' ? getQuestionsByCategory(categoryId, questions) : questions;
   //remaining questions is the number of questions for the category that we are viewing for a specific building
   //we check for the questions through answers of a building and a category requiring a check for the building id and
