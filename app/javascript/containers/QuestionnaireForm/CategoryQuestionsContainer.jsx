@@ -19,7 +19,7 @@ import {
   questionFetchSuccess,
   questionSetNew
 } from "../../actions/questions";
-import { patch, post } from "../../fetch/requester";
+import { patch, post, destroy } from "../../fetch/requester";
 import { getCategoryById } from "../../selectors/categoriesSelector";
 import CreateQuestionButton from "../../components/QuestionnaireForm/CreateQuestionButton";
 
@@ -43,6 +43,25 @@ class CategoryQuestionsContainer extends React.Component {
   }
 
   /**
+   * Handles request to delete a question and redux update
+   * @param { string } id - categoryId to update
+   * @param { Object } args - any category parameters
+   */
+  async removeCategory(id, args) {
+    console.log("Removing category");
+    const removedCategory = { ...this.props.category, ...args };
+    try {
+      this.props.removeCategory(this.props.category);
+      let response = await destroy("/api/categories/" + removedCategory.id);
+      console.log("Success");
+      console.log(response);
+    } catch (error) {
+      console.log("REQUEST ERROR");
+      console.log(error)
+    }
+  }
+
+  /**
    * Calls async fetch function during onBlur to create or update question object.
    * @param {string} id - questionId to update
    * @param {object} args - any question parameters
@@ -51,6 +70,16 @@ class CategoryQuestionsContainer extends React.Component {
     this.updateCategory(id, args);
   }
 
+  /**
+   * Calls async fetch function during onRemove to delete category object.
+   * @param {string} id - categoryId to update
+   * @param {object} args - any category parameters
+   */
+  handleOnRemove(id, args) {
+    // debugger;
+    console.log("handle on remove");
+    this.removeCategory(id, args);
+  }
   /**
    * Handles event for onChange which is updating redux temporarily.
    * If create new question, create a temp question in question store.
@@ -90,6 +119,7 @@ class CategoryQuestionsContainer extends React.Component {
             category={this.props.category}
             errors={this.props.category.error}
             select={select}
+            handleOnRemove={this.handleOnRemove.bind(this)}
             handleOnBlur={this.handleOnBlur.bind(this)}
             handleOnChange={this.handleOnChange.bind(this)}
             key={this.props.category.id}

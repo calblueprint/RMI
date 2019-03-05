@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import InputValidation from '../InputValidation';
 
@@ -16,6 +17,14 @@ class CategoryDisplay extends React.Component {
    */
   handleOnBlur(name) {
     this.props.handleOnBlur(this.props.category.id, { name })
+  }
+
+  /**
+   * Handles event for onRemove which is making delete request
+   * @param { string } name - the name of the category
+   */
+  handleOnRemove(name) {
+    this.props.handleOnRemove(this.props.category.id, { name })
   }
 
   /**
@@ -42,6 +51,11 @@ class CategoryDisplay extends React.Component {
             errors={this.props.category.error}
           />
         </div>
+        <button
+          className="btn btn--primary remove_category_btn"
+          onClick={(e) => this.handleOnRemove(e.target.value)}>
+          Remove Category
+        </button>
       </div>
     )
   }
