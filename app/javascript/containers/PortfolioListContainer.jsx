@@ -11,10 +11,11 @@ import {
 } from '../actions/building_type';
 
 class PortfolioListContainer extends React.Component {
-  constructor () {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      buildingTypes: this.props.building_types
     };
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -42,13 +43,17 @@ class PortfolioListContainer extends React.Component {
     try {
       let response = await post('/api/building_types', {'name': typeName});
       console.log(response.data);
+      this.setState({buildingTypes: response.data, showModal: false})
       const buildingTypeId = response.data.id;
       this.props.addBuildingType(typeName, buildingTypeId);
-      console.log("success");
       this.props.history.push('/building_type/'+ buildingTypeId);
+      console.log("success");
+      
     } catch (error) {
       console.log("failed");
     }
+
+    
   }
 
   render() {
@@ -98,7 +103,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
-    addBuildingType: (name) => {dispatch(addBuildingType(name))}
+    addBuildingType: (typeName, buildingTypeId) => {dispatch(addBuildingType(typeName, buildingTypeId))}
   };
 }
 

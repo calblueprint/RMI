@@ -80,10 +80,12 @@ class QuestionnaireFormContainer extends React.Component {
             New Category
           </button>
         </div>
-        <CategoryQuestionsContainer
+        {this.state.currentCategory ? 
+        (<CategoryQuestionsContainer
           buildingType={this.props.buildingType}
           categoryId={this.state.currentCategory.id}
-        />
+        />) : (
+        <h1>You have no categories</h1>)}
       </div>
     );
   }
