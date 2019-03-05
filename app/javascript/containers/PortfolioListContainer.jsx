@@ -17,8 +17,7 @@ class PortfolioListContainer extends React.Component {
       showModal: false,
       buildingTypes: this.props.building_types
     };
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
@@ -27,35 +26,29 @@ class PortfolioListContainer extends React.Component {
     }
   }
 
-  handleOpenModal () {
-    this.setState({ showModal: true });
-  }
-  
-  handleCloseModal () {
-    this.setState({ showModal: false });
+  toggleModal () {
+    this.setState({ showModal: !this.state.showModal });
   }
 
   async handleSubmit(event) {
-    console.log("reached");
     event.preventDefault();
     const typeName = event.target.name.value;
     try {
       let response = await post('/api/building_types', {'name': typeName});
-      console.log(response.data);
-      
-      console.log(this.state.buildingTypes);
-      console.log('data here');
       const buildingTypeId = response.data.id;
+      console.log(response.data)
       this.props.addBuildingType(typeName, buildingTypeId);
-      this.setState({buildingTypes: this.state.buildingTypes, showModal: false})
+      // this.state.buildingTypes[buildingTypeId] = response.data;
+      this.setState({buildingTypes: this.props.building_types, showModal: false})
       console.log(this.state.buildingTypes);
-      // this.props.history.push('/building_type/'+ buildingTypeId);
+      console.log(this.props.building_types);
       console.log("success");
+      // this.props.history.push('/building_type/'+ buildingTypeId);
       
     } catch (error) {
       console.log("failed");
     }
-
+    
     
   }
 
@@ -67,7 +60,7 @@ class PortfolioListContainer extends React.Component {
     console.log("hihih");
     return (<div>
       <h2>Building Types</h2>
-      <input type="button" value="Create New Building Type" onClick={this.handleOpenModal}></input>
+      <input type="button" value="Create New Building Type" onClick={this.toggleModal}></input>
       <ReactModal
         isOpen={this.state.showModal}
         ariaHideApp={false}
@@ -79,7 +72,7 @@ class PortfolioListContainer extends React.Component {
           </label>
           <input type="submit" value="Submit" />
         </form>
-        <button onClick={this.handleCloseModal}>Close Modal</button>
+        <button onClick={this.toggleModal}>Close Modal</button>
       </ReactModal>
       {Object.keys(building_types).map(id => {
         return (
