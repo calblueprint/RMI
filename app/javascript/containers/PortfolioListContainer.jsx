@@ -39,14 +39,17 @@ class PortfolioListContainer extends React.Component {
     console.log("reached");
     event.preventDefault();
     const typeName = event.target.name.value;
-    console.log(typeName);
     try {
       let response = await post('/api/building_types', {'name': typeName});
       console.log(response.data);
-      this.setState({buildingTypes: response.data, showModal: false})
+      
+      console.log(this.state.buildingTypes);
+      console.log('data here');
       const buildingTypeId = response.data.id;
       this.props.addBuildingType(typeName, buildingTypeId);
-      this.props.history.push('/building_type/'+ buildingTypeId);
+      this.setState({buildingTypes: this.state.buildingTypes, showModal: false})
+      console.log(this.state.buildingTypes);
+      // this.props.history.push('/building_type/'+ buildingTypeId);
       console.log("success");
       
     } catch (error) {
@@ -59,6 +62,9 @@ class PortfolioListContainer extends React.Component {
   render() {
     const portfolios = this.props.portfolios;
     const building_types = this.props.building_types;
+    // console.log(Object.keys(building_types));
+    // console.log(Object.keys(this.state.buildingTypes));
+    console.log("hihih");
     return (<div>
       <h2>Building Types</h2>
       <input type="button" value="Create New Building Type" onClick={this.handleOpenModal}></input>

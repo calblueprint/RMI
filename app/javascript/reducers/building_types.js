@@ -97,7 +97,9 @@ function addCategoryId(state, action) {
 
 function addBuildingType(state, action) {
   console.log("addBuilding Reached");
-  const buildingTypeId = action.building_type_id;
+  // console.log(action.buildingTypeId);
+  const buildingTypeId = action.buildingTypeId;
+  const buildingTypeName = action.buildingTypeName;
   console.log(state);
   if (buildingTypeId in state) {
     return state
@@ -106,7 +108,10 @@ function addBuildingType(state, action) {
   return {
     ...state,
     [buildingTypeId] : {
-      ...state[buildingTypeId],
+      id: buildingTypeId,
+      name: buildingTypeName,
+      questions: [],
+      categories: []
     }
   }
 }
