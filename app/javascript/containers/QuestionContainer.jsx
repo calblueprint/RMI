@@ -11,10 +11,20 @@ import {
 } from "../selectors/answersSelector";
 
 class QuestionContainer extends React.Component {
-  // this.props.mode can be
-  // "answer": answering mode
-  // "review": reviewing mode
-  // "delegation": delegation mode
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDelegating: this.props.mode === "delegation"
+    };
+  }
+
+  // this.props.mode refers to the navigation mode that
+  // this QuestionContainer is being rendered from.
+  //
+  // It can be:
+  // - "answer": answering mode (/edit)
+  // - "review": reviewing mode (/review)
+  // - "delegation": delegation mode (/delegate)
 
   renderAnswerMode() {
     return (
@@ -57,9 +67,16 @@ class QuestionContainer extends React.Component {
           question_type={this.props.question_type}
           options={this.props.options}
           building_id={this.props.building_id}
+          onDelegationRemoval={this.onDelegationRemoval.bind(this)}
         />
       </div>
     );
+  }
+
+  onDelegationRemoval() {
+    if (this.props.mode === "review") {
+      this.setState({ isDelegating: false });
+    }
   }
 
   render() {
