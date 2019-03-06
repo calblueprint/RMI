@@ -95,7 +95,7 @@ class PortfolioListContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
-    building_types: state.building_types
+    building_types: state.building_types,
   };
 }
 
