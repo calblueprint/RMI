@@ -42,9 +42,9 @@ class PortfolioListContainer extends React.Component {
       console.log(response.data);
       this.props.addBuildingType(typeName, buildingTypeId, [], []);
       // this.state.buildingTypes[buildingTypeId] = response.data;
-      this.setState({buildingTypes: this.props.building_types, showModal: false})
+      // this.setState({buildingTypes: this.props.building_types, showModal: false})
       this.props.history.push(`/building_types/${buildingTypeId}`)
-      console.log(this.state.buildingTypes);
+      // console.log(this.state.buildingTypes);
       // console.log(this.props.building_types);
       console.log("success");
     } catch (error) {
@@ -56,7 +56,7 @@ class PortfolioListContainer extends React.Component {
 
   render() {
     const portfolios = this.props.portfolios;
-    const building_types = this.state.buildingTypes;
+    const building_types = this.props.building_types;
     // console.log(Object.keys(building_types));
     // console.log(Object.keys(this.state.buildingTypes));
     console.log("hihih");
@@ -98,7 +98,6 @@ function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
     building_types: state.building_types,
-    init: state.init
   };
 }
 

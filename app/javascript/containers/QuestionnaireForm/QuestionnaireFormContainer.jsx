@@ -54,7 +54,8 @@ class QuestionnaireFormContainer extends React.Component {
   render() {
     console.log(this.props.categoryList);
     console.log('category list here');
-    const categoryToggle = this.props.categoryList ? (this.props.categoryList.map((category) => {
+    console.log(this.state.currentCategory);
+    const categoryToggle = this.state.currentCategory ? (this.props.categoryList.map((category) => {
       const currentColor = category.id == this.state.currentCategory.id ? 'red' : 'transparent';
       return(
         <div
@@ -69,8 +70,11 @@ class QuestionnaireFormContainer extends React.Component {
         </div>
       )
     })) : (null);
-
+    // if (!this.state.currentCategory) {
+    //     this.onNewCategory();
+    //   }
     return (
+      
       <div
         className={'questionnaire-form-container'}
       >
@@ -82,22 +86,23 @@ class QuestionnaireFormContainer extends React.Component {
             New Category
           </button>
         </div>
-        {this.state.currentCategory ? 
-        (<CategoryQuestionsContainer
+        {this.state.currentCategory ? (
+        <CategoryQuestionsContainer
           buildingType={this.props.buildingType}
           categoryId={this.state.currentCategory.id}
-        />) : (
-        <h1>You have no categories</h1>)}
+        />) : (null)}
       </div>
     );
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
-  console.log(ownProps.match.params.id);
-  console.log('over here');
+  // console.log(state);
+  // console.log(ownProps.match.params.id);
+  // console.log('over here');
   //state.building_types[ownProps.match.params.id].categories
+  // console.log(getCategoryByBuildingTypeId(ownProps.match.params.id, state));
+  // console.log('category list here')
   return {
     categoryList: getCategoryByBuildingTypeId(ownProps.match.params.id, state),
     buildingType: getBuildingType(ownProps.match.params.id, state)
