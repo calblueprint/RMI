@@ -37,7 +37,6 @@ export function getFirstUnansweredCategory(categories, questions, buildingId, st
 
 export function getCategoryByBuildingTypeId(btId, state) {
   const categories = state.building_types[btId].categories;
-  console.log(categories);
   return categories.map((categoryId) => {
     return state.categories[categoryId];
   });

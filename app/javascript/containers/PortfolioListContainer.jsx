@@ -1,11 +1,11 @@
 import React from "react";
+import ReactModal from "react-modal";
 
 import { loadInitialState } from "../actions/initialState";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import ReactModal from "react-modal";
-import { patch, post } from "../fetch/requester";
+import { post } from "../fetch/requester";
 import { addBuildingType } from "../actions/building_type";
 
 class PortfolioListContainer extends React.Component {

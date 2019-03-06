@@ -18,7 +18,7 @@ const rootReducer = {
 export default function reducerWithInitialState(reducer = rootReducer) {
   return function wrappedReducer(state, action) {
     if (action.type === LOAD_INITIAL_STATE) {
-      return {...state, ...action, init: true};
+      return {...state, ...action};
     }
     return persistCombineReducers({
       key: 'root',
