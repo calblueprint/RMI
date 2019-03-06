@@ -20,11 +20,14 @@ class PortfolioListContainer extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidMount() {
-    if (window.INITIAL_STATE) {
-      this.props.initActions.loadInitialState(window.INITIAL_STATE);
-    }
-  }
+  // componentDidMount() {
+  //   console.log(this.props.init);
+  //   if (window.INITIAL_STATE) {
+  //     if (!this.props.init){
+  //       this.props.initActions.loadInitialState(window.INITIAL_STATE);
+  //     }
+  //   }
+  // }
 
   toggleModal () {
     this.setState({ showModal: !this.state.showModal });
@@ -36,15 +39,14 @@ class PortfolioListContainer extends React.Component {
     try {
       let response = await post('/api/building_types', {'name': typeName});
       const buildingTypeId = response.data.id;
-      console.log(response.data)
-      this.props.addBuildingType(typeName, buildingTypeId);
+      console.log(response.data);
+      this.props.addBuildingType(typeName, buildingTypeId, [], []);
       // this.state.buildingTypes[buildingTypeId] = response.data;
       this.setState({buildingTypes: this.props.building_types, showModal: false})
+      this.props.history.push(`/building_types/${buildingTypeId}`)
       console.log(this.state.buildingTypes);
-      console.log(this.props.building_types);
+      // console.log(this.props.building_types);
       console.log("success");
-      // this.props.history.push('/building_type/'+ buildingTypeId);
-      
     } catch (error) {
       console.log("failed");
     }
@@ -54,7 +56,7 @@ class PortfolioListContainer extends React.Component {
 
   render() {
     const portfolios = this.props.portfolios;
-    const building_types = this.props.building_types;
+    const building_types = this.state.buildingTypes;
     // console.log(Object.keys(building_types));
     // console.log(Object.keys(this.state.buildingTypes));
     console.log("hihih");
@@ -96,13 +98,14 @@ function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
     building_types: state.building_types,
+    init: state.init
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
-    addBuildingType: (typeName, buildingTypeId) => {dispatch(addBuildingType(typeName, buildingTypeId))}
+    addBuildingType: (typeName, buildingTypeId, questions, categories) => {dispatch(addBuildingType(typeName, buildingTypeId, questions, categories))}
   };
 }
 

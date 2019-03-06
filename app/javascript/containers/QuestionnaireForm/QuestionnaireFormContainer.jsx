@@ -52,8 +52,9 @@ class QuestionnaireFormContainer extends React.Component {
   }
 
   render() {
-    console.log(this.props);
-    const categoryToggle = this.props.categoryList.map((category) => {
+    console.log(this.props.categoryList);
+    console.log('category list here');
+    const categoryToggle = this.props.categoryList ? (this.props.categoryList.map((category) => {
       const currentColor = category.id == this.state.currentCategory.id ? 'red' : 'transparent';
       return(
         <div
@@ -67,7 +68,7 @@ class QuestionnaireFormContainer extends React.Component {
           </button>
         </div>
       )
-    });
+    })) : (null);
 
     return (
       <div
@@ -96,8 +97,9 @@ function mapStateToProps(state, ownProps) {
   console.log(state);
   console.log(ownProps.match.params.id);
   console.log('over here');
+  //state.building_types[ownProps.match.params.id].categories
   return {
-    categoryList: state.building_types[ownProps.match.params.id].categories,
+    categoryList: getCategoryByBuildingTypeId(ownProps.match.params.id, state),
     buildingType: getBuildingType(ownProps.match.params.id, state)
   };
 }
