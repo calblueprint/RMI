@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 
-import QuestionContainer from "./QuestionContainer";
-
 class QuestionResultContainer extends React.Component {
   getFileLink() {
     return "/api/answers/" + this.props.answer.id;
@@ -46,34 +44,11 @@ class QuestionResultContainer extends React.Component {
       }
     })();
 
-    const dependentQuestions = (() => {
-      if (this.props.answer) {
-        const dependents = this.props.dependentQuestions[
-          this.props.answer.selected_option_id
-        ];
-        if (dependents) {
-          return dependents.map(question => {
-            return (
-              <div key={question.id}>
-                <QuestionContainer
-                  mode="review"
-                  building_id={this.props.building_id}
-                  {...question}
-                />
-              </div>
-            );
-          });
-        }
-      }
-    })();
-
     return (
       <div>
-        <div className="question">
-          <p>{this.props.text}</p>
+        <div className="question question--in-review">
           {result}
         </div>
-        <div className="questions__nested">{dependentQuestions}</div>
       </div>
     );
   }
