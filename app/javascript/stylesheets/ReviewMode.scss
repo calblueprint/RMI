@@ -3,10 +3,21 @@
 table {
   margin: auto;
   padding-top: 10px;
+  width: 800px;
 }
 
 tr, td {
   height: 50px;
+  padding: 20px 15px 20px 15px;
+}
+
+tr div {
+  display: table-cell;
+  vertical-align: middle;
+
+  .question {
+    margin-left: 15px;
+  }
 }
 
 td {
@@ -16,7 +27,7 @@ td {
 
 td:nth-child(odd) {
   font-weight: 500;
-  padding-right: 40px;
+  padding-right: 50px;
 }
 
 td:nth-child(even) {
@@ -36,5 +47,3 @@ tr:nth-child(even) {
   margin-left: 232px;
   margin-top: 5px;
 }
-
-
