@@ -96,13 +96,10 @@ function addCategoryId(state, action) {
 }
 
 function addBuildingType(state, action) {
-  // console.log("addBuilding Reached");
-  // console.log(action.buildingTypeId);
   const buildingTypeId = action.buildingTypeId;
   const buildingTypeName = action.buildingTypeName;
   const questions = action.questions;
   const categories = action.categories;
-  // console.log(state);
 
   return {
     ...state,
