@@ -15,7 +15,8 @@ import {
   uploadFile,
   deleteFile,
   updateAnswer,
-  updateLocalAnswer
+  updateLocalAnswer,
+  removeLocalAnswer
 } from "../actions/answers";
 
 class OptionsContainer extends React.Component {
@@ -94,6 +95,12 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  onClickHandoff(ev) {
+    ev.preventDefault();
+    this.props.removeLocalAnswer(this.props.building_id, this.props.answer);
+    this.props.onDelegationAdd();
+  }
+
   render() {
     const optionProps = {
       options: this.props.options,
@@ -133,6 +140,7 @@ class OptionsContainer extends React.Component {
         >
           <p>{this.props.text}</p>
           {optionsComponent}
+          <a onClick={this.onClickHandoff.bind(this)}>Handoff</a>
           <Status
             fetchObject={this.props.answer}
             onRetry={this.onRetry.bind(this)}
@@ -174,7 +182,9 @@ function mapDispatchToProps(dispatch) {
     updateAnswer: (buildingId, answer) =>
       updateAnswer(buildingId, answer, dispatch),
     updateLocalAnswer: (buildingId, answer) =>
-      dispatch(updateLocalAnswer(buildingId, answer))
+      dispatch(updateLocalAnswer(buildingId, answer)),
+    removeLocalAnswer: (buildingId, answer) =>
+      dispatch(removeLocalAnswer(buildingId, answer))
   };
 }
 

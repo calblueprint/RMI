@@ -39,6 +39,7 @@ class QuestionContainer extends React.Component {
         answer={this.props.answer}
         focusOnMount={this.props.focusOnMount}
         parentIsHidden={this.props.parentIsHidden}
+        onDelegationAdd={this.onDelegationAdd.bind(this)}
       />
     );
   }
@@ -67,13 +68,17 @@ class QuestionContainer extends React.Component {
           question_type={this.props.question_type}
           options={this.props.options}
           building_id={this.props.building_id}
-          onDelegationRemoval={this.onDelegationRemoval.bind(this)}
+          onDelegationRemoval={this.onDelegationRemove.bind(this)}
         />
       </div>
     );
   }
 
-  onDelegationRemoval() {
+  onDelegationAdd() {
+    this.setState({ isDelegating: true });
+  }
+
+  onDelegationRemove() {
     if (this.props.mode === "review") {
       this.setState({ isDelegating: false });
     }
@@ -83,8 +88,14 @@ class QuestionContainer extends React.Component {
     if (this.props.mode === "review") {
       return this.renderReviewMode();
     }
+
+    // Show the inline delegation component if:
+    // - We're in the /delegate mode
+    // - We've entered a delegation state locally (in the question)
+    // - The answer is already delegated
     if (
       this.props.mode === "delegation" ||
+      this.state.isDelegating ||
       isDelegatedAnswer(this.props.answer)
     ) {
       return this.renderDelegationMode();
