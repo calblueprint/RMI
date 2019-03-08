@@ -112,11 +112,6 @@ class CategoryQuestionsContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  let ql = getQuestionsByCategoryId(ownProps.categoryId, state);
-  console.log(ql);
-  console.log(ownProps.categoryId);
-  console.log(state);
-  console.log('here');
   return {
     questionList: getQuestionsByCategoryId(ownProps.categoryId, state),
     category: getCategoryById(ownProps.categoryId, state)
