@@ -32,6 +32,6 @@ class RmiUser < ApplicationRecord
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
 
   def get_scope
-  	{user_id: id, user_type: 'RmiUser'}
+    {user_id: id, user_type: 'RmiUser'}
   end
 end

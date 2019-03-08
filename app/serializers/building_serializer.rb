@@ -32,8 +32,6 @@ class BuildingSerializer < ActiveModel::Serializer
   end
 
   def questions
-    puts 'building serializer scope'
-    puts scope
     questions = object.questions.ids
     _questions =
       if scope[:user_type] == 'BuildingOperator'

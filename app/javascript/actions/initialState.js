@@ -100,7 +100,21 @@ export function loadInitialState(initialState) {
     return result;
   }, {});
   // Look for questions inside buildings
-  if (initialState.buildings) {
+  if (initialState.building_types) {
+    console.log('initial state building types')
+    formattedState.questions = [];
+    initialState.building_types.forEach((building_type) => {
+      formattedState = {
+        ...formattedState,
+        questions: {
+          ...formattedState.questions,
+          ...building_type.questions
+        }
+      };
+    });
+  }
+
+  else if (initialState.buildings) {
     formattedState.questions = [];
     initialState.buildings.forEach((building) => {
       formattedState = {
