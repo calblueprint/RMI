@@ -135,4 +135,21 @@ class BuildingOperator < ApplicationRecord
   def questions
     questions_by_buildings(buildings.map { |b| b.id })
   end
+
+  def get_scope
+      {
+        user_id: id,
+        user_type: 'BuildingOperator',
+        questions: Question
+          .where(id: current_building_operator.questions.map { |q| q.id }).load.to_a,
+        delegations: Delegation
+          .includes(answer: [:question, :building])
+          .where(
+            answer: Answer.where(building: buildings),
+            building_operator: current_building_operator,
+            status: "active"
+          )
+          .load.to_a,
+       }
+  end
 end

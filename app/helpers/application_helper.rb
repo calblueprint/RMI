@@ -100,5 +100,15 @@ module ApplicationHelper
       )
     }
   end
+
+  def current_user
+    if current_rmi_user
+      current_rmi_user
+    elsif current_building_operator
+      current_building_operator
+    else
+      current_asset_manager
+    end
+  end
   # rubocop:enable AlignHash
 end

@@ -30,4 +30,8 @@ class RmiUser < ApplicationRecord
   # email validation with regex
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
+
+  def get_scope
+  	{user_id: id, user_type: 'RmiUser'}
+  end
 end
