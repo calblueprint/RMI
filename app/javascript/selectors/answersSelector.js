@@ -34,14 +34,19 @@ export function getNumUnanswered(questions, buildingId, state) {
 
 export function isUnansweredQuestion(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
+  return !isValidAnswer(answer);
+}
+
+export function isValidAnswer(answer) {
   if (
-    !answer ||
-    (!answer.text.trim() &&
-      !answer.attachment_file_name &&
-      !answer.delegation_email)
+    answer &&
+    (answer.text.trim() ||
+      answer.attachment_file_name ||
+      answer.delegation_email)
   ) {
     return true;
   }
+  return false;
 }
 
 export function isDelegatedQuestion(question, buildingId, state) {
