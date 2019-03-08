@@ -48,9 +48,14 @@ export function getRemainingAnswersforCategory(questions, buildingId, state) {
 
 export function isUnansweredQuestion(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  if (!answer || (!answer.text.trim() && !answer.attachment_file_name)) {
+  return !isValidAnswer(answer);
+}
+
+export function isValidAnswer(answer) {
+  if (answer && (answer.text.trim() || answer.attachment_file_name)) {
     return true;
   }
+  return false;
 }
 
 export function isDelegatedQuestion(question, buildingId, state) {

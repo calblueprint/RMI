@@ -68,7 +68,7 @@ class QuestionContainer extends React.Component {
           question_type={this.props.question_type}
           options={this.props.options}
           building_id={this.props.building_id}
-          onDelegationRemoval={this.onDelegationRemove.bind(this)}
+          onDelegationRemove={this.onDelegationRemove.bind(this)}
         />
       </div>
     );
