@@ -21,7 +21,8 @@ class Api::BuildingTypesController < ApplicationController
   def building_type_params
     params.require(:building_type)
       .permit(
-        :name
+        :name,
+        :categories
       )
   end
 end

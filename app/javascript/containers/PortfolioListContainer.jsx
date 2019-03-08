@@ -26,12 +26,13 @@ class PortfolioListContainer extends React.Component {
     event.preventDefault();
     const typeName = event.target.name.value;
     try {
-      let response = await post("/api/building_types", { name: typeName });
-      const buildingTypeId = response.data.id;
-      this.props.addBuildingType(typeName, buildingTypeId, [], []);
+      let response = await post("/api/building_types", { name: typeName, categories: [] });
+      const buildingType = {...response.data, questions: []};
+      const buildingTypeId = buildingType.id;
+      this.props.addBuildingType(buildingType);
       this.props.history.push(`/building_types/${buildingTypeId}`);
     } catch (error) {
-      console.log("failed");
+      console.log(error);
     }
   }
 
@@ -88,9 +89,9 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
-    addBuildingType: (typeName, buildingTypeId, questions, categories) => {
+    addBuildingType: buildingType => {
       dispatch(
-        addBuildingType(typeName, buildingTypeId, questions, categories)
+        addBuildingType(buildingType)
       );
     }
   };

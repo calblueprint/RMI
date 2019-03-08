@@ -2,12 +2,9 @@ import {
   ADD_BUILDING_TYPE,
 } from '../constants';
 
-export function addBuildingType(buildingTypeName, buildingTypeId, questions, categories) {
+export function addBuildingType(newBuildingType) {
   return {
     type: ADD_BUILDING_TYPE,
-    buildingTypeName,
-    buildingTypeId, 
-    questions,
-    categories
+    newBuildingType
   };
 }
