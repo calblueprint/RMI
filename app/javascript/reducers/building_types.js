@@ -96,18 +96,13 @@ function addCategoryId(state, action) {
 }
 
 function addBuildingType(state, action) {
-  const buildingTypeId = action.buildingTypeId;
-  const buildingTypeName = action.buildingTypeName;
-  const questions = action.questions;
-  const categories = action.categories;
-
   return {
     ...state,
     [buildingTypeId] : {
-      id: buildingTypeId,
-      name: buildingTypeName,
-      questions: questions,
-      categories: categories
+      id: action.buildingTypeId,
+      name: action.buildingTypeName,
+      questions: action.questions,
+      categories: action.categories
     }
   }
 }

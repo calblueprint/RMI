@@ -99,9 +99,8 @@ export function loadInitialState(initialState) {
     result[types[index]] = shaped;
     return result;
   }, {});
-  // Look for questions inside buildings
+  // Look for questions inside building_types
   if (initialState.building_types) {
-    console.log('initial state building types')
     formattedState.questions = [];
     initialState.building_types.forEach((building_type) => {
       formattedState = {
@@ -113,7 +112,7 @@ export function loadInitialState(initialState) {
       };
     });
   }
-
+  // Look for questions inside buildings
   else if (initialState.buildings) {
     formattedState.questions = [];
     initialState.buildings.forEach((building) => {

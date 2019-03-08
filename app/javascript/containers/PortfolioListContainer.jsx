@@ -28,7 +28,6 @@ class PortfolioListContainer extends React.Component {
     try {
       let response = await post("/api/building_types", { name: typeName });
       const buildingTypeId = response.data.id;
-      console.log(response.data);
       this.props.addBuildingType(typeName, buildingTypeId, [], []);
       this.props.history.push(`/building_types/${buildingTypeId}`);
     } catch (error) {

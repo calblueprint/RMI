@@ -1,5 +1,4 @@
 class Api::BuildingTypesController < ApplicationController
-
   include ApplicationHelper
 
   def show
