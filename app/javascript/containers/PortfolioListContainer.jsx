@@ -15,19 +15,22 @@ class PortfolioListContainer extends React.Component {
       showModal: false
     };
     this.toggleModal = this.toggleModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.createBuildingType = this.createBuildingType.bind(this);
   }
 
   toggleModal() {
     this.setState({ showModal: !this.state.showModal });
   }
 
-  async handleSubmit(event) {
+  async createBuildingType(event) {
     event.preventDefault();
     const typeName = event.target.name.value;
     try {
-      let response = await post("/api/building_types", { name: typeName, categories: [] });
-      const buildingType = {...response.data, questions: []};
+      let response = await post("/api/building_types", {
+        name: typeName,
+        categories: []
+      });
+      const buildingType = { ...response.data, questions: [] };
       const buildingTypeId = buildingType.id;
       this.props.addBuildingType(buildingType);
       this.props.history.push(`/building_types/${buildingTypeId}`);
@@ -48,7 +51,7 @@ class PortfolioListContainer extends React.Component {
           onClick={this.toggleModal}
         />
         <ReactModal isOpen={this.state.showModal}>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.createBuildingType}>
             <label>
               Add Building Type
               <input type="text" name="name" />
@@ -90,9 +93,7 @@ function mapDispatchToProps(dispatch) {
   return {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
     addBuildingType: buildingType => {
-      dispatch(
-        addBuildingType(buildingType)
-      );
+      dispatch(addBuildingType(buildingType));
     }
   };
 }

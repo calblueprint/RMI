@@ -36,9 +36,6 @@ function removeQuestion(state, action) {
 function addQuestionId(state, action) {
   const buildingTypeId = action.response.building_type_id;
   const questionId = action.response.id.toString();
-  console.log(state)
-  console.log(buildingTypeId)
-  console.log('fergqer')
   if (state[buildingTypeId].questions.includes(questionId)) {
     return state
   }
@@ -99,7 +96,7 @@ function addCategoryId(state, action) {
 }
 
 function addBuildingType(state, action) {
-  const buildingType = action.newBuildingType;
+  const buildingType = action.buildingType;
   const buildingTypeId = buildingType.id;
   return {
     ...state,
