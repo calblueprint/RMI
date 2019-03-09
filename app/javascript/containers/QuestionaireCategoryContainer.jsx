@@ -6,20 +6,27 @@ import { numAnsweredforCategories } from '../selectors/answersSelector';
 
 
 class QuestionaireCategoryContainer extends React.Component {
-    displayCategories() {
-        let categoryNames = this.props.categories[0].name;
-        for (let i = 1; i < this.props.categories.length; i++ ) {
-            categoryNames += ", " + this.props.categories[i].name;
-        }
-        return categoryNames
+  startOrContinue() {
+    if (this.props.is_started) {
+      return "Continue"
     }
+    return "Start"
+  }
 
+  
   render() {
     return (
-      <div>
-          {this.displayCategories()}
+      <div className='questionaire-category-container'>
           <br></br>
-
+          {Object.keys(this.props.categories).map(id => {
+            return (<div key={id}><div className='category-circle'>{Number(id) + 1}</div>
+              <div><h4>{this.props.categories[id].name}</h4></div>
+              </div>)
+          })}
+          <div><div className='category-circle'>{this.props.categories.length}</div>
+              <div><h4>Delegate</h4></div></div>
+          <div><div className='category-circle'>{this.props.categories.length + 1}</div>
+              <div><h4>Review and Submit</h4></div></div>
       </div>
     );
   }
@@ -27,9 +34,9 @@ class QuestionaireCategoryContainer extends React.Component {
 
 QuestionaireCategoryContainer.propTypes = {
     building_id: PropTypes.string.isRequired,
-    categories: PropTypes.array.isRequired
+    categories: PropTypes.array.isRequired,
+    is_started: false
 };
-
 
 function mapStateToProps(state, ownProps) {
     return {

@@ -70,18 +70,17 @@ export function numUnanswered(buildingId, state) {
 export function numAnsweredbyCategory(buildingId, categoryId, state) {
   let answered = 0;
   let answers = state.buildings[buildingId].answers;
+  console.log(answers)
+
   for (let i = 0; i < answers.length; i++) {
     console.log(i)
 
     let questionId = answers[i].question_id;
     let question = state.questions[questionId];
     let answerCategory = question.category_id;
-
-    console.log(answerCategory, categoryId);
-    if (answerCategory === categoryId && (!(isUnanswered(question, buildingId, state) 
+    if (answerCategory == categoryId && (!(isUnanswered(question, buildingId, state) 
         || isDelegated(question, buildingId, state)))) {
       answered += 1;
-      break;
     }
   }
   return answered;
@@ -95,7 +94,20 @@ export function numAnsweredforCategories(buildingId, categoriesArray, state) {
   let answered = {};
   for (let i = 0; i < categoriesArray.length; i++) {
     let categoryId = categoriesArray[i].id;
-    answered[categoryId] = numAnsweredbyCategory(buildingId, categoryId, state);
+    let n = 0;
+    let answers = state.buildings[buildingId].answers;
+
+    for (let i = 0; i < answers.length; i++) {
+      let questionId = answers[i].question_id;
+      let question = state.questions[questionId];
+      let answerCategory = question.category_id;
+      if (answerCategory == categoryId && (!(isUnanswered(question, buildingId, state) 
+          || isDelegated(question, buildingId, state)))) {
+        n += 1;
+      }
+    }
+    
+    answered[categoryId] = n;
   }
 
   return answered;

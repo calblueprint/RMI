@@ -12,13 +12,15 @@ class BuildingListContainer extends React.Component {
     const buildings = this.props.buildings;
     return (<div className='building_list_container'>
       <h2>Buildings</h2>
+      <div className='building_list'>
       <hr />
       {Object.keys(buildings).map(id => {
         return (<div key={id} className='building_view'>
           <BuildingInfoContainer building_id={id} className='building_view_info'></BuildingInfoContainer>
-          <Link to={`/buildings/${id}`} className='link'>Continue</Link>
+          <div className="continue-button"><Link to={`/buildings/${id}`} className="continue-link">Continue</Link></div>
         </div>)
       })}
+      </div>
     </div>);
   }
 }
