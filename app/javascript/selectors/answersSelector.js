@@ -72,12 +72,36 @@ export function numUnanswered(buildingId, state) {
    number of unanswered questions and returns a dictionary with the category id as 
    the key and the number of unanswered questions in that category as the value 
 */
-export function numAnsweredforCategories(buildingId, categoriesArray, state) {
-  let answered = {};
+// export function numAnsweredforCategories(buildingId, categoriesArray, state) {
+//   let answered = {};
+//   for (let i = 0; i < categoriesArray.length; i++) {
+//     let categoryId = categoriesArray[i].id;
+//     let answers = state.buildings[buildingId].answers;
+//     answered[categoryId] = 0;
+
+//     for (let key in answers) {
+//       let questionId = answers[key].question_id;
+//       let question = state.questions[questionId];
+
+//       if ((question != null) && (!(isUnanswered(question, buildingId, state) 
+//           || isDelegated(question, buildingId, state)))) {
+//             answered[categoryId] += 1; 
+//       }
+//     }
+//   }
+
+//   return answered;
+// }
+
+export function questionDataPerCategory(buildingId, categoriesArray, state) {
+  let catData = [];
   for (let i = 0; i < categoriesArray.length; i++) {
     let categoryId = categoriesArray[i].id;
     let answers = state.buildings[buildingId].answers;
-    answered[categoryId] = 0;
+    catData[i] = {id: categoryId, 
+                  name: categoriesArray[i].name,
+                  answered: 0,
+                  total: 0};
 
     for (let key in answers) {
       let questionId = answers[key].question_id;
@@ -85,10 +109,10 @@ export function numAnsweredforCategories(buildingId, categoriesArray, state) {
 
       if ((question != null) && (!(isUnanswered(question, buildingId, state) 
           || isDelegated(question, buildingId, state)))) {
-            answered[categoryId] += 1; 
+            catData[i].answered += 1; 
       }
+      catData[i].total += 1;
     }
   }
-
-  return answered;
+  return catData;
 }

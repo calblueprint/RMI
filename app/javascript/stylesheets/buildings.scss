@@ -50,7 +50,7 @@
 
 .building_view {
   margin: 30px;
-  width: 25%;
+  width: 400px;
   padding: 50px;
   text-align: center;
   background-color: white;
@@ -87,40 +87,58 @@
 
 .questionaire-category-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
+}
+
+.vertical-bus-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0) 12%,
-    $primary 12%,
-    $primary 15%,
-    rgba(255, 255, 255, 0) 15%
+    rgba(255, 255, 255, 0) 48%,
+    $primary 48%,
+    $primary 52%,
+    rgba(255, 255, 255, 0) 52%
   );
+
+  .category-circle {
+    background-color: $primary;
+    color: white;
+    width: 50px;
+    height: 50px;
+    margin: 20px 0px 20px 0px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20pt;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
 }
 
-.category-circle {
-  background-color: $primary;
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
+.category-information {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-size: 20pt;
-  font-weight: bold;
-  font-family: sans-serif;
-}
-
-.questionaire-category-container div{
-  display: flex;
-  flex-direction: row;
-  align-items: space-between;
   justify-content: center;
-  padding: 10px 10px 10px 10px;
-  font-size: 20pt;
-}
 
-//TODO: need to vary div size based on number of categories
+  div {
+    margin: 20px 0px 20px 0px;
+    height: 50px;
+    width: 200px;
+    font-size: 15pt;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: start;     
+    span {
+      font-size: 10px;
+    }
+  }
+
+}
