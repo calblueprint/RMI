@@ -59,6 +59,16 @@ input {
   }
 }
 
+.question_block_header {
+  display: flex;
+  .remove_question_btn {
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+  }
+}
+
 .question_block__body {
   display: flex;
   flex-direction: row;

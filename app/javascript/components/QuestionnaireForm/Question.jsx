@@ -12,7 +12,7 @@ class Question extends React.Component {
       unitInput: !!this.props.question.unit,
     };
   }
-  
+
   componentDidUpdate() {
     if (this.props.select) {
       this.questionInput.focus();
@@ -27,6 +27,14 @@ class Question extends React.Component {
    */
   handleOnBlur(args) {
     this.props.handleOnBlur(this.props.question.id, args)
+  }
+
+  /**
+   * Handles event for onRemove which is making delete request
+   * @param { string } name - the name of the category
+   */
+  handleOnRemove(name) {
+    this.props.handleOnRemove(this.props.question.id, { name })
   }
 
   /**
@@ -84,13 +92,22 @@ class Question extends React.Component {
         <div
           className={'question_block'}
         >
-          <input
-            className={'question_block__param'}
-            placeholder={"param1"}
-            defaultValue={this.props.question.parameter}
-            onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
-            onChange={(e) => this.onChange({parameter: e.target.value})}
-          />
+          <div
+            className={'question_block_header'}
+          >
+            <input
+              className={'question_block__param'}
+              placeholder={"param1"}
+              defaultValue={this.props.question.parameter}
+              onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
+              onChange={(e) => this.onChange({parameter: e.target.value})}
+            />
+            <button
+              className="btn btn--primary remove_question_btn"
+              onClick={(e) => this.handleOnRemove(e.target.value)}>
+              x
+            </button>
+          </div>
           <div
             className={'question_block__body'}
           >
