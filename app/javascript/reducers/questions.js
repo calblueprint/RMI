@@ -90,13 +90,6 @@ function setNewQuestion(state, action) {
     }
   }
 }
-// 
-// function deleteQuestion(state, action) {
-//   const questionId = action.question.id;
-//   return state.filter(
-//     question => question.id !== action.id
-//   )
-// }
 
 function optionFetchSuccess(state, action) {
   const questionId = action.response.question_id;
