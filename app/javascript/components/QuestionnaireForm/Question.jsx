@@ -10,6 +10,7 @@ class Question extends React.Component {
     this.state = {
       helperInput: !!this.props.question.helper_text,
       unitInput: !!this.props.question.unit,
+      isSaved: false,
     };
   }
 
@@ -27,6 +28,7 @@ class Question extends React.Component {
    */
   handleOnBlur(args) {
     this.props.handleOnBlur(this.props.question.id, args)
+    this.setState({isSaved: true})
   }
 
   /**
@@ -73,6 +75,20 @@ class Question extends React.Component {
     }
   }
 
+  deleteButton() {
+    if (this.state.isSaved) {
+      return (
+        <button
+          className="btn btn--primary remove_question_btn"
+          onClick={(e) => this.handleOnRemove(e.target.value)}>
+          x
+        </button>
+      )
+    } else {
+      return (<div></div>)
+    }
+  }
+
   render() {
     const helperTextButton = this.addButton("+ Add Helper Text", {helperInput: true});
 
@@ -102,11 +118,7 @@ class Question extends React.Component {
               onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
               onChange={(e) => this.onChange({parameter: e.target.value})}
             />
-            <button
-              className="btn btn--primary remove_question_btn"
-              onClick={(e) => this.handleOnRemove(e.target.value)}>
-              x
-            </button>
+          {this.deleteButton()}
           </div>
           <div
             className={'question_block__body'}
