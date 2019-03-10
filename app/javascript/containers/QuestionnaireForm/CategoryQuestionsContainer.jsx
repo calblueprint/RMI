@@ -48,13 +48,10 @@ class CategoryQuestionsContainer extends React.Component {
    * @param { Object } args - any category parameters
    */
   async removeCategory(id, args) {
-    console.log("Removing category");
     const removedCategory = { ...this.props.category, ...args };
     try {
       this.props.removeCategory(this.props.category);
       let response = await destroy("/api/categories/" + removedCategory.id);
-      console.log("Success");
-      console.log(response);
     } catch (error) {
       console.log("REQUEST ERROR");
       console.log(error)
@@ -76,8 +73,6 @@ class CategoryQuestionsContainer extends React.Component {
    * @param {object} args - any category parameters
    */
   handleOnRemove(id, args) {
-    // debugger;
-    console.log("handle on remove");
     this.removeCategory(id, args);
   }
   /**
