@@ -10,7 +10,7 @@
 #
 
 class Category < ApplicationRecord
-  has_many :questions, :dependent => :destroy
+  has_many :questions
   belongs_to :building_type
 
   validates :name, presence: true
