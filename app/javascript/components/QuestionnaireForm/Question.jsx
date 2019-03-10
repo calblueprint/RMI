@@ -12,7 +12,6 @@ class Question extends React.Component {
     this.state = {
       helperInput: !!this.props.question.helper_text,
       unitInput: !!this.props.question.unit,
-      isSaved: true,
     };
   }
 
