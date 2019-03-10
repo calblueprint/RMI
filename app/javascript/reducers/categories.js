@@ -4,7 +4,7 @@ import {
   CATEGORY_FETCH_IN_PROGRESS,
   CATEGORY_FETCH_SUCCESS,
   REMOVE_CATEGORY,
-  UPDATE_LOCAL_CATEGORY, QUESTION_FETCH_SUCCESS, CREATE_UNSAVED_QUESTION, REMOVE_QUESTION, SET_CATEGORY_TO_NEW
+  UPDATE_LOCAL_CATEGORY, QUESTION_FETCH_SUCCESS, CREATE_UNSAVED_QUESTION, REMOVE_QUESTION, SET_CATEGORY_TO_NEW, DELETE_CATEGORY
 } from '../constants';
 
 
@@ -15,6 +15,17 @@ function detachCategory(state, action) {
       newState[id] = state[id];
       return newState
     }, {});
+}
+
+function deleteCategory(state, action) {
+  const categoryId = action.category.id;
+  return {
+    ...state,
+    [categoryId]: {
+      ...state[categoryId],
+      deleted: true
+    }
+  }
 }
 
 
@@ -139,6 +150,7 @@ export default function categories(state = {}, action) {
     case CATEGORY_FETCH_SUCCESS: return categoryFetchSuccess(state, action);
     case CATEGORY_FETCH_FAILURE: return categoryFetchFailure(state, action);
     case SET_CATEGORY_TO_NEW: return categorySetToNew(state, action);
+    case DELETE_CATEGORY: return deleteCategory(state, action);
     // questions
     case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);
     case REMOVE_QUESTION: return removeQuestion(state, action);

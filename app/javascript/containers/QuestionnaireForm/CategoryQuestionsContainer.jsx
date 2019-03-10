@@ -10,6 +10,7 @@ import {
   categoryFetchInProgress,
   categoryFetchSuccess,
   categoryPreFetchSave,
+  deleteCategory,
   removeCategory
 } from "../../actions/categories";
 import {
@@ -43,7 +44,7 @@ class CategoryQuestionsContainer extends React.Component {
   }
 
   /**
-   * Handles request to delete a question and redux update
+   * Handles request to delete a remove a category and redux update
    * @param { string } id - categoryId to update
    * @param { Object } args - any category parameters
    */
@@ -52,6 +53,22 @@ class CategoryQuestionsContainer extends React.Component {
     try {
       this.props.removeCategory(this.props.category);
       let response = await destroy("/api/categories/" + removedCategory.id);
+    } catch (error) {
+      console.log("REQUEST ERROR");
+      console.log(error)
+    }
+  }
+
+  /**
+   * Handles request to delete a category and redux update
+   * @param { string } id - categoryId to update
+   * @param { Object } args - any category parameters
+   */
+  async deleteCategory(id, args) {
+    const deletedCategory = { ...this.props.category, ...args };
+    try {
+      this.props.deleteCategory(this.props.category);
+      let response = await destroy("/api/categories/" + deletedCategory.id);
     } catch (error) {
       console.log("REQUEST ERROR");
       console.log(error)
@@ -74,6 +91,7 @@ class CategoryQuestionsContainer extends React.Component {
    */
   handleOnRemove(id, args) {
     this.removeCategory(id, args);
+    this.deleteCategory(id, args);
   }
   /**
    * Handles event for onChange which is updating redux temporarily.
@@ -107,6 +125,9 @@ class CategoryQuestionsContainer extends React.Component {
 
     const select = this.props.category.new || false;
 
+    if (this.props.category["deleted"]) {
+      return (<h2>Category "{this.props.category["name"]}" has been deleted</h2>)
+    }
     return (
       <div>
         <div>
@@ -162,6 +183,9 @@ function mapDispatchToProps(dispatch) {
     },
     removeCategory: category => {
       dispatch(removeCategory(category));
+    },
+    deleteCategory: category => {
+      dispatch(deleteCategory(category));
     },
     questionFetchSuccess: question => {
       dispatch(questionFetchSuccess(question));
