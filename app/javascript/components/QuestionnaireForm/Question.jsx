@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import InputValidation from '../InputValidation';
 import OptionsContainer from '../../containers/QuestionnaireForm/OptionsContainer';
 import ContentEditable from 'react-sane-contenteditable';
+import { getQuestionByQuestionId } from '../../selectors/questionsSelector';
+import { connect } from 'react-redux';
 
 class Question extends React.Component {
   constructor(props) {
@@ -10,7 +12,7 @@ class Question extends React.Component {
     this.state = {
       helperInput: !!this.props.question.helper_text,
       unitInput: !!this.props.question.unit,
-      isSaved: false,
+      isSaved: true,
     };
   }
 
@@ -28,7 +30,6 @@ class Question extends React.Component {
    */
   handleOnBlur(args) {
     this.props.handleOnBlur(this.props.question.id, args)
-    this.setState({isSaved: true})
   }
 
   /**
@@ -79,7 +80,7 @@ class Question extends React.Component {
   }
 
   deleteButton() {
-    if (this.state.isSaved) {
+    if (!this.props.question["new"]) {
       return (
         <button
           className="btn btn--primary remove_question_btn"
@@ -163,7 +164,15 @@ class Question extends React.Component {
   }
 };
 
-export default Question
+function mapStateToProps(state, ownProps) {
+  return {
+    question: getQuestionByQuestionId(ownProps.question.id, state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+)(Question);
 
 Question.propTypes = {
   handleOnBlur: PropTypes.func.isRequired,
