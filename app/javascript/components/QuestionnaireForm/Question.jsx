@@ -36,7 +36,10 @@ class Question extends React.Component {
    * @param { string } name - the name of the category
    */
   handleOnRemove(name) {
-    this.props.handleOnRemove(this.props.question.id, { name })
+    var confirmDeletion = confirm("Are you sure you want to delete this question (and all dependent questions)?");
+    if (confirmDeletion) {
+      this.props.handleOnRemove(this.props.question.id, { name })
+    }
   }
 
   /**
