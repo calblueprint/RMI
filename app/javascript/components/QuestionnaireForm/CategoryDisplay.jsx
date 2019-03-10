@@ -42,11 +42,6 @@ class CategoryDisplay extends React.Component {
             errors={this.props.category.error}
           />
         </div>
-        <button
-          className="btn btn--primary remove_category_btn"
-          onClick={(e) => this.handleOnRemove(e.target.value)}>
-          Remove Category
-        </button>
       </div>
     )
   }
