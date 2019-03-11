@@ -17,14 +17,12 @@ import { answers } from './answers';
 /////////////////////////////////////////////////////////////////
 
 function addBuilding(state, action) {
-  const tempId = '__unsaved__' + Date.now();
+  const building = action.building;
+  const buildingId: building.id;
   return {
     ...state,
-    [tempId]: {
-      saved: false,
-      portfolioId: action.portfolioId
-    }
-  };
+    [buildingId] : building
+  }
 }
 
 function editBuilding(state, action) {

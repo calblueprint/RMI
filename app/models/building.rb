@@ -24,6 +24,8 @@ class Building < ApplicationRecord
   has_many :building_assignments, foreign_key: :building_id, class_name: "BuildingOperatorAssignment"
   has_many :building_operators, through: :building_assignments, source: :building_operator
 
+  validates :name, presence: true, uniqueness: true
+
   enum state: %i[
     Alabama
     Alaska
