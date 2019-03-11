@@ -54,8 +54,7 @@ class CategoryQuestionsContainer extends React.Component {
     const removedCategory = { ...this.props.category, ...args };
     this.props.categoryDeleteInProgress(removedCategory);
     try {
-      let response = await fetch("/api/categories/" + removedCategory.id);
-      let response2 = await destroy("/api/categories/" + removedCategory.id);
+      let response = await destroy("/api/categories/" + removedCategory.id);
       this.props.categoryDeleteSuccess(removedCategory);
     } catch (error) {
       this.props.categoryDeleteFailure(error, removedCategory);
