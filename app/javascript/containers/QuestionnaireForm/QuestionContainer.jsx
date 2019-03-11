@@ -1,7 +1,7 @@
 import React from 'react';
 import Question from '../../components/QuestionnaireForm/Question';
 import DepQuestionContainer from './DepQuestionContainer';
-
+import { getQuestionByQuestionId } from '../../selectors/questionsSelector';
 import { connect } from 'react-redux';
 import {
   beforeCreateNewQuestion,
@@ -9,6 +9,9 @@ import {
   questionPreFetchSave,
   questionFetchSuccess,
   questionFetchFailure,
+  questionDeleteSuccess,
+  questionDeleteFailure,
+  questionDeleteInProgress,
   removeQuestion,
 } from '../../actions/questions';
 import { patch, post, destroy } from '../../fetch/requester';
@@ -38,15 +41,15 @@ class QuestionContainer extends React.Component {
    * @param { Object } args - any category parameters
    */
   async removeQuestion(id, args) {
-    const removedQuestion = { ...this.props.question, ...args };
-    try {
-      this.props.removeQuestion(this.props.question);
-      let response = await destroy("/api/questions/" + removedQuestion.id);
-    } catch (error) {
-      console.log("REQUEST ERROR");
-      console.log(error)
-    }
-  }
+   const removedQuestion = { ...this.props.question, ...args };
+   this.props.questionDeleteInProgress(removedQuestion);
+   try {
+     let response = await destroy("/api/questions/" + removedQuestion.id);
+     this.props.questionDeleteSuccess(removedQuestion);
+   } catch (error) {
+     this.props.questionDeleteFailure(error, removedQuestion);
+   }
+ }
 
   /**
    * Calls async fetch function during onBlur to create or update question object.
@@ -86,33 +89,37 @@ class QuestionContainer extends React.Component {
   render() {
 
     const select = !!this.props.question.new;
-
-    return (
-      <div>
-        <div
-          className={'mega-question-block'}
-        >
-          <Question
-            question={this.props.question}
-            handleOnRemove={this.handleOnRemove.bind(this)}
-            handleOnBlur={this.handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            select={select}
-          />
+    if (this.props.question["deleted"]) {
+      return (<div></div>)
+    } else {
+      return (
+        <div>
+          <div
+            className={'mega-question-block'}
+          >
+            <Question
+              question={this.props.question}
+              handleOnRemove={this.handleOnRemove.bind(this)}
+              handleOnBlur={this.handleOnBlur.bind(this)}
+              handleOnChange={this.handleOnChange.bind(this)}
+              select={select}
+            />
+          </div>
+          { Object.keys(this.props.question.options).length !== 0 ?
+            <DepQuestionContainer
+              question={this.props.question}
+              optionIdList={Object.keys(this.props.question.options)}
+            /> : null}
         </div>
-        { Object.keys(this.props.question.options).length !== 0 ?
-          <DepQuestionContainer
-            question={this.props.question}
-            optionIdList={Object.keys(this.props.question.options)}
-          /> : null}
-      </div>
-    );
+      );
+    }
   }
 
 }
 
 function mapStateToProps(state, ownProps) {
   return {
+    question: getQuestionByQuestionId(ownProps.question.id, state),
   };
 }
 
@@ -123,6 +130,9 @@ function mapDispatchToProps(dispatch) {
     beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
     questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
     questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
+    questionDeleteInProgress: question => { dispatch(questionDeleteInProgress(question)) },
+    questionDeleteSuccess: question => { dispatch(questionDeleteSuccess(question)) },
+    questionDeleteFailure: (error, question) => { dispatch(questionDeleteFailure(error, question)) },
     removeQuestion: question => { dispatch(removeQuestion(question)); },
   };
 }

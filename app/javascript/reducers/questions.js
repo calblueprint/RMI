@@ -15,7 +15,13 @@ import {
   CREATE_UNSAVED_OPTION,
   OPTION_FETCH_FAILURE,
   OPTION_FETCH_SUCCESS,
-  QUESTION_SET_NEW
+  QUESTION_SET_NEW,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
+  DELETE_IN_PROGRESS,
+  QUESTION_DELETE_SUCCESS,
+  QUESTION_DELETE_FAILURE,
+  QUESTION_DELETE_IN_PROGRESS,
 } from '../constants';
 
 function detachQuestion(state, action) {
@@ -193,6 +199,40 @@ function attachOptionToQuestion(state, action) {
   }
 }
 
+function questionDeleteFailure(state, action) {
+  const questionId = action.question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...action.question,
+      deleteStatus: action.deleteStatus,
+      error: action.error,
+    }
+  }
+}
+
+ function questionDeleteSuccess(state, action) {
+  const questionId = action.question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      deleteStatus: action.deleteStatus,
+    }
+  }
+}
+
+ function questionDeleteInProgress(state, action) {
+  const questionId = action.question.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      deleteStatus: action.deleteStatus,
+      deleted: true,
+    }
+  }
+}
 
 export default function questions(state = {}, action) {
   if (!action) return state;
@@ -213,6 +253,9 @@ export default function questions(state = {}, action) {
     case QUESTION_FETCH_SUCCESS: return questionFetchSuccess(state, action);
     case QUESTION_FETCH_FAILURE: return questionFetchFailure(state, action);
     case QUESTION_SET_NEW: return setNewQuestion(state, action);
+    case QUESTION_DELETE_SUCCESS: return questionDeleteSuccess(state, action);
+    case QUESTION_DELETE_FAILURE: return questionDeleteFailure(state, action);
+    case QUESTION_DELETE_IN_PROGRESS: return questionDeleteInProgress(state, action);
 
   default:
     return state;
