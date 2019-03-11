@@ -41,20 +41,47 @@
 }
 
 // for the building operator view
+.building_list_container {
+  background-color: lighten($backgroundGray, 28.5);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  h1 {
+    font-size: 40px;
+    font-weight: 300px;
+    padding: 30px;
+    padding-bottom: 20px;
+  }
+}
 .building_list {
   background-color: $backgroundGray;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;  //TODO make the boxes appear in grid form
+  flex-wrap: wrap;
 }
 
 .building_view {
   margin: 30px;
   width: 400px;
-  padding: 50px;
+  padding: 45px;
   text-align: center;
   background-color: white;
   box-shadow: 0 0 3px #ccc;
+
+  .building_view_info {
+    padding: 90px;
+  }
+}
+
+.building_title {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.building_address {
+  font-size: 15px;
+  color: darken($secondary, 10);
+  font-weight: 400;
 }
 
 .continue-button {
@@ -81,9 +108,6 @@
   box-shadow: 0 5px 15px $secondary;
 }
 
-.building_view_info {
-  padding: 90px;
-}
 
 .questionaire-category-container {
   display: flex;
@@ -93,25 +117,37 @@
 }
 
 .vertical-bus-map {
+  position: relative;
+  top: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 48%,
-    $primary 48%,
-    $primary 52%,
-    rgba(255, 255, 255, 0) 52%
-  );
+  margin-right: 30px;
+  // background: linear-gradient(
+  //   90deg,
+  //   rgba(255, 255, 255, 0) 46%,
+  //   $primary 46%,
+  //   $primary 54%,
+  //   rgba(255, 255, 255, 0) 54%
+  // );
+  .vertical-line {
+    border-left: 6px solid $primary;
+    height: calc(100% - 50px);
+    position: absolute;
+    left: 50%;
+    margin-left: -3px;
+    top: 0;
+  }
 
   .category-circle {
+    position: relative;
+    top: -25px;
     background-color: $primary;
     color: white;
     width: 50px;
     height: 50px;
-    margin: 20px 0px 20px 0px;
+    margin: 15px 0px 15px 0px;
     border-radius: 100%;
     display: flex;
     justify-content: center;
@@ -129,16 +165,42 @@
   justify-content: center;
 
   div {
-    margin: 20px 0px 20px 0px;
+    margin: 15px 0px 15px 0px;
     height: 50px;
     width: 200px;
     font-size: 15pt;
+    display: table-cell; 
+    vertical-align: middle; 
+    text-align: center; 
     font-weight: 500;
-    line-height: 20px;
+    line-height: 50px;
     text-align: start;     
-    span {
-      font-size: 10px;
+    small {
+      font-size: 12px;
+      font-weight: 400;
+      color: darken($secondary, 10);
     }
   }
-
+  .with_answer_data {
+    line-height: 25px;
+  }
+}
+// also make so it shows who invited the building operator
+//let kevin know about bug going to review mode
+.notification-bar {
+    position: relative;
+    width: 400px;
+    height: 40px;
+    top: -45px;
+    left: -45px;
+    background: $primary;
+    text-align: center;
+    line-height: 2.5;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+    font-size: 16px;
+    font-family: BlinkMacSystemFont;
 }

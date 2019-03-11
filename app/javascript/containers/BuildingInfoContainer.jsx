@@ -10,8 +10,8 @@ class BuildingInfoContainer extends React.Component {
   render() {
     return (
       <div key={this.props.building_id}>
-          <h2>{this.props.name}</h2>
-          <h6>{this.props.address}</h6>
+          <h2 className='building_title'>{this.props.name}</h2>
+          <h3 className='building_address'>{this.props.address}</h3>
           <QuestionaireCategoryContainer building_id={ this.props.building_id } categories={ this.props.categories }></QuestionaireCategoryContainer>
       </div>
     );
