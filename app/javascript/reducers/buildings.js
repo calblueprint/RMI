@@ -18,7 +18,7 @@ import { answers } from './answers';
 
 function addBuilding(state, action) {
   const building = action.building;
-  const buildingId: building.id;
+  const buildingId = building.id;
   return {
     ...state,
     [buildingId] : building

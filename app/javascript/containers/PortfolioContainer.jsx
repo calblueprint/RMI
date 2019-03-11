@@ -5,7 +5,8 @@ import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
-import { addBuilding } from "../actions/building";
+import { addBuilding } from "../actions/buildings";
+import { post } from "../fetch/requester";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -28,19 +29,33 @@ class PortfolioContainer extends React.Component {
   async createBuilding(event) {
     event.preventDefault();
     const buildingName = event.target.name.value;
-    const email = event.target.email.value;
-    const buildingTypeId = event.target.id.value;
+    // const email = event.target.email.value;
+    const buildingTypeId = parseInt(document.getElementById("building").value); 
+    const address = event.target.address.value;
+    const city = event.target.city.value;
+    const state = event.target.state.value;
+    const zip = event.target.zip.value;
+    console.log(typeof buildingTypeId);
+    console.log("before serializer");
     try {
-      let response = await post("/api/building", {
+      let response = await post("/api/buildings", {
         name: buildingName,
+        portfolio_id: this.props.match.params.pId,
+        address: address,
+        city: city,
+        state: state,
+        zip: zip,
         building_type_id: buildingTypeId
       });
-      const building = { ...response.data};
+      console.log("made it here");
+      const building = { ...response.data };
       const buildingId = building.id;
       this.props.addBuilding(building);
-      this.props.history.push(`/building_types/${buildingId}`);
+
+      this.props.history.push(`/buildings/${buildingId}`);
     } catch (error) {
-      this.setState({errors: error, showModal: true})
+      console.log(error);
+      this.setState({ errors: error, showModal: true });
     }
   }
 
@@ -56,25 +71,52 @@ class PortfolioContainer extends React.Component {
           onClick={this.toggleModal}
         />
         <ReactModal isOpen={this.state.showModal}>
-          <form onSubmit={this.createBuildingType}>
+          <form onSubmit={this.createBuilding}>
+            <label>
               Building Name
               <input type="text" name="name" />
-              <br />
-
+            </label>
+            <br />
+            <label>
               Email Address
-              <input type="text" email="email" />
-              <br />
-              Building Type
-            <select>
-              {Object.keys(this.props.building_types).map(building_type => {
-                return (
-                  <option type="type" id={building_type}>{this.props.building_types[building_type].name}</option>
-                  )
-              })}
-            </select>
-
+              <input type="text" name="email" />
+            </label>
+            <br />
+            <label>
+              Address
+              <input type="text" name="address" />
+            </label>
+            <br />
+            <label>
+              City
+              <input type="text" name="city" />
+            </label>
+            <br />
+            <label>
+              State
+              <input type="text" name="state" />
+            </label>
+            <br />
+            <label>
+              ZIP Code
+              <input type="number" name="zip" />
+            </label>
+            <br />
+            Building Type
+            <label>
+              <select>
+                {Object.keys(this.props.building_types).map(building_type => {
+                  return (
+                    <option type="type" id="building" value={building_type}>
+                      {this.props.building_types[building_type].name}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <input type="submit" value="Submit" />
           </form>
-          <input type="submit" value="Submit" />
+
           <div>{this.state.errors}</div>
           <button onClick={this.toggleModal}>Close Modal</button>
         </ReactModal>
@@ -110,7 +152,7 @@ function mapDispatchToProps(dispatch) {
     buildingActions: bindActionCreators(BuildingActions, dispatch),
     initActions: bindActionCreators({ loadInitialState }, dispatch),
     addBuilding: building => {
-      dispatch(addBuilding(building, portfolioId));
+      dispatch(addBuilding(building));
     }
   };
 }
