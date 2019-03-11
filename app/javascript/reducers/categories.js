@@ -4,7 +4,17 @@ import {
   CATEGORY_FETCH_IN_PROGRESS,
   CATEGORY_FETCH_SUCCESS,
   REMOVE_CATEGORY,
-  UPDATE_LOCAL_CATEGORY, QUESTION_FETCH_SUCCESS, CREATE_UNSAVED_QUESTION, REMOVE_QUESTION, SET_CATEGORY_TO_NEW, DELETE_CATEGORY
+  UPDATE_LOCAL_CATEGORY,
+  QUESTION_FETCH_SUCCESS,
+  CREATE_UNSAVED_QUESTION,
+  REMOVE_QUESTION,
+  SET_CATEGORY_TO_NEW,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
+  DELETE_IN_PROGRESS,
+  CATEGORY_DELETE_SUCCESS,
+  CATEGORY_DELETE_FAILURE,
+  CATEGORY_DELETE_IN_PROGRESS,
 } from '../constants';
 
 
@@ -15,17 +25,6 @@ function detachCategory(state, action) {
       newState[id] = state[id];
       return newState
     }, {});
-}
-
-function deleteCategory(state, action) {
-  const categoryId = action.category.id;
-  return {
-    ...state,
-    [categoryId]: {
-      ...state[categoryId],
-      deleted: true
-    }
-  }
 }
 
 
@@ -135,6 +134,40 @@ function addQuestionId(state, action) {
   }
 }
 
+function categoryDeleteFailure(state, action) {
+  const categoryId = action.category.id;
+  return {
+    ...state,
+    [categoryId]: {
+      ...action.category,
+      deleteStatus: action.deleteStatus,
+      error: action.error,
+    }
+  }
+}
+
+function categoryDeleteSuccess(state, action) {
+  const categoryId = action.category.id;
+  return {
+    ...state,
+    [categoryId]: {
+      ...state[categoryId],
+      deleteStatus: action.deleteStatus,
+    }
+  }
+}
+
+function categoryDeleteInProgress(state, action) {
+  const categoryId = action.category.id;
+  return {
+    ...state,
+    [categoryId]: {
+      ...state[categoryId],
+      deleteStatus: action.deleteStatus,
+      deleted: true,
+    }
+  }
+}
 
 
 export default function categories(state = {}, action) {
@@ -150,7 +183,11 @@ export default function categories(state = {}, action) {
     case CATEGORY_FETCH_SUCCESS: return categoryFetchSuccess(state, action);
     case CATEGORY_FETCH_FAILURE: return categoryFetchFailure(state, action);
     case SET_CATEGORY_TO_NEW: return categorySetToNew(state, action);
-    case DELETE_CATEGORY: return deleteCategory(state, action);
+
+    case CATEGORY_DELETE_SUCCESS: return categoryDeleteSuccess(state, action);
+    case CATEGORY_DELETE_FAILURE: return categoryDeleteFailure(state, action);
+    case CATEGORY_DELETE_IN_PROGRESS: return categoryDeleteInProgress(state, action);
+
     // questions
     case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);
     case REMOVE_QUESTION: return removeQuestion(state, action);

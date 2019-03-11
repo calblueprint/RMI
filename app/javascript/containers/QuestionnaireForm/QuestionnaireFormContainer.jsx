@@ -54,18 +54,22 @@ class QuestionnaireFormContainer extends React.Component {
   render() {
     const categoryToggle = this.props.categoryList.map((category) => {
       const currentColor = category.id == this.state.currentCategory.id ? 'red' : 'transparent';
-      return(
-        <div
-          key={category.id}
-        >
-          <button
-            onClick={(e) => this.toggleCategory(category)}
-            style={{backgroundColor: currentColor}}
+      if (category["deleted"]) {
+        return (<div></div>)
+      } else {
+        return(
+          <div
+            key={category.id}
           >
-            {category.name}
-          </button>
-        </div>
-      )
+            <button
+              onClick={(e) => this.toggleCategory(category)}
+              style={{backgroundColor: currentColor}}
+            >
+              {category.name}
+            </button>
+          </div>
+        )
+      }
     });
 
     return (

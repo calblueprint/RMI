@@ -10,7 +10,9 @@ import {
   categoryFetchInProgress,
   categoryFetchSuccess,
   categoryPreFetchSave,
-  deleteCategory,
+  categoryDeleteSuccess,
+  categoryDeleteFailure,
+  categoryDeleteInProgress,
   removeCategory
 } from "../../actions/categories";
 import {
@@ -44,34 +46,19 @@ class CategoryQuestionsContainer extends React.Component {
   }
 
   /**
-   * Handles request to delete a remove a category and redux update
+   * Handles fetch request to remove a category and redux update
    * @param { string } id - categoryId to update
    * @param { Object } args - any category parameters
    */
   async removeCategory(id, args) {
     const removedCategory = { ...this.props.category, ...args };
+    this.props.categoryDeleteInProgress(removedCategory);
     try {
-      this.props.removeCategory(this.props.category);
-      let response = await destroy("/api/categories/" + removedCategory.id);
+      let response = await fetch("/api/categories/" + removedCategory.id);
+      let response2 = await destroy("/api/categories/" + removedCategory.id);
+      this.props.categoryDeleteSuccess(removedCategory);
     } catch (error) {
-      console.log("REQUEST ERROR");
-      console.log(error)
-    }
-  }
-
-  /**
-   * Handles request to delete a category and redux update
-   * @param { string } id - categoryId to update
-   * @param { Object } args - any category parameters
-   */
-  async deleteCategory(id, args) {
-    const deletedCategory = { ...this.props.category, ...args };
-    try {
-      this.props.deleteCategory(this.props.category);
-      let response = await destroy("/api/categories/" + deletedCategory.id);
-    } catch (error) {
-      console.log("REQUEST ERROR");
-      console.log(error)
+      this.props.categoryDeleteFailure(error, removedCategory);
     }
   }
 
@@ -91,7 +78,6 @@ class CategoryQuestionsContainer extends React.Component {
    */
   handleOnRemove(id, args) {
     this.removeCategory(id, args);
-    this.deleteCategory(id, args);
   }
   /**
    * Handles event for onChange which is updating redux temporarily.
@@ -181,11 +167,17 @@ function mapDispatchToProps(dispatch) {
     categoryFetchFailure: (error, category) => {
       dispatch(categoryFetchFailure(error, category));
     },
+    categoryDeleteInProgress: category => {
+      dispatch(categoryDeleteInProgress(category));
+    },
+    categoryDeleteSuccess: category => {
+      dispatch(categoryDeleteSuccess(category));
+    },
+    categoryDeleteFailure: (error, category) => {
+      dispatch(categoryDeleteFailure(error, category));
+    },
     removeCategory: category => {
       dispatch(removeCategory(category));
-    },
-    deleteCategory: category => {
-      dispatch(deleteCategory(category));
     },
     questionFetchSuccess: question => {
       dispatch(questionFetchSuccess(question));
