@@ -56,6 +56,7 @@ class CategoryQuestionsContainer extends React.Component {
     try {
       let response = await destroy("/api/categories/" + removedCategory.id);
       this.props.categoryDeleteSuccess(removedCategory);
+      this.props.removeCategory(removedCategory);
     } catch (error) {
       this.props.categoryDeleteFailure(error, removedCategory);
     }
