@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { questionDataPerCategory, numUnanswered } from '../selectors/answersSelector';
+import fontawesome from '@fortawesome/fontawesome';
+import delegateIcon from '@fortawesome/fontawesome-free-solid/faUser';
+import reviewIcon from '@fortawesome/fontawesome-free-solid/faCheck';
 
 
 class QuestionaireCategoryContainer extends React.Component {
@@ -11,6 +14,15 @@ class QuestionaireCategoryContainer extends React.Component {
       return answered + " / " + total + " ANSWERED";
     }
     return "COMPLETED"
+  }
+
+  getFaIcon(icon) {
+    return (<i
+      style={{ fontSize: '14pt' }}
+      dangerouslySetInnerHTML={{
+        __html: fontawesome.icon(icon).html[0]
+      }}
+    />)
   }
 
   render() {
@@ -23,8 +35,8 @@ class QuestionaireCategoryContainer extends React.Component {
             {Object.keys(categoryData).map((id, index) => {
               return (<div key={id} className='category-circle'>{index + 1}</div>)
             })}
-            <div className='category-circle'>{this.props.categories.length + 1}</div>
-            <div className='category-circle'>{this.props.categories.length + 2}</div>
+            <div className='category-circle'>{this.getFaIcon(delegateIcon)}</div>
+            <div className='category-circle'>{this.getFaIcon(reviewIcon)}</div>
           </div>
           <div className='category-information'>
             {Object.keys(categoryData).map((id) => {
