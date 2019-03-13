@@ -58,9 +58,11 @@ export function isDelegated(question, buildingId, state) {
 export function numUnanswered(buildingId, state) {
   let unanswered = 0;
   let answers = state.buildings[buildingId].answers;
+  let buildingQuestions = state.buildings[buildingId].questions;
 
   for (let key in answers) {
-    if (!(answers[key].text) && !(answers[key].delegation_email)) {
+    let questionId = answers[key].question_id;
+    if (buildingQuestions.includes(String(questionId)) && !(answers[key].text) && !(answers[key].delegation_email)) {
       unanswered += 1;
     }
   }
@@ -81,29 +83,32 @@ export function numAnswered(buildingId, state) {
   return answered;
 }
 
-
 export function questionDataPerCategory(buildingId, categoriesArray, state) {
   let catData = {};
   let buildingQuestions = state.buildings[buildingId].questions;
 
-  for (let i = 0; i < categoriesArray.length; i++) {
-    let categoryId = categoriesArray[i].id;
-    let answers = state.buildings[buildingId].answers;
-    catData[categoryId] = {id: categoryId, 
-                  name: categoriesArray[i].name,
-                  answered: 0,
-                  total: 0};
+  let answers = state.buildings[buildingId].answers;  
 
-    for (let key in answers) {
-      let questionId = answers[key].question_id;
-      let question = state.questions[questionId];
-      if (buildingQuestions.includes(String(questionId)) && (categoryId === question.category_id)) {
-        if (!(isUnanswered(question, buildingId, state) 
-          || isDelegated(question, buildingId, state))) {
-            catData[categoryId].answered += 1; 
+  for (let key in answers) {
+    let questionId = answers[key].question_id;
+    let question = state.questions[questionId];
+    
+    if (buildingQuestions.includes(String(questionId))) {
+
+      let categoryId = question.category_id;
+
+      if (!catData[categoryId]) {
+        catData[categoryId] = {id: categoryId, 
+          name: categoriesArray.filter(cat => {
+            return cat.id === categoryId
+          })[0].name,
+          answered: 0,
+          total: 0};
+      }
+      if ((answers[key].text) || (answers[key].delegation_email)) {
+        catData[categoryId].answered += 1; 
       }
       catData[categoryId].total += 1;
-      }
     }
   }
   return catData;

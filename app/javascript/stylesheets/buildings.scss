@@ -124,13 +124,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 30px;
-  // background: linear-gradient(
-  //   90deg,
-  //   rgba(255, 255, 255, 0) 46%,
-  //   $primary 46%,
-  //   $primary 54%,
-  //   rgba(255, 255, 255, 0) 54%
-  // );
+
   .vertical-line {
     border-left: 6px solid $primary;
     height: calc(100% - 50px);
@@ -185,8 +179,7 @@
     line-height: 25px;
   }
 }
-// also make so it shows who invited the building operator
-//let kevin know about bug going to review mode
+
 .notification-bar {
     position: relative;
     width: 400px;

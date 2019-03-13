@@ -15,9 +15,14 @@ export function getBuildingById(buildingId, state) {
 
 }
 
-export function getAddressByBuildingId(id, state) {
+export function getStreetAddressByBuildingId(id, state) {
   let building = state.buildings[id]
-  return building.address + " " + building.city + ", " + building.state + " " + String(building.zip);
+  return building.address;
+}
+
+export function getCityStateAddressByBuildingId(id, state) {
+  let building = state.buildings[id]
+  return building.city + ", " + building.state + " " + String(building.zip);
 }
 
 export function getNameByBuildingId(id, state) {

@@ -28,7 +28,7 @@ class BuildingListContainer extends React.Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     buildings: getBuildings(state)
   };

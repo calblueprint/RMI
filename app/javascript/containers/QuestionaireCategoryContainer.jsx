@@ -6,6 +6,13 @@ import { questionDataPerCategory, numUnanswered } from '../selectors/answersSele
 
 
 class QuestionaireCategoryContainer extends React.Component {
+  categoryProgress(answered, total) {
+    if (answered < total) {
+      return answered + " / " + total + " ANSWERED";
+    }
+    return "COMPLETED"
+  }
+
   render() {
     var categoryData = this.props.categoryData;    
     return (
@@ -20,9 +27,9 @@ class QuestionaireCategoryContainer extends React.Component {
             <div className='category-circle'>{this.props.categories.length + 2}</div>
           </div>
           <div className='category-information'>
-            {Object.keys(categoryData).map((id, index) => {
+            {Object.keys(categoryData).map((id) => {
               return (<div key={id} className='with_answer_data'>{categoryData[id].name}<br></br>
-                <small>{categoryData[id].answered} / {categoryData[id].total} COMPLETED</small>
+                <small>{this.categoryProgress(categoryData[id].answered, categoryData[id].total)}</small>
               </div>)
             })}
             <div>Delegate</div>
@@ -40,8 +47,6 @@ QuestionaireCategoryContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        // dictionary for each category id and its corresponding number of answered questions
-        // categoryProgress: numAnsweredforCategories(ownProps.building_id, ownProps.categories, state),
         // array containing an object for each category id, name, number of answered questions, and total questions
         categoryData: questionDataPerCategory(ownProps.building_id, ownProps.categories, state)
     };
