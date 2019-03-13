@@ -159,9 +159,9 @@ class DelegationContainer extends React.Component {
     return (
       <div>
         {dependents.map(question => (
-          <div key={question.id}>
+          <div key={`delegate_${question.id}`}>
             <QuestionContainer
-              mode="delegation"
+              mode={this.props.mode}
               building_id={this.props.building_id}
               {...question}
             />
@@ -205,6 +205,7 @@ class DelegationContainer extends React.Component {
           handleClickCreateContact={this.showNameInputs}
           handleContactInfoChange={this.handleContactInfoChange}
           handleExistingContactSelect={this.selectContactByEmail}
+          handleDelegationCancel={this.props.onDelegationCancel}
           toggleSelected={this.toggleSelected}
           contacts={Object.values(this.filterContacts())}
           email={this.state.email}

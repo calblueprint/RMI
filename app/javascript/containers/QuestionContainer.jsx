@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import OptionsContainer from "./OptionsContainer";
 import QuestionResultContainer from "./QuestionResultContainer";
@@ -63,12 +64,14 @@ class QuestionContainer extends React.Component {
     return (
       <div>
         <DelegationContainer
+          mode={this.props.mode}
           text={this.props.text}
           question_id={this.props.id}
           question_type={this.props.question_type}
           options={this.props.options}
           building_id={this.props.building_id}
           onDelegationRemove={this.onDelegationRemove.bind(this)}
+          onDelegationCancel={this.onDelegationCancel.bind(this)}
         />
       </div>
     );
@@ -78,9 +81,20 @@ class QuestionContainer extends React.Component {
     this.setState({ isDelegating: true });
   }
 
+  // Clicks "X" button on a DelegationContactCard
   onDelegationRemove() {
-    if (this.props.mode === "review") {
+    if (this.props.mode === "answer") {
       this.setState({ isDelegating: false });
+    }
+  }
+
+  // Clicks: "Answer Question"
+  onDelegationCancel() {
+    this.onDelegationRemove();
+    if (this.props.mode === "delegation") {
+      this.props.history.push(
+        `/buildings/${this.props.building_id}/edit/${this.props.category_id}`
+      );
     }
   }
 
@@ -114,7 +128,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps)(QuestionContainer);
+export default withRouter(connect(mapStateToProps)(QuestionContainer));
 
 QuestionContainer.propTypes = {
   id: PropTypes.number.isRequired,
