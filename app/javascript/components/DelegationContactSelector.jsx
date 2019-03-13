@@ -9,6 +9,7 @@ function DelegationContactSelector({
   handleClickCreateContact,
   handleContactInfoChange,
   handleExistingContactSelect,
+  handleDelegationCancel,
   toggleSelected,
   contacts
 }) {
@@ -62,7 +63,12 @@ function DelegationContactSelector({
         popoverProps={{ minimal: true }}
         noResults={noResultsFallback}
       />
-      <button className="btn btn--secondary delegation__edit_btn">Edit</button>
+      <button
+        className="btn btn--secondary delegation__edit_btn"
+        onClick={handleDelegationCancel}
+      >
+        Answer Question
+      </button>
     </div>
   );
 }
