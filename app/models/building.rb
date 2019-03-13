@@ -16,7 +16,7 @@
 
 class Building < ApplicationRecord
   belongs_to :portfolio
-  belongs_to :building_type
+  belongs_to :building_type, optional: true
 
   has_one :location
 

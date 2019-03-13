@@ -13,6 +13,7 @@ class BuildingType < ApplicationRecord
   has_many :buildings
   has_many :categories
   
+  accepts_nested_attributes_for :buildings
   validates :name, presence: true, uniqueness: true
 
   def building_operator_questions(building_operator)

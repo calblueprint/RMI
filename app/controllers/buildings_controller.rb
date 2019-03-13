@@ -11,6 +11,8 @@ class BuildingsController < ApplicationController
 
   def create
     building = Building.new(building_params)
+    # doesn't do anything...
+    # building.building_type = BuildingType.find(building_params[:building_type_id])
     if building.save
       new_building = BuildingSerializer.new(building, scope: current_user.get_scope)
       render_json_message(:ok, message: "New Building: #{building.id} created", data: new_building)
@@ -23,13 +25,6 @@ class BuildingsController < ApplicationController
 
   def building_params
     params.require(:building)
-      .permit(
-        :name,
-        :building_type_id, 
-        :address, 
-        :city, 
-        :state,
-        :zip
-      )
+      .permit!
   end
 end

@@ -30,28 +30,28 @@ class PortfolioContainer extends React.Component {
     event.preventDefault();
     const buildingName = event.target.name.value;
     // const email = event.target.email.value;
-    const buildingTypeId = parseInt(document.getElementById("building").value); 
+    const buildingTypeId = document.getElementById("building").value; 
     const address = event.target.address.value;
     const city = event.target.city.value;
     const state = event.target.state.value;
     const zip = event.target.zip.value;
-    console.log(typeof buildingTypeId);
-    console.log("before serializer");
-    try {
-      let response = await post("/api/buildings", {
+    const obj = {
         name: buildingName,
-        portfolio_id: this.props.match.params.pId,
+        building_type_id: buildingTypeId,
         address: address,
         city: city,
         state: state,
         zip: zip,
-        building_type_id: buildingTypeId
-      });
+        portfolio_id: this.props.match.params.pId,
+        
+      }
+      console.log(obj)
+    try {
+      let response = await post("/api/buildings", obj);
       console.log("made it here");
-      const building = { ...response.data };
+      const building = { ...response.data , answers: [], questions: this.props.building_types};
       const buildingId = building.id;
       this.props.addBuilding(building);
-
       this.props.history.push(`/buildings/${buildingId}`);
     } catch (error) {
       console.log(error);
@@ -105,9 +105,9 @@ class PortfolioContainer extends React.Component {
             Building Type
             <label>
               <select>
-                {Object.keys(this.props.building_types).map(building_type => {
+                {Object.keys(this.props.building_types).map((building_type) => {
                   return (
-                    <option type="type" id="building" value={building_type}>
+                    <option type="text" id="building" value={building_type}>
                       {this.props.building_types[building_type].name}
                     </option>
                   );
