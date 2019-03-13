@@ -46,6 +46,7 @@ class QuestionContainer extends React.Component {
    try {
      let response = await destroy("/api/questions/" + removedQuestion.id);
      this.props.questionDeleteSuccess(removedQuestion);
+     this.props.removeQuestion(removedQuestion);
    } catch (error) {
      this.props.questionDeleteFailure(error, removedQuestion);
    }
