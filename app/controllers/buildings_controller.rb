@@ -12,8 +12,11 @@ class BuildingsController < ApplicationController
   def create
     building = Building.new(building_params)
     # doesn't do anything...
-    # building.building_type = BuildingType.find(building_params[:building_type_id])
     if building.save
+      if !building.building_type
+        building.building_type = BuildingType.find(building_params[:building_type_id])
+      end
+      building.building_type_id = building_params[:building_type_id]
       new_building = BuildingSerializer.new(building, scope: current_user.get_scope)
       render_json_message(:ok, message: "New Building: #{building.id} created", data: new_building)
     else

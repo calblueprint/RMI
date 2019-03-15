@@ -6,6 +6,7 @@
  */
 export function getQuestionsByBuilding(buildingId, state) {
   const questions = state.buildings[buildingId].questions;
+  console.log(questions)
   return questions.map((questionId) => {
     return state.questions[questionId];
   });
