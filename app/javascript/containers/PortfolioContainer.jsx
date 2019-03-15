@@ -49,11 +49,12 @@ class PortfolioContainer extends React.Component {
     try {
       let response = await post("/api/buildings", obj);
       console.log("made it here");
-      const building = { ...response.data , answers: [], questions: Object.values(this.props.building_types[buildingTypeId].questions)};
+      const building = { ...response.data , answers: {}, questions: Object.values(this.props.building_types[buildingTypeId].questions)};
+      building["building_type_id"] = buildingTypeId;
       const buildingId = building.id;
       console.log(building)
       this.props.addBuilding(building);
-      this.props.history.push(`/buildings/${buildingId}`);
+      this.props.history.push(`/buildings/${buildingId}/edit`);
     } catch (error) {
       console.log(error);
       this.setState({ errors: error, showModal: true });

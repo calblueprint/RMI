@@ -11,7 +11,6 @@ class BuildingsController < ApplicationController
 
   def create
     building = Building.new(building_params)
-    # doesn't do anything...
     if building.save
       if !building.building_type
         building.building_type = BuildingType.find(building_params[:building_type_id])
