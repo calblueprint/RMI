@@ -84,6 +84,25 @@ export function getNumUnansweredForBuilding(buildingId, state) {
   return getNumUnanswered(activeQuestions, buildingId, state);
 }
 
+export function percentAnswered(buildingId, state) {
+  let answered = 0;
+  let total = 0;
+  let answers = state.buildings[buildingId].answers;
+  let buildingQuestions = state.buildings[buildingId].questions;
+
+  for (let key in answers) {
+    let questionId = answers[key].question_id;
+    if (
+      buildingQuestions.includes(String(questionId)) &&
+      (answers[key].text || answers[key].delegation_email)
+    ) {
+      answered += 1;
+    }
+    total += 1;
+  }
+  return answered / total;
+}
+
 export function questionDataPerCategory(buildingId, categoriesArray, state) {
   let catData = {};
 
@@ -107,4 +126,17 @@ export function questionDataPerCategory(buildingId, categoriesArray, state) {
     };
   }
   return catData;
+}
+
+// returns an array with the percent of answered questions for each building
+export function progressForBuildingsArray(buildings, state) {
+  let progressArray = [];
+  console.log(buildings);
+  for (let i = 0; i < buildings.length; i++) {
+    console.log(buildings[i].id);
+    let n = percentAnswered(buildings[i].id, state);
+    progressArray.push(n);
+  }
+  console.log(progressArray);
+  return progressArray;
 }

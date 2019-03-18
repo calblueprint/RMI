@@ -3,25 +3,49 @@ import React from 'react';
 import * as BuildingActions from '../actions/buildings';
 import { loadInitialState } from '../actions/initialState';
 import { getBuildingTypeNameById } from '../selectors/buildingTypesSelector';
+import { progressForBuildingsArray } from '../selectors/answersSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { throws } from 'assert';
 
 
 class PortfolioBuildingDetailsContainer extends React.Component {
+  getStatusForBuilding(index) {
+    if (this.props.buildingStatusArray[index] == 1) {
+      return "Completed"
+    } else if (this.props.buildingStatusArray[index] == 0) {
+      return "Not Started"
+    }
+    return "In Progress"
+  }
   render() {
     return (<div>
       <h3>{this.props.buildingTypeName}</h3>
       <div className="building__container">
-      {this.props.buildings.map(building => {
+        <div className="building__row">
+            <div className="building__details">
+              <h3>Name</h3>
+            </div>
+            <div>
+              <h3>Status</h3>
+            </div>
+            <div>
+              <h3>Building Type</h3>
+            </div>
+            <div>
+              <h3>Actions</h3>
+            </div>
+        </div>
+      {this.props.buildings.map((building, index) => {
         return (<div className="building__row" key={building.id}>
             <div className="building__details">
               <h3>{building.name}</h3>
               <p>{building.address}</p>
             </div>
             <div>
-              status
+              {this.getStatusForBuilding(index)}
             </div>
             <div>
               {this.props.buildingTypeName}
@@ -44,7 +68,8 @@ PortfolioBuildingDetailsContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    buildingTypeName: getBuildingTypeNameById(ownProps.buildingTypeId, state)
+    buildingTypeName: getBuildingTypeNameById(ownProps.buildingTypeId, state),
+    buildingStatusArray: progressForBuildingsArray(ownProps.buildings, state)
   };
 }
 
