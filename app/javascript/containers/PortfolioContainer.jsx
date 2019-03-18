@@ -18,6 +18,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { delegateQuestions } from "../utils/DelegationRequests";
 
+import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
+
 class PortfolioContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +31,27 @@ class PortfolioContainer extends React.Component {
     this.createAnswers = this.createAnswers.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
+
+  groupBuildingsByType() {
+    let buildingTypesDic = {};
+    let buildings = this.props.buildings;
+    for (let i = 0; i < buildings.length; i++) {
+      let id = buildings[i].building_type_id;
+      if (buildingTypesDic[id] == null) {
+        buildingTypesDic[id] = [buildings[i]];
+      }
+      buildingTypesDic[id].push(buildings[i]);
+    }
+    return buildingTypesDic;
+  }
+
+  // getContainerByBuildingType() {
+  //   for (let key in this.buildingByType) {
+
+  //   }
+  //     return (<PortfolioBuildingDetailsContainer buildings={buildingGroup} buildingTypeId={buildingGroup.id}>
+  //     </PortfolioBuildingDetailsContainer>)
+  // }
 
   toggleModal() {
     this.setState({ showModal: !this.state.showModal });
@@ -104,7 +127,13 @@ class PortfolioContainer extends React.Component {
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
-      await this.createAnswers(questions, buildingId, email, firstName, lastName);
+      await this.createAnswers(
+        questions,
+        buildingId,
+        email,
+        firstName,
+        lastName
+      );
       this.props.history.push(`/buildings/${buildingId}`);
     } catch (error) {
       this.setState({ errors: error, showModal: true });
@@ -112,6 +141,7 @@ class PortfolioContainer extends React.Component {
   }
 
   render() {
+    let buildingByType = this.groupBuildingsByType();
     return (
       <div>
         <h2>Portfolio</h2>
@@ -130,17 +160,13 @@ class PortfolioContainer extends React.Component {
           createBuilding={this.createBuilding}
         />
         <div className="building__container">
-          {this.props.buildings.map(building => {
+          {Object.keys(buildingByType).map(typeId => {
             return (
-              <div className="building__row" key={building.id}>
-                <div className="building__details">
-                  <h3>{building.name}</h3>
-                  <p>{building.address}</p>
-                </div>
-                <span className="building__link">
-                  <Link to={`/buildings/${building.id}`}>Details</Link>
-                </span>
-              </div>
+              <PortfolioBuildingDetailsContainer
+                buildings={buildingByType[typeId]}
+                buildingTypeId={typeId}
+                match={this.props.match}
+              />
             );
           })}
         </div>
@@ -155,6 +181,7 @@ function mapStateToProps(state, ownProps) {
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
       getAnswerForQuestionAndBuilding(questionId, buildingId, state)
+    // buildingTypes: getBuildingTypesByPortfolio(ownProps.match.params.pId, state)
   };
 }
 
@@ -175,3 +202,22 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(PortfolioContainer);
+
+/*{this.props.buildings.map(building => {
+  return (<div className="building__row" key={building.id}>
+      <div className="building__details">
+        <h3>{building.name}</h3>
+        <p>{building.address}</p>
+      </div>
+      <div>
+        status
+      </div>
+      <div>
+        building type
+      </div>
+      <span className="building__link">
+        <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
+        <Link to={`/buildings/${building.id}`}>Details</Link>
+      </span>
+  </div>)
+})}*/
