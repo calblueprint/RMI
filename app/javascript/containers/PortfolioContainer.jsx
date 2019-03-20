@@ -202,22 +202,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(PortfolioContainer);
-
-/*{this.props.buildings.map(building => {
-  return (<div className="building__row" key={building.id}>
-      <div className="building__details">
-        <h3>{building.name}</h3>
-        <p>{building.address}</p>
-      </div>
-      <div>
-        status
-      </div>
-      <div>
-        building type
-      </div>
-      <span className="building__link">
-        <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
-        <Link to={`/buildings/${building.id}`}>Details</Link>
-      </span>
-  </div>)
-})}*/

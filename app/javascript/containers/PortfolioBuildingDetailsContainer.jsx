@@ -47,11 +47,7 @@ class PortfolioBuildingDetailsContainer extends React.Component {
             <div>
               {this.getStatusForBuilding(index)}
             </div>
-            <div>
-              {this.props.buildingTypeName}
-            </div>
             <span className="building__link">
-              <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
               <Link to={`/buildings/${building.id}`}>Details</Link>
             </span>
         </div>)
