@@ -61,6 +61,11 @@ class QuestionContainer extends React.Component {
 
     const select = !!this.props.question.new;
 
+    const options = Object.keys(this.props.question.options).filter((optionId) => {
+      const option = this.props.question.options[optionId];
+      return option['deleted'] !== true
+    })
+
     return (
       <div>
         <div
@@ -76,7 +81,7 @@ class QuestionContainer extends React.Component {
         { Object.keys(this.props.question.options).length !== 0 ?
           <DepQuestionContainer
             question={this.props.question}
-            optionIdList={Object.keys(this.props.question.options)}
+            optionIdList={Object.keys(options)}
           /> : null}
       </div>
     );

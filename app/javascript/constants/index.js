@@ -70,6 +70,10 @@ export const CREATE_UNSAVED_OPTION = 'CREATE_UNSAVED_OPTION';
 export const OPTION_FETCH_SUCCESS = 'OPTION_FETCH_SUCCESS';
 export const OPTION_FETCH_FAILURE = 'OPTION_FETCH_FAILURE';
 
+export const OPTION_DELETE_SUCCESS = 'OPTION_DELETE_SUCCESS';
+export const OPTION_DELETE_FAILURE = 'OPTION_DELETE_FAILURE';
+export const OPTION_DELETE_IN_PROGRESS = 'OPTION_DELETE_IN_PROGRESS';
+
 // Intermediate save constants
 export const PRE_FETCH_SAVE = 'PRE_FETCH_SAVING';
 export const PAUSE_INTERVAL_BEFORE_SAVE = 1500;
@@ -85,6 +89,11 @@ export const FETCH_SETTINGS = {
     'Content-Type': 'application/json'
   }
 };
+
+//Delete constants
+export const DELETE_SUCCESS = 'DELETE_SUCCESS';
+export const DELETE_FAILURE = 'DELETE_FAILURE';
+export const DELETE_IN_PROGRESS = 'DELETE_IN_PROGRESS';
 
 // Contact constants
 export const ADD_CONTACT = 'ADD_CONTACT';

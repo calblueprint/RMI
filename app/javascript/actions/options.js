@@ -8,6 +8,12 @@ import {
   FETCH_SUCCESS,
   OPTION_FETCH_FAILURE,
   OPTION_FETCH_SUCCESS,
+  OPTION_DELETE_SUCCESS,
+  OPTION_DELETE_FAILURE,
+  OPTION_DELETE_IN_PROGRESS,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
+  DELETE_IN_PROGRESS,
   REMOVE_OPTION
 } from '../constants';
 
@@ -55,6 +61,31 @@ export function optionFetchFailure(error, option) {
 export function removeOption(option) {
   return {
     type: REMOVE_OPTION,
+    option
+  }
+}
+
+export function optionDeleteSuccess(option) {
+  return {
+    type: OPTION_DELETE_SUCCESS,
+    deleteStatus: DELETE_SUCCESS,
+    option
+  };
+}
+
+export function optionDeleteFailure(error, option) {
+  return {
+    type: OPTION_DELETE_FAILURE,
+    deleteStatus: DELETE_FAILURE,
+    error: error,
+    option
+  };
+}
+
+export function optionDeleteInProgress(option) {
+  return {
+    type: OPTION_DELETE_IN_PROGRESS,
+    deleteStatus: DELETE_IN_PROGRESS,
     option
   }
 }
