@@ -30,34 +30,78 @@ class PortfolioContainer extends React.Component {
     event.preventDefault();
     const buildingName = event.target.name.value;
     // const email = event.target.email.value;
-    const buildingTypeId = document.getElementById("building").value; 
+    const buildingTypeId = document.getElementById("building").value;
     const address = event.target.address.value;
     const city = event.target.city.value;
     const state = event.target.state.value;
     const zip = event.target.zip.value;
     const obj = {
-        name: buildingName,
-        building_type_id: buildingTypeId,
-        address: address,
-        city: city,
-        state: state,
-        zip: zip,
-        portfolio_id: this.props.match.params.pId,
-        
-      }
-      console.log(obj)
+      name: buildingName,
+      building_type_id: buildingTypeId,
+      address: address,
+      city: city,
+      state: state,
+      zip: zip,
+      portfolio_id: this.props.match.params.pId
+    };
+    console.log(obj);
     try {
       let response = await post("/api/buildings", obj);
       console.log("made it here");
-      const building = { ...response.data , answers: {}, questions: Object.values(this.props.building_types[buildingTypeId].questions)};
-      building["building_type_id"] = buildingTypeId;
+      const building = {
+        ...response.data,
+        answers: {},
+        questions: Object.values(
+          this.props.building_types[buildingTypeId].questions
+        )
+      };
+      console.log(building);
+      console.log("before change");
+      // building["building_type_id"] = buildingTypeId;
       const buildingId = building.id;
-      console.log(building)
+      console.log(building);
       this.props.addBuilding(building);
+      // submitDelegation();
+      //update redux store with answers to include the email and the names
       this.props.history.push(`/buildings/${buildingId}/edit`);
     } catch (error) {
       console.log(error);
       this.setState({ errors: error, showModal: true });
+    }
+  }
+
+  async postDelegations(delegations) {
+    var body = { delegations };
+
+    try {
+      let resp = await post("/api/delegations", body);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async submitDelegation() {
+    var delegations = [];
+    var questions = this.props.building_types.questions;
+    for (var i = 0; i < questions.length; i++) {
+      var currentAnswer = this.props.getAnswer(questions[i].id);
+      var delegation = {
+        email: answer.delegation_email,
+        first_name: answer.delegation_first_name,
+        last_name: answer.delegation_last_name,
+        answer_id: currentAnswer.id
+      };
+      delegations.push(delegation);
+    }
+    // this.setState({ status_string: "Saving delegations!" });
+    var success = await postDelegations(delegations);
+    if (success) {
+      // this.setState({ status_string: "Delegations saved." });
+      console.log('success!')
+    } else {
+      // this.setState({ status_string: "Saving delegations failed. Try again?" });
+      console.log('failed');
     }
   }
 
@@ -107,7 +151,7 @@ class PortfolioContainer extends React.Component {
             Building Type
             <label>
               <select>
-                {Object.keys(this.props.building_types).map((building_type) => {
+                {Object.keys(this.props.building_types).map(building_type => {
                   return (
                     <option type="text" id="building" value={building_type}>
                       {this.props.building_types[building_type].name}
@@ -155,7 +199,8 @@ function mapDispatchToProps(dispatch) {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
     addBuilding: building => {
       dispatch(addBuilding(building));
-    }
+    },
+    getAnswer: (questionId) => getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
   };
 }
 
