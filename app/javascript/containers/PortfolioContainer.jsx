@@ -21,20 +21,13 @@ class PortfolioContainer extends React.Component {
     return buildingTypesDic;
   }
   
-
-  // getContainerByBuildingType() {
-  //   for (let key in this.buildingByType) {
-
-  //   }
-  //     return (<PortfolioBuildingDetailsContainer buildings={buildingGroup} buildingTypeId={buildingGroup.id}>
-  //     </PortfolioBuildingDetailsContainer>)
-  // }
-
   render() {
     let buildingByType = this.groupBuildingsByType();
     return (
     <div>
       <h2>Portfolio</h2>
+      <br />
+      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
       <hr />
       <div className="building__container">
         {Object.keys(buildingByType).map(typeId => {
@@ -67,22 +60,3 @@ export default connect(
   mapDispatchToProps
 )(PortfolioContainer);
 
-
-/*{this.props.buildings.map(building => {
-  return (<div className="building__row" key={building.id}>
-      <div className="building__details">
-        <h3>{building.name}</h3>
-        <p>{building.address}</p>
-      </div>
-      <div>
-        status
-      </div>
-      <div>
-        building type
-      </div>
-      <span className="building__link">
-        <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
-        <Link to={`/buildings/${building.id}`}>Details</Link>
-      </span>
-  </div>)
-})}*/
