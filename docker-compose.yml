@@ -7,6 +7,7 @@ x-default_env: &env
     - GEM_PATH=/gems
     - GEM_HOME=/gems
     - PATH=/usr/local/bundle/bin:/usr/local/bundle/gems/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/gems/bin
+    - PAGER=/usr/bin/less
     # - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
 version: "3.4"
 services:
