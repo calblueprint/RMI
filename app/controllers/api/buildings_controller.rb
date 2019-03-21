@@ -9,6 +9,7 @@ class Api::BuildingsController < ApplicationController
     # should always create buildings with a portfolio
     portfolio = Portfolio.find(params[:portfolio_id])
     building = portfolio.buildings.create(building_params)
+    #create empty questions here
     if building.save
       render_json_message(:ok, data: building, message: "Building #{building.id} successfuly created and saved")
     else

@@ -2,6 +2,8 @@ class Api::AnswersController < ApplicationController
   load_and_authorize_resource
 
   def create
+    # if answers_params
+      
     answer = Answer.new(answer_params)
     if answer.save
       render_json_message(:ok, data: answer, message: 'New answer created')
@@ -70,5 +72,19 @@ class Api::AnswersController < ApplicationController
             :delegation_first_name,
             :delegation_last_name
           )
+  end
+
+  # answers batch creation
+  def answers_params
+    params.require(:answers).map! do |answer|
+      # batch creation needs "partial answers" and will not contain delegation information until delegated
+      answer.permit(
+        :text, 
+        :attachment,
+        :selected_option_id, 
+        :building_id, 
+        :question_id
+      )
+    end
   end
 end

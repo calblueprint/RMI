@@ -1,6 +1,8 @@
 import {getPotentialDependentQuestions} from "./questionsSelector";
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
+  // console.log(buildingId)
+  // console.log(state)
   return state.buildings[buildingId].answers[questionId]
 }
 
