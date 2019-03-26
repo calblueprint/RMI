@@ -197,6 +197,19 @@ input {
   }
 }
 
+.option_input_row {
+  display: flex;
+  .option_input {
+    flex: 1;
+  }
+  .remove_option_btn {
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+  }
+}
+
 
 .dropdown-input {
   flex: 1;

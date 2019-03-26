@@ -88,32 +88,31 @@ class QuestionContainer extends React.Component {
 
 
   render() {
-
     const select = !!this.props.question.new;
-    if (this.props.question["deleted"]) {
-      return (<div></div>)
-    } else {
-      return (
-        <div>
-          <div
-            className={'mega-question-block'}
-          >
-            <Question
-              question={this.props.question}
-              handleOnRemove={this.handleOnRemove.bind(this)}
-              handleOnBlur={this.handleOnBlur.bind(this)}
-              handleOnChange={this.handleOnChange.bind(this)}
-              select={select}
-            />
-          </div>
-          { Object.keys(this.props.question.options).length !== 0 ?
-            <DepQuestionContainer
-              question={this.props.question}
-              optionIdList={Object.keys(this.props.question.options)}
-            /> : null}
+    const options = Object.keys(this.props.question.options).filter((optionId) => {
+      const option = this.props.question.options[optionId];
+      return option['deleted'] !== true
+    })
+    return (
+      <div>
+        <div
+          className={'mega-question-block'}
+        >
+          <Question
+            question={this.props.question}
+            handleOnRemove={this.handleOnRemove.bind(this)}
+            handleOnBlur={this.handleOnBlur.bind(this)}
+            handleOnChange={this.handleOnChange.bind(this)}
+            select={select}
+          />
         </div>
-      );
-    }
+        { Object.keys(this.props.question.options).length !== 0 ?
+          <DepQuestionContainer
+            question={this.props.question}
+            optionIdList={Object.keys(this.props.question.options)}
+          /> : null}
+      </div>
+    );
   }
 
 }

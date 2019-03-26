@@ -15,6 +15,9 @@ import {
   CREATE_UNSAVED_OPTION,
   OPTION_FETCH_FAILURE,
   OPTION_FETCH_SUCCESS,
+  OPTION_DELETE_SUCCESS,
+  OPTION_DELETE_FAILURE,
+  OPTION_DELETE_IN_PROGRESS,
   QUESTION_SET_NEW,
   DELETE_SUCCESS,
   DELETE_FAILURE,
@@ -199,6 +202,63 @@ function attachOptionToQuestion(state, action) {
   }
 }
 
+function optionDeleteSuccess(state, action) {
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      options: {
+        ...state[questionId].options,
+        [optionId]:{
+          ...action.option,
+          deleted: true,
+          deleteStatus: action.deleteStatus,
+        }
+      }
+    }
+  }
+}
+
+function optionDeleteFailure(state, action) {
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      options: {
+        ...state[questionId].options,
+        [optionId]: {
+          ...action.option,
+          error: action.error,
+          deleteStatus: action.deleteStatus
+        }
+      }
+    }
+  }
+}
+
+function optionDeleteInProgress(state, action) {
+  const questionId = action.option.question_id;
+  const optionId = action.option.id;
+  return {
+    ...state,
+    [questionId]: {
+      ...state[questionId],
+      options: {
+        ...state[questionId].options,
+        [optionId]: {
+          ...action.option,
+          deleted: true,
+          deleteStatus: action.deleteStatus
+        }
+      }
+    }
+  }
+}
+
 function questionDeleteFailure(state, action) {
   const questionId = action.question.id;
   return {
@@ -245,6 +305,9 @@ export default function questions(state = {}, action) {
     case REMOVE_OPTION: return detachOptionFromQuestion(state, action);
     case OPTION_FETCH_IN_PROGRESS: return beforeFetchOption(state, action);
     case UPDATE_LOCAL_OPTION: return beforeFetchOption(state, action);
+    case OPTION_DELETE_SUCCESS: return optionDeleteSuccess(state, action);
+    case OPTION_DELETE_FAILURE: return optionDeleteFailure(state, action);
+    case OPTION_DELETE_IN_PROGRESS: return optionDeleteInProgress(state, action);
     //question
     case UPDATE_LOCAL_QUESTION: return beforeFetchQuestion(state, action);
     case CREATE_UNSAVED_QUESTION: return beforeCreateQuestion(state, action);

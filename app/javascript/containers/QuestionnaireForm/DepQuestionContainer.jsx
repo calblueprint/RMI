@@ -15,36 +15,46 @@ import DepQuestionDisplay from '../../components/QuestionnaireForm/DepQuestionDi
 class DepQuestionContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {newDepQuestion: false}
+    this.state = {
+      newDepQuestion: false,
+    }
   }
 
   displayDependentQuestions() {
     const DependentQuestionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
       const option = this.props.question.options[optionId];
-      return(
-        <div key={optionId}>
-          <DepQuestionDisplay
-            option={option}
-            question={this.props.question}
-            depQuestionsForOptions={this.props.depQuestionsForOptions}
-            questionFetchSuccess={this.props.questionFetchSuccess}
-            questionFetchFailure={this.props.questionFetchFailure}
-            questionSetNew={this.props.questionSetNew}
-            questionFetchInProgress={this.props.questionFetchInProgress}
-          />
-        </div>
-      )
+      if (option['deleted']) {
+        return (<div></div>)
+      } else {
+        return(
+          <div key={optionId}>
+            <DepQuestionDisplay
+              option={option}
+              question={this.props.question}
+              depQuestionsForOptions={this.props.depQuestionsForOptions}
+              questionFetchSuccess={this.props.questionFetchSuccess}
+              questionFetchFailure={this.props.questionFetchFailure}
+              questionSetNew={this.props.questionSetNew}
+              questionFetchInProgress={this.props.questionFetchInProgress}
+            />
+          </div>
+        )
+      }
     }, this);
     return DependentQuestionsDisplay;
   }
 
   render() {
-    return (
-      <div
-        className={'dep-q-block'}
-      >
-        {this.displayDependentQuestions()}
-      </div>);
+    if (this.props.optionIdList.length == 0){
+      return (<div></div>)
+    } else {
+      return (
+        <div
+          className={'dep-q-block'}
+        >
+          {this.displayDependentQuestions()}
+        </div>);
+    }
   }
 }
 

@@ -7,10 +7,14 @@ import {
   beforeCreateNewOption,
   optionFetchSuccess,
   optionFetchFailure,
-  removeOption
+  optionDeleteSuccess,
+  optionDeleteFailure,
+  optionDeleteInProgress,
+  removeOption,
+  detachOptionFromQuestion
 } from '../../actions/options';
 import { connect } from 'react-redux';
-import { patch, post } from '../../fetch/requester';
+import { patch, post, destroy } from '../../fetch/requester';
 import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import PropTypes from 'prop-types';
 import { isEmptyText } from '../../utils/InputComponentUtil';
@@ -106,6 +110,23 @@ class OptionsContainer extends React.Component {
   }
 
   /**
+   * Handles fetch request to delete an option and redux update
+   * @param { string } id - optionId to update
+   * @param { Object } args - any option parameters
+   */
+  async removeOption(id, args) {
+    const removedOption = {...this.props.question.options[id], ...args};
+    this.props.optionDeleteInProgress(removedOption);
+    try {
+      let response = await destroy(this.optionUrl() + '/' + removedOption.id);
+      this.props.optionDeleteSuccess(removedOption);
+      this.props.removeOption(removedOption);
+    } catch (error) {
+      this.props.optionDeleteFailure(error, removedOption);
+    }
+  }
+
+  /**
    * Handles event for onChange which is updating redux temporarily.
    * If create new option, create a temp option in question store.
    * @param { string } id - optionId that is updating
@@ -114,6 +135,20 @@ class OptionsContainer extends React.Component {
   handleOnChange(id, args) {
     const updatedOption = {...this.props.question.options[id], ...args};
     this.props.optionPreFetchSave(updatedOption);
+  }
+
+  /**
+   * Handles event for onRemove which calls async removeOption
+   * If create new option, create a temp option in question store.
+   * @param { string } id - optionId that is to be removed
+   * @param { string } args - any option parameters
+   */
+  handleOnRemove(id, args) {
+    var confirmDeletion = confirm("Are you sure you want to delete this option (and all dependent questions)?");
+    if (confirmDeletion) {
+      this.removeOption(id, args);
+      // this.props.handleOnRemove(this.props.category.id, { name })
+    }
   }
 
   /**
@@ -161,6 +196,18 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  deleteOptionButton (optionId) {
+    if (!this.props.question.options[optionId]["temp"]) {
+      return (
+        <button
+          className="btn btn--primary remove_option_btn"
+          onClick={(e) => this.handleOnRemove(optionId, e.target.value)}>
+          x
+        </button>
+      )
+    }
+  }
+
   render () {
     const question = this.props.question;
     const OptionType = this.getComponentName(question.question_type);
@@ -176,18 +223,27 @@ class OptionsContainer extends React.Component {
         format: 'rgba',
         alpha: 0.5
       });
-      return (
-        <div key={option.id}
-        >
-          <OptionType
-            key={option.id}
-            option={option}
-            handleOnBlur={handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            focus={focus}
-          />
-        </div>
-      )
+      if (option['deleted']) {
+        return (<div></div>)
+      } else {
+        return (
+          <div key={option.id}
+          >
+            <div className={'option_input_row'}>
+              <div className={'option_input'}>
+                <OptionType
+                  key={option.id}
+                  option={option}
+                  handleOnBlur={handleOnBlur.bind(this)}
+                  handleOnChange={this.handleOnChange.bind(this)}
+                  focus={focus}
+                />
+              </div>
+              {this.deleteOptionButton(option.id)}
+            </div>
+          </div>
+        )
+      }
     });
 
     return(
@@ -214,7 +270,10 @@ function mapDispatchToProps(dispatch) {
     beforeCreateNewOption: (option) => {dispatch(beforeCreateNewOption(option))},
     optionFetchSuccess: (response) => {dispatch(optionFetchSuccess(response))},
     removeOption: (option) => {dispatch(removeOption(option))},
-    optionFetchFailure: (error, option) => {dispatch(optionFetchFailure(error, option))}
+    optionFetchFailure: (error, option) => {dispatch(optionFetchFailure(error, option))},
+    optionDeleteInProgress: option => { dispatch(optionDeleteInProgress(option)) },
+    optionDeleteSuccess: option => { dispatch(optionDeleteSuccess(option)) },
+    optionDeleteFailure: (error, option) => { dispatch(optionDeleteFailure(error, option)) },
   };
 }
 
