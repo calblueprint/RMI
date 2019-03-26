@@ -75,7 +75,9 @@ module ApplicationHelper
       ),
       userType: 'BuildingOperator',
       contacts: contacts,
-      categories: current_building_operator.categories,
+      categories: ActiveModel::Serializer::CollectionSerializer.new(
+        current_building_operator.categories, each_serializer: CategorySerializer
+      ),
       userType: current_building_operator.class.name,
     }
   end

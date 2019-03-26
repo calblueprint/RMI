@@ -21,8 +21,7 @@ export function getCurrentCategory(cId, state) {
 // loops through the categories and outputs the first category that has more than 0 unanswered questions
 export function getFirstUnansweredCategory(categories, questions, buildingId, state) {
   for (let currCategory in categories) {
-    let cQuestions = getQuestionsByCategory(categories[currCategory].id, questions);
-    if (getRemainingAnswersforCategory(cQuestions, buildingId, state) > 0) {
+    if (getRemainingAnswersforCategory(categories[currCategory].id, buildingId, state) > 0) {
       return categories[currCategory];
     }
   }
