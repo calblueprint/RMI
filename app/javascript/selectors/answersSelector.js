@@ -1,9 +1,10 @@
+import { getPotentialDependentQuestions } from "./questionsSelector";
 import {
   getAllActiveQuestionsForCategory, getAllQuestionsByCategoryId,
 } from "./questionsSelector";
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
-  return state.buildings[buildingId].answers[questionId]
+  return state.buildings[buildingId].answers[questionId];
 }
 
 //##returns (from the questions provided) how many are remaining to answer
@@ -28,16 +29,26 @@ export function getNumUnanswered(questions, buildingId, state) {
 
 export function isUnanswered(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  if (!answer || !answer.text.trim() && !answer.attachment_file_name) {
-    return true;
-  }
+  return !isValidAnswer(answer);
 }
 
-export function isDelegated(question, buildingId, state) {
-  let answer = state.buildings[buildingId].answers[question.id];
+export function isValidAnswer(answer) {
+  if (answer && (answer.text.trim() || answer.attachment_file_name)) {
+    return true;
+  }
+  return false;
+}
+
+export function isDelegatedQuestion(question, buildingId, state) {
+  let answer = getAnswerForQuestionAndBuilding(question.id, buildingId, state);
+  return isDelegatedAnswer(answer);
+}
+
+export function isDelegatedAnswer(answer) {
   if (answer && answer.delegation_email) {
     return true;
   }
+  return false;
 }
 
 // returns number of undelegated questions for all questions of building 

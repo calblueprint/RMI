@@ -6,8 +6,9 @@ import {
   PRE_FETCH_SAVE,
   FETCH_SUCCESS,
   FETCH_FAILURE,
-  UPDATE_LOCAL_ANSWER
-} from '../constants';
+  UPDATE_LOCAL_ANSWER,
+  DELETE_LOCAL_ANSWER
+} from "../constants";
 
 /**
  * Updates the answer in store -- at this point we are not fetching anything,
@@ -26,7 +27,19 @@ function updateLocalAnswer(state, action) {
       buildingId: buildingId
     }
   };
-};
+}
+
+function removeLocalAnswer(state, action) {
+  const answer = action.answer;
+  return {
+    ...state,
+    [answer.question_id]: {
+      ...state[answer.question_id],
+      text: "",
+      attachment_file_name: ""
+    }
+  };
+}
 
 /**
  * Sets the "fetching" flag to true to indicate that the save is currently in progress.
@@ -84,11 +97,16 @@ function answerFetchFailure(state, action) {
 export function answers(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
-    case UPDATE_LOCAL_ANSWER: return updateLocalAnswer(state, action);
-    case ANSWER_FETCH_IN_PROGRESS: return beforeFetchAnswer(state, action);
-    case ANSWER_FETCH_SUCCESS: return answerFetchSuccess(state, action);
-    case ANSWER_FETCH_FAILURE: return answerFetchFailure(state, action);
-
+    case UPDATE_LOCAL_ANSWER:
+      return updateLocalAnswer(state, action);
+    case DELETE_LOCAL_ANSWER:
+      return removeLocalAnswer(state, action);
+    case ANSWER_FETCH_IN_PROGRESS:
+      return beforeFetchAnswer(state, action);
+    case ANSWER_FETCH_SUCCESS:
+      return answerFetchSuccess(state, action);
+    case ANSWER_FETCH_FAILURE:
+      return answerFetchFailure(state, action);
     default:
       return state;
   }
