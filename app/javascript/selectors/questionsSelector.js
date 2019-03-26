@@ -1,4 +1,14 @@
 /**
+ * Gets question object by question ID.
+ * @param { number } questionId - the question ID of the questionnaire
+ * @param { Object } state - state in store
+ * @returns { Object } the question
+ */
+export function getQuestionByQuestionId(questionId, state) {
+  return state.questions[questionId]
+}
+
+/**
  * Gets array of question objects for a building by building ID.
  * @param { number } buildingId - the building ID of the questionnaire
  * @param { Object } state - state in store

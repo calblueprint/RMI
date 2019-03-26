@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import InputValidation from '../InputValidation';
 import OptionsContainer from '../../containers/QuestionnaireForm/OptionsContainer';
 import ContentEditable from 'react-sane-contenteditable';
+import { getQuestionByQuestionId } from '../../selectors/questionsSelector';
+import { connect } from 'react-redux';
 
 class Question extends React.Component {
   constructor(props) {
@@ -12,7 +14,7 @@ class Question extends React.Component {
       unitInput: !!this.props.question.unit,
     };
   }
-  
+
   componentDidUpdate() {
     if (this.props.select) {
       this.questionInput.focus();
@@ -27,6 +29,17 @@ class Question extends React.Component {
    */
   handleOnBlur(args) {
     this.props.handleOnBlur(this.props.question.id, args)
+  }
+
+  /**
+   * Handles event for onRemove which is making delete request
+   * @param { string } name - the name of the category
+   */
+  handleOnRemove(name) {
+    var confirmDeletion = confirm("Are you sure you want to delete this question (and all dependent questions)?");
+    if (confirmDeletion) {
+      this.props.handleOnRemove(this.props.question.id, { name })
+    }
   }
 
   /**
@@ -65,6 +78,20 @@ class Question extends React.Component {
     }
   }
 
+  deleteButton() {
+    if (!this.props.question["new"]) {
+      return (
+        <button
+          className="btn btn--primary remove_question_btn"
+          onClick={(e) => this.handleOnRemove(e.target.value)}>
+          x
+        </button>
+      )
+    } else {
+      return (<div></div>)
+    }
+  }
+
   render() {
     const helperTextButton = this.addButton("+ Add Helper Text", {helperInput: true});
 
@@ -84,13 +111,18 @@ class Question extends React.Component {
         <div
           className={'question_block'}
         >
-          <input
-            className={'question_block__param'}
-            placeholder={"param1"}
-            defaultValue={this.props.question.parameter}
-            onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
-            onChange={(e) => this.onChange({parameter: e.target.value})}
-          />
+          <div
+            className={'question_block_header'}
+          >
+            <input
+              className={'question_block__param'}
+              placeholder={"param1"}
+              defaultValue={this.props.question.parameter}
+              onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
+              onChange={(e) => this.onChange({parameter: e.target.value})}
+            />
+          {this.deleteButton()}
+          </div>
           <div
             className={'question_block__body'}
           >
@@ -131,7 +163,15 @@ class Question extends React.Component {
   }
 };
 
-export default Question
+function mapStateToProps(state, ownProps) {
+  return {
+    question: getQuestionByQuestionId(ownProps.question.id, state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+)(Question);
 
 Question.propTypes = {
   handleOnBlur: PropTypes.func.isRequired,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Question from '../../components/QuestionnaireForm/Question';
 import DepQuestionContainer from './DepQuestionContainer';
-
+import { getQuestionByQuestionId } from '../../selectors/questionsSelector';
 import { connect } from 'react-redux';
 import {
   beforeCreateNewQuestion,
@@ -9,8 +9,12 @@ import {
   questionPreFetchSave,
   questionFetchSuccess,
   questionFetchFailure,
+  questionDeleteSuccess,
+  questionDeleteFailure,
+  questionDeleteInProgress,
+  removeQuestion,
 } from '../../actions/questions';
-import { patch, post } from '../../fetch/requester';
+import { patch, post, destroy } from '../../fetch/requester';
 import PropTypes from 'prop-types'
 
 class QuestionContainer extends React.Component {
@@ -32,6 +36,23 @@ class QuestionContainer extends React.Component {
   }
 
   /**
+   * Handles request to delete a question and redux update
+   * @param { string } id - categoryId to update
+   * @param { Object } args - any category parameters
+   */
+  async removeQuestion(id, args) {
+   const removedQuestion = { ...this.props.question, ...args };
+   this.props.questionDeleteInProgress(removedQuestion);
+   try {
+     let response = await destroy("/api/questions/" + removedQuestion.id);
+     this.props.questionDeleteSuccess(removedQuestion);
+     this.props.removeQuestion(removedQuestion);
+   } catch (error) {
+     this.props.questionDeleteFailure(error, removedQuestion);
+   }
+ }
+
+  /**
    * Calls async fetch function during onBlur to create or update question object.
    * @param {string} id - questionId to update
    * @param {object} args - any question parameters
@@ -42,6 +63,15 @@ class QuestionContainer extends React.Component {
     } else {
       this.updateQuestion(id, args)
     }
+  }
+
+  /**
+   * Calls async fetch function during onRemove to delete category object.
+   * @param {string} id - categoryId to update
+   * @param {object} args - any category parameters
+   */
+  handleOnRemove(id, args) {
+    this.removeQuestion(id, args);
   }
 
   /**
@@ -60,32 +90,37 @@ class QuestionContainer extends React.Component {
   render() {
 
     const select = !!this.props.question.new;
-
-    return (
-      <div>
-        <div
-          className={'mega-question-block'}
-        >
-          <Question
-            question={this.props.question}
-            handleOnBlur={this.handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            select={select}
-          />
+    if (this.props.question["deleted"]) {
+      return (<div></div>)
+    } else {
+      return (
+        <div>
+          <div
+            className={'mega-question-block'}
+          >
+            <Question
+              question={this.props.question}
+              handleOnRemove={this.handleOnRemove.bind(this)}
+              handleOnBlur={this.handleOnBlur.bind(this)}
+              handleOnChange={this.handleOnChange.bind(this)}
+              select={select}
+            />
+          </div>
+          { Object.keys(this.props.question.options).length !== 0 ?
+            <DepQuestionContainer
+              question={this.props.question}
+              optionIdList={Object.keys(this.props.question.options)}
+            /> : null}
         </div>
-        { Object.keys(this.props.question.options).length !== 0 ?
-          <DepQuestionContainer
-            question={this.props.question}
-            optionIdList={Object.keys(this.props.question.options)}
-          /> : null}
-      </div>
-    );
+      );
+    }
   }
 
 }
 
 function mapStateToProps(state, ownProps) {
   return {
+    question: getQuestionByQuestionId(ownProps.question.id, state),
   };
 }
 
@@ -96,6 +131,10 @@ function mapDispatchToProps(dispatch) {
     beforeCreateNewQuestion: (question) => {dispatch(beforeCreateNewQuestion(question))},
     questionFetchSuccess: (question) => {dispatch(questionFetchSuccess(question))},
     questionFetchFailure: (error, question) => { dispatch(questionFetchFailure(error, question)) },
+    questionDeleteInProgress: question => { dispatch(questionDeleteInProgress(question)) },
+    questionDeleteSuccess: question => { dispatch(questionDeleteSuccess(question)) },
+    questionDeleteFailure: (error, question) => { dispatch(questionDeleteFailure(error, question)) },
+    removeQuestion: question => { dispatch(removeQuestion(question)); },
   };
 }
 
