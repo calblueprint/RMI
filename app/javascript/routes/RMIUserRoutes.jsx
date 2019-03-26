@@ -8,6 +8,7 @@ import QuestionnaireRoutes from "../containers/QuestionnaireRoutes";
 import QuestionnaireFormContainer from "../containers/QuestionnaireForm/QuestionnaireFormContainer";
 import NavigationBarContainer from "../containers/NavigationBar/NavigationBarContainer";
 import CategoryRerouter from "../containers/CategoryRerouter";
+import BuildingListContainer from "../containers/BuildingListContainer";
 
 class RMIUserRoutes extends React.Component {
   render() {
@@ -25,6 +26,7 @@ class RMIUserRoutes extends React.Component {
             path="/building_types/:id/"
             component={QuestionnaireFormContainer}
           />
+          <Route exact path="/buildings" component={BuildingListContainer} />
           <Route exact path="/buildings/:bId" component={CategoryRerouter} />
           <Route path="/buildings/:bId" component={QuestionnaireRoutes} />
         </Switch>
