@@ -9,6 +9,12 @@ import {
   CATEGORY_FETCH_FAILURE,
   CATEGORY_FETCH_SUCCESS,
   REMOVE_CATEGORY,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
+  DELETE_IN_PROGRESS,
+  CATEGORY_DELETE_SUCCESS,
+  CATEGORY_DELETE_FAILURE,
+  CATEGORY_DELETE_IN_PROGRESS,
   SET_CATEGORY_TO_NEW
 } from '../constants';
 
@@ -56,6 +62,33 @@ export function categoryFetchFailure(error, category) {
   };
 }
 
+export function categoryDeleteSuccess(category) {
+  return {
+    type: CATEGORY_DELETE_SUCCESS,
+    deleteStatus: DELETE_SUCCESS,
+    building_type_id: category.building_type_id,
+    category
+  };
+}
+
+export function categoryDeleteFailure(error, category) {
+  return {
+    type: CATEGORY_DELETE_FAILURE,
+    deleteStatus: DELETE_FAILURE,
+    building_type_id: category.building_type_id,
+    error,
+    category
+  };
+}
+
+export function categoryDeleteInProgress(category) {
+  return {
+    type: CATEGORY_DELETE_IN_PROGRESS,
+    deleteStatus: DELETE_IN_PROGRESS,
+    category
+  }
+}
+
 export function removeCategory(category) {
   return {
     type: REMOVE_CATEGORY,
@@ -69,4 +102,3 @@ export function categorySetNew(categoryId) {
     categoryId
   }
 }
-

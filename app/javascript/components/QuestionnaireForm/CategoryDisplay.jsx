@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InputValidation from '../InputValidation';
+import { getCurrentCategory } from '../../selectors/categoriesSelector';
+import { connect } from 'react-redux';
 
 class CategoryDisplay extends React.Component {
   componentDidMount(prevProps, prevState){
@@ -19,11 +21,36 @@ class CategoryDisplay extends React.Component {
   }
 
   /**
+   * Handles event for onRemove which is making delete request
+   * @param { string } name - the name of the category
+   */
+  handleOnRemove(name) {
+    var confirmDeletion = confirm("Are you sure you want to delete this category (and all dependent questions)?");
+    if (confirmDeletion) {
+      this.props.handleOnRemove(this.props.category.id, { name })
+    }
+  }
+
+  /**
    * Handles event for onChange which is updating redux temporarily
    * @param { string } name - the name of the category
    */
   onChange(name) {
     this.props.handleOnChange(this.props.category.id, { name })
+  }
+
+  deleteButton() {
+    if (!this.props.category["new"]) {
+      return (
+        <button
+          className="btn btn--primary remove_category_btn"
+          onClick={(e) => this.handleOnRemove(e.target.value)}>
+          Remove Category
+        </button>
+      )
+    } else {
+      return (<div></div>)
+    }
   }
 
   render () {
@@ -42,12 +69,21 @@ class CategoryDisplay extends React.Component {
             errors={this.props.category.error}
           />
         </div>
+        {this.deleteButton()}
       </div>
     )
   }
 }
 
-export default CategoryDisplay
+function mapStateToProps(state, ownProps) {
+  return {
+    category: getCurrentCategory(ownProps.category.id, state),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+)(CategoryDisplay);
 
 CategoryDisplay.propTypes = {
   category: PropTypes.object.isRequired,

@@ -10,6 +10,9 @@ import {
   categoryFetchInProgress,
   categoryFetchSuccess,
   categoryPreFetchSave,
+  categoryDeleteSuccess,
+  categoryDeleteFailure,
+  categoryDeleteInProgress,
   removeCategory
 } from "../../actions/categories";
 import {
@@ -43,6 +46,23 @@ class CategoryQuestionsContainer extends React.Component {
   }
 
   /**
+   * Handles fetch request to remove a category and redux update
+   * @param { string } id - categoryId to update
+   * @param { Object } args - any category parameters
+   */
+  async removeCategory(id, args) {
+    const removedCategory = { ...this.props.category, ...args };
+    this.props.categoryDeleteInProgress(removedCategory);
+    try {
+      let response = await destroy("/api/categories/" + removedCategory.id);
+      this.props.categoryDeleteSuccess(removedCategory);
+      this.props.removeCategory(removedCategory);
+    } catch (error) {
+      this.props.categoryDeleteFailure(error, removedCategory);
+    }
+  }
+
+  /**
    * Calls async fetch function during onBlur to create or update question object.
    * @param {string} id - questionId to update
    * @param {object} args - any question parameters
@@ -51,6 +71,14 @@ class CategoryQuestionsContainer extends React.Component {
     this.updateCategory(id, args);
   }
 
+  /**
+   * Calls async fetch function during onRemove to delete category object.
+   * @param {string} id - categoryId to update
+   * @param {object} args - any category parameters
+   */
+  handleOnRemove(id, args) {
+    this.removeCategory(id, args);
+  }
   /**
    * Handles event for onChange which is updating redux temporarily.
    * If create new question, create a temp question in question store.
@@ -83,6 +111,9 @@ class CategoryQuestionsContainer extends React.Component {
 
     const select = this.props.category.new || false;
 
+    if (this.props.category["deleted"]) {
+      return (<h2>Category "{this.props.category["name"]}" has been deleted</h2>)
+    }
     return (
       <div>
         <div>
@@ -134,6 +165,15 @@ function mapDispatchToProps(dispatch) {
     },
     categoryFetchFailure: (error, category) => {
       dispatch(categoryFetchFailure(error, category));
+    },
+    categoryDeleteInProgress: category => {
+      dispatch(categoryDeleteInProgress(category));
+    },
+    categoryDeleteSuccess: category => {
+      dispatch(categoryDeleteSuccess(category));
+    },
+    categoryDeleteFailure: (error, category) => {
+      dispatch(categoryDeleteFailure(error, category));
     },
     removeCategory: category => {
       dispatch(removeCategory(category));
