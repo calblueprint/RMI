@@ -99,8 +99,21 @@ export function loadInitialState(initialState) {
     result[types[index]] = shaped;
     return result;
   }, {});
+  // Look for questions inside building_types
+  if (initialState.building_types) {
+    formattedState.questions = [];
+    initialState.building_types.forEach((building_type) => {
+      formattedState = {
+        ...formattedState,
+        questions: {
+          ...formattedState.questions,
+          ...building_type.questions
+        }
+      };
+    });
+  }
   // Look for questions inside buildings
-  if (initialState.buildings) {
+  else if (initialState.buildings) {
     formattedState.questions = [];
     initialState.buildings.forEach((building) => {
       formattedState = {
