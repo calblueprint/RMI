@@ -12,6 +12,8 @@ class BuildingType < ApplicationRecord
   has_many :questions
   has_many :buildings
   has_many :categories
+  
+  validates :name, presence: true, uniqueness: true
 
   def building_operator_questions(building_operator)
     # Input

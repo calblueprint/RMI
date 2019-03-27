@@ -12,7 +12,8 @@ class PortfolioListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false, 
+      errors: null
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.createBuildingType = this.createBuildingType.bind(this);
@@ -35,7 +36,7 @@ class PortfolioListContainer extends React.Component {
       this.props.addBuildingType(buildingType);
       this.props.history.push(`/building_types/${buildingTypeId}`);
     } catch (error) {
-      console.log(error);
+      this.setState({errors: error, showModal: true})
     }
   }
 
@@ -58,6 +59,7 @@ class PortfolioListContainer extends React.Component {
             </label>
             <input type="submit" value="Submit" />
           </form>
+          <div>{this.state.errors}</div>
           <button onClick={this.toggleModal}>Close Modal</button>
         </ReactModal>
         {Object.keys(building_types).map(id => {
