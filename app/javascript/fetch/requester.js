@@ -67,9 +67,14 @@ async function doFetchRequest(route, method, body, ignoreContentType=false, toJs
     if (toJson) return responseObj.json();
     else return responseObj;
   }).catch(_ => {
-    return responseObj.json().then(response => {
-      throw response.errors;
-    })
+    if (responseObj) {
+      return responseObj.json().then(response => {
+        throw response.errors;
+      });
+    }
+    else {
+     throw new Error("A fetch error occurred.");
+    }
   })
 
 }

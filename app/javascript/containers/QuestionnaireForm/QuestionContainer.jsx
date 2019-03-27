@@ -48,7 +48,7 @@ class QuestionContainer extends React.Component {
      this.props.questionDeleteSuccess(removedQuestion);
      this.props.removeQuestion(removedQuestion);
    } catch (error) {
-     this.props.questionDeleteFailure(error, removedQuestion);
+     console.log("[QuestionContainer] Failed to delete question!")
    }
  }
 

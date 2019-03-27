@@ -98,5 +98,5 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
 export function getQuestionsByCategoryId(categoryId, state) {
   return state.categories[categoryId].questions.map((questionId) => {
     return state.questions[questionId];
-  });
+  }).filter((question) => question != null);
 }
