@@ -1,4 +1,5 @@
 import {
+  getAllActiveQuestions,
   getAllActiveQuestionsForCategory, getAllQuestionsByCategoryId,
 } from "./questionsSelector";
 
@@ -28,7 +29,7 @@ export function getNumUnanswered(questions, buildingId, state) {
 
 export function isUnanswered(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  if (!answer || !answer.text.trim() && !answer.attachment_file_name) {
+  if (!answer || !answer.text.trim() && !answer.attachment_file_name && !answer.delegation_email) {
     return true;
   }
 }
@@ -38,21 +39,6 @@ export function isDelegated(question, buildingId, state) {
   if (answer && answer.delegation_email) {
     return true;
   }
-}
-
-// returns number of undelegated questions for all questions of building 
-export function numUnanswered(buildingId, state) {
-  let unanswered = 0;
-  let answers = state.buildings[buildingId].answers;
-  let buildingQuestions = state.buildings[buildingId].questions;
-
-  for (let key in answers) {
-    let questionId = answers[key].question_id;
-    if (buildingQuestions.includes(String(questionId)) && !(answers[key].text) && !(answers[key].delegation_email)) {
-      unanswered += 1;
-    }
-  }
-  return unanswered;
 }
 
 export function numAnswered(buildingId, state) {
@@ -67,6 +53,12 @@ export function numAnswered(buildingId, state) {
     }
   }
   return answered;
+}
+
+export function getNumUnansweredForBuilding(buildingId, state) {
+  const questions = state.buildings[buildingId].questions;
+  const activeQuestions = getAllActiveQuestions(questions, buildingId, state);
+  return getNumUnanswered(activeQuestions, buildingId, state);
 }
 
 export function questionDataPerCategory(buildingId, categoriesArray, state) {

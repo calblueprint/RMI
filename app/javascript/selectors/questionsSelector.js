@@ -112,7 +112,7 @@ export function getAllActiveQuestionsForCategory(categoryId, buildingId, state) 
  * Helper function: given a list of "root" (non-dependent) questions, recursively
  * finds all active questions in their chain(s).
  */
-function getAllActiveQuestions(rootQuestions, buildingId, state) {
+export function getAllActiveQuestions(rootQuestions, buildingId, state) {
   let questions = [];
 
   for (let questionId of rootQuestions) {

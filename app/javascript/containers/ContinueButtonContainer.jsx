@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { numAnswered, numUnanswered } from '../selectors/answersSelector';
+import {getNumUnansweredForBuilding, numAnswered} from '../selectors/answersSelector';
 
 class ContinueButtonContainer extends React.Component {
     continueOrStart() {
@@ -25,18 +25,17 @@ ContinueButtonContainer.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-    return {
-      numAnswered: numAnswered(ownProps.building_id, state),
-      numUnanswered: numUnanswered(ownProps.building_id, state)
-    };
-  }
+  return {
+    numAnswered: numAnswered(ownProps.building_id, state),
+    numUnanswered: getNumUnansweredForBuilding(ownProps.building_id, state)
+  };
+}
   
-  function mapDispatchToProps(dispatch) {
-    return {};
-  }
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ContinueButtonContainer);
-  
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContinueButtonContainer);
