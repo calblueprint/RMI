@@ -9,6 +9,13 @@ class InactiveCategoryNode extends React.Component {
     } 
   }
 
+  needDisableText() {
+    if (this.props.isDisabled) {
+      return {"filter": "brightness(160%)"};
+    } 
+  }
+  
+
   render() {
     return (<div className="category category--inactive">
       <Link to={this.props.path} style={this.needDisableStyle()}  >
@@ -16,7 +23,7 @@ class InactiveCategoryNode extends React.Component {
           {this.props.label}
         </div>
       </Link>
-      <h1>{this.props.name}</h1>
+      <h1 style={this.needDisableText()}>{this.props.name}</h1>
     </div>);
   }
 }
