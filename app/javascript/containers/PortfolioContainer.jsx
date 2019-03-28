@@ -2,7 +2,10 @@ import React from "react";
 
 import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
-import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
+import {
+  getBuildingsByPortfolio,
+  getBuildingsByPortfolioId
+} from "../selectors/buildingsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import {
   addAnswers,
@@ -19,6 +22,7 @@ import { Link } from "react-router-dom";
 import { delegateQuestions } from "../utils/DelegationRequests";
 
 import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
+import PortfolioBuildingInfoContainer from "./PortfolioBuildingInfoContainer";
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -170,6 +174,19 @@ class PortfolioContainer extends React.Component {
             );
           })}
         </div>
+        <div>
+          {this.props.buildingIds.map(id => {
+            console.log(this.props.buildings);
+            return (
+              <div key={id} className="building_view">
+                <PortfolioBuildingInfoContainer
+                  building_id={id}
+                  className="building_view_info"
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
@@ -180,8 +197,9 @@ function mapStateToProps(state, ownProps) {
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
-      getAnswerForQuestionAndBuilding(questionId, buildingId, state)
+      getAnswerForQuestionAndBuilding(questionId, buildingId, state),
     // buildingTypes: getBuildingTypesByPortfolio(ownProps.match.params.pId, state)
+    buildingIds: getBuildingsByPortfolioId(ownProps.match.params.pId, state)
   };
 }
 
