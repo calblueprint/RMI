@@ -18,12 +18,16 @@ class RangeOption extends React.Component {
     this.props.handleOnChange(this.props.option.id, args)
   }
 
+  isValidNumber(num) {
+    return num != null && !isNaN(num);
+  }
+
   /**
    * Handles fetch request onBlur for min/max
    * @param { Object } args - attributes of the range option to update
    */
   updateMinMax(args) {
-    if (this.props.option.min && this.props.option.max) {
+    if (this.isValidNumber(this.props.option.min) && this.isValidNumber(this.props.option.max)) {
       this.props.handleOnBlur(this.props.option.id, args)
     }
   }

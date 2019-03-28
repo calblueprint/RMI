@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     end
   end
   namespace :api, defaults: { format: :json } do
-    resources :building_types, only: %i[show]
+    resources :building_types, only: %i[show create]
     resources :buildings, only: %i[show index create update]
     resources :answers, only: %i[show create update]
     resources :questions, only: %i[show create update destroy]

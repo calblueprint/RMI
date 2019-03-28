@@ -13,7 +13,7 @@ import {
 } from "../../selectors/categoriesSelector";
 import CategoryContainer from "./CategoryContainer";
 import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
-import { getRemainingAnswersforCategory } from "../../selectors/answersSelector";
+import { getNumUnanswered } from "../../selectors/answersSelector";
 import { getQuestionsByCategory } from "../../utils/QuestionsFilter";
 import Logo from "../../rmi-logo.png";
 
@@ -73,7 +73,7 @@ function mapStateToProps(state, ownProps) {
   } else if (!questionsByCategory.length) {
     remainingQuestions = 0;
   } else {
-    remainingQuestions = getRemainingAnswersforCategory(
+    remainingQuestions = getNumUnanswered(
       questionsByCategory,
       ownProps.match.params.id,
       state

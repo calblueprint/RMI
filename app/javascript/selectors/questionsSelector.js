@@ -80,7 +80,8 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
 }
 
 /**
- * Get an array of question objects given categoryID
+ * Get an array of question objects given categoryID (non-dependent questions only)
+ *
  * @param {Number} categoryId - id for category
  * @param {Object} state - state
  * returns a list questions
@@ -89,4 +90,46 @@ export function getQuestionsByCategoryId(categoryId, state) {
   return state.categories[categoryId].questions.map((questionId) => {
     return state.questions[questionId];
   });
+}
+
+/**
+ * Returns a list of all active questions belonging to the given category id,
+ * including any dependent questions
+ */
+export function getAllActiveQuestionsForCategory(categoryId, buildingId, state) {
+  const buildingQuestionIds = state.buildings[buildingId].questions.map((id) => parseInt(id));
+
+  // Get list of non-dependent questions for the current category
+  // that were assigned to this user
+  const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {
+    return buildingQuestionIds.includes(questionId);
+  });
+
+  return getAllActiveQuestions(rootQuestions, buildingId, state);
+}
+
+/**
+ * Helper function: given a list of "root" (non-dependent) questions, recursively
+ * finds all active questions in their chain(s).
+ */
+export function getAllActiveQuestions(rootQuestions, buildingId, state) {
+  let questions = [];
+
+  for (let questionId of rootQuestions) {
+    const rootQuestion = state.questions[questionId];
+
+    if (rootQuestion) {
+      questions.push(rootQuestion);
+
+      const answer = state.buildings[buildingId].answers[questionId];
+      if (answer && answer.selected_option_id) {
+        const dependents = getDependentQuestionsForOption(answer.selected_option_id,
+          rootQuestion.question_type, state);
+
+        questions.push(...getAllActiveQuestions(dependents, buildingId, state));
+      }
+    }
+  }
+
+  return questions;
 }
