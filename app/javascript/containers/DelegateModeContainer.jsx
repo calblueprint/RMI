@@ -10,7 +10,7 @@ import QuestionContainer from './QuestionContainer';
 import { getQuestionsByBuilding } from '../selectors/questionsSelector';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { numUnanswered } from '../selectors/answersSelector';
+import {getNumUnansweredForBuilding, numUnanswered} from '../selectors/answersSelector';
 
 class DelegateModeContainer extends React.Component {
   
@@ -49,7 +49,7 @@ class DelegateModeContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     questions: getQuestionsByBuilding(ownProps.building.id, state),
-    numUnanswered: numUnanswered(ownProps.building.id, state)
+    numUnanswered: getNumUnansweredForBuilding(ownProps.building.id, state)
   }
 }
 

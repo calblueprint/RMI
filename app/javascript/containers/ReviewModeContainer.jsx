@@ -32,13 +32,15 @@ function mapCategorytoQuestions(categoryMap, categoryId, building) {
   return categoryMap[categoryId].map((question) => {
     // Only display non-dependent questions initially
     if (question.parent_option_id) {
-      let filteredQuestion = categoryMap[categoryId].filter((pQuestion) => {
-        return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
-      })[0];
-      let option = building.answers[filteredQuestion.id].selected_option_id;
-      if (option && option != question.parent_option_id) {
-        return null;
-      }
+      //TODO: look at this later
+      // let filteredQuestion = categoryMap[categoryId].filter((pQuestion) => {
+      //   return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
+      // })[0];
+      // let option = building.answers[filteredQuestion.id].selected_option_id;
+      // if (option && option != question.parent_option_id) {
+      //   return null;
+      // }
+      return null;
     }
     return (
       <QuestionContainer
