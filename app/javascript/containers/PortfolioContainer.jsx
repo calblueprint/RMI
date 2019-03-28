@@ -2,10 +2,11 @@ import React from 'react';
 
 import * as BuildingActions from '../actions/buildings';
 import { loadInitialState } from '../actions/initialState';
-import { getBuildingsByPortfolio } from '../selectors/buildingsSelector';
+import { getBuildingsByPortfolio, getBuildingsByPortfolioId } from '../selectors/buildingsSelector';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PortfolioBuildingDetailsContainer from './PortfolioBuildingDetailsContainer';
+import PortfolioBuildingInfoContainer from './PortfolioBuildingInfoContainer';
 
 class PortfolioContainer extends React.Component {
   groupBuildingsByType() {
@@ -37,14 +38,22 @@ class PortfolioContainer extends React.Component {
                   </PortfolioBuildingDetailsContainer>)
         })}
       </div>
+      <div>
+      {(this.props.buildingIds).map(id => {
+        console.log(this.props.buildings);
+        return (<div key={id} className='building_view'>
+          <PortfolioBuildingInfoContainer building_id={id} className='building_view_info'></PortfolioBuildingInfoContainer>
+        </div>)
+      })}
+      </div>
     </div>);
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
-    buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state), 
-    // buildingTypes: getBuildingTypesByPortfolio(ownProps.match.params.pId, state)
+    buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
+    buildingIds: getBuildingsByPortfolioId(ownProps.match.params.pId, state), 
   };
 }
 
