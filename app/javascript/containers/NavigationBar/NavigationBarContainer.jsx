@@ -64,7 +64,7 @@ function mapStateToProps(state, ownProps) {
   const categoryId = buildingView ? (ownProps.match.params.cId ? ownProps.match.params.cId : 'review_mode') : null;
 
   let remainingQuestions = null;
-  if (ownProps.match.params.id && categoryId !== 'review_mode') {
+  if (buildingView && ownProps.match.params.id && categoryId !== 'review_mode') {
     remainingQuestions = getRemainingAnswersforCategory(categoryId, ownProps.match.params.id, state);
   }
 

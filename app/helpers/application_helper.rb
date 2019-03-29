@@ -21,7 +21,7 @@ module ApplicationHelper
       user: current_asset_manager,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
           portfolio.buildings, each_serializer: BuildingSerializer,
-          scope: current_user.get_scope
+          scope: current_user.get_scope(current_user)
       ),
       portfolios: portfolio,
       contacts: contacts.to_a,
@@ -57,7 +57,7 @@ module ApplicationHelper
       user: current_building_operator,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
        buildings, each_serializer: BuildingSerializer,
-       scope: current_user.get_scope
+       scope: current_user.get_scope(current_user)
       ),
       userType: 'BuildingOperator',
       contacts: contacts,
@@ -74,11 +74,11 @@ module ApplicationHelper
       portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         Building.all, each_serializer: BuildingSerializer,
-        scope: current_user.get_scope
+        scope: current_user.get_scope(current_user)
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer,
-        scope: current_user.get_scope
+        scope: current_user.get_scope(current_user)
       ),
       userType: 'RMIUser',
       categories: ActiveModel::Serializer::CollectionSerializer.new(

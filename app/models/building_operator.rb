@@ -136,7 +136,7 @@ class BuildingOperator < ApplicationRecord
     questions_by_buildings(buildings.map { |b| b.id })
   end
 
-  def get_scope
+  def get_scope(current_building_operator)
     {
       user_id: id,
       user_type: 'BuildingOperator',
