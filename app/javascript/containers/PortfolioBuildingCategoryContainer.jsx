@@ -1,27 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { questionDataPerCategory, numUnanswered } from '../selectors/answersSelector';
-import fontawesome from '@fortawesome/fontawesome';
-import delegateIcon from '@fortawesome/fontawesome-free-solid/faUser';
-import reviewIcon from '@fortawesome/fontawesome-free-solid/faCheck';
+import { questionDataPerCategory } from '../selectors/answersSelector';
 
 
-class QuestionaireCategoryContainer extends React.Component {
+class PortfolioBuildingCategoryContainer extends React.Component {
   categoryProgress(answered, total) {
     if (answered < total) {
       return answered + " / " + total + " ANSWERED";
     }
     return "COMPLETED"
-  }
-
-  getFaIcon(icon) {
-    return (<i
-      style={{ fontSize: '14pt' }}
-      dangerouslySetInnerHTML={{
-        __html: fontawesome.icon(icon).html[0]
-      }}
-    />)
   }
 
   render() {
@@ -34,8 +22,6 @@ class QuestionaireCategoryContainer extends React.Component {
             {Object.keys(categoryData).map((id, index) => {
               return (<div key={id} className='category-circle'>{index + 1}</div>)
             })}
-            <div className='category-circle'>{this.getFaIcon(delegateIcon)}</div>
-            <div className='category-circle'>{this.getFaIcon(reviewIcon)}</div>
           </div>
           <div className='category-information'>
             {Object.keys(categoryData).map((id) => {
@@ -43,15 +29,13 @@ class QuestionaireCategoryContainer extends React.Component {
                 <small>{this.categoryProgress(categoryData[id].answered, categoryData[id].total)}</small>
               </div>)
             })}
-            <div>Delegate</div>
-            <div>Review and Submit</div>
           </div>
       </div>
     );
   }
 }
 
-QuestionaireCategoryContainer.propTypes = {
+PortfolioBuildingCategoryContainer.propTypes = {
     building_id: PropTypes.number.isRequired,
     categories: PropTypes.array.isRequired,
 };
@@ -70,5 +54,5 @@ function mapStateToProps(state, ownProps) {
   export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(QuestionaireCategoryContainer);
+  )(PortfolioBuildingCategoryContainer);
   

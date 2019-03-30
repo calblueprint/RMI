@@ -94,12 +94,12 @@ export function percentAnswered(buildingId, state) {
   return answered / total;
 }
 
-// returns an array with the percent of answered questions for each building
-export function progressForBuildingsArray(buildings, state) {
-  let progressArray = [];
-  for (let i = 0; i < buildings.length; i++) {
-    let n = percentAnswered(buildings[i].id, state)
-    progressArray.push(n);
-  }
-  return progressArray;
-}
+// // returns an array with the percent of answered questions for each building
+// export function progressForBuildingsArray(buildings, state) {
+//   let progressArray = [];
+//   for (let i = 0; i < buildings.length; i++) {
+//     let n = percentAnswered(buildings[i].id, state)
+//     progressArray.push(n);
+//   }
+//   return progressArray;
+// }
