@@ -53,7 +53,7 @@ class QuestionaireCategoryContainer extends React.Component {
 }
 
 QuestionaireCategoryContainer.propTypes = {
-    building_id: PropTypes.string.isRequired,
+    building_id: PropTypes.number.isRequired,
     categories: PropTypes.array.isRequired,
 };
 
