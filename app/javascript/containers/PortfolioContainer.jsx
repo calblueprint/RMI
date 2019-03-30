@@ -39,12 +39,16 @@ class PortfolioContainer extends React.Component {
   groupBuildingsByType() {
     let buildingTypesDic = {};
     let buildings = this.props.buildings;
+    console.log("buildings");
+    console.log(buildings);
     for (let i = 0; i < buildings.length; i++) {
+      console.log(buildings[i]);
       let id = buildings[i].building_type_id;
       if (buildingTypesDic[id] == null) {
         buildingTypesDic[id] = [buildings[i]];
+      } else {
+        buildingTypesDic[id].push(buildings[i]);
       }
-      buildingTypesDic[id].push(buildings[i]);
     }
     return buildingTypesDic;
   }
@@ -164,9 +168,10 @@ class PortfolioContainer extends React.Component {
           createBuilding={this.createBuilding}
         />
         <div className="building__container">
-          {Object.keys(buildingByType).map(typeId => {
+          {Object.keys(buildingByType).map((typeId, i) => {
             return (
               <PortfolioBuildingDetailsContainer
+                key={i}
                 buildings={buildingByType[typeId]}
                 buildingTypeId={typeId}
                 match={this.props.match}
@@ -175,12 +180,12 @@ class PortfolioContainer extends React.Component {
           })}
         </div>
         <div>
-          {this.props.buildingIds.map(id => {
-            console.log(this.props.buildings);
+          {this.props.buildings.map(b => {
+            console.log(b.id);
             return (
-              <div key={id} className="building_view">
+              <div key={b.id} className="building_view">
                 <PortfolioBuildingInfoContainer
-                  building_id={id}
+                  building_id={b.id}
                   className="building_view_info"
                 />
               </div>
@@ -197,9 +202,7 @@ function mapStateToProps(state, ownProps) {
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
-      getAnswerForQuestionAndBuilding(questionId, buildingId, state),
-    // buildingTypes: getBuildingTypesByPortfolio(ownProps.match.params.pId, state)
-    buildingIds: getBuildingsByPortfolioId(ownProps.match.params.pId, state)
+      getAnswerForQuestionAndBuilding(questionId, buildingId, state)
   };
 }
 

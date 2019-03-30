@@ -131,12 +131,9 @@ export function questionDataPerCategory(buildingId, categoriesArray, state) {
 // returns an array with the percent of answered questions for each building
 export function progressForBuildingsArray(buildings, state) {
   let progressArray = [];
-  console.log(buildings);
   for (let i = 0; i < buildings.length; i++) {
-    console.log(buildings[i].id);
     let n = percentAnswered(buildings[i].id, state);
     progressArray.push(n);
   }
-  console.log(progressArray);
   return progressArray;
 }
