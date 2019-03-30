@@ -3,7 +3,8 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
-  FETCH_SETTINGS
+  FETCH_SETTINGS, 
+  VIEW_BUILDING_DETAILS
 } from '../constants';
 
 export async function fetchPortfolios(dispatch) {
@@ -29,3 +30,10 @@ export async function fetchPortfolios(dispatch) {
   };
 };
 
+export function viewBuildingDetails(portfolioId, buildingId) {
+  return {
+    type: VIEW_BUILDING_DETAILS,
+    portfolioId,
+    buildingId
+  };
+}

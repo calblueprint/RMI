@@ -1,7 +1,8 @@
 import {
   FETCH_PORTFOLIOS,
   FETCH_SUCCESS,
-  FETCH_FAILURE
+  FETCH_FAILURE, 
+  VIEW_BUILDING_DETAILS
 } from '../constants';
 
 function fetchPortfolios(state, action) {
@@ -32,10 +33,26 @@ function fetchPortfolios(state, action) {
   }
 }
 
+function updateViewedBuilding(state, action) {
+  const pId = action.portfolioId;
+  const viewedBuildingId = action.buildingId;
+  return {
+    ...state,
+    [pId] : {
+      ...state[pId],
+      selectedBuilding: viewedBuildingId
+    }
+  };
+}
+
+
 export default function portfolios(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
     case FETCH_PORTFOLIOS: return fetchPortfolios(state, action);
+    case VIEW_BUILDING_DETAILS: return updateViewedBuilding(state, action);
     default: return state;
   }
 }
+
+
