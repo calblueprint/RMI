@@ -6,7 +6,10 @@ import {
   getBuildingsByPortfolio,
   getBuildingsByPortfolioId
 } from "../selectors/buildingsSelector";
-import { getPortfolioName } from "../selectors/portfolioSelector";
+import {
+  getPortfolioName,
+  getSelectedBuildingId
+} from "../selectors/portfolioSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import {
   addAnswers,
@@ -40,10 +43,7 @@ class PortfolioContainer extends React.Component {
   groupBuildingsByType() {
     let buildingTypesDic = {};
     let buildings = this.props.buildings;
-    console.log("buildings");
-    console.log(buildings);
     for (let i = 0; i < buildings.length; i++) {
-      console.log(buildings[i]);
       let id = buildings[i].building_type_id;
       if (buildingTypesDic[id] == null) {
         buildingTypesDic[id] = [buildings[i]];
@@ -53,14 +53,6 @@ class PortfolioContainer extends React.Component {
     }
     return buildingTypesDic;
   }
-
-  // getContainerByBuildingType() {
-  //   for (let key in this.buildingByType) {
-
-  //   }
-  //     return (<PortfolioBuildingDetailsContainer buildings={buildingGroup} buildingTypeId={buildingGroup.id}>
-  //     </PortfolioBuildingDetailsContainer>)
-  // }
 
   toggleModal() {
     this.setState({ showModal: !this.state.showModal });
@@ -149,8 +141,27 @@ class PortfolioContainer extends React.Component {
     }
   }
 
+  showSelectedBuilding() {
+    let buildings = this.props.buildings;
+
+    for (let i = 0; i < buildings.length; i++) {
+      let b = buildings[i];
+      if (b.id == this.props.selectedBuildingId) {
+        return (
+          <div key={b.id} className="building_view">
+            <PortfolioBuildingInfoContainer
+              building_id={b.id}
+              className="building_view_info"
+            />
+          </div>
+        );
+      }
+    }
+  }
+
   render() {
     let buildingByType = this.groupBuildingsByType();
+    let portfolioId = this.props.match.params.pId;
 
     return (
       <div>
@@ -176,6 +187,7 @@ class PortfolioContainer extends React.Component {
             return (
               <PortfolioBuildingDetailsContainer
                 key={i}
+                portfolioId={portfolioId}
                 buildings={buildingByType[typeId]}
                 buildingTypeId={typeId}
                 match={this.props.match}
@@ -183,19 +195,7 @@ class PortfolioContainer extends React.Component {
             );
           })}
         </div>
-        <div>
-          {this.props.buildings.map(b => {
-            console.log(b.id);
-            return (
-              <div key={b.id} className="building_view">
-                <PortfolioBuildingInfoContainer
-                  building_id={b.id}
-                  className="building_view_info"
-                />
-              </div>
-            );
-          })}
-        </div>
+        <div>{this.showSelectedBuilding()}</div>
       </div>
     );
   }
@@ -207,7 +207,8 @@ function mapStateToProps(state, ownProps) {
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
-      getAnswerForQuestionAndBuilding(questionId, buildingId, state)
+      getAnswerForQuestionAndBuilding(questionId, buildingId, state),
+    selectedBuildingId: getSelectedBuildingId(ownProps.match.params.pId, state)
   };
 }
 

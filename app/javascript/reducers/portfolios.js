@@ -2,8 +2,9 @@ import {
   FETCH_PORTFOLIOS,
   FETCH_SUCCESS,
   FETCH_FAILURE,
-  ADD_PORTFOLIO
-} from '../constants';
+  ADD_PORTFOLIO,
+  VIEW_BUILDING_DETAILS
+} from "../constants";
 
 function fetchPortfolios(state, action) {
   if (action.status === FETCH_SUCCESS) {
@@ -30,7 +31,7 @@ function fetchPortfolios(state, action) {
   return {
     ...state,
     fetching: true
-  }
+  };
 }
 
 function addPortfolio(state, action) {
@@ -39,14 +40,31 @@ function addPortfolio(state, action) {
   return {
     ...state,
     [portfolioId]: portfolio
-  }
+  };
+}
+
+function updateViewedBuilding(state, action) {
+  const pId = action.portfolioId;
+  const viewedBuildingId = action.buildingId;
+  return {
+    ...state,
+    [pId]: {
+      ...state[pId],
+      selectedBuilding: viewedBuildingId
+    }
+  };
 }
 
 export default function portfolios(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
-    case FETCH_PORTFOLIOS: return fetchPortfolios(state, action);
-    case ADD_PORTFOLIO: return addPortfolio(state, action);
-    default: return state;
+    case FETCH_PORTFOLIOS:
+      return fetchPortfolios(state, action);
+    case ADD_PORTFOLIO:
+      return addPortfolio(state, action);
+    case VIEW_BUILDING_DETAILS:
+      return updateViewedBuilding(state, action);
+    default:
+      return state;
   }
 }

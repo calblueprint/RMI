@@ -17,8 +17,9 @@ export const REMOVE_BUILDING_TYPE = "REMOVE_BUILDING_TYPE";
 export const SAVE_BUILDING_TYPE = "SAVE_BUILDING_TYPE";
 
 // Portfolio ActionTypes
-export const FETCH_PORTFOLIOS = 'FETCH_PORTFOLIOS';
-export const ADD_PORTFOLIO = 'ADD_PORTFOLIO';
+export const FETCH_PORTFOLIOS = "FETCH_PORTFOLIOS";
+export const ADD_PORTFOLIO = "ADD_PORTFOLIO";
+export const VIEW_BUILDING_DETAILS = "VIEW_BUILDING_DETAILS";
 
 // Building ActionTypes
 export const ADD_BUILDING = "ADD_BUILDING";
@@ -83,11 +84,11 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
 export const FETCH_IN_PROGRESS = "FETCH_IN_PROGRESS";
 export const FETCH_SETTINGS = {
-	credentials: "same-origin",
-	headers: {
-		Accept: "application/json",
-		"Content-Type": "application/json"
-	}
+  credentials: "same-origin",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  }
 };
 
 // Contact constants
