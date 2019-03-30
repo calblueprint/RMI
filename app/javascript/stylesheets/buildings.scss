@@ -1,9 +1,5 @@
 @import "global";
 
-.building__container {
-
-}
-
 .building__row {
   width: 50%;
   margin-left: auto;
@@ -196,4 +192,12 @@
     line-height: 40px;
     font-size: 16px;
     font-family: BlinkMacSystemFont;
+}
+
+
+// for portfolio view
+
+.building__container {
+  display: flex;
+  flex-direction: row;
 }

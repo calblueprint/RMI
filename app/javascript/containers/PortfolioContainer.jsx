@@ -6,6 +6,7 @@ import {
   getBuildingsByPortfolio,
   getBuildingsByPortfolioId
 } from "../selectors/buildingsSelector";
+import { getPortfolioName } from "../selectors/portfolioSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import {
   addAnswers,
@@ -21,7 +22,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { delegateQuestions } from "../utils/DelegationRequests";
 
-import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
+import PortfolioBuildingDetailsContainer from "../components/PortfolioBuildingDetailsContainer";
 import PortfolioBuildingInfoContainer from "./PortfolioBuildingInfoContainer";
 
 class PortfolioContainer extends React.Component {
@@ -150,9 +151,12 @@ class PortfolioContainer extends React.Component {
 
   render() {
     let buildingByType = this.groupBuildingsByType();
+
     return (
       <div>
-        <h2>Portfolio</h2>
+        PORTFOLIO
+        <h2>{this.props.portfolioName}</h2>
+        <br />
         <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
         <hr />
         <input
@@ -199,6 +203,7 @@ class PortfolioContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    portfolioName: getPortfolioName(ownProps.match.params.pId, state),
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
