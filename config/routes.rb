@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       get 'download/:id' => :download, as: 'download'
     end
   end
+
+  patch 'answers/update_multiple', to: 'answers#update_multiple'
   namespace :api, defaults: { format: :json } do
     resources :building_types, only: %i[show create]
     resources :buildings, only: %i[show index create update]

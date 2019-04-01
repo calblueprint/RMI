@@ -28,6 +28,11 @@ class Api::AnswersController < ApplicationController
     end
   end
 
+  def update_multiple
+    answers = Building.answers.update_all(answers_params)
+    render_json_message(:ok, data: answers, message: 'New answers created')
+  end
+
   # Redirect user to download attachment
   # Not actually showing Answer because it should be accessed with buildings
   def show
@@ -75,9 +80,8 @@ class Api::AnswersController < ApplicationController
             :selected_option_id,
             :building_id,
             :question_id,
-            :delegation_email,
-            :delegation_first_name,
-            :delegation_last_name
+            
+
           )
   end
 
@@ -90,7 +94,10 @@ class Api::AnswersController < ApplicationController
         :attachment,
         :selected_option_id, 
         :building_id, 
-        :question_id
+        :question_id,
+        :delegation_email,
+            :delegation_first_name,
+            :delegation_last_name
       )
     end
   end

@@ -3,6 +3,7 @@ import {
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
   ADD_ANSWERS,
+  ADD_DELEGATIONS,
   FETCH_IN_PROGRESS,
   PRE_FETCH_SAVE,
   FETCH_SUCCESS,
@@ -104,7 +105,8 @@ export function answers(state = {}, action) {
     case ANSWER_FETCH_IN_PROGRESS: return beforeFetchAnswer(state, action);
     case ANSWER_FETCH_SUCCESS: return answerFetchSuccess(state, action);
     case ANSWER_FETCH_FAILURE: return answerFetchFailure(state, action);
-    case ADD_ANSWERS: return addAnswers(state, action)
+    case ADD_ANSWERS: return addAnswers(state, action);
+    case ADD_DELEGATIONS: return addDelegations(state, action)
     default:
       return state;
   }

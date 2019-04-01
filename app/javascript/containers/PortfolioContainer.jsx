@@ -5,10 +5,10 @@ import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { createAnswer, updateAnswer, addAnswers } from "../actions/answers";
+import { createAnswer, updateAnswer, addAnswers, addDelegations } from "../actions/answers";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
 import { addBuilding } from "../actions/buildings";
-import { post } from "../fetch/requester";
+import { post, patch } from "../fetch/requester";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -35,6 +35,7 @@ class PortfolioContainer extends React.Component {
     this.createBuilding = this.createBuilding.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.delegateQuestions = this.delegateQuestions.bind(this);
+    this.updateAnswers = this.updateAnswers.bind(this);
   }
 
   toggleModal() {
@@ -80,13 +81,13 @@ class PortfolioContainer extends React.Component {
       console.log(formattedAnswers)
       //update redux store with empty answers
       this.props.addAnswers(formattedAnswers, buildingId)
-      this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName);
+      this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName, formattedAnswers);
       // this.delegateQue
     } catch (error) {
       console.log(error);
     }
   }
-  async delegateQuestions(answers, buildingId, email, firstName, lastName) {
+  async delegateQuestions(answers, buildingId, email, firstName, lastName, formattedAnswers) {
     //we get the question_ids to be delegated through answers
     console.log('answers here')
     //since answers will now be created the delegations should be okay!
@@ -113,6 +114,25 @@ class PortfolioContainer extends React.Component {
       let response = await post("/api/delegations", { delegations });
       console.log('delegations succesfully created in backend')
       //update redux store with delegations
+      console.log(formattedAnswers)
+      Object.values(formattedAnswers).forEach(function(a){
+        a.delegation_email = email;
+        a.delegation_first_name = firstName;
+        a.delegation_last_name = lastName;
+      })
+      this.updateAnswers(formattedAnswers)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async updateAnswers(answers, buildingId) {
+    //adding delegations is just updating answers
+    try {
+      console.log('b4 answer update')
+      let response = await patch("/api/answers/update_multiple", { answers: answers, answer: {} });
+      console.log('answers succesfully updated in backend')
+      //update redux store with answers
+      this.addDelegations(answers, buildingId)
     } catch (error) {
       console.log(error);
     }
@@ -293,6 +313,9 @@ function mapDispatchToProps(dispatch) {
     },
     addAnswers: (answers, buildingId) => {
       dispatch(addAnswers(answers, buildingId));
+    },
+    addDelegations: (answers, buildingId) => {
+      dispatch(addDelegations(answers, buildingId));
     }
   };
 }
