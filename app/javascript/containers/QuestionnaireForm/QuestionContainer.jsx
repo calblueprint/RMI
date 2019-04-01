@@ -81,7 +81,7 @@ class QuestionContainer extends React.Component {
         { Object.keys(this.props.question.options).length !== 0 ?
           <DepQuestionContainer
             question={this.props.question}
-            optionIdList={Object.keys(options)}
+            optionIdList={Object.keys(this.props.question.options)}
           /> : null}
       </div>
     );
