@@ -92,6 +92,7 @@ export function addAnswers(state, action) {
   return {
     ...state,
     ...action.answers
+    
   };
 }
 

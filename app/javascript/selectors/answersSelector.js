@@ -1,8 +1,10 @@
 import {getPotentialDependentQuestions} from "./questionsSelector";
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
-  // console.log(buildingId)
-  // console.log(state)
+  console.log(buildingId)
+  console.log(state)
+  console.log(questionId)
+  console.log('before gafqb ends')
   return state.buildings[buildingId].answers[questionId]
 }
 

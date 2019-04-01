@@ -41,7 +41,7 @@ class PortfolioContainer extends React.Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
-  async createAnswers(questions, buildingId) {
+  async createAnswers(questions, buildingId, email, firstName, lastName) {
     var answers = [];
     console.log(questions.length)
     for (var i = 0; i < questions.length; i++) {
@@ -59,47 +59,56 @@ class PortfolioContainer extends React.Component {
         delegation_last_name: ""
       };
       answers.push(emptyAnswer);
-      console.log(answers)
-      console.log('huh')
+      // console.log(answers)
+      // console.log('huh')
     }
     try {
-      console.log(answers)
-      console.log('b4 api answers')
+      // console.log(answers)
+      // console.log('b4 api answers')
       let response = await post("/api/answers/create_multiple", { answers: answers, answer: {} });
-      console.log("created answers");
+      // console.log("created answers");
       //after building is created, we should have tons of empty answers
       const newAnswers = {
         ...response.data
       };
+      // here need to adjust indices such that the index of the answer matches the questionId
       console.log(newAnswers)
       //update redux store with empty answers
       this.props.addAnswers(newAnswers, buildingId)
+      this.delegateQuestions(questions, buildingId, email, firstName, lastName);
+      // this.delegateQue
     } catch (error) {
       console.log(error);
     }
   }
-  async delegateQuestions(questions) {
+  async delegateQuestions(questions, buildingId, email, firstName, lastName) {
+    console.log('questions here')
     //since answers will now be created the delegations should be okay!
+    console.log(questions)
     var delegations = [];
     for (var i = 0; i < questions.length; i++) {
       //for each question, create an answer
-      var currentAnswer = this.props.getAnswer(questions[i].id);
+      console.log(buildingId);
+      console.log('before thirngerg')
+      var currentAnswer = this.props.getAnswer(questions[i], buildingId);
+      console.log('current answer')
+      console.log(currentAnswer)
       var delegation = {
-        email: answer.delegation_email,
-        first_name: answer.delegation_first_name,
-        last_name: answer.delegation_last_name,
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
         answer_id: currentAnswer.id
       };
       delegations.push(delegation);
     }
     // this.setState({ status_string: "Saving delegations!" });
-    var success = await postDelegations(delegations);
-    if (success) {
-      // this.setState({ status_string: "Delegations saved." });
-      console.log("success!");
-    } else {
-      // this.setState({ status_string: "Saving delegations failed. Try again?" });
-      console.log("failed");
+    try {
+      console.log('b4 delegation creation')
+      let response = await post("/api/delegations", { delegations });
+      console.log('delegations succesfully created in backend')
+      //update redux store with delegations
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -138,8 +147,7 @@ class PortfolioContainer extends React.Component {
       const buildingId = building.id;
       console.log(building);
       this.props.addBuilding(building);
-      this.createAnswers(questions, buildingId);
-      // this.delegateQuestions(questions, email, firstName, lastName);
+      this.createAnswers(questions, buildingId, email, firstName, lastName);
       //update redux store with answers to include the email and the names
       this.props.history.push(`/buildings/${buildingId}/edit`);
     } catch (error) {
@@ -261,10 +269,10 @@ function mapStateToProps(state, ownProps) {
   return {
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
-    getAnswer: questionId =>
+    getAnswer: (questionId, buildingId) =>
       getAnswerForQuestionAndBuilding(
         questionId,
-        ownProps.match.params.bId,
+        buildingId,
         state
       )
   };
