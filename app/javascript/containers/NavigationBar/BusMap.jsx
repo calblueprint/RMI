@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import InactiveCategoryNode from './InactiveCategoryNode';
 import { connect } from 'react-redux';
-import { numUnanswered } from '../../selectors/answersSelector';
+import {getNumUnansweredForBuilding} from '../../selectors/answersSelector';
 
 /**
  * A "bus map" style component for the navbar that shows progression through the questionnaire
@@ -73,7 +73,7 @@ BusMap.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     // number of undelegated questions, used to decide when to disable navigation in delegate mode
-    numUnanswered: numUnanswered(ownProps.buildingId, state)
+    numUnanswered: getNumUnansweredForBuilding(ownProps.buildingId, state)
   }
 }
 

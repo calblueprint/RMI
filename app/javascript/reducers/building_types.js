@@ -1,6 +1,7 @@
 import {
   CREATE_UNSAVED_QUESTION, QUESTION_FETCH_SUCCESS, REMOVE_QUESTION,
-  CREATE_UNSAVED_CATEGORY, CATEGORY_FETCH_SUCCESS, REMOVE_CATEGORY
+  CREATE_UNSAVED_CATEGORY, CATEGORY_FETCH_SUCCESS, REMOVE_CATEGORY,
+  ADD_BUILDING_TYPE
 } from '../constants';
 
 function beforeCreateQuestion(state, action) {
@@ -94,6 +95,15 @@ function addCategoryId(state, action) {
   }
 }
 
+function addBuildingType(state, action) {
+  const buildingType = action.buildingType;
+  const buildingTypeId = buildingType.id;
+  return {
+    ...state,
+    [buildingTypeId] : buildingType
+  }
+}
+
 export default function building_types(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
@@ -105,6 +115,8 @@ export default function building_types(state = {}, action) {
     case CREATE_UNSAVED_CATEGORY: return beforeCreateCategory(state, action);
     case REMOVE_CATEGORY: return removeCategory(state, action);
     case CATEGORY_FETCH_SUCCESS: return addCategoryId(state, action);
+    //building type
+    case ADD_BUILDING_TYPE: return addBuildingType(state, action);
     default:
       return state;
   }
