@@ -65,7 +65,7 @@ class PortfolioContainer extends React.Component {
     try {
       console.log(answers)
       console.log('b4 api answers')
-      let response = await post("/api/answers", { answers: answers });
+      let response = await post("/api/answers/create_multiple", { answers: answers, answer: {} });
       console.log("created answers");
       //after building is created, we should have tons of empty answers
       const newAnswers = {

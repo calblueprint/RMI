@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :range_options, only: %i[create update destroy]
     resources :categories, only: %i[create update show destroy]
     # Can change route with:
+    post 'answers/create_multiple', to: 'answers#create_multiple'
     patch 'questions/publish', to: 'questions#publish'
     delete 'answers/:id/attachment', to: 'answers#delete_file'
   end

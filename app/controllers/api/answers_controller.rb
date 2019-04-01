@@ -3,13 +3,16 @@ class Api::AnswersController < ApplicationController
 
   def create
     # if answers_params
-      
     answer = Answer.new(answer_params)
     if answer.save
       render_json_message(:ok, data: answer, message: 'New answer created')
     else
       render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)
     end
+  end
+
+  def create_multiple
+    Answer.create(answers_params)
   end
 
   def update
