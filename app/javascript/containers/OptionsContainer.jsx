@@ -96,7 +96,8 @@ class OptionsContainer extends React.Component {
       onFileDelete: this.onFileDelete.bind(this),
       onEnter: () => this.setState({ selected: true }),
       onLeave: () => this.setState({ selected: false }),
-      focusOnMount: this.props.focusOnMount
+      focusOnMount: this.props.focusOnMount,
+      editable: this.props.editableMap[this.props.question_id]
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -133,6 +134,7 @@ class OptionsContainer extends React.Component {
           buildingId={this.props.building_id}
           parentIsHidden={this.props.parentIsHidden}
           disableFocusOnMount={this.props.question_type == "RangeOption"}
+          editableMap={this.props.editableMap}
         />
       : null}
     </div>);

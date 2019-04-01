@@ -11,7 +11,8 @@ function DependentQuestions({
   dependentQuestions,
   buildingId,
   parentIsHidden = false,
-  disableFocusOnMount = false
+  disableFocusOnMount = false,
+  editableMap
 }) {
   if (!answer) return null;
 
@@ -60,6 +61,7 @@ function DependentQuestions({
                   }
                   parentIsHidden={!isActive}
                   {...question}
+                  editableMap={editableMap}
                 />
               </div>
             )}

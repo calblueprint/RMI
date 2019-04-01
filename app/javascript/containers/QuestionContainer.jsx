@@ -22,6 +22,7 @@ class QuestionContainer extends React.Component {
         text={this.props.text}
         setFocusFunc={this.props.setFocusFunc}
         unit={this.props.unit}
+        editableMap={this.props.editableMap}
       />
     );
   }
@@ -36,6 +37,7 @@ class QuestionContainer extends React.Component {
           building_id={this.props.building_id}
           question_type={this.props.question_type}
           options={this.props.options}
+          editableMap={this.props.editableMap}
         />
       </tr>
     );
@@ -50,6 +52,7 @@ class QuestionContainer extends React.Component {
           question_type={this.props.question_type}
           options={this.props.options}
           building_id={this.props.building_id}
+          editableMap={this.props.editableMap}
         />
       </div>
     );
