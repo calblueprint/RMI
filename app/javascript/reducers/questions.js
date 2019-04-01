@@ -174,7 +174,7 @@ function detachOptionFromQuestion(state, action) {
     [questionId]: {
       ...state[questionId],
       options: Object.keys(currentOptions)
-        .filter(id => id !== action.option.id)
+        .filter(id => id !== String(action.option.id))
         .reduce((newOptions, id) => {
           newOptions[id] = currentOptions[id];
           return newOptions
