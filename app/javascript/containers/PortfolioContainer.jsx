@@ -68,36 +68,42 @@ class PortfolioContainer extends React.Component {
       let response = await post("/api/answers/create_multiple", { answers: answers, answer: {} });
       // console.log("created answers");
       //after building is created, we should have tons of empty answers
-      const newAnswers = {
-        ...response.data
-      };
+      console.log(response.data)
+      const newAnswers = response.data
+  
       // here need to adjust indices such that the index of the answer matches the questionId
-      console.log(newAnswers)
+      //for each item, map questionId: the object itself
+      const formattedAnswers = {}
+      newAnswers.forEach(function(a) {
+        formattedAnswers[a.question_id] = a
+      })
+      console.log(formattedAnswers)
       //update redux store with empty answers
-      this.props.addAnswers(newAnswers, buildingId)
-      this.delegateQuestions(questions, buildingId, email, firstName, lastName);
+      this.props.addAnswers(formattedAnswers, buildingId)
+      this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName);
       // this.delegateQue
     } catch (error) {
       console.log(error);
     }
   }
-  async delegateQuestions(questions, buildingId, email, firstName, lastName) {
-    console.log('questions here')
+  async delegateQuestions(answers, buildingId, email, firstName, lastName) {
+    //we get the question_ids to be delegated through answers
+    console.log('answers here')
     //since answers will now be created the delegations should be okay!
-    console.log(questions)
+    console.log(answers)
     var delegations = [];
-    for (var i = 0; i < questions.length; i++) {
+    for (var i = 0; i < answers.length; i++) {
       //for each question, create an answer
       console.log(buildingId);
       console.log('before thirngerg')
-      var currentAnswer = this.props.getAnswer(questions[i], buildingId);
-      console.log('current answer')
-      console.log(currentAnswer)
+      // var currentAnswer = this.props.getAnswer(answers[i].question_id, buildingId);
+      // console.log('current answer')
+      // console.log(currentAnswer)
       var delegation = {
         email: email,
         first_name: firstName,
         last_name: lastName,
-        answer_id: currentAnswer.id
+        answer_id: answers[i].id
       };
       delegations.push(delegation);
     }

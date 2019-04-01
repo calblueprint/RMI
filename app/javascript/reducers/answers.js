@@ -91,8 +91,9 @@ export function addAnswers(state, action) {
   console.log(action)
   return {
     ...state,
-    ...action.answers
-    
+    [action.buildingId]: {
+      answers: action.answers
+    }
   };
 }
 
