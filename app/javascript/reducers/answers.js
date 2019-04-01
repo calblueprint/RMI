@@ -2,6 +2,7 @@ import {
   ANSWER_FETCH_IN_PROGRESS,
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
+  ADD_ANSWERS,
   FETCH_IN_PROGRESS,
   PRE_FETCH_SAVE,
   FETCH_SUCCESS,
@@ -81,6 +82,19 @@ function answerFetchFailure(state, action) {
   };
 }
 
+/**
+ * Adds answers from batch creation
+ */
+export function addAnswers(state, action) {
+  console.log('at reducer')
+  console.log(state)
+  console.log(action)
+  return {
+    ...state,
+    ...action.answers
+  };
+}
+
 export function answers(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
@@ -88,7 +102,7 @@ export function answers(state = {}, action) {
     case ANSWER_FETCH_IN_PROGRESS: return beforeFetchAnswer(state, action);
     case ANSWER_FETCH_SUCCESS: return answerFetchSuccess(state, action);
     case ANSWER_FETCH_FAILURE: return answerFetchFailure(state, action);
-
+    case ADD_ANSWERS: return addAnswers(state, action)
     default:
       return state;
   }

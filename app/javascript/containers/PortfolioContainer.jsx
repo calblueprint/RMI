@@ -5,7 +5,7 @@ import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { createAnswer, updateAnswer } from "../actions/answers";
+import { createAnswer, updateAnswer, addAnswers } from "../actions/answers";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
 import { addBuilding } from "../actions/buildings";
 import { post } from "../fetch/requester";
@@ -73,7 +73,7 @@ class PortfolioContainer extends React.Component {
       };
       console.log(newAnswers)
       //update redux store with empty answers
-      //this.props.addAnswers()
+      this.props.addAnswers(newAnswers, buildingId)
     } catch (error) {
       console.log(error);
     }
@@ -276,6 +276,9 @@ function mapDispatchToProps(dispatch) {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
     addBuilding: building => {
       dispatch(addBuilding(building));
+    },
+    addAnswers: (answers, buildingId) => {
+      dispatch(addAnswers(answers, buildingId));
     }
   };
 }

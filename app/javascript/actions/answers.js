@@ -7,6 +7,7 @@ import {
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
   UPDATE_LOCAL_ANSWER,
+  ADD_ANSWERS,
   REMOVE_ANSWER,
 } from '../constants';
 import { post, postFile, patch, destroy } from '../fetch/requester';
@@ -53,6 +54,14 @@ function answerFetchFailure(buildingId, questionId, error) {
     response: error,
     buildingId,
     questionId
+  };
+}
+
+export function addAnswers(answers, buildingId) {
+  return {
+    type: ADD_ANSWERS,
+    answers,
+    buildingId
   };
 }
 

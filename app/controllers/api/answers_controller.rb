@@ -12,7 +12,11 @@ class Api::AnswersController < ApplicationController
   end
 
   def create_multiple
-    Answer.create(answers_params)
+    answers = Answer.create(answers_params)
+    #can't consume the response twice
+    # rescue => e
+    #   render_json_message(:forbidden, errors: e.message)
+    render_json_message(:ok, data: answers, message: 'New answers created')
   end
 
   def update
