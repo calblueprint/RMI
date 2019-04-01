@@ -20,7 +20,7 @@ import {
 
 function detachCategory(state, action) {
   return Object.keys(state)
-    .filter(id => id !== action.category.id)
+    .filter(id => id !== String(action.category.id))
     .reduce((newState, id) => {
       newState[id] = state[id];
       return newState
