@@ -21,17 +21,27 @@ class PortfolioBuildingInfoContainer extends React.Component {
     let building_id = this.props.building_id;
 
     return (
-      <div key={this.props.building_id}>
-          BUILDING
-          <h2 className='building_title'>{this.props.name}</h2>
+      <div className="building_details" key={this.props.building_id}>
+        <div className="building_info">
           <div>
-              {this.getStatusForBuilding()}
+            BUILDING
+            <h2>{this.props.name}</h2>
+            {this.getStatusForBuilding()}
+            {/* <h3 className='building_address'>{this.props.streetAddress}<br></br>{this.props.cityStateAddress}</h3> */}
           </div>
-          {/* <h3 className='building_address'>{this.props.streetAddress}<br></br>{this.props.cityStateAddress}</h3> */}
-          <span className="building__link">
-              <Link to={`/buildings/${this.props.building_id}`}>Details</Link>
-          </span>
-          <PortfolioBuildingCategoryContainer building_id={ building_id } categories={ this.props.categories }></PortfolioBuildingCategoryContainer>
+          <div>
+            <span className="building__link">
+                <Link to={`/buildings/${this.props.building_id}`}>Details</Link>
+            </span>
+            <a href={`download/${building_id}`}>Download as CSV</a>
+          </div>
+          </div>
+          <div className="cat_names">
+            QUESTIONS
+            <span></span>
+            HANDING OFF TO
+          </div>
+        <PortfolioBuildingCategoryContainer building_id={ building_id } categories={ this.props.categories }></PortfolioBuildingCategoryContainer>
       </div>
     );
   }
@@ -44,8 +54,8 @@ PortfolioBuildingInfoContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     name: getNameByBuildingId(ownProps.building_id, state),
-    streetAddress: getStreetAddressByBuildingId(ownProps.building_id, state),
-    cityStateAddress: getCityStateAddressByBuildingId(ownProps.building_id, state),
+    // streetAddress: getStreetAddressByBuildingId(ownProps.building_id, state),
+    // cityStateAddress: getCityStateAddressByBuildingId(ownProps.building_id, state),
     categories: getCategoriesForBuilding(ownProps.building_id, state),
     buildingStatus: percentAnswered(ownProps.building_id, state)
   };
