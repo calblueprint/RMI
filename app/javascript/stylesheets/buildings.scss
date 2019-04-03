@@ -215,6 +215,7 @@
   border-width: 1px;
   border-color: #ccc;
   border-radius: 5px;
+  padding: 40px;
 }
 
 .building_info {
@@ -223,7 +224,6 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 40px;
   div {
     a {
       padding-left: 20px;
@@ -245,7 +245,7 @@
 }
 
 .cat_names {
-  margin-left: 40px;
+  margin-top: 20px;
   span {  
     display: inline-block;
     width: 200px;
@@ -266,7 +266,7 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
-    margin: 15px 0px 20px 0px;
+    margin: 15px 0px 10px 0px;
     font-size: 15pt;
     display: table-cell; 
     vertical-align: middle; 

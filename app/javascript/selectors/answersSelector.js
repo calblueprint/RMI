@@ -3,6 +3,7 @@ import {
   getAllActiveQuestionsForCategory,
   getAllQuestionsByCategoryId
 } from "./questionsSelector";
+import { getCategoriesForBuilding } from "./categoriesSelector";
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
   return state.buildings[buildingId].answers[questionId];
@@ -137,8 +138,9 @@ export function getDelegations(categoryQuestions, buildingId, state) {
   return delegations;
 }
 
-export function questionDataPerCategory(buildingId, categoriesArray, state) {
+export function questionDataPerCategory(buildingId, state) {
   let catData = {};
+  let categoriesArray = getCategoriesForBuilding(buildingId, state);
 
   for (let category of categoriesArray) {
     const categoryQuestions = getAllActiveQuestionsForCategory(
