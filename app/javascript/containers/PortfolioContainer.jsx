@@ -129,7 +129,8 @@ class PortfolioContainer extends React.Component {
     //adding delegations is just updating answers
     try {
       console.log('b4 answer update')
-      let response = await patch("/api/answers/update_multiple", { answers: answers, answer: {} });
+      console.log(answers)
+      let response = await patch("/api/answers/update_multiple", { answers: [answers], answer: {} });
       console.log('answers succesfully updated in backend')
       //update redux store with answers
       this.addDelegations(answers, buildingId)

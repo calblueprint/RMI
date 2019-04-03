@@ -29,7 +29,11 @@ class Api::AnswersController < ApplicationController
   end
 
   def update_multiple
-    answers = Building.answers.update_all(answers_params)
+    puts 'here'
+    # puts params[:answers][0].values[:building_id]
+    puts params[:answers][0].values[0]
+    #maybe should iterate through each answers params and update manually....
+    answers = Building.find(params[:answers][0].values[0][:building_id]).answers.update_all(params[:answers])
     render_json_message(:ok, data: answers, message: 'New answers created')
   end
 
