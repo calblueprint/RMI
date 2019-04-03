@@ -147,14 +147,7 @@ class PortfolioContainer extends React.Component {
     for (let i = 0; i < buildings.length; i++) {
       let b = buildings[i];
       if (b.id == this.props.selectedBuildingId) {
-        return (
-          <div key={b.id} className="building_view">
-            <PortfolioBuildingInfoContainer
-              building_id={b.id}
-              className="building_view_info"
-            />
-          </div>
-        );
+        return <PortfolioBuildingInfoContainer key={b.id} building_id={b.id} />;
       }
     }
   }

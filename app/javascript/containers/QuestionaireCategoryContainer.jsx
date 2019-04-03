@@ -27,7 +27,7 @@ class QuestionaireCategoryContainer extends React.Component {
   render() {
     var categoryData = this.props.categoryData;    
     return (
-      <div className='questionaire-category-container'>
+      <div className='questionnaire-category-container'>
           <br></br>
           <div className='vertical-bus-map'>
             <div className='vertical-line'></div>
