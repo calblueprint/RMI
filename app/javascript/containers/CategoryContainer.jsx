@@ -1,14 +1,13 @@
 import React from 'react';
-import { connect } from "react-redux";
 
 import PropTypes from 'prop-types';
 
 class CategoryContainer extends React.Component { 
     categoryProgress(answered, total) {
         if (answered < total) {
-          return answered + " / " + total + " ANSWERED";
+          return "Waiting for Handoff";
         }
-        return "COMPLETED"
+        return "Handed Off"
     }
 
     categoryDelegations() {
@@ -25,12 +24,9 @@ class CategoryContainer extends React.Component {
         let categoryData = this.props.categoryData
 
         return (<div className='category_data'>
-                    <div>{categoryData.name}<br></br>
-                        <small>{this.categoryProgress(categoryData.answered, categoryData.total)}</small>
-                    </div>
-                    <div class='delegation_info'>
-                        {this.categoryDelegations()}
-                    </div>
+                    <div>{categoryData.name}</div>
+                    <div>{this.categoryProgress(categoryData.answered, categoryData.total)}</div> 
+                    <div class='delegation_info'>{this.categoryDelegations()}</div>
                 </div>);
     }
 }

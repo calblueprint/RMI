@@ -2,10 +2,9 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { getStreetAddressByBuildingId, getCityStateAddressByBuildingId, getNameByBuildingId } from "../selectors/buildingsSelector";
-import { getCategoriesForBuilding } from '../selectors/categoriesSelector';
-import PortfolioBuildingCategoryContainer from './PortfolioBuildingCategoryContainer';
-import { percentAnswered } from '../selectors/answersSelector';
+import { getNameByBuildingId } from "../selectors/buildingsSelector";
+import CategoryContainer from './CategoryContainer';
+import { percentAnswered, questionDataPerCategory } from '../selectors/answersSelector';
 
 class PortfolioBuildingInfoContainer extends React.Component {
   getStatusForBuilding() {
@@ -19,6 +18,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   render() {
     let building_id = this.props.building_id;
+    let categoryData = this.props.categoryData;    
 
     return (
       <div className="building_details" key={this.props.building_id}>
@@ -31,7 +31,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
           </div>
           <div>
             <span className="building__link">
-                <Link to={`/buildings/${this.props.building_id}`}>Details</Link>
+                <Link to={`/buildings/${this.props.building_id}`}>Assign Building</Link>
             </span>
             <a href={`download/${building_id}`}>Download as CSV</a>
           </div>
@@ -39,9 +39,16 @@ class PortfolioBuildingInfoContainer extends React.Component {
           <div className="cat_names">
             QUESTIONS
             <span></span>
+            STATUS
+            <span></span>
             HANDING OFF TO
           </div>
-        <PortfolioBuildingCategoryContainer building_id={ building_id } categories={ this.props.categories }></PortfolioBuildingCategoryContainer>
+          <br></br>
+          <div className='portfolio_category_info'>
+            {Object.keys(categoryData).map((id) => {
+              return (<CategoryContainer id={id} categoryData={categoryData[id]} key={id}></CategoryContainer>)
+            })}
+          </div>
       </div>
     );
   }
@@ -56,8 +63,11 @@ function mapStateToProps(state, ownProps) {
     name: getNameByBuildingId(ownProps.building_id, state),
     // streetAddress: getStreetAddressByBuildingId(ownProps.building_id, state),
     // cityStateAddress: getCityStateAddressByBuildingId(ownProps.building_id, state),
-    categories: getCategoriesForBuilding(ownProps.building_id, state),
-    buildingStatus: percentAnswered(ownProps.building_id, state)
+    buildingStatus: percentAnswered(ownProps.building_id, state),
+    
+    // array containing an object for each category id, name, number of answered questions, and total questions
+    categoryData: questionDataPerCategory(ownProps.building_id, state),
+
   };
 }
 
