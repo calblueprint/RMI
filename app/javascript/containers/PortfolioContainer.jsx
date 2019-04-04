@@ -132,6 +132,7 @@ class PortfolioContainer extends React.Component {
       console.log(answers)
       let response = await patch("/api/answers/update_multiple", { answers: [answers], answer: {} });
       console.log('answers succesfully updated in backend')
+      console.log(response.data)
       //update redux store with answers
       this.addDelegations(answers, buildingId)
     } catch (error) {

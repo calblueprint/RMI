@@ -31,10 +31,15 @@ class Api::AnswersController < ApplicationController
   def update_multiple
     puts 'here'
     # puts params[:answers][0].values[:building_id]
-    puts params[:answers][0].values[0]
+    puts params[:answers]
     #maybe should iterate through each answers params and update manually....
-    answers = Building.find(params[:answers][0].values[0][:building_id]).answers.update_all(params[:answers])
-    render_json_message(:ok, data: answers, message: 'New answers created')
+    params[:answers][0].values.each do |a|
+      puts a
+      answer = Answer.find(a[:id])
+      answer.update(a)
+    end
+    answers = Building.find(params[:answers][0].values[0][:building_id]).answers
+    render_json_message(:ok, data: answers, message: 'Answers batch updated')
   end
 
   # Redirect user to download attachment
