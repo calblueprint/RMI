@@ -20,7 +20,7 @@ class PortfolioListContainer extends React.Component {
   }
 
   toggleModal() {
-    this.setState({ showModal: !this.state.showModal });
+    this.setState({ errors: null, showModal: !this.state.showModal });
   }
 
   async createBuildingType(event) {
@@ -39,7 +39,7 @@ class PortfolioListContainer extends React.Component {
       //this.props.delegateQuestions()
       this.props.history.push(`/building_types/${buildingTypeId}`);
     } catch (error) {
-      this.setState({errors: error, showModal: true})
+      this.setState({errors: error, showModal: true});
     }
   }
 
