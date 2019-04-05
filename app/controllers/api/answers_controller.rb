@@ -12,7 +12,20 @@ class Api::AnswersController < ApplicationController
   end
 
   def create_multiple
-    answers = Answer.create(answers_params)
+    # answers = Answer.create(answers_params)
+    # answers = []
+    answers_params.each do |a|
+      puts a
+      puts 'hi'
+      answer = Answer.new(a)
+      puts a
+      answer.delegation_email = ""
+      answer.delegation_first_name = ""
+      answer.delegation_last_name = ""
+      answer.save!
+      # answers.push(answer)
+    end
+    answers = Building.find(answers_params[0][:building_id]).answers
     #can't consume the response twice
     # rescue => e
     #   render_json_message(:forbidden, errors: e.message)
@@ -103,10 +116,7 @@ class Api::AnswersController < ApplicationController
         :attachment,
         :selected_option_id, 
         :building_id, 
-        :question_id,
-        :delegation_email,
-            :delegation_first_name,
-            :delegation_last_name
+        :question_id
       )
     end
   end

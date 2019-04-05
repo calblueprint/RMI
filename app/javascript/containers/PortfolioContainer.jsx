@@ -36,6 +36,7 @@ class PortfolioContainer extends React.Component {
     this.createAnswers = this.createAnswers.bind(this);
     this.delegateQuestions = this.delegateQuestions.bind(this);
     this.updateAnswers = this.updateAnswers.bind(this);
+    // this.addDelegations = this.addDelegations.bind(this);
   }
 
   toggleModal() {
@@ -44,17 +45,16 @@ class PortfolioContainer extends React.Component {
 
   async createAnswers(questions, buildingId, email, firstName, lastName) {
     var answers = [];
-    console.log(questions.length)
     for (var i = 0; i < questions.length; i++) {
       var emptyAnswer = {
         text: "",
         building_id: buildingId,
         question_id: questions[i],
         selected_option_id: null,
-        attachment_file_name: "",
-        attachment_content_type: "",
-        attachment_file_size: "",
-        attachment_updated_at: "",
+        attachment_file_name: null,
+        attachment_content_type: null,
+        attachment_file_size: null,
+        attachment_updated_at: null,
         delegation_email: "",
         delegation_first_name: "",
         delegation_last_name: ""
@@ -64,14 +64,14 @@ class PortfolioContainer extends React.Component {
       // console.log('huh')
     }
     try {
-      // console.log(answers)
-      // console.log('b4 api answers')
+      console.log(answers)
+      console.log('b4 api answers')
       let response = await post("/api/answers/create_multiple", { answers: answers, answer: {} });
       // console.log("created answers");
       //after building is created, we should have tons of empty answers
-      console.log(response.data)
+      console.log(response)
       const newAnswers = response.data
-  
+      console.log(newAnswers)
       // here need to adjust indices such that the index of the answer matches the questionId
       //for each item, map questionId: the object itself
       const formattedAnswers = {}
@@ -82,7 +82,6 @@ class PortfolioContainer extends React.Component {
       //update redux store with empty answers
       this.props.addAnswers(formattedAnswers, buildingId)
       this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName, formattedAnswers);
-      // this.delegateQue
     } catch (error) {
       console.log(error);
     }
@@ -95,8 +94,6 @@ class PortfolioContainer extends React.Component {
     var delegations = [];
     for (var i = 0; i < answers.length; i++) {
       //for each question, create an answer
-      console.log(buildingId);
-      console.log('before thirngerg')
       // var currentAnswer = this.props.getAnswer(answers[i].question_id, buildingId);
       // console.log('current answer')
       // console.log(currentAnswer)
@@ -114,13 +111,14 @@ class PortfolioContainer extends React.Component {
       let response = await post("/api/delegations", { delegations });
       console.log('delegations succesfully created in backend')
       //update redux store with delegations
-      console.log(formattedAnswers)
+      // console.log(formattedAnswers)
       Object.values(formattedAnswers).forEach(function(a){
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
       })
-      this.updateAnswers(formattedAnswers)
+      // console.log(formattedAnswers)
+      this.updateAnswers(formattedAnswers, buildingId)
     } catch (error) {
       console.log(error);
     }
@@ -134,7 +132,7 @@ class PortfolioContainer extends React.Component {
       console.log('answers succesfully updated in backend')
       console.log(response.data)
       //update redux store with answers
-      this.addDelegations(answers, buildingId)
+      this.props.addDelegations(answers, buildingId)
     } catch (error) {
       console.log(error);
     }

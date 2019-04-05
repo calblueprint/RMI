@@ -87,7 +87,19 @@ function answerFetchFailure(state, action) {
  * Adds answers from batch creation
  */
 export function addAnswers(state, action) {
-  console.log('at reducer')
+  return {
+    ...state,
+    [action.buildingId]: {
+      answers: action.answers
+    }
+  };
+}
+
+/**
+* Adds delegations, which updates answers in the redux store with delegation information
+*/
+export function addDelegations(state, action) {
+  console.log('at delegations reducer')
   console.log(state)
   console.log(action)
   return {
