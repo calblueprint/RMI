@@ -79,6 +79,7 @@ class PortfolioContainer extends React.Component {
         formattedAnswers[a.question_id] = a
       })
       console.log(formattedAnswers)
+      console.log(newAnswers)
       //update redux store with empty answers
       this.props.addAnswers(formattedAnswers, buildingId)
       this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName, formattedAnswers);
@@ -112,13 +113,15 @@ class PortfolioContainer extends React.Component {
       console.log('delegations succesfully created in backend')
       //update redux store with delegations
       // console.log(formattedAnswers)
-      Object.values(formattedAnswers).forEach(function(a){
+      const finalAnswers = response.data;
+      Object.values(finalAnswers).forEach(function(a){
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
       })
-      // console.log(formattedAnswers)
-      this.updateAnswers(formattedAnswers, buildingId)
+      console.log(finalAnswers)
+      // console.log(copy)
+      this.updateAnswers(finalAnswers, buildingId)
     } catch (error) {
       console.log(error);
     }
@@ -128,7 +131,7 @@ class PortfolioContainer extends React.Component {
     try {
       console.log('b4 answer update')
       console.log(answers)
-      let response = await patch("/api/answers/update_multiple", { answers: [answers], answer: {} });
+      let response = await patch("/api/answers/update_multiple", { answers: answers, answer: {} });
       console.log('answers succesfully updated in backend')
       console.log(response.data)
       //update redux store with answers

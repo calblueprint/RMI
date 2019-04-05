@@ -13,7 +13,7 @@ class Api::AnswersController < ApplicationController
 
   def create_multiple
     # answers = Answer.create(answers_params)
-    # answers = []
+    answers = []
     answers_params.each do |a|
       puts a
       puts 'hi'
@@ -23,9 +23,9 @@ class Api::AnswersController < ApplicationController
       answer.delegation_first_name = ""
       answer.delegation_last_name = ""
       answer.save!
-      # answers.push(answer)
+      answers.push(answer)
     end
-    answers = Building.find(answers_params[0][:building_id]).answers
+    # answers = Building.find(answers_params[0][:building_id]).answers
     #can't consume the response twice
     # rescue => e
     #   render_json_message(:forbidden, errors: e.message)
@@ -46,12 +46,14 @@ class Api::AnswersController < ApplicationController
     # puts params[:answers][0].values[:building_id]
     puts params[:answers]
     #maybe should iterate through each answers params and update manually....
-    params[:answers][0].values.each do |a|
+    answers = []
+    answers_params.each do |a|
       puts a
       answer = Answer.find(a[:id])
       answer.update(a)
+      answers.push(answer)
     end
-    answers = Building.find(params[:answers][0].values[0][:building_id]).answers
+    # answers = Building.find(params[:answers][0].values[0][:building_id]).answers
     render_json_message(:ok, data: answers, message: 'Answers batch updated')
   end
 
@@ -111,13 +113,7 @@ class Api::AnswersController < ApplicationController
   def answers_params
     params.require(:answers).map! do |answer|
       # batch creation needs "partial answers" and will not contain delegation information until delegated
-      answer.permit(
-        :text, 
-        :attachment,
-        :selected_option_id, 
-        :building_id, 
-        :question_id
-      )
+      answer.permit!
     end
   end
 end
