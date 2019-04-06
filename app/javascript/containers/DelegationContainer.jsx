@@ -8,7 +8,7 @@ import QuestionContainer from './QuestionContainer';
 import * as ContactActions from '../actions/contacts';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
+import { canEdit, getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getContacts } from "../selectors/contactsSelector";
 import { createAnswer, updateAnswer } from '../actions/answers';
@@ -283,7 +283,7 @@ class DelegationContainer extends React.Component {
   }
 
   render() {
-    if (this.answerValid()) {
+    if (!this.props.canEdit || this.answerValid()) {
       return this.renderAnswered();
     }
     return (
@@ -313,7 +313,8 @@ function mapStateToProps(state, ownProps) {
   return {
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
     dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state),
-    contacts: getContacts(state)
+    contacts: getContacts(state),
+    canEdit: canEdit(ownProps.building_id, ownProps.question_id, state)
   }
 }
 

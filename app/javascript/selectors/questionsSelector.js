@@ -92,6 +92,10 @@ export function getQuestionsByCategoryId(categoryId, state) {
   });
 }
 
+export function canEdit(buildingId, questionId, state) {
+  return state.buildings[buildingId].editable[questionId];
+}
+
 /**
  * Returns a list of all active questions belonging to the given category id,
  * including any dependent questions

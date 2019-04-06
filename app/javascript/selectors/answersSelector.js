@@ -29,7 +29,9 @@ export function getNumUnanswered(questions, buildingId, state) {
 
 export function isUnanswered(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  if (!answer || !answer.text.trim() && !answer.attachment_file_name && !answer.delegation_email) {
+  let isAssigned = state.buildings[buildingId].editable[question.id];
+  if (isAssigned &&
+        (!answer || !answer.text.trim() && !answer.attachment_file_name && !answer.delegation_email)) {
     return true;
   }
 }
