@@ -52,6 +52,17 @@ class DropdownOption extends React.Component {
     this.props.onSave(optionId, text);
   }
 
+  getComponentStyle(currentValue, option) {
+    let style = "input__dropdown";
+    if (currentValue == option.id) {
+      style += " input__dropdown--selected";
+    }
+    if (!this.props.editable) {
+      style += " input__dropdown--disabled";
+    }
+    return style;
+  }
+
   render() {
     const currentValue = this.currentValue();
     const options = Object.values(this.props.options);
@@ -61,30 +72,34 @@ class DropdownOption extends React.Component {
           onMouseOver={(e) => this.props.onEnter()}
           onMouseOut={(e) => this.props.onLeave()}
         >
-        {options.map((option, i) => (
-          <button
-            key={option.id}
-            value={option.id}
-            onClick={(e) => this.onChange(e.target.value)}
-            onFocus={(e) => this.props.onEnter()}
-            onBlur={(e) => this.props.onLeave()}
-            className={`input__dropdown ${
-              currentValue == option.id ? 'input__dropdown--selected' : ''
-            }`}
-            ref={(ref) => this.ref = i === 0 ? ref : this.ref}
-          >
+        {options.map((option, i) => {
+          let props = {
+            key: option.id,
+            value: option.id,
+            className: this.getComponentStyle(currentValue, option),
+            ref: (ref) => this.ref = i === 0 ? ref : this.ref
+          };
+          if (this.props.editable) {
+            props = {
+              ...props,
+              onClick: (e) => this.onChange(e.target.value),
+              onFocus: (e) => this.props.onEnter(),
+              onBlur: (e) => this.props.onLeave()
+            };
+          }
+          return (<button {...props}>
             {option.text}
             {
               currentValue == option.id ?
-              <i
-                style={{ marginLeft: '10px' }}
-                dangerouslySetInnerHTML={{
-                  __html: fontawesome.icon(faCheck).html[0]
-                }}
-              /> : null
+                <i
+                  style={{ marginLeft: '10px' }}
+                  dangerouslySetInnerHTML={{
+                    __html: fontawesome.icon(faCheck).html[0]
+                  }}
+                /> : null
             }
-          </button>
-        ))}
+          </button>)
+        })}
         </div>
       );
     }

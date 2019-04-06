@@ -24,9 +24,17 @@ class FreeOption extends React.Component {
     }
   }
 
+  getComponentStyle() {
+    let style = "input__text";
+    if (!this.props.editable) {
+      style += " input__text--disabled";
+    }
+    return style;
+  }
+
   render() {
     return (
-      <div className={`input__text ${!this.props.editable ? 'input__text--disabled' : ''}`}>
+      <div className={this.getComponentStyle()}>
         <textarea
           disabled={!this.props.editable}
           value={this.props.answer ? this.props.answer.text : ""}

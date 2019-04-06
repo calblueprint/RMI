@@ -106,6 +106,7 @@ textarea:focus,
 .input__text--disabled textarea {
   background-color: $disabledBgGray;
   color: $disabledTextGray;
+  border: none;
   disabled: true;
 }
 
@@ -136,6 +137,7 @@ textarea:focus,
   background-color: $disabledBgGray;
   color: $disabledTextGray;
   pointer-events: none;
+  border: none;
 }
 
 .input__dropdown {
@@ -152,6 +154,12 @@ textarea:focus,
 .input__dropdown--selected {
   color: white;
   background-color: $primary;
+}
+
+.input__dropdown--disabled {
+  color: $disabledTextGray;
+  border: none;
+  background-color: $disabledBgGray;
 }
 
 .next-button {

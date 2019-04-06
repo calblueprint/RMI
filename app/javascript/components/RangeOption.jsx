@@ -49,39 +49,47 @@ class RangeOption extends React.Component {
     this.updateAnswer(null, num, force);
   }
 
+  getComponentStyle() {
+    let style = "input__range";
+    if (this.state.focused) {
+      style += " input__range--focused";
+    }
+    if (!this.props.editable) {
+      style += " input__range--disabled";
+    }
+    return style;
+  }
+
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
+    let props = {
+      onChange: () => 0,
+      innerRef: (ref) => this.ref = ref,
+      tagName: "span",
+      content: currentValue,
+      doNotUpdate: true
+    };
+    if (this.props.editable) {
+      props = {
+        ...props,
+        onKeyDown: (e, val) => this.onChange(val),
+        onFocus: (e) => {
+          this.setState({focused: true});
+          this.props.onEnter();
+        },
+        onBlur: (e) => {
+          this.onChange(e.target.innerText, true);
+          this.setState({focused: false});
+          this.props.onLeave();
+        }
+      };
+    }
     return (
       <div
-        className={`input__range ${this.state.focused ? 'input__range--focused' : ''}
-                      ${!this.props.editable ? 'input__range--disabled' : ''}`}
+        className={this.getComponentStyle()}
         onClick={(e) => this.ref.focus()}
       >
-        <ContentEditable
-          onChange={() => 0}
-          onKeyDown={(e, val) => {
-            if (this.props.editable) {
-              this.onChange(val)
-            }
-          }}
-          onFocus={(e) => {
-            if (this.props.editable) {
-              this.setState({focused: true});
-              this.props.onEnter();
-            }
-          }}
-          onBlur={(e) => {
-            if (this.props.editable) {
-              this.onChange(e.target.innerText, true);
-              this.setState({ focused: false });
-              this.props.onLeave();
-            }
-          }}
-          innerRef={(ref) => this.ref = ref}
-          tagName="span"
-          content={currentValue}
-          doNotUpdate={true}
-        />
+        <ContentEditable {...props} />
         <label>{this.props.unit}</label>
       </div>
     );
