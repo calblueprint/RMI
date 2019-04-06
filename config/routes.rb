@@ -13,7 +13,6 @@ Rails.application.routes.draw do
       get 'download/:id' => :download, as: 'download'
     end
   end
-
   
   namespace :api, defaults: { format: :json } do
     resources :building_types, only: %i[show create]

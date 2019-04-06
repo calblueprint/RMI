@@ -151,8 +151,8 @@ class PortfolioContainer extends React.Component {
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
-      this.props.history.push(`/buildings/${buildingId}/edit`);
       this.createAnswers(questions, buildingId, email, firstName, lastName);
+      this.props.history.push(`/buildings/${buildingId}/edit`);
     } catch (error) {
       console.log(error);
       this.setState({ errors: error, showModal: true });

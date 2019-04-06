@@ -34,9 +34,6 @@ class PortfolioListContainer extends React.Component {
       const buildingType = { ...response.data, questions: [] };
       const buildingTypeId = buildingType.id;
       this.props.addBuildingType(buildingType);
-      //before pushing to the next page, the building must have a building type, with questions and categories automatically delegated to the user
-      //delegate questions
-      //this.props.delegateQuestions()
       this.props.history.push(`/building_types/${buildingTypeId}`);
     } catch (error) {
       this.setState({errors: error, showModal: true});
