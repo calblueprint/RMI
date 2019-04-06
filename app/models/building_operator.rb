@@ -26,7 +26,7 @@ class BuildingOperator < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  # after_create :send_onboarding_email
+  after_create :send_onboarding_email
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building

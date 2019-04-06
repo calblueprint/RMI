@@ -101,7 +101,6 @@ export function loadInitialState(initialState) {
   }, {});
   // Look for questions inside building_types
   if (initialState.building_types) {
-    console.log('hmm')
     formattedState.questions = [];
     initialState.building_types.forEach((building_type) => {
       formattedState = {
@@ -115,7 +114,6 @@ export function loadInitialState(initialState) {
   }
   // Look for questions inside buildings
   else if (initialState.buildings) {
-    console.log('heh')
     formattedState.questions = [];
     initialState.buildings.forEach((building) => {
       formattedState = {

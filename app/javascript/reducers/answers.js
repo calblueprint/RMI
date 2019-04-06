@@ -99,9 +99,6 @@ export function addAnswers(state, action) {
 * Adds delegations, which updates answers in the redux store with delegation information
 */
 export function addDelegations(state, action) {
-  console.log('at delegations reducer')
-  console.log(state)
-  console.log(action)
   return {
     ...state,
     [action.buildingId]: {

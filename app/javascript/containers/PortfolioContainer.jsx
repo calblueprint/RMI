@@ -13,16 +13,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-async function postDelegations(delegations) {
-  var body = { delegations };
-
-  try {
-    let resp = await post("/api/delegations", body);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -36,7 +26,6 @@ class PortfolioContainer extends React.Component {
     this.createAnswers = this.createAnswers.bind(this);
     this.delegateQuestions = this.delegateQuestions.bind(this);
     this.updateAnswers = this.updateAnswers.bind(this);
-    // this.addDelegations = this.addDelegations.bind(this);
   }
 
   toggleModal() {
@@ -60,44 +49,30 @@ class PortfolioContainer extends React.Component {
         delegation_last_name: ""
       };
       answers.push(emptyAnswer);
-      // console.log(answers)
-      // console.log('huh')
     }
     try {
-      console.log(answers)
-      console.log('b4 api answers')
       let response = await post("/api/answers/create_multiple", { answers: answers, answer: {} });
-      // console.log("created answers");
       //after building is created, we should have tons of empty answers
-      console.log(response)
       const newAnswers = response.data
-      console.log(newAnswers)
       // here need to adjust indices such that the index of the answer matches the questionId
       //for each item, map questionId: the object itself
       const formattedAnswers = {}
       newAnswers.forEach(function(a) {
         formattedAnswers[a.question_id] = a
       })
-      console.log(formattedAnswers)
-      console.log(newAnswers)
       //update redux store with empty answers
       this.props.addAnswers(formattedAnswers, buildingId)
-      this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName, formattedAnswers);
+      //only delegate questions if email is provided
+      if (email != "") {
+        this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName, formattedAnswers);
+      }
     } catch (error) {
       console.log(error);
     }
   }
   async delegateQuestions(answers, buildingId, email, firstName, lastName, formattedAnswers) {
-    //we get the question_ids to be delegated through answers
-    console.log('answers here')
-    //since answers will now be created the delegations should be okay!
-    console.log(answers)
     var delegations = [];
     for (var i = 0; i < answers.length; i++) {
-      //for each question, create an answer
-      // var currentAnswer = this.props.getAnswer(answers[i].question_id, buildingId);
-      // console.log('current answer')
-      // console.log(currentAnswer)
       var delegation = {
         email: email,
         first_name: firstName,
@@ -106,21 +81,15 @@ class PortfolioContainer extends React.Component {
       };
       delegations.push(delegation);
     }
-    // this.setState({ status_string: "Saving delegations!" });
     try {
-      console.log('b4 delegation creation')
       let response = await post("/api/delegations", { delegations });
-      console.log('delegations succesfully created in backend')
       //update redux store with delegations
-      // console.log(formattedAnswers)
       const finalAnswers = response.data;
       Object.values(finalAnswers).forEach(function(a){
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
       })
-      console.log(finalAnswers)
-      // console.log(copy)
       this.updateAnswers(finalAnswers, buildingId)
     } catch (error) {
       console.log(error);
@@ -129,12 +98,8 @@ class PortfolioContainer extends React.Component {
   async updateAnswers(answers, buildingId) {
     //adding delegations is just updating answers
     try {
-      console.log('b4 answer update')
-      console.log(answers)
       let response = await patch("/api/answers/update_multiple", { answers: answers, answer: {} });
-      console.log('answers succesfully updated in backend')
-      console.log(response.data)
-      //update redux store with answers
+      //update redux store with "delegated" answers
       this.props.addDelegations(answers, buildingId)
     } catch (error) {
       console.log(error);
@@ -166,7 +131,6 @@ class PortfolioContainer extends React.Component {
     };
     try {
       let response = await post("/api/buildings", obj);
-      console.log("made it here");
       //after building is created, we should have tons of empty answers
       const building = {
         ...response.data,
@@ -174,7 +138,6 @@ class PortfolioContainer extends React.Component {
         questions: questions
       };
       const buildingId = building.id;
-      console.log(building);
       this.props.addBuilding(building);
       this.createAnswers(questions, buildingId, email, firstName, lastName);
       //update redux store with answers to include the email and the names
@@ -184,24 +147,6 @@ class PortfolioContainer extends React.Component {
       this.setState({ errors: error, showModal: true });
     }
   }
-  // updateAnswer() {
-  //   // Need to keep answers up to date as during editing
-  //   const answer = {
-  //     building_id: this.props.building_id,
-  //     question_id: this.props.question_id,
-  //     delegation_email: this.state.email,
-  //     delegation_first_name: this.state.firstName,
-  //     delegation_last_name: this.state.lastName,
-  //   };
-
-  //   if (!this.props.answer) {
-  //     this.props.createAnswer(answer.building_id, answer);
-  //   }
-  //   else {
-  //     answer.id = this.props.answer.id;
-  //     this.props.updateAnswer(answer.building_id, answer);
-  //   }
-  // }
 
   render() {
     return (
