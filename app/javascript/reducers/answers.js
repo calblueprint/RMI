@@ -10,6 +10,20 @@ import {
   DELETE_LOCAL_ANSWER
 } from "../constants";
 
+const EMPTY_ANSWER = {
+  text: "",
+  building_id: -1,
+  question_id: -1,
+  selected_option_id: null,
+  attachment_file_name: "",
+  attachment_content_type: "",
+  attachment_file_size: "",
+  attachment_updated_at: "",
+  delegation_email: "",
+  delegation_first_name: "",
+  delegation_last_name: ""
+};
+
 /**
  * Updates the answer in store -- at this point we are not fetching anything,
  * and the answer has not been saved remotely.
@@ -21,7 +35,7 @@ function updateLocalAnswer(state, action) {
   return {
     ...state,
     [answer.question_id]: {
-      ...state[answer.question_id],
+      ...(state[answer.question_id] || EMPTY_ANSWER),
       ...answer,
       fetchStatus: PRE_FETCH_SAVE,
       buildingId: buildingId

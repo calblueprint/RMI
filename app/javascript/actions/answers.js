@@ -12,29 +12,12 @@ import {
 } from "../constants";
 import { post, postFile, patch, destroy } from "../fetch/requester";
 
-const EMPTY_ANSWER = {
-  text: "",
-  building_id: -1,
-  question_id: -1,
-  selected_option_id: null,
-  attachment_file_name: "",
-  attachment_content_type: "",
-  attachment_file_size: "",
-  attachment_updated_at: "",
-  delegation_email: "",
-  delegation_first_name: "",
-  delegation_last_name: ""
-};
-
 function answerFetchInProgress(buildingId, answer) {
   return {
     type: ANSWER_FETCH_IN_PROGRESS,
     fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
-    answer: {
-      ...EMPTY_ANSWER,
-      ...answer
-    }
+    answer
   };
 }
 

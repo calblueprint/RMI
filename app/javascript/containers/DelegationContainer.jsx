@@ -14,6 +14,7 @@ import {
   isValidAnswer
 } from "../selectors/answersSelector";
 import { getContacts } from "../selectors/contactsSelector";
+import { isDelegatedAnswer } from "../selectors/answersSelector";
 import { createAnswer, updateAnswer } from "../actions/answers";
 
 import validateEmail from "../utils/validateEmail";
@@ -172,7 +173,10 @@ class DelegationContainer extends React.Component {
   }
 
   render() {
-    if (isValidAnswer(this.props.answer)) {
+    if (
+      !isDelegatedAnswer(this.props.answer) &&
+      this.props.mode === "delegation"
+    ) {
       return this.renderAnswered();
     }
 

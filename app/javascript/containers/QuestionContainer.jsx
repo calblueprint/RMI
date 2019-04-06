@@ -15,7 +15,8 @@ class QuestionContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDelegating: this.props.mode === "delegation"
+      isDelegating:
+        this.props.mode === "delegation" || isDelegatedAnswer(this.props.answer)
     };
   }
 
