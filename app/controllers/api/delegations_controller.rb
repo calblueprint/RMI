@@ -7,7 +7,7 @@ class Api::DelegationsController < ApplicationController
     Delegation.transaction do
       # TODO: validate this user is currently the person delegated to
       # maybe easier to do in controller than cancancan?
-      answers = []
+      answers = {}
       delegations_params.each do |delegation_params|
         operator = BuildingOperator.find_by(email: delegation_params[:email])
         unless operator
@@ -35,7 +35,7 @@ class Api::DelegationsController < ApplicationController
           answer.delegation_last_name = ""
           answer.save!
         end
-        answers.push(answer)
+        answers[answer[:question_id]] = answer
         delegation = Delegation.new(
           answer: answer,
           source: current_building_operator,

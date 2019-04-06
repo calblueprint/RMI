@@ -43,7 +43,6 @@ class BuildingSerializer < ActiveModel::Serializer
           ids_from_delegations.include?(q.id)
         end
       else
-        puts "this might be the error"
         Building.includes(:building_type).find(object.id).questions
       end
     _questions.each_with_object({}) do |q, hsh|

@@ -11,10 +11,10 @@ class Api::AnswersController < ApplicationController
   end
 
   def create_multiple
-    answers = []
+    answers = {}
     answers_params.each do |a|
       answer = Answer.create(a)
-      answers.push(answer)
+      answers[a[:question_id]] = answer
     end
     # rescue => e
     #   render_json_message(:forbidden, errors: e.message)
@@ -31,11 +31,11 @@ class Api::AnswersController < ApplicationController
   end
 
   def update_multiple
-    answers = []
+    answers = {}
     answers_params.each do |a|
       answer = Answer.find(a[:id])
       answer.update(a)
-      answers.push(answer)
+      answers[a[:question_id]] = answer
     end
     render_json_message(:ok, data: answers, message: 'Answers batch updated')
   end

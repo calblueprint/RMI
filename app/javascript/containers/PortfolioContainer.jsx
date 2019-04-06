@@ -5,14 +5,18 @@ import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { createAnswer, updateAnswer, addAnswers, addDelegations } from "../actions/answers";
+import {
+  createAnswer,
+  updateAnswer,
+  addAnswers,
+  addDelegations
+} from "../actions/answers";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
 import { addBuilding } from "../actions/buildings";
 import { post, patch } from "../fetch/requester";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -51,33 +55,48 @@ class PortfolioContainer extends React.Component {
       answers.push(emptyAnswer);
     }
     try {
-      let response = await post("/api/answers/create_multiple", { answers: answers, answer: {} });
+      let response = await post("/api/answers/create_multiple", {
+        answers: answers,
+        answer: {}
+      });
       //after building is created, we should have tons of empty answers
-      const newAnswers = response.data
+      const newAnswers = response.data;
       // here need to adjust indices such that the index of the answer matches the questionId
       //for each item, map questionId: the object itself
-      const formattedAnswers = {}
-      newAnswers.forEach(function(a) {
-        formattedAnswers[a.question_id] = a
-      })
+      // const formattedAnswers = {};
+      // newAnswers.forEach(function(a) {
+      //   formattedAnswers[a.question_id] = a;
+      // });
       //update redux store with empty answers
-      this.props.addAnswers(formattedAnswers, buildingId)
+      this.props.addAnswers(newAnswers, buildingId);
       //only delegate questions if email is provided
       if (email != "") {
-        this.delegateQuestions(newAnswers, buildingId, email, firstName, lastName, formattedAnswers);
+        this.delegateQuestions(
+          newAnswers,
+          buildingId,
+          email,
+          firstName,
+          lastName,
+        );
       }
     } catch (error) {
       console.log(error);
     }
   }
-  async delegateQuestions(answers, buildingId, email, firstName, lastName, formattedAnswers) {
+  async delegateQuestions(
+    answers,
+    buildingId,
+    email,
+    firstName,
+    lastName,
+  ) {
     var delegations = [];
-    for (var i = 0; i < answers.length; i++) {
+    for (const answer of Object.values(answers)) {
       var delegation = {
         email: email,
         first_name: firstName,
         last_name: lastName,
-        answer_id: answers[i].id
+        answer_id: answer.id
       };
       delegations.push(delegation);
     }
@@ -85,12 +104,14 @@ class PortfolioContainer extends React.Component {
       let response = await post("/api/delegations", { delegations });
       //update redux store with delegations
       const finalAnswers = response.data;
-      Object.values(finalAnswers).forEach(function(a){
+      // this update is done here instead of in backend when delegations are created because in the next request they are updated in the backend as well \
+      Object.values(finalAnswers).forEach(function(a) {
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
-      })
-      this.updateAnswers(finalAnswers, buildingId)
+        // finalAnswers[a.question_id] = a;
+      });
+      this.updateAnswers(Object.values(finalAnswers), buildingId);
     } catch (error) {
       console.log(error);
     }
@@ -98,9 +119,12 @@ class PortfolioContainer extends React.Component {
   async updateAnswers(answers, buildingId) {
     //adding delegations is just updating answers
     try {
-      let response = await patch("/api/answers/update_multiple", { answers: answers, answer: {} });
+      let response = await patch("/api/answers/update_multiple", {
+        answers: answers,
+        answer: {}
+      });
       //update redux store with "delegated" answers
-      this.props.addDelegations(answers, buildingId)
+      this.props.addDelegations(answers, buildingId);
     } catch (error) {
       console.log(error);
     }
@@ -244,11 +268,7 @@ function mapStateToProps(state, ownProps) {
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
-      getAnswerForQuestionAndBuilding(
-        questionId,
-        buildingId,
-        state
-      )
+      getAnswerForQuestionAndBuilding(questionId, buildingId, state)
   };
 }
 

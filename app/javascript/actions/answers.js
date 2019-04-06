@@ -9,22 +9,22 @@ import {
   UPDATE_LOCAL_ANSWER,
   ADD_ANSWERS,
   ADD_DELEGATIONS,
-  REMOVE_ANSWER,
-} from '../constants';
-import { post, postFile, patch, destroy } from '../fetch/requester';
+  REMOVE_ANSWER
+} from "../constants";
+import { post, postFile, patch, destroy } from "../fetch/requester";
 
 const EMPTY_ANSWER = {
-  text: '',
+  text: "",
   building_id: -1,
   question_id: -1,
   selected_option_id: null,
-  attachment_file_name: '',
-  attachment_content_type: '',
-  attachment_file_size: '',
-  attachment_updated_at: '',
-  delegation_email: '',
-  delegation_first_name: '',
-  delegation_last_name: '',
+  attachment_file_name: "",
+  attachment_content_type: "",
+  attachment_file_size: "",
+  attachment_updated_at: "",
+  delegation_email: "",
+  delegation_first_name: "",
+  delegation_last_name: ""
 };
 
 function answerFetchInProgress(buildingId, answer) {
@@ -94,31 +94,12 @@ export async function createAnswer(buildingId, answer, dispatch) {
   dispatch(answerFetchInProgress(buildingId, answer));
 
   try {
-    let response = await post('/api/answers', {'answer': answer});
+    let response = await post("/api/answers", { answer: answer });
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }
-
-/**
- * Batch creation for answers,
- * updates answers in store and sends a fetch request.
- *
- * @param buildingId    id of building the answer belongs to
- * @param answer        A hash that contains all params required by the Answers API controller
- * @param dispatch      The dispatch function
- */
-// export async function createAnswers(buildingId, answers, dispatch) {
-//   dispatch(answerFetchInProgress(buildingId, answer));
-
-//   try {
-//     let response = await post('/api/answers', {'answer': answer});
-//     dispatch(answerFetchSuccess(response.data));
-//   } catch (error) {
-//     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
-//   }
-// }
 
 /**
  * For answers that already exist in the database.
@@ -127,7 +108,7 @@ export async function updateAnswer(buildingId, answer, dispatch) {
   dispatch(answerFetchInProgress(buildingId, answer));
 
   try {
-    let response = await patch('/api/answers/' + answer.id, {'answer': answer});
+    let response = await patch("/api/answers/" + answer.id, { answer: answer });
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
@@ -135,18 +116,17 @@ export async function updateAnswer(buildingId, answer, dispatch) {
 }
 
 export async function uploadFile(buildingId, questionId, file, dispatch) {
-  dispatch(answerFetchInProgress(buildingId, {question_id: questionId}));
+  dispatch(answerFetchInProgress(buildingId, { question_id: questionId }));
 
   const formData = new FormData();
-  formData.append('answer[attachment]', file);
-  formData.append('answer[building_id]', buildingId);
-  formData.append('answer[question_id]', questionId);
+  formData.append("answer[attachment]", file);
+  formData.append("answer[building_id]", buildingId);
+  formData.append("answer[question_id]", questionId);
   try {
-    let response = await postFile('/api/answers', formData);
+    let response = await postFile("/api/answers", formData);
     dispatch(updateLocalAnswer(buildingId, response.data));
     dispatch(answerFetchSuccess(response.data));
-  }
-  catch (error) {
+  } catch (error) {
     dispatch(answerFetchFailure(buildingId, questionId, error));
   }
 }
@@ -154,14 +134,18 @@ export async function uploadFile(buildingId, questionId, file, dispatch) {
 export async function deleteFile(buildingId, answer, dispatch) {
   // Get rid of the attachment name locally to give the user the appearance that it was deleted
   // immediately. However, we need wait for the DELETE request to go through to be fully finished
-  dispatch(updateLocalAnswer(buildingId, {...answer, attachment_file_name: undefined}));
+  dispatch(
+    updateLocalAnswer(buildingId, {
+      ...answer,
+      attachment_file_name: undefined
+    })
+  );
 
   try {
-    let response = await destroy('/api/answers/' + answer.id + '/attachment');
+    let response = await destroy("/api/answers/" + answer.id + "/attachment");
     dispatch(updateLocalAnswer(buildingId, response.data));
     dispatch(answerFetchSuccess(response.data));
-  }
-  catch (error) {
+  } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }
