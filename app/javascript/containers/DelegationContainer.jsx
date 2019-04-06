@@ -11,10 +11,10 @@ import { connect } from "react-redux";
 import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import {
   getAnswerForQuestionAndBuilding,
-  isValidAnswer
+  isValidAnswer,
+  isDelegatedAnswer
 } from "../selectors/answersSelector";
 import { getContacts } from "../selectors/contactsSelector";
-import { isDelegatedAnswer } from "../selectors/answersSelector";
 import { createAnswer, updateAnswer } from "../actions/answers";
 
 import validateEmail from "../utils/validateEmail";
@@ -174,6 +174,7 @@ class DelegationContainer extends React.Component {
 
   render() {
     if (
+      isValidAnswer(this.props.answer) &&
       !isDelegatedAnswer(this.props.answer) &&
       this.props.mode === "delegation"
     ) {
@@ -194,6 +195,7 @@ class DelegationContainer extends React.Component {
             this.clearContact();
             this.props.onDelegationRemove();
           }}
+          showRemoveContactBtn={this.props.mode !== "delegation"}
         />
       );
     } else if (this.state.showNameInputs) {

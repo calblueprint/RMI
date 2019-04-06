@@ -7,7 +7,8 @@ function DelegationContactCard({
   lastName,
   email,
   handleClickChangeContact,
-  handleClickRemoveContact
+  handleClickRemoveContact,
+  showRemoveContactBtn = true
 }) {
   return (
     <div>
@@ -27,13 +28,15 @@ function DelegationContactCard({
         >
           Change
         </button>
-        <button
-          className="btn btn--danger"
-          type="button"
-          onClick={handleClickRemoveContact}
-        >
-          <FAIcon iconObj={closeIcon} />
-        </button>
+        {showRemoveContactBtn && (
+          <button
+            className="btn btn--danger"
+            type="button"
+            onClick={handleClickRemoveContact}
+          >
+            <FAIcon iconObj={closeIcon} />
+          </button>
+        )}
       </div>
     </div>
   );
