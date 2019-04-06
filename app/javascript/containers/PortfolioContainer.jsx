@@ -59,14 +59,7 @@ class PortfolioContainer extends React.Component {
         answers: answers,
         answer: {}
       });
-      //after building is created, we should have tons of empty answers
       const newAnswers = response.data;
-      // here need to adjust indices such that the index of the answer matches the questionId
-      //for each item, map questionId: the object itself
-      // const formattedAnswers = {};
-      // newAnswers.forEach(function(a) {
-      //   formattedAnswers[a.question_id] = a;
-      // });
       //update redux store with empty answers
       this.props.addAnswers(newAnswers, buildingId);
       //only delegate questions if email is provided
@@ -76,20 +69,14 @@ class PortfolioContainer extends React.Component {
           buildingId,
           email,
           firstName,
-          lastName,
+          lastName
         );
       }
     } catch (error) {
       console.log(error);
     }
   }
-  async delegateQuestions(
-    answers,
-    buildingId,
-    email,
-    firstName,
-    lastName,
-  ) {
+  async delegateQuestions(answers, buildingId, email, firstName, lastName) {
     var delegations = [];
     for (const answer of Object.values(answers)) {
       var delegation = {
@@ -124,7 +111,7 @@ class PortfolioContainer extends React.Component {
         answer: {}
       });
       //update redux store with "delegated" answers
-      const updatedAnswers = response.data
+      const updatedAnswers = response.data;
       this.props.addDelegations(updatedAnswers, buildingId);
     } catch (error) {
       console.log(error);
@@ -164,9 +151,8 @@ class PortfolioContainer extends React.Component {
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
-      this.createAnswers(questions, buildingId, email, firstName, lastName);
-      //update redux store with answers to include the email and the names
       this.props.history.push(`/buildings/${buildingId}/edit`);
+      this.createAnswers(questions, buildingId, email, firstName, lastName);
     } catch (error) {
       console.log(error);
       this.setState({ errors: error, showModal: true });

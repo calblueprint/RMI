@@ -16,9 +16,9 @@ class Api::AnswersController < ApplicationController
       answer = Answer.create(a)
       answers[a[:question_id]] = answer
     end
-    # rescue => e
-    #   render_json_message(:forbidden, errors: e.message)
     render_json_message(:ok, data: answers, message: 'New answers created')
+    rescue => e
+      render_json_message(:forbidden, errors: e.message)
   end
 
   def update
@@ -38,6 +38,8 @@ class Api::AnswersController < ApplicationController
       answers[a[:question_id]] = answer
     end
     render_json_message(:ok, data: answers, message: 'Answers batch updated')
+    rescue => e
+      render_json_message(:forbidden, errors: e.message)
   end
 
   # Redirect user to download attachment

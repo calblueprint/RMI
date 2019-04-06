@@ -9,7 +9,7 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   UPDATE_LOCAL_ANSWER
-} from '../constants';
+} from "../constants";
 
 /**
  * Updates the answer in store -- at this point we are not fetching anything,
@@ -28,7 +28,7 @@ function updateLocalAnswer(state, action) {
       buildingId: buildingId
     }
   };
-};
+}
 
 /**
  * Sets the "fetching" flag to true to indicate that the save is currently in progress.
@@ -96,8 +96,8 @@ export function addAnswers(state, action) {
 }
 
 /**
-* Adds delegations, which updates answers in the redux store with delegation information
-*/
+ * Adds delegations, which updates answers in the redux store with delegation information
+ */
 export function addDelegations(state, action) {
   return {
     ...state,
@@ -110,12 +110,18 @@ export function addDelegations(state, action) {
 export function answers(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
-    case UPDATE_LOCAL_ANSWER: return updateLocalAnswer(state, action);
-    case ANSWER_FETCH_IN_PROGRESS: return beforeFetchAnswer(state, action);
-    case ANSWER_FETCH_SUCCESS: return answerFetchSuccess(state, action);
-    case ANSWER_FETCH_FAILURE: return answerFetchFailure(state, action);
-    case ADD_ANSWERS: return addAnswers(state, action);
-    case ADD_DELEGATIONS: return addDelegations(state, action)
+    case UPDATE_LOCAL_ANSWER:
+      return updateLocalAnswer(state, action);
+    case ANSWER_FETCH_IN_PROGRESS:
+      return beforeFetchAnswer(state, action);
+    case ANSWER_FETCH_SUCCESS:
+      return answerFetchSuccess(state, action);
+    case ANSWER_FETCH_FAILURE:
+      return answerFetchFailure(state, action);
+    case ADD_ANSWERS:
+      return addAnswers(state, action);
+    case ADD_DELEGATIONS:
+      return addDelegations(state, action);
     default:
       return state;
   }

@@ -16,7 +16,6 @@ class Portfolio < ApplicationRecord
   validates :name, presence: true
 
   def building_types
-    puts "maybe over here"
     building_types = []
     buildings.each do |building|
       unless building_types.include?(building.building_type)
