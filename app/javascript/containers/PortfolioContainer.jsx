@@ -109,7 +109,7 @@ class PortfolioContainer extends React.Component {
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
-        // finalAnswers[a.question_id] = a;
+        finalAnswers[a.question_id] = a;
       });
       this.updateAnswers(Object.values(finalAnswers), buildingId);
     } catch (error) {
@@ -124,7 +124,8 @@ class PortfolioContainer extends React.Component {
         answer: {}
       });
       //update redux store with "delegated" answers
-      this.props.addDelegations(answers, buildingId);
+      const updatedAnswers = response.data
+      this.props.addDelegations(updatedAnswers, buildingId);
     } catch (error) {
       console.log(error);
     }
