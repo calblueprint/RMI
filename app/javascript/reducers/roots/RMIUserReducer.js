@@ -10,6 +10,12 @@ export default {
   portfolios,
   questions,
   building_types,
+<<<<<<< HEAD
   categories,
   contacts
+=======
+  categories, 
+  user: (state={}, action) => state,
+  userType: (state={}, action) => state,
+>>>>>>> added styling
 };

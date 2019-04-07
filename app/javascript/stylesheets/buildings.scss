@@ -198,13 +198,86 @@
 
 
 // for portfolio view
+.portfolio__container {
+  position: relative;
+  top: -15px;
+  .portfolio__header {
+    padding: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(33, 109, 255, 0.02);
+    height: 110px;
+
+    h2 {
+      font-size: 27px;
+    }
+  }
+
+}
+.building__types {
+  margin: 4%;
+  width: 20%;
+  div {
+    padding-bottom: 30px;
+    h3 {
+    font-size: 24px;
+    }
+  }
+}
+
+.building__names {
+  cursor: pointer;
+  
+  div{
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 200px;
+    vertical-align: middle;
+    .dot {
+      margin-right: 10px;
+      height: 14px;
+      width: 14px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transform: translateY(1px);
+    }
+  }
+
+  .active {
+    background-color: $primary;
+    // background-color: #216DFF; color in figma
+    color: white;
+  }
+}
+
+.dot {
+  margin-right: 10px;
+  height: 14px;
+  width: 14px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+.dot.yellow {
+  background-color: #FFD028;
+}
+.dot.green {
+  background-color: #03CE17;
+}
+
 .building__container {
   display: flex;
   flex-direction: row;
 }
 
 .building_details {
-  width: 950px;
+  margin: 4%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -219,11 +292,16 @@
 }
 
 .building_info {
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  > :first-child {
+    width: 50%;
+  }
+
   div {
     a {
       padding-left: 20px;
@@ -244,43 +322,18 @@
   margin: 0px 40px 40px 40px;
 }
 
-.cat_names {
-  margin-top: 20px;
-  span {  
-    display: inline-block;
-    width: 200px;
-  }
-}
- 
 
+// main table
 .portfolio_category_info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  div {
-    width: 500px;
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    margin: 15px 0px 10px 0px;
-    font-size: 15pt;
-    display: table-cell; 
-    vertical-align: middle; 
-    text-align: center; 
-    font-weight: 450;
-    text-align: start;     
-    small {
-      font-size: 12px;
-      font-weight: 400;
-      color: darken($secondary, 10);
-    } 
-    .delegation_info {
-      padding-left: 40px;
+  width: 100%;
+  margin: 0px;
+  
+  .cat_names {
+    margin-top: 20px;
+  
+    th {
+      padding-left: 15px; 
+      text-align: left;
     }
   }
-  
 }

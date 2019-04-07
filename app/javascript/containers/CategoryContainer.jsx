@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 class CategoryContainer extends React.Component { 
     categoryProgress(answered, total) {
         if (answered < total) {
-          return "Waiting for Handoff";
+          return (<td><span className="dot yellow"></span>Waiting for Handoff</td>);
         }
-        return "Handed Off"
+        return (<td><span className="dot green"></span>Handed Off</td>);
     }
 
     categoryDelegations() {
@@ -23,11 +23,13 @@ class CategoryContainer extends React.Component {
     render() {
         let categoryData = this.props.categoryData
 
-        return (<div className='category_data'>
-                    <div>{categoryData.name}</div>
-                    <div>{this.categoryProgress(categoryData.answered, categoryData.total)}</div> 
-                    <div class='delegation_info'>{this.categoryDelegations()}</div>
-                </div>);
+        return (
+            <tr className='category_data'>
+                <td>{categoryData.name}</td>
+                {this.categoryProgress(categoryData.answered, categoryData.total)}
+                <td class='delegation_info'>{this.categoryDelegations()}</td>  
+            </tr>
+        );
     }
 }
 

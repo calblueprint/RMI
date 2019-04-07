@@ -25,7 +25,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { delegateQuestions } from "../utils/DelegationRequests";
 
-import PortfolioBuildingDetailsContainer from "../components/PortfolioBuildingDetailsContainer";
+import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
 import PortfolioBuildingInfoContainer from "./PortfolioBuildingInfoContainer";
 
 class PortfolioContainer extends React.Component {
@@ -141,12 +141,12 @@ class PortfolioContainer extends React.Component {
     }
   }
 
-  showSelectedBuilding() {
+  showSelectedBuilding(selectedBuildingId) {
     let buildings = this.props.buildings;
 
     for (let i = 0; i < buildings.length; i++) {
       let b = buildings[i];
-      if (b.id == this.props.selectedBuildingId) {
+      if (b.id == selectedBuildingId) {
         return <PortfolioBuildingInfoContainer key={b.id} building_id={b.id} />;
       }
     }
@@ -155,40 +155,43 @@ class PortfolioContainer extends React.Component {
   render() {
     let buildingByType = this.groupBuildingsByType();
     let portfolioId = this.props.match.params.pId;
+    let selectedBuildingId = this.props.selectedBuildingId;
 
     return (
-      <div>
-        PORTFOLIO
-        <h2>{this.props.portfolioName}</h2>
-        <br />
-        <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
-        <hr />
-        <input
-          type="button"
-          value="Create New Building"
-          onClick={this.toggleModal}
-        />
-        <Modal
-          {...this.props}
-          showModal={this.state.showModal}
-          errors={this.state.errors}
-          toggleModal={this.toggleModal}
-          createBuilding={this.createBuilding}
-        />
-        <div className="building__container">
-          {Object.keys(buildingByType).map((typeId, i) => {
-            return (
-              <PortfolioBuildingDetailsContainer
-                key={i}
-                portfolioId={portfolioId}
-                buildings={buildingByType[typeId]}
-                buildingTypeId={typeId}
-                match={this.props.match}
-              />
-            );
-          })}
+      <div className="portfolio__container">
+        <div className="portfolio__header">
+          PORTFOLIO
+          <h2>{this.props.portfolioName}</h2>
+          <input
+            type="button"
+            value="Create New Building"
+            onClick={this.toggleModal}
+          />
+          <Modal
+            {...this.props}
+            showModal={this.state.showModal}
+            errors={this.state.errors}
+            toggleModal={this.toggleModal}
+            createBuilding={this.createBuilding}
+          />
         </div>
-        <div>{this.showSelectedBuilding()}</div>
+        <div className="building__container">
+          <div className="building__types">
+            {Object.keys(buildingByType).map((typeId, i) => {
+              return (
+                <PortfolioBuildingDetailsContainer
+                  key={i}
+                  portfolioId={portfolioId}
+                  buildings={buildingByType[typeId]}
+                  buildingTypeId={typeId}
+                  match={this.props.match}
+                  selectedBuildingId={selectedBuildingId}
+                />
+              );
+            })}
+          </div>
+          <div>{this.showSelectedBuilding(selectedBuildingId)}</div>
+        </div>
       </div>
     );
   }

@@ -1,30 +1,42 @@
 import React from 'react';
 
 import { viewBuildingDetails } from '../actions/portfolios';
-import * as BuildingActions from '../actions/buildings';
-import { loadInitialState } from '../actions/initialState';
+import { getUserType } from '../selectors/usersSelector'
 import { getBuildingTypeNameById } from '../selectors/buildingTypesSelector';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 
 class PortfolioBuildingDetailsContainer extends React.Component { 
+
+  isActive(buildingId) {
+    if (this.props.selectedBuildingId == buildingId) {
+      return "active"
+    }
+  }
+
+  addBuildingButton() {
+    console.log(this.props.userType)
+    if (this.props.userType == "RMIadmin") {
+      return (<button>+ Add Building</button>)
+    }
+  }
+
   render() {
-    let portfolioId = this.props.portfolioId
+    let portfolioId = this.props.portfolioId;
 
     return (<div>
       <h3>{this.props.buildingTypeName}</h3>
       <div className="building__names">
       {this.props.buildings.map((building) => {
-        return (<div  className="building__row" 
-                      key={building.id}
-                      onClick={() => {this.props.clickAction(portfolioId, building.id)}}>
-            <div className="building__details">
-              <h3>{building.name}</h3>
-            </div>
-        </div>)
+        return (<div  key={building.id}
+                      onClick={() => {this.props.clickAction(portfolioId, building.id)}}
+                      className={this.isActive(building.id)}>
+                <span className="dot"></span>
+                {building.name}
+                </div>)
       })}
+      {this.addBuildingButton()}
       </div>
     </div>);
   }
@@ -33,12 +45,14 @@ class PortfolioBuildingDetailsContainer extends React.Component {
 PortfolioBuildingDetailsContainer.propTypes = {
     portfolioId: PropTypes.string.isRequired,
     buildings: PropTypes.array.isRequired,
-    buildingTypeId: PropTypes.string.isRequired
+    buildingTypeId: PropTypes.string.isRequired,
+    selectedBuildingId: PropTypes.string
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     buildingTypeName: getBuildingTypeNameById(ownProps.buildingTypeId, state),
+    userType: getUserType(state)
   };
 }
 
