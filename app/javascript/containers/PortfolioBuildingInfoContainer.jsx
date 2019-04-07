@@ -16,9 +16,15 @@ class PortfolioBuildingInfoContainer extends React.Component {
     return "In Progress"
   }
 
+  mapCategorytoContainer() {
+    let categoryData = this.props.categoryData;    
+    return Object.keys(categoryData).map((id) => {
+      return (<CategoryContainer id={id} categoryData={categoryData[id]} key={id}></CategoryContainer>)
+    })
+  }
+
   render() {
     let building_id = this.props.building_id;
-    let categoryData = this.props.categoryData;    
 
     return (
       <div className="building_details" key={this.props.building_id}>
@@ -26,29 +32,28 @@ class PortfolioBuildingInfoContainer extends React.Component {
           <div>
             BUILDING
             <h2>{this.props.name}</h2>
-            {this.getStatusForBuilding()}
-            {/* <h3 className='building_address'>{this.props.streetAddress}<br></br>{this.props.cityStateAddress}</h3> */}
+            <span className='dot'></span>{this.getStatusForBuilding()}
           </div>
           <div>
             <span className="building__link">
                 <Link to={`/buildings/${this.props.building_id}`}>Assign Building</Link>
             </span>
-            <a href={`download/${building_id}`}>Download as CSV</a>
+            <a href={`download/${building_id}`}>Export CSV</a>
           </div>
-          </div>
-          <div className="cat_names">
-            QUESTIONS
-            <span></span>
-            STATUS
-            <span></span>
-            HANDING OFF TO
           </div>
           <br></br>
-          <div className='portfolio_category_info'>
-            {Object.keys(categoryData).map((id) => {
-              return (<CategoryContainer id={id} categoryData={categoryData[id]} key={id}></CategoryContainer>)
-            })}
-          </div>
+          <table className='portfolio_category_info' cellSpacing="0">
+          <thead>
+            <tr className="cat_names">
+              <th>QUESTIONS</th>
+              <th>STATUS</th>
+              <th>PEOPLE ASSIGNED</th>
+            </tr>
+          </thead>
+            <tbody>
+              {this.mapCategorytoContainer()}
+            </tbody>
+          </table> 
       </div>
     );
   }

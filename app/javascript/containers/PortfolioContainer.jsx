@@ -7,7 +7,7 @@ import { getPortfolioName, getSelectedBuildingId } from '../selectors/portfolioS
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import PortfolioBuildingDetailsContainer from '../components/PortfolioBuildingDetailsContainer';
+import PortfolioBuildingDetailsContainer from './PortfolioBuildingDetailsContainer';
 import PortfolioBuildingInfoContainer from './PortfolioBuildingInfoContainer';
 
 class PortfolioContainer extends React.Component {
@@ -25,12 +25,12 @@ class PortfolioContainer extends React.Component {
     return buildingTypesDic;
   }
 
-  showSelectedBuilding() {
+  showSelectedBuilding(selectedBuildingId) {
     let buildings = this.props.buildings;
 
     for (let i = 0; i < buildings.length; i++) {
       let b = buildings[i];
-      if (b.id == this.props.selectedBuildingId) {
+      if (b.id == selectedBuildingId) {
         return (
         <PortfolioBuildingInfoContainer key={b.id} building_id={b.id}>
         </PortfolioBuildingInfoContainer>
@@ -39,17 +39,18 @@ class PortfolioContainer extends React.Component {
     }
   }
 
+
   render() {
     let buildingByType = this.groupBuildingsByType();
     let portfolioId = this.props.match.params.pId;
+    let selectedBuildingId = this.props.selectedBuildingId;
     
     return (
-    <div>
-      PORTFOLIO
-      <h2>{this.props.portfolioName}</h2>
-      <br />
-      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
-      <hr />
+    <div className="portfolio__container">
+      <div className="portfolio__header">
+        PORTFOLIO
+        <h2>{this.props.portfolioName}</h2>
+      </div>
       <div className="building__container">
         <div className="building__types">
           {Object.keys(buildingByType).map((typeId, i) => {
@@ -57,12 +58,13 @@ class PortfolioContainer extends React.Component {
                                                         portfolioId={portfolioId}
                                                         buildings={buildingByType[typeId]} 
                                                         buildingTypeId={typeId} 
-                                                        match={this.props.match}>
+                                                        match={this.props.match}
+                                                        selectedBuildingId={selectedBuildingId}>
                     </PortfolioBuildingDetailsContainer>)
           })}
         </div>
         <div>
-        {this.showSelectedBuilding()}
+        {this.showSelectedBuilding(selectedBuildingId)}
         </div>
       </div>
     </div>);

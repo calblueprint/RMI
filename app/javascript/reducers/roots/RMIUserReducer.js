@@ -9,5 +9,7 @@ export default {
   portfolios,
   questions,
   building_types,
-  categories
+  categories, 
+  user: (state={}, action) => state,
+  userType: (state={}, action) => state,
 };

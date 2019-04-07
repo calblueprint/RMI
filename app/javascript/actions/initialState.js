@@ -36,6 +36,9 @@ const formatState = {
   user: function(user) {
       return filterKeys(user[0], ['id', 'email', 'first_name', 'last_name']);
   },
+  userType: function(userType) {
+    return userType[0]
+  },
   buildings: function(buildings) {
     return toObjectById(
       mapFilterKeys(
@@ -125,7 +128,7 @@ export function loadInitialState(initialState) {
       };
     });
   }
-
+ 
   return {
     type: LOAD_INITIAL_STATE,
     ...formattedState
