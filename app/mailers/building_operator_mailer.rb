@@ -7,6 +7,7 @@ class BuildingOperatorMailer < ApplicationMailer
     raw, encrypted = Devise.token_generator.generate(BuildingOperator, :reset_password_token)
     @user.reset_password_token = encrypted
     @user.reset_password_sent_at = Time.now.utc
+    @user.last_email_received = Time.now.utc
     @user.save
     @url = edit_building_operator_password_url(@user, reset_password_token: raw)
 
@@ -16,6 +17,7 @@ class BuildingOperatorMailer < ApplicationMailer
   # Gets sent when an existing building operator is delegated more questions
   def existing_user_delegated_email(user)
     @user = user
+    @user.last_email_received = Time.now.utc
     @url = building_operator_url(@user)
     mail_to @user, subject: 'You have been assigned new building tasks'
   end

@@ -7,6 +7,7 @@ class Api::DelegationsController < ApplicationController
     Delegation.transaction do
       # TODO: validate this user is currently the person delegated to
       # maybe easier to do in controller than cancancan?
+      users_to_email = []
       delegations_params.each do |delegation_params|
         operator = BuildingOperator.find_by(email: delegation_params[:email])
         unless operator
@@ -19,6 +20,7 @@ class Api::DelegationsController < ApplicationController
             password: (0...15).map { (65 + rand(26)).chr }.join
           )
           operator.save!
+        users_to_email.push(operator)
         end
 
         # mark all other delegations on same answer_id delegated
@@ -44,6 +46,11 @@ class Api::DelegationsController < ApplicationController
 
         authorize! :create, delegation
 
+        users_to_email.uniq.each do |u|
+          if u.last_email_received < u.last_sign_in_at || u.last_email_received >= Time.utc.now - 259200
+            BuildingOperatorMailer.existing_user_delegated_email(self).deliver_now
+          end
+        end
         delegation.save!
       end
       render_json_message(:ok, message: 'New delegations created')
