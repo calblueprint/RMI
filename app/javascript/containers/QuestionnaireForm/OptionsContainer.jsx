@@ -14,7 +14,6 @@ import { patch, post } from '../../fetch/requester';
 import { generateTempId } from '../../utils/TemporaryObjectUtil';
 import PropTypes from 'prop-types';
 import { isEmptyText } from '../../utils/InputComponentUtil';
-import randomColor from 'randomcolor';
 
 class OptionsContainer extends React.Component {
 
@@ -169,13 +168,6 @@ class OptionsContainer extends React.Component {
       const option = this.props.question.options[optionId];
       const handleOnBlur = this.handleOnBlur(option);
       const focus = option.temp || false;
-      const color = randomColor({
-        luminosity: 'light',
-        hue:  'random',
-        seed: option.id,
-        format: 'rgba',
-        alpha: 0.5
-      });
       return (
         <div key={option.id}
         >
