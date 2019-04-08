@@ -1,13 +1,15 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { viewCategoryDetails } from '../actions/portfolios';
+
 
 class CategoryContainer extends React.Component { 
     categoryProgress(answered, total) {
         if (answered < total) {
-          return (<td><span className="dot yellow"></span>Waiting for Handoff</td>);
+          return (<td className='category_status'><span className="dot yellow"></span>Waiting for Handoff</td>);
         }
-        return (<td><span className="dot green"></span>Handed Off</td>);
+        return (<td className='category_status'><span className="dot green"></span>Handed Off</td>);
     }
 
     categoryDelegations() {
@@ -17,26 +19,53 @@ class CategoryContainer extends React.Component {
             let delegation = delegations[i];
             delegationInfo += delegation.name + " " + delegation.email;
         }
-        return delegationInfo;
+        if (delegationInfo) {
+            return delegationInfo;
+        } else {
+            return (<span>No one assigned yet</span>);
+        }
     }
-        
+
+    onClick() {
+        this.props.clickAction(this.props.id, this.props.portfolio_id)
+    }
+
     render() {
-        let categoryData = this.props.categoryData
+        let categoryData = this.props.categoryData;
+        let clickAction = this.props.clickAction;
+        let id = this.props.id;
+        let portfolio_id = this.props.portfolio_id;
 
         return (
-            <tr className='category_data'>
-                <td>{categoryData.name}</td>
+            <tr className='category_data'
+                onClick={() => {clickAction(id, portfolio_id)}}>
+                <td className='category_name'>{categoryData.name}</td>
                 {this.categoryProgress(categoryData.answered, categoryData.total)}
-                <td class='delegation_info'>{this.categoryDelegations()}</td>  
+                <td className='delegation_info'>{this.categoryDelegations()}</td>  
             </tr>
         );
     }
 }
 
 CategoryContainer.propTypes = {
+    portfolio_id: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     categoryData: PropTypes.object.isRequired,
 };
 
-export default CategoryContainer;
-  
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    clickAction: (categoryId, portfolioId) => {
+      dispatch(viewCategoryDetails(categoryId, portfolioId));
+    }
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CategoryContainer);

@@ -1,7 +1,11 @@
 export function getBuildingType(id, state) {
-  return state.building_types[id];
+  if (state.building_types) {
+    return state.building_types[id];
+  }
 }
 
 export function getBuildingTypeNameById(id, state) {
-  return state.building_types[id].name;
+  if (state.building_types) {
+    return state.building_types[id].name;
+  }
 }

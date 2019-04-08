@@ -204,19 +204,22 @@
   .portfolio__header {
     padding: 4%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
     background: rgba(33, 109, 255, 0.02);
     height: 110px;
 
-    h2 {
-      font-size: 27px;
+    div {
+      padding-right: 30px; 
+      h2 {
+        font-size: 27px;
+      }
     }
   }
 
 }
 .building__types {
-  margin: 4%;
+  margin: 4% 0% 4% 4%;
   width: 20%;
   div {
     padding-bottom: 30px;
@@ -230,21 +233,12 @@
   cursor: pointer;
   
   div{
-    border-radius: 5px;
+    border-radius: 7px;
     margin-top: 10px;
     padding: 10px;
     font-size: 16px;
     font-weight: 200px;
     vertical-align: middle;
-    .dot {
-      margin-right: 10px;
-      height: 14px;
-      width: 14px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      transform: translateY(1px);
-    }
   }
 
   .active {
@@ -274,21 +268,30 @@
 .building__container {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
-.building_details {
-  margin: 4%;
+.building__details {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: white;
-  box-shadow: 0 0 4px #ccc;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #ccc;
-  border-radius: 5px;
-  padding: 40px;
+  flex-direction: row;
+
+  > :first-child {
+    margin: 4%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: white;
+    box-shadow: 0 0 4px #ccc;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ccc;
+    border-radius: 12px;
+    padding: 40px;
+  }
+  
+  .category_details_container {
+  }
 }
 
 .building_info {
@@ -303,12 +306,14 @@
   }
 
   div {
+    font-size: 18px;
+    line-height: 1.4;
     a {
       padding-left: 20px;
     }
 
     h2 {
-      font-size: 24px;
+      font-size: 30px;
       font-weight: 600;
     }
   }
@@ -330,10 +335,29 @@
   
   .cat_names {
     margin-top: 20px;
-  
+    height: 25px;
+
     th {
       padding-left: 15px; 
       text-align: left;
     }
   }
+}
+
+.category_data {
+  .category_name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .category_status, .delegation_info {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+.small_header {
+  color: #A1A0A0;
+  font-size: 16px;
+  font-weight: 600;
 }

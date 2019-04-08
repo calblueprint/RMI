@@ -16,6 +16,7 @@ export const SAVE_BUILDING_TYPE = 'SAVE_BUILDING_TYPE';
 // Portfolio ActionTypes
 export const FETCH_PORTFOLIOS = 'FETCH_PORTFOLIOS';
 export const VIEW_BUILDING_DETAILS = 'VIEW_BUILDING_DETAILS';
+export const VIEW_CATEGORY_DETAILS = 'VIEW_CATEGORY_DETAILS';
 
 // Building ActionTypes
 export const ADD_BUILDING = 'ADD_BUILDING';

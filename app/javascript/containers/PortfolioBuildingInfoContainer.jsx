@@ -16,10 +16,19 @@ class PortfolioBuildingInfoContainer extends React.Component {
     return "In Progress"
   }
 
+  getDotStatusForBuilding() {
+    if (this.props.buildingStatus == 1) {
+      return "green"
+    } else if (this.props.buildingStatus > 0) {
+      return "yellow"
+    }
+  }
+
   mapCategorytoContainer() {
-    let categoryData = this.props.categoryData;    
+    let categoryData = this.props.categoryData;  
+    let pId = this.props.portfolio_id;  
     return Object.keys(categoryData).map((id) => {
-      return (<CategoryContainer id={id} categoryData={categoryData[id]} key={id}></CategoryContainer>)
+      return (<CategoryContainer portfolio_id={pId} id={id} categoryData={categoryData[id]} key={id}></CategoryContainer>)
     })
   }
 
@@ -27,12 +36,12 @@ class PortfolioBuildingInfoContainer extends React.Component {
     let building_id = this.props.building_id;
 
     return (
-      <div className="building_details" key={this.props.building_id}>
+      <div key={this.props.building_id}>
         <div className="building_info">
           <div>
-            BUILDING
+            <span className='small_header'>BUILDING</span>
             <h2>{this.props.name}</h2>
-            <span className='dot'></span>{this.getStatusForBuilding()}
+            <span className={'dot ' + this.getDotStatusForBuilding()}></span>{this.getStatusForBuilding()}
           </div>
           <div>
             <span className="building__link">
@@ -44,10 +53,10 @@ class PortfolioBuildingInfoContainer extends React.Component {
           <br></br>
           <table className='portfolio_category_info' cellSpacing="0">
           <thead>
-            <tr className="cat_names">
-              <th>QUESTIONS</th>
-              <th>STATUS</th>
-              <th>PEOPLE ASSIGNED</th>
+            <tr className='cat_names'>
+              <th className='small_header'>QUESTIONS</th>
+              <th className='small_header'>STATUS</th>
+              <th className='small_header'>PEOPLE ASSIGNED</th>
             </tr>
           </thead>
             <tbody>
@@ -60,6 +69,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
 }
 
 PortfolioBuildingInfoContainer.propTypes = {
+  portfolio_id: PropTypes.number.isRequired,
   building_id: PropTypes.number.isRequired,
 };
 
