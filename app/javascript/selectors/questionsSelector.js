@@ -101,11 +101,21 @@ export function getAllActiveQuestionsForCategory(categoryId, buildingId, state) 
 
   // Get list of non-dependent questions for the current category
   // that were assigned to this user
-  const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {
-    return buildingQuestionIds.includes(questionId);
-  });
 
-  return getAllActiveQuestions(rootQuestions, buildingId, state);
+  // if in asset manager view categories there is no questions array in the state.categories
+  if (state.categories[categoryId].questions) {
+    const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {
+      return buildingQuestionIds.includes(questionId);
+    });
+    return getAllActiveQuestions(rootQuestions, buildingId, state);  
+  } else {
+    const rootQuestions = buildingQuestionIds.filter((questionId) => {
+      let category = state.questions[questionId].category_id;
+      return category == categoryId
+    });
+    return getAllActiveQuestions(rootQuestions, buildingId, state);
+  }
+  
 }
 
 /**

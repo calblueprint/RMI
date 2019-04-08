@@ -8,6 +8,7 @@ export default {
   portfolios,
   questions: (state={}, action) => state,
   categories: (state={}, action) => state,
-  user: (state={}, action) => state
+  user: (state={}, action) => state,
+  userType: (state={}, action) => state
 };
 

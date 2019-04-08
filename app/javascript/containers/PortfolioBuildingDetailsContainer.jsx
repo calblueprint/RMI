@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { viewBuildingDetails } from '../actions/portfolios';
-import { getUserType } from '../selectors/usersSelector'
+import { getUserType } from '../selectors/usersSelector';
+import { getPercentAnsweredForBuildingGroup } from '../selectors/answersSelector';
 import { getBuildingTypeNameById } from '../selectors/buildingTypesSelector';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -16,9 +17,17 @@ class PortfolioBuildingDetailsContainer extends React.Component {
   }
 
   addBuildingButton() {
-    console.log(this.props.userType)
-    if (this.props.userType == "RMIadmin") {
+    if (this.props.userType == "AssetManager") {
       return (<button>+ Add Building</button>)
+    }
+  }
+
+  getDotStatus(bId) {
+    const percentAnswered = this.props.percentAnswered[bId];
+    if (percentAnswered === 1) {
+      return "green"
+    } else if (percentAnswered > 0) {
+      return "yellow"
     }
   }
 
@@ -32,7 +41,7 @@ class PortfolioBuildingDetailsContainer extends React.Component {
         return (<div  key={building.id}
                       onClick={() => {this.props.clickAction(portfolioId, building.id)}}
                       className={this.isActive(building.id)}>
-                <span className="dot"></span>
+                <span className={"dot " + this.getDotStatus(building.id)}></span>
                 {building.name}
                 </div>)
       })}
@@ -52,7 +61,9 @@ PortfolioBuildingDetailsContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     buildingTypeName: getBuildingTypeNameById(ownProps.buildingTypeId, state),
-    userType: getUserType(state)
+    userType: getUserType(state),
+    // dictionary with building id as the keys and the percent of answered questions as the value
+    percentAnswered: getPercentAnsweredForBuildingGroup(ownProps.buildings, state)
   };
 }
 

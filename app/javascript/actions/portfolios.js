@@ -5,7 +5,8 @@ import {
   FETCH_IN_PROGRESS,
   FETCH_SETTINGS,
   ADD_PORTFOLIO,
-  VIEW_BUILDING_DETAILS
+  VIEW_BUILDING_DETAILS,
+  VIEW_CATEGORY_DETAILS
 } from "../constants";
 
 export async function fetchPortfolios(dispatch) {
@@ -44,5 +45,13 @@ export function viewBuildingDetails(portfolioId, buildingId) {
     type: VIEW_BUILDING_DETAILS,
     portfolioId,
     buildingId
+  };
+}
+
+export function viewCategoryDetails(categoryId, portfolioId) {
+  return {
+    type: VIEW_CATEGORY_DETAILS,
+    portfolioId,
+    categoryId
   };
 }

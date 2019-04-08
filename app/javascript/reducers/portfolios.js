@@ -3,7 +3,8 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   ADD_PORTFOLIO,
-  VIEW_BUILDING_DETAILS
+  VIEW_BUILDING_DETAILS,
+  VIEW_CATEGORY_DETAILS
 } from "../constants";
 
 function fetchPortfolios(state, action) {
@@ -43,7 +44,7 @@ function addPortfolio(state, action) {
   };
 }
 
-function updateViewedBuilding(state, action) {
+function viewBuildingDetails(state, action) {
   const pId = action.portfolioId;
   const viewedBuildingId = action.buildingId;
   return {
@@ -51,6 +52,18 @@ function updateViewedBuilding(state, action) {
     [pId]: {
       ...state[pId],
       selectedBuilding: viewedBuildingId
+    }
+  };
+}
+
+function viewCategoryDetails(state, action) {
+  const pId = action.portfolioId;
+  const viewedCategoryId = action.categoryId;
+  return {
+    ...state,
+    [pId]: {
+      ...state[pId],
+      selectedCategory: viewedCategoryId
     }
   };
 }
@@ -63,7 +76,9 @@ export default function portfolios(state = {}, action) {
     case ADD_PORTFOLIO:
       return addPortfolio(state, action);
     case VIEW_BUILDING_DETAILS:
-      return updateViewedBuilding(state, action);
+      return viewBuildingDetails(state, action);
+    case VIEW_CATEGORY_DETAILS:
+      return viewCategoryDetails(state, action);
     default:
       return state;
   }

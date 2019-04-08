@@ -16,3 +16,17 @@ export function getSelectedBuildingId(portfolioId, state) {
     }
     return 0
 }
+
+export function getSelectedCategoryId(portfolioId, state) {
+  let portfolios = state.portfolios; 
+  for (let key in portfolios) {
+    if (portfolios[key].id == portfolioId) {
+      return portfolios[key].selectedCategory
+    }
+  }
+  return 0
+}
+
+export function getBuildingStatusesByPortfolio(portfolioId, state) {
+  return state.portfolios
+}

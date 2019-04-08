@@ -2,13 +2,12 @@ import React from "react";
 
 import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
-import {
-  getBuildingsByPortfolio,
-  getBuildingsByPortfolioId
-} from "../selectors/buildingsSelector";
+import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import {
   getPortfolioName,
-  getSelectedBuildingId
+  getSelectedBuildingId,
+  getSelectedCategoryId,
+  getBuildingStatusesByPortfolio
 } from "../selectors/portfolioSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import {
@@ -27,6 +26,8 @@ import { delegateQuestions } from "../utils/DelegationRequests";
 
 import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
 import PortfolioBuildingInfoContainer from "./PortfolioBuildingInfoContainer";
+import CategoryDetailsContainer from "./CategoryDetailsContainer";
+import Logo from "../images/rmi-logo.png";
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -143,11 +144,37 @@ class PortfolioContainer extends React.Component {
 
   showSelectedBuilding(selectedBuildingId) {
     let buildings = this.props.buildings;
+    let pId = this.props.match.params.pId;
 
     for (let i = 0; i < buildings.length; i++) {
       let b = buildings[i];
-      if (b.id == selectedBuildingId) {
-        return <PortfolioBuildingInfoContainer key={b.id} building_id={b.id} />;
+      if (b.id === selectedBuildingId) {
+        return (
+          <PortfolioBuildingInfoContainer
+            key={b.id}
+            building_id={b.id}
+            portfolio_id={pId}
+          />
+        );
+      }
+    }
+  }
+
+  showSelectedCategory(selectedBuildingId, selectedCategoryId) {
+    let buildings = this.props.buildings;
+    let pId = this.props.match.params.pId;
+
+    for (let i = 0; i < buildings.length; i++) {
+      let b = buildings[i];
+      if (b.id === selectedBuildingId && selectedCategoryId) {
+        return (
+          <CategoryDetailsContainer
+            key={b.id}
+            building_id={b.id}
+            portfolio_id={pId}
+            category_id={selectedCategoryId}
+          />
+        );
       }
     }
   }
@@ -156,12 +183,20 @@ class PortfolioContainer extends React.Component {
     let buildingByType = this.groupBuildingsByType();
     let portfolioId = this.props.match.params.pId;
     let selectedBuildingId = this.props.selectedBuildingId;
+    let selectedCategoryId = this.props.selectedCategoryId;
 
     return (
       <div className="portfolio__container">
         <div className="portfolio__header">
-          PORTFOLIO
-          <h2>{this.props.portfolioName}</h2>
+          <div>
+            <Link to="/">
+              <img src={Logo} draggable={false} />
+            </Link>
+          </div>
+          <div>
+            <span className="small_header">PORTFOLIO</span>
+            <h2>{this.props.portfolioName}</h2>
+          </div>
           <input
             type="button"
             value="Create New Building"
@@ -190,7 +225,12 @@ class PortfolioContainer extends React.Component {
               );
             })}
           </div>
-          <div>{this.showSelectedBuilding(selectedBuildingId)}</div>
+          <div className="building__details">
+            {this.showSelectedBuilding(selectedBuildingId)}
+          </div>
+        </div>
+        <div className="building_category_details">
+          {this.showSelectedCategory(selectedBuildingId, selectedCategoryId)}
         </div>
       </div>
     );
@@ -204,7 +244,9 @@ function mapStateToProps(state, ownProps) {
     building_types: getBuildingTypes(state),
     getAnswer: (questionId, buildingId) =>
       getAnswerForQuestionAndBuilding(questionId, buildingId, state),
-    selectedBuildingId: getSelectedBuildingId(ownProps.match.params.pId, state)
+    selectedBuildingId: getSelectedBuildingId(ownProps.match.params.pId, state),
+    selectedCategoryId: getSelectedCategoryId(ownProps.match.params.pId, state)
+    // buildingStatuses: getBuildingStatusesByPortfolio(ownProps.match.params.pId, state)
   };
 }
 

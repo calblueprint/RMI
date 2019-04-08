@@ -52,14 +52,14 @@ class QuestionaireCategoryContainer extends React.Component {
 }
 
 QuestionaireCategoryContainer.propTypes = {
-    building_id: PropTypes.number.isRequired,
+    building_id: PropTypes.string.isRequired,
     categories: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
     return {
         // array containing an object for each category id, name, number of answered questions, and total questions
-        categoryData: questionDataPerCategory(ownProps.building_id, ownProps.categories, state),
+        categoryData: questionDataPerCategory(ownProps.building_id, state),
     };
   }
   
