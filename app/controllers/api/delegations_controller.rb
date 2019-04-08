@@ -10,8 +10,11 @@ class Api::DelegationsController < ApplicationController
       users_to_email = []
       delegations_params.each do |delegation_params|
         operator = BuildingOperator.find_by(email: delegation_params[:email])
-        unless operator
+        if operator
+          users_to_email.push(operator)
+        else 
           # if building operator doesn't exist, create it
+          # building operators are sent onboarding email on create
           operator = BuildingOperator.new(
             email: delegation_params[:email],
             first_name: delegation_params[:first_name],
@@ -20,7 +23,6 @@ class Api::DelegationsController < ApplicationController
             password: (0...15).map { (65 + rand(26)).chr }.join
           )
           operator.save!
-        users_to_email.push(operator)
         end
 
         # mark all other delegations on same answer_id delegated
@@ -45,10 +47,15 @@ class Api::DelegationsController < ApplicationController
         )
 
         authorize! :create, delegation
-
+        puts users_to_email
+        puts 'hi'
+        #errors here
         users_to_email.uniq.each do |u|
+          puts u.last_email_received
+          puts u.last_sign_in_at
+          #u.last sign in at is nil for new building operators created in this...maybe they shouldn't 
           if u.last_email_received < u.last_sign_in_at || u.last_email_received >= Time.utc.now - 259200
-            BuildingOperatorMailer.existing_user_delegated_email(self).deliver_now
+            BuildingOperatorMailer.existing_user_delegated_email(u).deliver_now
           end
         end
         delegation.save!

@@ -18,7 +18,7 @@ class BuildingOperatorMailer < ApplicationMailer
   def existing_user_delegated_email(user)
     @user = user
     @user.last_email_received = Time.now.utc
-    @url = building_operator_url(@user)
+    # @url = building_operator_path(@user)
     mail_to @user, subject: 'You have been assigned new building tasks'
   end
 
