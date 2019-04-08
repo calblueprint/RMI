@@ -32,10 +32,7 @@ function answerFetchInProgress(buildingId, answer) {
     type: ANSWER_FETCH_IN_PROGRESS,
     fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
-    answer: {
-      ...EMPTY_ANSWER,
-      ...answer
-    }
+    answer
   };
 }
 
@@ -77,6 +74,14 @@ export function addDelegations(answers, buildingId) {
 export function updateLocalAnswer(buildingId, answer) {
   return {
     type: UPDATE_LOCAL_ANSWER,
+    buildingId,
+    answer
+  };
+}
+
+export function removeLocalAnswer(buildingId, answer) {
+  return {
+    type: DELETE_LOCAL_ANSWER,
     buildingId,
     answer
   };
