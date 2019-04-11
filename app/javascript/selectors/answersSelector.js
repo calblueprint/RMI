@@ -1,11 +1,12 @@
 import {
   getAllActiveQuestions,
-  getAllActiveQuestionsForCategory, getAllQuestionsByCategoryId,
+  getAllActiveQuestionsForCategory,
+  getAllQuestionsByCategoryId
 } from "./questionsSelector";
 import { getCategoriesForBuilding } from "./categoriesSelector";
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
-  return state.buildings[buildingId].answers[questionId]
+  return state.buildings[buildingId].answers[questionId];
 }
 
 //##returns (from the questions provided) how many are remaining to answer
@@ -15,13 +16,17 @@ export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
 //to answer for that building
 
 export function getRemainingAnswersforCategory(categoryId, buildingId, state) {
-  const categoryQuestions = getAllActiveQuestionsForCategory(categoryId, buildingId, state);
+  const categoryQuestions = getAllActiveQuestionsForCategory(
+    categoryId,
+    buildingId,
+    state
+  );
   return getNumUnanswered(categoryQuestions, buildingId, state);
 }
 
 export function getNumUnanswered(questions, buildingId, state) {
   return questions.reduce((count, question) => {
-    if (isUnanswered(question, buildingId, state)) {
+    if (isUnansweredQuestion(question, buildingId, state)) {
       return count + 1;
     }
     return count;
@@ -30,7 +35,7 @@ export function getNumUnanswered(questions, buildingId, state) {
 
 export function getNumAnswered(questions, buildingId, state) {
   return questions.reduce((count, question) => {
-    if (isUnanswered(question, buildingId, state)) {
+    if (isUnansweredQuestion(question, buildingId, state)) {
       return count;
     }
     return count + 1;
@@ -50,18 +55,33 @@ export function getAllActiveAnswersForCategory(categoryId, buildingId, state) {
 }
 
 // is unanswered if there is no text and no delegation
-export function isUnanswered(question, buildingId, state) {
+export function isUnansweredQuestion(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  if (!answer || !answer.text.trim() && !answer.attachment_file_name && !answer.delegation_email) {
-    return true;
-  }
+  return !isValidAnswer(answer);
 }
 
-export function isDelegated(question, buildingId, state) {
-  let answer = state.buildings[buildingId].answers[question.id];
+export function isValidAnswer(answer) {
+  if (
+    answer &&
+    (answer.text.trim() ||
+      answer.attachment_file_name ||
+      answer.delegation_email)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export function isDelegatedQuestion(question, buildingId, state) {
+  let answer = getAnswerForQuestionAndBuilding(question.id, buildingId, state);
+  return isDelegatedAnswer(answer);
+}
+
+export function isDelegatedAnswer(answer) {
   if (answer && answer.delegation_email) {
     return true;
   }
+  return false;
 }
 
 export function numAnswered(buildingId, state) {
@@ -115,8 +135,16 @@ export function questionDataPerCategory(buildingId, state) {
   let categoriesArray = getCategoriesForBuilding(buildingId, state);
 
   for (let category of categoriesArray) {
-    const categoryQuestions = getAllActiveQuestionsForCategory(category.id, buildingId, state);
-    const numUnanswered = getNumUnanswered(categoryQuestions, buildingId, state);
+    const categoryQuestions = getAllActiveQuestionsForCategory(
+      category.id,
+      buildingId,
+      state
+    );
+    const numUnanswered = getNumUnanswered(
+      categoryQuestions,
+      buildingId,
+      state
+    );
 
     catData[category.id] = {
       id: category.id,

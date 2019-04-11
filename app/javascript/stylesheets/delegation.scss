@@ -43,7 +43,7 @@ p.delegation__label {
 
 .delegation__edit_btn {
   height: 40px;
-  width: 100px;
+  // width: 100px;
   margin-left: 10px;
   padding: 10px 30px 10px 30px;
   font-size: 11pt;
@@ -80,7 +80,7 @@ p.delegation__label {
   box-shadow: none;
   min-width: 100px;
   height: 40px;
-  padding: 10px 30px 10px 30px !important;
+  // padding: 10px 30px 10px 30px !important;
   position: relative;
 
   &::placeholder {
@@ -93,5 +93,4 @@ p.delegation__label {
 
 .pt-menu-item.pt-intent-primary.pt-active {
   background-color: $primary;
-
 }

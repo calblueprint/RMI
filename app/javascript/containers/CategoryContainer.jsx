@@ -17,7 +17,8 @@ class CategoryContainer extends React.Component {
         let delegationInfo = "";
         for (let i = 0; i < delegations.length; i++) {
             let delegation = delegations[i];
-            delegationInfo += delegation.name + " " + delegation.email;
+            delegationInfo += delegation.email;
+            delegationInfo += " ";
         }
         if (delegationInfo) {
             return delegationInfo;
