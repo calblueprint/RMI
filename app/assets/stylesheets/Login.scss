@@ -1,0 +1,18 @@
+.loginPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+  .login-buttons-container {
+    display: flex;
+    justify-content: center;
+
+    .login-btn {
+    }
+    .forgot-pwd-btn {
+    }
+  }
+
+
+}
