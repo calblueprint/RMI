@@ -45,6 +45,7 @@ class BuildingSerializer < ActiveModel::Serializer
     else
       _questions.each_with_object({}) do |q, hsh|
         hsh[q.id] = QuestionSerializer.new(q).as_json
+        hsh[q.id][:can_edit] = true
       end
     end
   end
