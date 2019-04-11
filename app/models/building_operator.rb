@@ -42,7 +42,7 @@ class BuildingOperator < ApplicationRecord
   # New building operator accounts are only created when an asset manager delegates a question to them,
   # so send an onboarding email telling them they have new questions.
   def send_onboarding_email
-    BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
+    BuildingOperatorMailer.new_user_delegated_email(self, current_user).deliver_now
   end
 
   def building_types

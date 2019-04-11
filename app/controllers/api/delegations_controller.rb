@@ -10,7 +10,7 @@ class Api::DelegationsController < ApplicationController
       users_to_email = []
       delegations_params.each do |delegation_params|
         operator = BuildingOperator.find_by(email: delegation_params[:email])
-        if operator
+        if !operator.nil?
           users_to_email.push(operator)
         else 
           # if building operator doesn't exist, create it
@@ -55,7 +55,7 @@ class Api::DelegationsController < ApplicationController
           puts u.last_sign_in_at
           #u.last sign in at is nil for new building operators created in this...maybe they shouldn't 
           if u.last_email_received < u.last_sign_in_at || u.last_email_received >= Time.utc.now - 259200
-            BuildingOperatorMailer.existing_user_delegated_email(u).deliver_now
+            BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
           end
         end
         delegation.save!
