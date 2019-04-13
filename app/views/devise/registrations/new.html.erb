@@ -6,27 +6,27 @@
     <%= devise_error_messages! %>
     <div class="signup-inputs">
       <div class="field">
-        <%= f.label :first_name, class: "input-label"  %>
+        <%= f.label :first_name, class: "input-label"  %><br />
         <%= f.text_field :first_name, class: "signup-input-box", autofocus: true %>
       </div>
 
       <div class="field">
-        <%= f.label :last_name, class: "input-label"  %>
+        <%= f.label :last_name, class: "input-label"  %><br />
         <%= f.text_field :last_name, class: "signup-input-box" %>
       </div>
 
       <div class="field">
-        <%= f.label :phone, class: "input-label"  %>
+        <%= f.label :phone, class: "input-label"  %><br />
         <%= f.phone_field :phone, class: "signup-input-box" %>
       </div>
 
       <div class="field">
-        <%= f.label :email, class: "input-label"  %>
+        <%= f.label :email, class: "input-label"  %><br />
         <%= f.email_field :email, class: "signup-input-box" %>
       </div>
 
       <div class="field">
-        <%= f.label :password, class: "input-label"  %>
+        <%= f.label :password, class: "input-label"  %><br />
         <% if @minimum_password_length %>
         <em class="pwd-reqs">(<%= @minimum_password_length %> characters minimum)</em>
         <% end %><br />
@@ -34,7 +34,7 @@
       </div>
 
       <div class="field">
-        <%= f.label :password_confirmation, class: "input-label"  %>
+        <%= f.label :password_confirmation, class: "input-label"  %><br />
         <%= f.password_field :password_confirmation, class: "signup-input-box", autocomplete: "off" %>
       </div>
 
