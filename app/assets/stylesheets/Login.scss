@@ -1,4 +1,5 @@
 $primary: #6893FF;
+$secondary: #969696;
 
 .loginPage {
   display: flex;
@@ -33,5 +34,33 @@ $primary: #6893FF;
   .login-input-box {
     width: 300px;
     height: 33px;
+  }
+}
+
+.signupPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .pwd-reqs {
+    font-size: 12px;
+    color: $secondary;
+  }
+  .signup-input-box {
+    width: 300px;
+    height: 33px;
+  }
+  .signup-btn {
+    width: 314px;
+    height: 50px;
+    align-self: center;
+    margin-bottom: 100px;
+  }
+  .signup-inputs {
+    display: flex;
+    height:auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
