@@ -42,10 +42,7 @@ $secondary: #969696;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .pwd-reqs {
-    font-size: 12px;
-    color: $secondary;
-  }
+  height: 100vh;
   .signup-input-box {
     width: 300px;
     height: 33px;
@@ -70,10 +67,7 @@ $secondary: #969696;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  .pwd-reqs {
-    font-size: 12px;
-    color: $secondary;
-  }
+  height: 100vh;
   .reset-pwd-input-box {
     width: 300px;
     height: 33px;
@@ -91,4 +85,9 @@ $secondary: #969696;
     justify-content: center;
     align-items: center;
   }
+}
+
+.pwd-reqs {
+  font-size: 12px;
+  color: $secondary;
 }

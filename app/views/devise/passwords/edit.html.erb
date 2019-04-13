@@ -8,20 +8,20 @@
     <div class="reset-pwd-inputs">
       <div class="field">
         <%= f.label :email, class: "input-label"  %><br />
-        <%= f.email_field :email, class: "reset-pwd-inputs" %>
+        <%= f.email_field :email, class: "reset-pwd-input-box" %>
       </div>
 
       <div class="field">
-        <%= f.label :password, "New password", class: "input-label" %><br />
+        <%= f.label :password, "New password", class: "input-label" %>
         <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+          <em class="pwd-reqs">(<%= @minimum_password_length %> characters minimum)</em><br />
         <% end %>
-        <%= f.password_field :password, class: "reset-pwd-inputs" , autofocus: true, autocomplete: "off" %>
+        <%= f.password_field :password, class: "reset-pwd-input-box" , autofocus: true, autocomplete: "off" %>
       </div>
 
       <div class="field">
         <%= f.label :password_confirmation, "Confirm new password", class: "input-label" %><br />
-        <%= f.password_field :password_confirmation, class: "reset-pwd-inputs" , autocomplete: "off" %>
+        <%= f.password_field :password_confirmation, class: "reset-pwd-input-box" , autocomplete: "off" %>
       </div>
 
       <div class="actions">
