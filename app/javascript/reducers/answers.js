@@ -25,7 +25,6 @@ const EMPTY_ANSWER = {
   delegation_first_name: "",
   delegation_last_name: ""
 };
->>>>>>> upstream/master
 
 /**
  * Updates the answer in store -- at this point we are not fetching anything,
@@ -46,7 +45,10 @@ function updateLocalAnswer(state, action) {
   };
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 88ce7998dd85d0bda276861a0d1ac83c9d2f889a
 
 function removeLocalAnswer(state, action) {
   const answer = action.answer;
@@ -59,7 +61,10 @@ function removeLocalAnswer(state, action) {
     }
   };
 }
+<<<<<<< HEAD
 >>>>>>> upstream/master
+=======
+>>>>>>> 88ce7998dd85d0bda276861a0d1ac83c9d2f889a
 
 /**
  * Sets the "fetching" flag to true to indicate that the save is currently in progress.
@@ -131,10 +136,15 @@ export function answers(state = {}, action) {
     case UPDATE_LOCAL_ANSWER:
       return updateLocalAnswer(state, action);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     case DELETE_LOCAL_ANSWER:
       return removeLocalAnswer(state, action);
 >>>>>>> upstream/master
+=======
+    case DELETE_LOCAL_ANSWER:
+      return removeLocalAnswer(state, action);
+>>>>>>> 88ce7998dd85d0bda276861a0d1ac83c9d2f889a
     case ANSWER_FETCH_IN_PROGRESS:
       return beforeFetchAnswer(state, action);
     case ANSWER_FETCH_SUCCESS:
@@ -142,10 +152,17 @@ export function answers(state = {}, action) {
     case ANSWER_FETCH_FAILURE:
       return answerFetchFailure(state, action);
 <<<<<<< HEAD
+<<<<<<< HEAD
     case ADD_ANSWERS || ADD_DELEGATIONS:
       return addAnswers(state, action);
 =======
 >>>>>>> upstream/master
+=======
+    case ADD_ANSWERS:
+      return addAnswers(state, action);
+    case ADD_DELEGATIONS:
+      return addDelegations(state, action);
+>>>>>>> 88ce7998dd85d0bda276861a0d1ac83c9d2f889a
     default:
       return state;
   }
