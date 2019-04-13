@@ -1,3 +1,5 @@
+$primary: #6893FF;
+
 .loginPage {
   display: flex;
   flex-direction: column;
@@ -6,13 +8,30 @@
   align-items: center;
   .login-buttons-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 
     .login-btn {
+      border-radius: 5px;
+      width: 125px;
+      height: 45px;
     }
     .forgot-pwd-btn {
+      padding: 20px;
+    }
+    .forgot-pwd-btn::after {
+      box-shadow: none;
     }
   }
-
-
+  .remember-me-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0px 10px 0px;
+  }
+  .remember-me-text {
+    padding: 8px 8px 3px 3px;
+  }
+  .login-input-box {
+    width: 300px;
+    height: 33px;
+  }
 }

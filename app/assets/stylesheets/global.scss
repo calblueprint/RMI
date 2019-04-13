@@ -7,6 +7,7 @@ $backgroundGray: #f4f4f4;
 $titleGrey: #494949;
 $inputBorder: 2px solid $secondary;
 $inputLabel: #A1A0A0;
+$inputFocused: #216DFF;
 
 $border-primary: 2px solid $primary;
 $background-primary: lighten($primary, 25);
@@ -29,10 +30,11 @@ h1 {
   border-radius: 3px;
   padding: 5px 20px 5px 20px;
   font-weight: 700;
-  font-size: 10pt;
+  font-size: 12pt;
   border: none;
   transition: 0.25s all;
   position: relative;
+  cursor: pointer;
 }
 
 .btn::selection {
@@ -64,6 +66,7 @@ h1 {
 
 .btn--primary:hover {
   background-color: darken($primary, 5);
+  border: none;
 }
 
 .btn--secondary {
@@ -73,43 +76,80 @@ h1 {
 
 .btn--secondary:hover {
   background-color: lighten($secondary, 27.5);
+  border: none;
 }
 
 .btn--neutral {
   background-color: white;
   color: $primary;
   text-decoration: underline;
+  line-height: 3em;
 }
 
-.logo {
-  margin-left: auto;
-  margin-right: auto;
+.btn--neutral:hover {
+  border: none;
+  color: $inputFocused;
 }
 
-input,
-textarea {
+input {
   outline: none;
   font-size: 14pt;
   border: 2px solid $secondary;
   border-radius: 5px;
   padding: 5px;
-
+  background-color: white;
 }
 
-input:focus,
-textarea:focus {
-  border: 3px solid $primary;
+input:hover {
+  border: 2px solid $hover;
+}
+
+input:focus {
+  border: 2px solid $inputFocused;
+}
+
+input:focus:hover {
+  border: 2px solid $inputFocused;
 }
 
 label {
   color: $inputLabel;
 }
 
-.field {
-  display: block;
-  margin : 0 auto;
+.input-label {
+  font-family: BlinkMacSystemFont, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: normal;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: bold;
 }
-input:hover,
-textarea:hover {
+
+.field {
+  padding: 5px;
+}
+
+input[type=checkbox] {
+  -webkit-appearance: none;
+  outline: none;
+  font-size: 14pt;
+  border: 2px solid $secondary;
+  border-radius: 5px;
+  background-color: white;
+  height: 27px;
+  width: 27px;
+  cursor: pointer;
+}
+
+input[type=checkbox]:hover {
+  border: 2px solid $hover;
+}
+
+input[type=checkbox]:checked {
+  background-color: $inputFocused;
+  border: 2px solid $secondary;
+}
+
+input[type=checkbox]:checked:hover {
   border: 2px solid $hover;
 }
