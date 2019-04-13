@@ -116,9 +116,6 @@ class Api::AnswersController < ApplicationController
             :attachment_content_type,
             :attachment_file_size,
             :attachment_updated_at,
-            :id,
-            :created_at,
-            :updated_at
           )
     end
   end
