@@ -1,25 +1,32 @@
-<h2>Change your password</h2>
+<div class="resetPasswordPage">
+  <%= image_tag("rmi-logo.png", height: '64', width: '64')%>
+  <h1>Rocky Mountain Institute</h1>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= devise_error_messages! %>
+    <%= f.hidden_field :reset_password_token %>
+    <div class="reset-pwd-inputs">
+      <div class="field">
+        <%= f.label :email, class: "input-label"  %>
+        <%= f.email_field :email, class: "reset-pwd-inputs" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
-  </div>
+      <div class="field">
+        <%= f.label :password, "New password", class: "input-label" %><br />
+        <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+        <% end %>
+        <%= f.password_field :password, class: "reset-pwd-inputs" , autofocus: true, autocomplete: "off" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+      <div class="field">
+        <%= f.label :password_confirmation, "Confirm new password", class: "input-label" %><br />
+        <%= f.password_field :password_confirmation, class: "reset-pwd-inputs" , autocomplete: "off" %>
+      </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+      <div class="actions">
+        <%= f.submit "Confirm registration", class: "btn btn--primary confirm-registration-btn" %>
+      </div>
+    </div>
+  <% end %>
+</div>
