@@ -88,24 +88,11 @@ function answerFetchFailure(state, action) {
  */
 export function addAnswers(state, action) {
   return {
-    ...state,
-    [action.buildingId]: {
-      answers: action.answers
-    }
-  };
+  ...state,
+  ...action.answers
+};
 }
 
-/**
- * Adds delegations, which updates answers in the redux store with delegation information
- */
-export function addDelegations(state, action) {
-  return {
-    ...state,
-    [action.buildingId]: {
-      answers: action.answers
-    }
-  };
-}
 
 export function answers(state = {}, action) {
   if (!action) return state;
@@ -118,10 +105,8 @@ export function answers(state = {}, action) {
       return answerFetchSuccess(state, action);
     case ANSWER_FETCH_FAILURE:
       return answerFetchFailure(state, action);
-    case ADD_ANSWERS:
+    case ADD_ANSWERS || ADD_DELEGATIONS:
       return addAnswers(state, action);
-    case ADD_DELEGATIONS:
-      return addDelegations(state, action);
     default:
       return state;
   }

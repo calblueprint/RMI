@@ -9,8 +9,10 @@ import {
   createAnswer,
   updateAnswer,
   addAnswers,
-  addDelegations
+  EMPTY_ANSWER,
+  DELETE_LOCAL_ANSWER
 } from "../actions/answers";
+import Modal from "../components/Modal.jsx";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
 import { addBuilding } from "../actions/buildings";
 import { post, patch } from "../fetch/requester";
@@ -25,11 +27,11 @@ class PortfolioContainer extends React.Component {
       showModal: false,
       errors: null
     };
-    this.toggleModal = this.toggleModal.bind(this);
     this.createBuilding = this.createBuilding.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.delegateQuestions = this.delegateQuestions.bind(this);
     this.updateAnswers = this.updateAnswers.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   toggleModal() {
@@ -37,20 +39,12 @@ class PortfolioContainer extends React.Component {
   }
 
   async createAnswers(questions, buildingId, email, firstName, lastName) {
-    var answers = [];
-    for (var i = 0; i < questions.length; i++) {
-      var emptyAnswer = {
-        text: "",
+    let answers = [];
+    for (let i = 0; i < questions.length; i++) {
+      let emptyAnswer = {
+        ...EMPTY_ANSWER,
         building_id: buildingId,
-        question_id: questions[i],
-        selected_option_id: null,
-        attachment_file_name: null,
-        attachment_content_type: null,
-        attachment_file_size: null,
-        attachment_updated_at: null,
-        delegation_email: "",
-        delegation_first_name: "",
-        delegation_last_name: ""
+        question_id: questions[i]
       };
       answers.push(emptyAnswer);
     }
@@ -60,9 +54,7 @@ class PortfolioContainer extends React.Component {
         answer: {}
       });
       const newAnswers = response.data;
-      //update redux store with empty answers
       this.props.addAnswers(newAnswers, buildingId);
-      //only delegate questions if email is provided
       if (email != "") {
         this.delegateQuestions(
           newAnswers,
@@ -72,14 +64,12 @@ class PortfolioContainer extends React.Component {
           lastName
         );
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
   async delegateQuestions(answers, buildingId, email, firstName, lastName) {
-    var delegations = [];
+    let delegations = [];
     for (const answer of Object.values(answers)) {
-      var delegation = {
+      let delegation = {
         email: email,
         first_name: firstName,
         last_name: lastName,
@@ -89,33 +79,25 @@ class PortfolioContainer extends React.Component {
     }
     try {
       let response = await post("/api/delegations", { delegations });
-      //update redux store with delegations
       const finalAnswers = response.data;
-      // this update is done here instead of in backend when delegations are created because in the next request they are updated in the backend as well \
-      Object.values(finalAnswers).forEach(function(a) {
+      Object.values(finalAnswers).forEach(a => {
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
         finalAnswers[a.question_id] = a;
       });
       this.updateAnswers(Object.values(finalAnswers), buildingId);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
   async updateAnswers(answers, buildingId) {
-    //adding delegations is just updating answers
     try {
       let response = await patch("/api/answers/update_multiple", {
         answers: answers,
         answer: {}
       });
-      //update redux store with "delegated" answers
       const updatedAnswers = response.data;
-      this.props.addDelegations(updatedAnswers, buildingId);
-    } catch (error) {
-      console.log(error);
-    }
+      this.props.addAnswers(updatedAnswers, buildingId);
+    } catch (error) {}
   }
 
   async createBuilding(event) {
@@ -125,7 +107,7 @@ class PortfolioContainer extends React.Component {
     const buildingTypeId = document.getElementById("building").value;
     const address = event.target.address.value;
     const city = event.target.city.value;
-    const state = event.target.state.value;
+    const state = document.getElementById("state").value;
     const zip = event.target.zip.value;
     const firstName = event.target.first.value;
     const lastName = event.target.last.value;
@@ -143,7 +125,6 @@ class PortfolioContainer extends React.Component {
     };
     try {
       let response = await post("/api/buildings", obj);
-      //after building is created, we should have tons of empty answers
       const building = {
         ...response.data,
         answers: {},
@@ -170,66 +151,13 @@ class PortfolioContainer extends React.Component {
           value="Create New Building"
           onClick={this.toggleModal}
         />
-        <ReactModal isOpen={this.state.showModal}>
-          <form onSubmit={this.createBuilding}>
-            <label>
-              Building Name
-              <input type="text" name="name" />
-            </label>
-            <br />
-            <label>
-              Email Address
-              <input type="text" name="email" />
-            </label>
-            <br />
-            <label>
-              First Name
-              <input type="text" name="first" />
-            </label>
-            <br />
-            <label>
-              Last Name
-              <input type="text" name="last" />
-            </label>
-            <br />
-            <label>
-              Address
-              <input type="text" name="address" />
-            </label>
-            <br />
-            <label>
-              City
-              <input type="text" name="city" />
-            </label>
-            <br />
-            <label>
-              State
-              <input type="text" name="state" />
-            </label>
-            <br />
-            <label>
-              ZIP Code
-              <input type="number" name="zip" />
-            </label>
-            <br />
-            Building Type
-            <label>
-              <select>
-                {Object.keys(this.props.building_types).map(building_type => {
-                  return (
-                    <option type="text" id="building" value={building_type}>
-                      {this.props.building_types[building_type].name}
-                    </option>
-                  );
-                })}
-              </select>
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
-
-          <div>{this.state.errors}</div>
-          <button onClick={this.toggleModal}>Close Modal</button>
-        </ReactModal>
+        <Modal
+          {...this.props}
+          showModal={this.state.showModal}
+          errors={this.state.errors}
+          toggleModal={this.toggleModal}
+          createBuilding={this.createBuilding}
+        />
         <div className="building__container">
           {this.props.buildings.map(building => {
             return (
@@ -268,9 +196,6 @@ function mapDispatchToProps(dispatch) {
     },
     addAnswers: (answers, buildingId) => {
       dispatch(addAnswers(answers, buildingId));
-    },
-    addDelegations: (answers, buildingId) => {
-      dispatch(addDelegations(answers, buildingId));
     }
   };
 }

@@ -8,8 +8,9 @@ class Api::BuildingsController < ApplicationController
   def create
     # should always create buildings with a portfolio
     portfolio = Portfolio.find(params[:portfolio_id])
-    building = portfolio.buildings.create(building_params)
+    building = Building.new(building_params)
     if building.save
+      portfolio.buildings.push(building)
       render_json_message(:ok, data: building, message: "Building #{building.id} successfuly created and saved")
     else
       render_json_message(:forbidden, errors: building.errors.full_messages)

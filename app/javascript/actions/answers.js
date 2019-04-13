@@ -13,7 +13,7 @@ import {
 } from "../constants";
 import { post, postFile, patch, destroy } from "../fetch/requester";
 
-const EMPTY_ANSWER = {
+export const EMPTY_ANSWER = {
   text: "",
   building_id: -1,
   question_id: -1,
