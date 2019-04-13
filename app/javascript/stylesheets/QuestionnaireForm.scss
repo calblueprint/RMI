@@ -21,7 +21,6 @@ input {
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  // padding: 0 20px;
 }
 
 .questionnaire-form-spacer {
@@ -32,9 +31,6 @@ input {
   position: fixed;
   overflow: scroll;
   padding: 0 10px;
-
-  h1 {
-  }
 
   h3 {
     text-transform: uppercase;
@@ -56,21 +52,36 @@ input {
   padding: 10px 10px;
   font-size: 11pt;
   transition: 0.2s ease all;
-  // margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .edit-btn {
+    display: none;
+    color: $secondary;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .edit-btn > i:hover {
+    color: black;
+  }
 }
 
 .sidebar-category-row:hover {
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 5px;
   cursor: pointer;
+
+  .edit-btn {
+    display: inline;
+  }
 }
 
 .sidebar-category-row-selected {
-  // border-radius: 5px;
   border-left: 5px solid $vibrantPrimary;
   background-color: rgba($vibrantPrimary, 0.1);
   font-weight: 700;
-  // color: white;
 }
 
 .sidebar-category-row-selected:hover {
