@@ -78,4 +78,8 @@ class AssetManager < ApplicationRecord
     end
     questions
   end
+
+  def get_scope
+    {user_id: id, user_type: 'AssetManager'}
+  end
 end

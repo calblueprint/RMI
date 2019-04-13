@@ -1,7 +1,4 @@
-import {
-  ADD_CONTACT,
-  DELETE_CONTACT
-} from '../constants';
+import { ADD_CONTACT, DELETE_CONTACT } from "../constants";
 
 function attachContact(state, action) {
   return {
@@ -19,6 +16,7 @@ function deleteContact(state, action) {
     .filter(email => email !== action.email)
     .reduce((newState, email) => {
       newState[email] = state[email];
+      return newState;
     }, {});
 }
 
