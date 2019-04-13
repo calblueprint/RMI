@@ -9,7 +9,8 @@ import {
   UPDATE_LOCAL_ANSWER,
   ADD_ANSWERS,
   ADD_DELEGATIONS,
-  REMOVE_ANSWER
+  REMOVE_ANSWER,
+  DELETE_LOCAL_ANSWER
 } from "../constants";
 import { post, postFile, patch, destroy } from "../fetch/requester";
 
@@ -32,10 +33,7 @@ function answerFetchInProgress(buildingId, answer) {
     type: ANSWER_FETCH_IN_PROGRESS,
     fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
-    answer: {
-      ...EMPTY_ANSWER,
-      ...answer
-    }
+    answer
   };
 }
 
@@ -77,6 +75,14 @@ export function addDelegations(answers, buildingId) {
 export function updateLocalAnswer(buildingId, answer) {
   return {
     type: UPDATE_LOCAL_ANSWER,
+    buildingId,
+    answer
+  };
+}
+
+export function removeLocalAnswer(buildingId, answer) {
+  return {
+    type: DELETE_LOCAL_ANSWER,
     buildingId,
     answer
   };
