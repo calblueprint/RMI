@@ -1,6 +1,9 @@
 $primary: #6893FF;
 $secondary: #969696;
 
+.logo {
+  padding-top: 100px;
+}
 .loginPage {
   display: flex;
   flex-direction: column;
@@ -42,7 +45,6 @@ $secondary: #969696;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   .signup-input-box {
     width: 290px;
     height: 33px;
