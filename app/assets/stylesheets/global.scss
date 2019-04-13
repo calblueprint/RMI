@@ -96,7 +96,7 @@ input {
   font-size: 14pt;
   border: 2px solid $secondary;
   border-radius: 5px;
-  padding: 5px;
+  padding: 5px 10px 5px 10px;
   background-color: white;
 }
 
@@ -106,6 +106,17 @@ input:hover {
 
 input:focus {
   border: 2px solid $inputFocused;
+}
+
+input::placeholder {
+    color: lighten($secondary, 27.5);
+}
+
+input::text-align {
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent;
 }
 
 input:focus:hover {
@@ -156,4 +167,8 @@ input[type=checkbox]:checked {
 
 input[type=checkbox]:checked:hover {
   border: 2px solid $hover;
+}
+
+.blur-placeholder:focus {
+  placeholder: none;
 }
