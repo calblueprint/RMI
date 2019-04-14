@@ -80,6 +80,7 @@ class PortfolioContainer extends React.Component {
     try {
       let response = await post("/api/delegations", { delegations });
       const finalAnswers = response.data;
+      const answersToUpdate = {};
       Object.values(finalAnswers).forEach(a => {
         a.delegation_email = email;
         a.delegation_first_name = firstName;

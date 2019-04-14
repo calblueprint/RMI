@@ -99,10 +99,8 @@ class Api::AnswersController < ApplicationController
           )
   end
 
-  # answers batch creation
   def answers_params
     params.require(:answers).map! do |answer|
-      # batch creation needs "partial answers" and will not contain delegation information until delegated
       answer.permit(
             :text,
             :attachment,
@@ -116,6 +114,9 @@ class Api::AnswersController < ApplicationController
             :attachment_content_type,
             :attachment_file_size,
             :attachment_updated_at,
+            :id, 
+            :created_at,
+            :updated_at
           )
     end
   end
