@@ -1,0 +1,3 @@
+class AssetManagerMailer < ApplicationMailer
+	
+end

@@ -16,7 +16,7 @@ class BuildingOperatorMailer < ApplicationMailer
   end
 
   # Gets sent when an existing building operator is delegated more questions
-  def existing_user_delegated_email(user, current_user)
+  def existing_user_delegated_email(user, current_use)r
     @user = user
     @current_user = current_user
     @user.last_email_received = Time.now.utc

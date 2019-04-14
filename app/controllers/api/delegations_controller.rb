@@ -56,9 +56,12 @@ class Api::DelegationsController < ApplicationController
         users_to_email.uniq.each do |u|
           puts u.last_email_received
           puts u.last_sign_in_at
+          puts u.last_email_received < u.last_sign_in_at
+          puts Time.now.utc - 259200 >= u.last_email_received 
           #u.last sign in at is nil for new building operators created in this...maybe they shouldn't 
-          if u.last_email_received < u.last_sign_in_at || Time.utc.now - 259200 >= u.last_email_received 
+          if u.last_email_received < u.last_sign_in_at || Time.now.utc - 259200 >= u.last_email_received 
             BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
+            puts 'its here'
           end
         end
         delegation.save!
