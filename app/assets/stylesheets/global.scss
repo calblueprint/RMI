@@ -91,7 +91,8 @@ h1 {
   color: $inputFocused;
 }
 
-input {
+input,
+textarea {
   outline: none;
   font-size: 14pt;
   border: 2px solid $secondary;
@@ -100,26 +101,28 @@ input {
   background-color: white;
 }
 
-input:hover {
+input:hover,
+textarea:hover {
   border: 2px solid $hover;
 }
 
-input:focus {
+input:focus,
+textarea:focus, {
   border: 2px solid $inputFocused;
 }
 
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: lighten($secondary, 27.5);
 }
 
-input::text-align {
-}
-
-input:focus::-webkit-input-placeholder {
+input:focus::-webkit-input-placeholder
+textarea:focus::-webkit-input-placeholder {
     color: transparent;
 }
 
-input:focus:hover {
+input:focus:hover,
+textarea:focus:hover {
   border: 2px solid $inputFocused;
 }
 
@@ -167,8 +170,4 @@ input[type=checkbox]:checked {
 
 input[type=checkbox]:checked:hover {
   border: 2px solid $hover;
-}
-
-.blur-placeholder:focus {
-  placeholder: none;
 }
