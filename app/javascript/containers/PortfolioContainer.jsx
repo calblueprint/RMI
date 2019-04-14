@@ -79,15 +79,14 @@ class PortfolioContainer extends React.Component {
     }
     try {
       let response = await post("/api/delegations", { delegations });
-      const finalAnswers = response.data;
-      const answersToUpdate = {};
-      Object.values(finalAnswers).forEach(a => {
+      const answersToUpdate = response.data;
+      Object.values(answersToUpdate).forEach(a => {
         a.delegation_email = email;
         a.delegation_first_name = firstName;
         a.delegation_last_name = lastName;
-        finalAnswers[a.question_id] = a;
+        answersToUpdate[a.question_id] = a;
       });
-      this.updateAnswers(Object.values(finalAnswers), buildingId);
+      this.updateAnswers(Object.values(answersToUpdate), buildingId);
     } catch (error) {}
   }
   async updateAnswers(answers, buildingId) {
@@ -134,9 +133,8 @@ class PortfolioContainer extends React.Component {
       const buildingId = building.id;
       this.props.addBuilding(building);
       this.createAnswers(questions, buildingId, email, firstName, lastName);
-      this.props.history.push(`/buildings/${buildingId}/edit`);
+      this.props.history.push(`/buildings/${buildingId}`);
     } catch (error) {
-      console.log(error);
       this.setState({ errors: error, showModal: true });
     }
   }

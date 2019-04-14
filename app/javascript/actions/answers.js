@@ -64,14 +64,6 @@ export function addAnswers(answers, buildingId) {
   };
 }
 
-export function addDelegations(answers, buildingId) {
-  return {
-    type: ADD_DELEGATIONS,
-    answers,
-    buildingId
-  };
-}
-
 export function updateLocalAnswer(buildingId, answer) {
   return {
     type: UPDATE_LOCAL_ANSWER,

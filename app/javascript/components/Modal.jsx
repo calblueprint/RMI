@@ -17,7 +17,7 @@ class Modal extends React.Component {
 					</label>
 					<br />
 					<label>
-						Email Add;ress
+						Email Address
 						<input type="text" name="email" />
 					</label>
 					<br />
