@@ -6,92 +6,44 @@
   color: $titleGrey;
 }
 
-.logo {
-  padding-top: 100px;
+.login-buttons-container {
+  display: flex;
+  justify-content: space-around;
 }
-.loginPage {
+
+.primary-login-btn {
+  border-radius: 5px;
+  width: 125px;
+  height: 45px;
+}
+
+.primary-long-login-btn {
+  width: 314px;
+  height: 50px;
+  align-self: center;
+}
+
+.input-box {
+  width: 290px;
+  height: 33px;
+}
+
+.input-container {
+  display: flex;
+  height:auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginPageContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100vh;
   align-items: center;
-  .login-buttons-container {
-    display: flex;
-    justify-content: space-around;
-
-    .login-btn {
-      border-radius: 5px;
-      width: 125px;
-      height: 45px;
-    }
-    .forgot-pwd-btn {
-      padding: 20px;
-    }
-    .forgot-pwd-btn::after {
-      box-shadow: none;
-    }
-  }
-  .remember-me-container {
-    display: flex;
-    flex-direction: row;
-    padding: 10px 0px 10px 0px;
-  }
-  .remember-me-text {
-    padding: 8px 8px 3px 3px;
-  }
-  .login-input-box {
-    width: 290px;
-    height: 33px;
-  }
-}
-
-.signupPage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .signup-input-box {
-    width: 290px;
-    height: 33px;
-  }
-  .signup-btn {
-    width: 314px;
-    height: 50px;
-    align-self: center;
-    margin-bottom: 100px;
-  }
-  .signup-inputs {
-    display: flex;
-    height:auto;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.resetPasswordPage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  .reset-pwd-input-box {
-    width: 290px;
-    height: 33px;
-  }
-  .confirm-registration-btn {
-    width: 314px;
-    height: 50px;
-    align-self: center;
-    margin-bottom: 100px;
-  }
-  .reset-pwd-inputs {
-    display: flex;
-    height:auto;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 .pwd-reqs {

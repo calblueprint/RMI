@@ -78,11 +78,20 @@ body {
   color: $primary;
   text-decoration: underline;
   line-height: 3em;
+  padding: 20px;
 }
 
-.btn--neutral:hover {
-  border: none;
-  color: $inputFocused;
+.btn--neutral::after {
+  box-shadow: none;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0px 10px 0px;
+}
+.checkbox-label {
+  padding: 8px 8px 3px 3px;
 }
 
 input,
@@ -101,7 +110,7 @@ textarea:hover {
 }
 
 input:focus,
-textarea:focus, {
+textarea:focus {
   border: 2px solid $inputFocused;
 }
 
@@ -110,7 +119,7 @@ textarea::placeholder {
     color: lighten($secondary, 27.5);
 }
 
-input:focus::-webkit-input-placeholder
+input:focus::-webkit-input-placeholder,
 textarea:focus::-webkit-input-placeholder {
     color: transparent;
 }
