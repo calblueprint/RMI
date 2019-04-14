@@ -21,12 +21,13 @@
 #
 
 class BuildingOperator < ApplicationRecord
+  include ApplicationHelper
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  after_create :send_onboarding_email
+  # after_create :send_onboarding_email
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building
@@ -38,12 +39,6 @@ class BuildingOperator < ApplicationRecord
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
   validates_uniqueness_of :email
-
-  # New building operator accounts are only created when an asset manager delegates a question to them,
-  # so send an onboarding email telling them they have new questions.
-  def send_onboarding_email
-    BuildingOperatorMailer.new_user_delegated_email(self, current_user).deliver_now
-  end
 
   def building_types
     building_types = Set.new []

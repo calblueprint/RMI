@@ -1,5 +1,5 @@
 class Api::DelegationsController < ApplicationController
-
+  include ApplicationHelper
   # XXX: dependent questions are not automatically delegated, user should post
   # a batch that includes all dependent questions known
   def create
@@ -20,9 +20,11 @@ class Api::DelegationsController < ApplicationController
             first_name: delegation_params[:first_name],
             last_name: delegation_params[:last_name],
             phone: "0000000000", # use this filler by default, should be replaced during first login
-            password: (0...15).map { (65 + rand(26)).chr }.join
+            password: (0...15).map { (65 + rand(26)).chr }.join,
+            last_sign_in_at: Time.utc(2000)
           )
           operator.save!
+          BuildingOperatorMailer.new_user_delegated_email(operator, current_user).deliver_now
         end
 
         # mark all other delegations on same answer_id delegated
@@ -49,12 +51,13 @@ class Api::DelegationsController < ApplicationController
         authorize! :create, delegation
         puts users_to_email
         puts 'hi'
+        puts current_user
         #errors here
         users_to_email.uniq.each do |u|
           puts u.last_email_received
           puts u.last_sign_in_at
           #u.last sign in at is nil for new building operators created in this...maybe they shouldn't 
-          if u.last_email_received < u.last_sign_in_at || u.last_email_received >= Time.utc.now - 259200
+          if u.last_email_received < u.last_sign_in_at || Time.utc.now - 259200 >= u.last_email_received 
             BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
           end
         end
