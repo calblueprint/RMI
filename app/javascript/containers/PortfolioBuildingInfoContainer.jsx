@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { getNameByBuildingId } from "../selectors/buildingsSelector";
 import CategoryContainer from './CategoryContainer';
-import { percentAnswered, questionDataPerCategory } from '../selectors/answersSelector';
+import { percentAnswered } from '../selectors/answersSelector';
 
 class PortfolioBuildingInfoContainer extends React.Component {
+
   getStatusForBuilding() {
     if (this.props.buildingStatus == 1) {
       return "Completed"
@@ -25,10 +26,10 @@ class PortfolioBuildingInfoContainer extends React.Component {
   }
 
   mapCategorytoContainer() {
-    let categoryData = this.props.categoryData;  
+    let categoriesData = this.props.categoriesData;  
     let pId = this.props.portfolio_id;  
-    return Object.keys(categoryData).map((id) => {
-      return (<CategoryContainer portfolio_id={pId} id={id} categoryData={categoryData[id]} key={id}></CategoryContainer>)
+    return Object.keys(categoriesData).map((id) => {
+      return (<CategoryContainer portfolio_id={pId} id={id} categoryData={categoriesData[id]} key={id}></CategoryContainer>)
     })
   }
 
@@ -36,7 +37,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
     let building_id = this.props.building_id;
 
     return (
-      <div key={this.props.building_id}>
+      <div className='building__details' key={this.props.building_id}>
         <div className="building_info">
           <div>
             <span className='small_header'>BUILDING</span>
@@ -45,6 +46,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
           </div>
           <div>
             <span className="building__link">
+                {/* should be changed to different button */}
                 <Link to={`/buildings/${this.props.building_id}`}>Assign Building</Link>
             </span>
             <a href={`download/${building_id}`}>Export CSV</a>
@@ -71,18 +73,13 @@ class PortfolioBuildingInfoContainer extends React.Component {
 PortfolioBuildingInfoContainer.propTypes = {
   portfolio_id: PropTypes.number.isRequired,
   building_id: PropTypes.number.isRequired,
+  categoriesData: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     name: getNameByBuildingId(ownProps.building_id, state),
-    // streetAddress: getStreetAddressByBuildingId(ownProps.building_id, state),
-    // cityStateAddress: getCityStateAddressByBuildingId(ownProps.building_id, state),
     buildingStatus: percentAnswered(ownProps.building_id, state),
-    
-    // array containing an object for each category id, name, number of answered questions, and total questions
-    categoryData: questionDataPerCategory(ownProps.building_id, state),
-
   };
 }
 

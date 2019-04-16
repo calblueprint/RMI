@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     # Can change route with:
     patch 'questions/publish', to: 'questions#publish'
     delete 'answers/:id/attachment', to: 'answers#delete_file'
+    get 'buildings/:id/get_user_data', to: 'buildings#get_users_to_login_times' 
   end
 
   # Redirect everything else to the entry point for React;

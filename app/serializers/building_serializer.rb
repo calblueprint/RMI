@@ -28,10 +28,12 @@ class BuildingSerializer < ActiveModel::Serializer
 
   # Answers are stored as a hash, where the key is the id of the corresponding QUESTION
   def answers
+    puts 'HELP'
     object.answers.index_by(&:question_id)
   end
 
   def questions
+    puts 'aahhhhhhhhh'
     questions = object.questions.ids
     _questions =
       if scope[:user_type] == 'BuildingOperator'

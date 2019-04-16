@@ -111,10 +111,13 @@ export function getPercentAnsweredForBuildingGroup(buildings, state) {
   return unanswered;
 }
 
+
 export function getDelegation(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
   if (answer && answer.delegation_email) {
-    return {name: answer.delegation_first_name + " " + answer.delegation_last_name, email: answer.delegation_email};
+    return {firstName: answer.delegation_first_name,
+            lastName: answer.delegation_last_name, 
+            email: answer.delegation_email};
   }
 }
 
@@ -131,6 +134,10 @@ export function getDelegations(categoryQuestions, buildingId, state) {
 }
 
 export function questionDataPerCategory(buildingId, state) {
+  if (!buildingId) {
+    return;
+  }
+
   let catData = {};
   let categoriesArray = getCategoriesForBuilding(buildingId, state);
 
