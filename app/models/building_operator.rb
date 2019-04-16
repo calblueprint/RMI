@@ -131,6 +131,10 @@ class BuildingOperator < ApplicationRecord
     questions_by_buildings(buildings.map { |b| b.id })
   end
 
+  def remind
+    BuildingOperatorMailer.existing_user_reminder_email(self).deliver_now
+  end
+
   def get_scope
     {
       user_id: id,

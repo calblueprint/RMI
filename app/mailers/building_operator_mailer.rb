@@ -16,12 +16,20 @@ class BuildingOperatorMailer < ApplicationMailer
   end
 
   # Gets sent when an existing building operator is delegated more questions
-  def existing_user_delegated_email(user, current_use)r
+  def existing_user_delegated_email(user, current_user)
     @user = user
     @current_user = current_user
     @user.last_email_received = Time.now.utc
+    @user.save
     # @url = building_operator_path(@user)
     mail_to @user, subject: 'You have been assigned new building tasks'
+  end
+
+  def existing_user_reminder_email(user)
+    @user = user
+    @user.last_email_received = Time.now.utc
+    @user.save
+    mail_to @user, subject: 'Reminder: Delegated Questions Pending!'
   end
 
   private
