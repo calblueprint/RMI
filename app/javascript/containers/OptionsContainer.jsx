@@ -8,6 +8,7 @@ import FreeOption from "../components/FreeOption";
 import Status from "../components/Status";
 import DependentQuestions from "../components/DependentQuestions";
 
+import { getEmail } from "../selectors/usersSelector"
 import { connect } from "react-redux";
 import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import {
@@ -35,7 +36,8 @@ class OptionsContainer extends React.Component {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
       selected_option_id: optionId,
-      text: value
+      text: value,
+      editor_email: this.props.editor_email
     };
   }
 
@@ -166,7 +168,8 @@ function mapStateToProps(state, ownProps) {
       Object.keys(ownProps.options),
       ownProps.question_type,
       state
-    )
+    ),
+    editor_email: getEmail(state)
   };
 }
 

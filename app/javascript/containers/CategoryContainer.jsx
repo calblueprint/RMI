@@ -24,7 +24,7 @@ class CategoryContainer extends React.Component {
         } else {
             return (<span>No one assigned yet</span>);
         }
-    }
+    } 
 
     onClick() {
         this.props.clickAction(this.props.id, this.props.portfolio_id)

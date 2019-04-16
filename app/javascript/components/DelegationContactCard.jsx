@@ -8,11 +8,13 @@ function DelegationContactCard({
   email,
   handleClickChangeContact,
   handleClickRemoveContact,
+  showHeader = true,
+  showChangeBtn = true,
   showRemoveContactBtn = true
 }) {
   return (
     <div>
-      <p className="delegation__label">Handing off question to</p>
+      {showHeader && <p className="delegation__label">Handing off question to</p>}
       <div className="delegation__card">
         <div className="delegation__card_info">
           <h3>
@@ -20,14 +22,14 @@ function DelegationContactCard({
           </h3>
           <p>{email}</p>
         </div>
-        <button
+        {showChangeBtn && (<button
           className="btn btn--secondary delegation__card_change"
           type="button"
           value="Change"
           onClick={handleClickChangeContact}
         >
           Change
-        </button>
+        </button>)}
         {showRemoveContactBtn && (
           <button
             className="btn btn--danger"

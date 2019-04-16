@@ -24,9 +24,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { delegateQuestions } from "../utils/DelegationRequests";
 
-import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
-import PortfolioBuildingInfoContainer from "./PortfolioBuildingInfoContainer";
-import CategoryDetailsContainer from "./CategoryDetailsContainer";
+import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
 import Logo from "../images/rmi-logo.png";
 
 class PortfolioContainer extends React.Component {
@@ -142,48 +140,12 @@ class PortfolioContainer extends React.Component {
     }
   }
 
-  showSelectedBuilding(selectedBuildingId) {
-    let buildings = this.props.buildings;
-    let pId = this.props.match.params.pId;
-
-    for (let i = 0; i < buildings.length; i++) {
-      let b = buildings[i];
-      if (b.id === selectedBuildingId) {
-        return (
-          <PortfolioBuildingInfoContainer
-            key={b.id}
-            building_id={b.id}
-            portfolio_id={pId}
-          />
-        );
-      }
-    }
-  }
-
-  showSelectedCategory(selectedBuildingId, selectedCategoryId) {
-    let buildings = this.props.buildings;
-    let pId = this.props.match.params.pId;
-
-    for (let i = 0; i < buildings.length; i++) {
-      let b = buildings[i];
-      if (b.id === selectedBuildingId && selectedCategoryId) {
-        return (
-          <CategoryDetailsContainer
-            key={b.id}
-            building_id={b.id}
-            portfolio_id={pId}
-            category_id={selectedCategoryId}
-          />
-        );
-      }
-    }
-  }
-
   render() {
     let buildingByType = this.groupBuildingsByType();
     let portfolioId = this.props.match.params.pId;
     let selectedBuildingId = this.props.selectedBuildingId;
     let selectedCategoryId = this.props.selectedCategoryId;
+    let buildings = this.props.buildings;
 
     return (
       <div className="portfolio__container">
@@ -210,28 +172,12 @@ class PortfolioContainer extends React.Component {
             createBuilding={this.createBuilding}
           />
         </div>
-        <div className="building__container">
-          <div className="building__types">
-            {Object.keys(buildingByType).map((typeId, i) => {
-              return (
-                <PortfolioBuildingDetailsContainer
-                  key={i}
-                  portfolioId={portfolioId}
-                  buildings={buildingByType[typeId]}
-                  buildingTypeId={typeId}
-                  match={this.props.match}
-                  selectedBuildingId={selectedBuildingId}
-                />
-              );
-            })}
-          </div>
-          <div className="building__details">
-            {this.showSelectedBuilding(selectedBuildingId)}
-          </div>
-        </div>
-        <div className="building_category_details">
-          {this.showSelectedCategory(selectedBuildingId, selectedCategoryId)}
-        </div>
+        <PortfolioBuildingContainer
+          selectedBuildingId={selectedBuildingId}
+          selectedCategoryId={selectedCategoryId}
+          buildings={buildings}
+          portfolio_id={portfolioId}
+        />
       </div>
     );
   }

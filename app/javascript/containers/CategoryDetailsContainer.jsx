@@ -1,24 +1,78 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getCategoryById } from '../selectors/categoriesSelector'
 import PropTypes from 'prop-types';
+import DelegationInfoContainer from './DelegationInfoContainer';
 
 class CategoryDetailsContainer extends React.Component {    
+    delegationInfo() {
+        let userData = this.props.userData;
+        let catData = this.props.categoryData;
+        let delegations = catData.delegations;
+        
+        if (delegations) {
+            return delegations.map((d) => {
+                let email = d.email
+
+                if (userData && userData[email]) {
+                    d.lastActive = userData[email];
+                }
+                return (<DelegationInfoContainer delegation={d}></DelegationInfoContainer>)
+            })
+        } else {
+            return (<span>No one assigned yet</span>);
+        }
+    }
+    
+    
     render() {
+        let catName = this.props.category.name;
+        let buildingName = this.props.building_name;
+
         return (
-            <div className='category_details_container'>
-                HELLO THIS IS A CATEGORY DETAILS CONTAINER
-                NUMBER {this.props.category_id}
+            <div>
+                <div>
+                    <span className="small_header">QUESTIONS</span>
+                    <h2>{catName}</h2>
+                    <p>for {buildingName}</p>
+                    <br></br>
+                    <span className='building__link'>
+                        <Link to={`/buildings/${this.props.building_id}/edit/${this.props.category_id}`}>Open {catName} Questions</Link>
+                    </span>   
+                </div>
+                <div className='delegations_list'>
+                    <span className="small_header">PEOPLE</span>  
+                    {this.delegationInfo()} 
+                </div>
             </div>
         );
     }
 }
 
 CategoryDetailsContainer.propTypes = {
-    id: PropTypes.string.isRequired,
-    building_id: PropTypes.string.isRequired,
-    portfolio_id: PropTypes.string.isRequired,
-    category_id: PropTypes.string.isRequired
+    building_id: PropTypes.number.isRequired,
+    building_name: PropTypes.string.isRequired,
+    category_id: PropTypes.string.isRequired,
+    userData: PropTypes.object.isRequired,
+    categoryData: PropTypes.object.isRequired
 };
 
-export default CategoryDetailsContainer;
+function mapStateToProps(state, ownProps) {
+    return {
+      category: getCategoryById(ownProps.category_id, state),
+    };
+  }
   
+function mapDispatchToProps(dispatch) {
+    return {
+        clickAction: (portfolioId, buildingId) => {
+        dispatch(viewBuildingDetails(portfolioId, buildingId));
+        }
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CategoryDetailsContainer);
