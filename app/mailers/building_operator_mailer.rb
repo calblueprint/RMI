@@ -1,5 +1,4 @@
 class BuildingOperatorMailer < ApplicationMailer
-  include ApplicationHelper
   # Gets sent when a building operator is delegated questions but *hasn't been onboarded yet*
   def new_user_delegated_email(user, current_user)
     @user = user
