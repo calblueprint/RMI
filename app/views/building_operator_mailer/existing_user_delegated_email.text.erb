@@ -1,9 +1,7 @@
 Dear <%= @user.first_name %>,
 
-You have been assigned new questions to fill out regarding your buildings.
-<p><%= @current_user.first_name %></p>
-<p><%= @current_user.last_name %></p>
-<p><%= @current_user.email %></p>
+You have been assigned new questions by <%= @current_user.first_name %> <%= @current_user.last_name %> to fill out regarding your buildings. You can respond to them at <%= @current_user.email %>.
 
 Click the link below to access your RMI dashboard:
+<%= @url %>
 
