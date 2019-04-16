@@ -139,12 +139,12 @@ class BuildingOperator < ApplicationRecord
       user_id: id,
       user_type: 'BuildingOperator',
       questions: Question
-        .where(id: current_building_operator.questions.map { |q| q.id }).load.to_a,
+        .where(id: questions.map { |q| q.id }).load.to_a,
       delegations: Delegation
         .includes(answer: [:question, :building])
         .where(
           answer: Answer.where(building: buildings),
-          building_operator: current_building_operator,
+          building_operator: self,
           status: "active"
         )
         .load.to_a,

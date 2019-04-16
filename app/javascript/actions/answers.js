@@ -7,33 +7,17 @@ import {
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
   UPDATE_LOCAL_ANSWER,
-  REMOVE_ANSWER,
-} from '../constants';
-import { post, postFile, patch, destroy } from '../fetch/requester';
-
-const EMPTY_ANSWER = {
-  text: '',
-  building_id: -1,
-  question_id: -1,
-  selected_option_id: null,
-  attachment_file_name: '',
-  attachment_content_type: '',
-  attachment_file_size: '',
-  attachment_updated_at: '',
-  delegation_email: '',
-  delegation_first_name: '',
-  delegation_last_name: '',
-};
+  DELETE_LOCAL_ANSWER,
+  REMOVE_ANSWER
+} from "../constants";
+import { post, postFile, patch, destroy } from "../fetch/requester";
 
 function answerFetchInProgress(buildingId, answer) {
   return {
     type: ANSWER_FETCH_IN_PROGRESS,
     fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
-    answer: {
-      ...EMPTY_ANSWER,
-      ...answer
-    }
+    answer
   };
 }
 
@@ -64,6 +48,14 @@ export function updateLocalAnswer(buildingId, answer) {
   };
 }
 
+export function removeLocalAnswer(buildingId, answer) {
+  return {
+    type: DELETE_LOCAL_ANSWER,
+    buildingId,
+    answer
+  };
+}
+
 /**
  * Creates a new answer in the database,
  * updates the answer in store and sends a fetch request.
@@ -76,7 +68,7 @@ export async function createAnswer(buildingId, answer, dispatch) {
   dispatch(answerFetchInProgress(buildingId, answer));
 
   try {
-    let response = await post('/api/answers', {'answer': answer});
+    let response = await post("/api/answers", { answer: answer });
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
@@ -90,7 +82,7 @@ export async function updateAnswer(buildingId, answer, dispatch) {
   dispatch(answerFetchInProgress(buildingId, answer));
 
   try {
-    let response = await patch('/api/answers/' + answer.id, {'answer': answer});
+    let response = await patch("/api/answers/" + answer.id, { answer: answer });
     dispatch(answerFetchSuccess(response.data));
   } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
@@ -98,18 +90,17 @@ export async function updateAnswer(buildingId, answer, dispatch) {
 }
 
 export async function uploadFile(buildingId, questionId, file, dispatch) {
-  dispatch(answerFetchInProgress(buildingId, {question_id: questionId}));
+  dispatch(answerFetchInProgress(buildingId, { question_id: questionId }));
 
   const formData = new FormData();
-  formData.append('answer[attachment]', file);
-  formData.append('answer[building_id]', buildingId);
-  formData.append('answer[question_id]', questionId);
+  formData.append("answer[attachment]", file);
+  formData.append("answer[building_id]", buildingId);
+  formData.append("answer[question_id]", questionId);
   try {
-    let response = await postFile('/api/answers', formData);
+    let response = await postFile("/api/answers", formData);
     dispatch(updateLocalAnswer(buildingId, response.data));
     dispatch(answerFetchSuccess(response.data));
-  }
-  catch (error) {
+  } catch (error) {
     dispatch(answerFetchFailure(buildingId, questionId, error));
   }
 }
@@ -117,14 +108,18 @@ export async function uploadFile(buildingId, questionId, file, dispatch) {
 export async function deleteFile(buildingId, answer, dispatch) {
   // Get rid of the attachment name locally to give the user the appearance that it was deleted
   // immediately. However, we need wait for the DELETE request to go through to be fully finished
-  dispatch(updateLocalAnswer(buildingId, {...answer, attachment_file_name: undefined}));
+  dispatch(
+    updateLocalAnswer(buildingId, {
+      ...answer,
+      attachment_file_name: undefined
+    })
+  );
 
   try {
-    let response = await destroy('/api/answers/' + answer.id + '/attachment');
+    let response = await destroy("/api/answers/" + answer.id + "/attachment");
     dispatch(updateLocalAnswer(buildingId, response.data));
     dispatch(answerFetchSuccess(response.data));
-  }
-  catch (error) {
+  } catch (error) {
     dispatch(answerFetchFailure(buildingId, answer.question_id, error));
   }
 }
