@@ -43,10 +43,10 @@ class Modal extends React.Component {
 					<br />
 					<label>
 						State
-						<select>
+						<select id="state">
 							{states.map(state => {
 								return (
-									<option type="text" id="state" value={state}>
+									<option type="text" value={state}>
 										{state}
 									</option>
 								);
@@ -61,10 +61,10 @@ class Modal extends React.Component {
 					<br />
 					Building Type
 					<label>
-						<select>
+						<select id="building">
 							{Object.keys(this.props.building_types).map(building_type => {
 								return (
-									<option type="text" id="building" value={building_type}>
+									<option type="text" value={building_type}>
 										{this.props.building_types[building_type].name}
 									</option>
 								);

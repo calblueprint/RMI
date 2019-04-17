@@ -91,7 +91,7 @@ class PortfolioContainer extends React.Component {
   }
   async updateAnswers(answers, buildingId) {
     try {
-      let response = await patch("/api/answers/update_multiple", {
+      let response = await patch("/api/batch_update_answers", {
         answers: answers,
         answer: {}
       });
