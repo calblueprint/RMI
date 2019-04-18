@@ -34,7 +34,6 @@ function fetchPortfolios(state, action) {
 }
 
 function addPortfolio(state, action) {
-  console.log('reducer')
   const portfolio = action.portfolio;
   const portfolioId = portfolio.id;
   return {

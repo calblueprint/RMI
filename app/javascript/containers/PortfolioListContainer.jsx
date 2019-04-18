@@ -55,8 +55,6 @@ class PortfolioListContainer extends React.Component {
         name: portfolioName,
       });
       const portfolio = { ...response.data };
-      console.log('after api')
-      console.log(portfolio)
       const portfolioId = portfolio.id;
       this.props.addPortfolio(portfolio);
       this.props.history.push(`/portfolios/${portfolioId}`);

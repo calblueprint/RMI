@@ -43,7 +43,7 @@ class Api::PortfoliosController < ApplicationController
           .permit(
               :name,
               :asset_manager,
-              :buildings,
+              :buildings
           )
   end
 end
