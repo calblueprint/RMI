@@ -139,7 +139,7 @@ class PortfolioContainer extends React.Component {
   }
 
   addBuildingButton() {
-    if (this.props.userType == "RMIUser") {
+    if (this.props.userType === "RMIUser") {
       return (
         <button className="btn btn--primary" onClick={this.toggleModal}>
           + Add Building
@@ -157,6 +157,13 @@ class PortfolioContainer extends React.Component {
 
     return (
       <div className="portfolio__container">
+        <Modal
+          {...this.props}
+          showModal={this.state.showModal}
+          errors={this.state.errors}
+          toggleModal={this.toggleModal}
+          createBuilding={this.createBuilding}
+        />
         <div className="portfolio__header">
           <div>
             <Link to="/">
@@ -166,14 +173,7 @@ class PortfolioContainer extends React.Component {
           <div>
             <span className="small_header">PORTFOLIO</span>
             <h2>{this.props.portfolioName}</h2>
-          </div>{" "}
-          <Modal
-            {...this.props}
-            showModal={this.state.showModal}
-            errors={this.state.errors}
-            toggleModal={this.toggleModal}
-            createBuilding={this.createBuilding}
-          />
+          </div>
         </div>
         <div className="building__container">
           <div className="building__types">

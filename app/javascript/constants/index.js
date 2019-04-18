@@ -85,11 +85,11 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
 export const FETCH_IN_PROGRESS = "FETCH_IN_PROGRESS";
 export const FETCH_SETTINGS = {
-  credentials: "same-origin",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  }
+	credentials: "same-origin",
+	headers: {
+		Accept: "application/json",
+		"Content-Type": "application/json"
+	}
 };
 
 // Contact constants
