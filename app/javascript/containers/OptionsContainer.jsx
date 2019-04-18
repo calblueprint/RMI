@@ -8,7 +8,6 @@ import FreeOption from "../components/FreeOption";
 import Status from "../components/Status";
 import DependentQuestions from "../components/DependentQuestions";
 
-import { getEmail } from "../selectors/usersSelector"
 import { connect } from "react-redux";
 import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import {

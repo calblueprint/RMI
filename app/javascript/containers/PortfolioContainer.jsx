@@ -13,7 +13,7 @@ import {
   getPortfolioName,
   getSelectedBuildingId,
   getSelectedCategoryId
-} from "../selectors/portfolioSelector";
+} from "../selectors/portfoliosSelector";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
 import { getUserType } from "../selectors/usersSelector";
 

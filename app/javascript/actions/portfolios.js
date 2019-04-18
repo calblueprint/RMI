@@ -5,8 +5,8 @@ import {
   FETCH_IN_PROGRESS,
   FETCH_SETTINGS,
   ADD_PORTFOLIO,
-  VIEW_BUILDING_DETAILS,
-  VIEW_CATEGORY_DETAILS
+  SET_ACTIVE_CATEGORY,
+  SET_ACTIVE_BUILDING
 } from "../constants";
 
 export async function fetchPortfolios(dispatch) {
@@ -40,17 +40,17 @@ export function addPortfolio(portfolio) {
   };
 }
 
-export function viewBuildingDetails(portfolioId, buildingId) {
+export function setActiveBuilding(portfolioId, buildingId) {
   return {
-    type: VIEW_BUILDING_DETAILS,
+    type: SET_ACTIVE_BUILDING,
     portfolioId,
     buildingId
   };
 }
 
-export function viewCategoryDetails(categoryId, portfolioId) {
+export function setActiveCategory(categoryId, portfolioId) {
   return {
-    type: VIEW_CATEGORY_DETAILS,
+    type: SET_ACTIVE_CATEGORY,
     portfolioId,
     categoryId
   };

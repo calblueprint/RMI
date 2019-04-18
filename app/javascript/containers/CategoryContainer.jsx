@@ -1,77 +1,87 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { viewCategoryDetails } from '../actions/portfolios';
-import { getSelectedCategoryId } from '../selectors/portfolioSelector';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { setActiveCategory } from "../actions/portfolios";
+import { getSelectedCategoryId } from "../selectors/portfoliosSelector";
 
-
-class CategoryContainer extends React.Component { 
-    categoryProgress(answered, total) {
-        if (answered < total) {
-          return (<td className='category_status'><span className="dot yellow"></span>Waiting for Handoff</td>);
-        }
-        return (<td className='category_status'><span className="dot green"></span>Handed Off</td>);
+class CategoryContainer extends React.Component {
+  categoryProgress(answered, total) {
+    if (answered < total) {
+      return (
+        <td className="category_status">
+          <span className="dot yellow" />Waiting for Handoff
+        </td>
+      );
     }
+    return (
+      <td className="category_status">
+        <span className="dot green" />Handed Off
+      </td>
+    );
+  }
 
-    categoryDelegations() {
-        let delegations = this.props.categoryData.delegations;
-        let delegationInfo = "";
-        for (let i = 0; i < delegations.length; i++) {
-            let delegation = delegations[i];
-            delegationInfo += delegation.name + " " + delegation.email;
-        }
-        if (delegationInfo) {
-            return delegationInfo;
-        } else {
-            return (<span>No one assigned yet</span>);
-        }
-    } 
-
-    isActive(categoryId) {
-      console.log(categoryId)
-      console.log(this.props.selectedCategoryId)
-
-      if (this.props.selectedCategoryId == categoryId) {
-        console.log("active")
-        return "active"
-      }
-    }
-
-
-    render() {
-        let categoryData = this.props.categoryData;
-        let clickAction = this.props.clickAction;
-        let id = this.props.id;
-        let portfolioId = this.props.portfolioId;
-
+  categoryDelegations() {
+    let delegations = this.props.categoryData.delegations;
+    switch (delegations.length) {
+      case 0:
+        return <span>No one assigned yet</span>;
+      case 1:
+        return delegations[0].email;
+      case 2:
+        return delegations[0].email + " and " + delegations[1].email;
+      default:
         return (
-            <tr className='category_data'
-                onClick={() => {clickAction(id, portfolioId)}}
-                className={this.isActive(categoryData.id)}>
-                <td className='category_name'>{categoryData.name}</td>
-                {this.categoryProgress(categoryData.answered, categoryData.total)}
-                <td className='delegation_info'>{this.categoryDelegations()}</td>  
-            </tr>
+          delegations[0].email +
+          ", " +
+          delegations[1].email +
+          ", and " +
+          (delegations.length - 2) +
+          " others"
         );
     }
+  }
+
+  isActive(categoryId) {
+    if (this.props.selectedCategoryId == categoryId) {
+      return "active";
+    }
+  }
+
+  render() {
+    let { categoryData, setActiveCategory, id, portfolioId } = this.props;
+
+    return (
+      <tr
+        className="category_data"
+        onClick={() => {
+          setActiveCategory(id, portfolioId);
+        }}
+        className={this.isActive(categoryData.id)}
+      >
+        <td className="category_name">{categoryData.name}</td>
+        {this.categoryProgress(categoryData.answered, categoryData.total)}
+        <td className="delegation_info">{this.categoryDelegations()}</td>
+      </tr>
+    );
+  }
 }
 
 CategoryContainer.propTypes = {
-    portfolioId: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    categoryData: PropTypes.object.isRequired,
+  portfolioId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  categoryData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    selectedCategoryId: getSelectedCategoryId(ownProps.portfolioId, state),
+    selectedCategoryId: getSelectedCategoryId(ownProps.portfolioId, state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    clickAction: (categoryId, portfolioId) => {
-      dispatch(viewCategoryDetails(categoryId, portfolioId));
+    setActiveCategory: (categoryId, portfolioId) => {
+      dispatch(setActiveCategory(categoryId, portfolioId));
     }
   };
 }
