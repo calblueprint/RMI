@@ -53,7 +53,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
           </div>
           </div>
           <br></br>
-          <table className='portfolio_category_info' cellSpacing="0">
+          <table className='portfolio_category_info'>
           <thead>
             <tr className='cat_names'>
               <th className='small_header'>QUESTIONS</th>
