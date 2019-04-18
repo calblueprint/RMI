@@ -46,22 +46,15 @@ class Api::BuildingsController < ApplicationController
   end
 
   def get_users_to_login_times
-    puts 'oh nooooooo'
-    puts 'starting get_users_to_login_times'
     building = Building.find(params[:id])
     building_operators = Set.new []
-    puts 'looking through delegations'
     building.delegations.where(status: 'active').each do |delegation|
-      puts delegation.building_operator
       building_operators.add(delegation.building_operator)
     end
-    puts 'getting login times'
     users_to_login_times = {}
     building_operators.each do |building_operator|
       users_to_login_times[building_operator.email] = building_operator.last_sign_in_at
     end
-    puts 'done, rendering json'
-    puts users_to_login_times
     render_json_message(:ok, data: users_to_login_times, message: "Got login time data")
   end
 

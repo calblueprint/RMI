@@ -7,7 +7,7 @@ import DelegationInfoContainer from './DelegationInfoContainer';
 
 class CategoryDetailsContainer extends React.Component {    
     delegationInfo() {
-        let userData = this.props.userData;
+        let loginUserData = this.props.loginUserData;
         let catData = this.props.categoryData;
         let delegations = catData.delegations;
         
@@ -15,8 +15,8 @@ class CategoryDetailsContainer extends React.Component {
             return delegations.map((d) => {
                 let email = d.email
 
-                if (userData && userData[email]) {
-                    d.lastActive = userData[email];
+                if (loginUserData && loginUserData[email]) {
+                    d.lastActive = loginUserData[email];
                 }
                 return (<DelegationInfoContainer delegation={d}></DelegationInfoContainer>)
             })
@@ -54,7 +54,7 @@ CategoryDetailsContainer.propTypes = {
     buildingId: PropTypes.number.isRequired,
     buildingName: PropTypes.string.isRequired,
     categoryId: PropTypes.string.isRequired,
-    userData: PropTypes.object.isRequired,
+    loginUserData: PropTypes.object.isRequired,
     categoryData: PropTypes.object.isRequired
 };
 
@@ -66,9 +66,6 @@ function mapStateToProps(state, ownProps) {
   
 function mapDispatchToProps(dispatch) {
     return {
-        clickAction: (portfolioId, buildingId) => {
-        dispatch(viewBuildingDetails(portfolioId, buildingId));
-        }
     };
 }
 

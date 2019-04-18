@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewCategoryDetails } from '../actions/portfolios';
-import { getSelectedCategoryId } from '../selectors/portfolioSelector';
+import { setActiveCategory } from '../actions/portfolios';
+import { getSelectedCategoryId } from '../selectors/portfoliosSelector';
 
 
 class CategoryContainer extends React.Component { 
@@ -15,39 +15,31 @@ class CategoryContainer extends React.Component {
 
     categoryDelegations() {
         let delegations = this.props.categoryData.delegations;
-        let delegationInfo = "";
-        for (let i = 0; i < delegations.length; i++) {
-            let delegation = delegations[i];
-            delegationInfo += delegation.email;
-            delegationInfo += " ";
-        }
-        if (delegationInfo) {
-            return delegationInfo;
-        } else {
+        switch (delegations.length) {
+          case 0: 
             return (<span>No one assigned yet</span>);
+          case 1:
+            return delegations[0].email;
+          case 2:
+            return delegations[0].email + " and " + delegations[1].email;
+          default:
+            return delegations[0].email + ", " + delegations[1].email + ", and " + (delegations.length - 2) + " others";
         }
     } 
 
     isActive(categoryId) {
-      console.log(categoryId)
-      console.log(this.props.selectedCategoryId)
-
       if (this.props.selectedCategoryId == categoryId) {
-        console.log("active")
         return "active"
       }
     }
 
 
     render() {
-        let categoryData = this.props.categoryData;
-        let clickAction = this.props.clickAction;
-        let id = this.props.id;
-        let portfolioId = this.props.portfolioId;
-
+        let { categoryData, setActiveCategory, id, portfolioId } = this.props;
+      
         return (
             <tr className='category_data'
-                onClick={() => {clickAction(id, portfolioId)}}
+                onClick={() => {setActiveCategory(id, portfolioId)}}
                 className={this.isActive(categoryData.id)}>
                 <td className='category_name'>{categoryData.name}</td>
                 {this.categoryProgress(categoryData.answered, categoryData.total)}
@@ -71,8 +63,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    clickAction: (categoryId, portfolioId) => {
-      dispatch(viewCategoryDetails(categoryId, portfolioId));
+    setActiveCategory: (categoryId, portfolioId) => {
+      dispatch(setActiveCategory(categoryId, portfolioId));
     }
   };
 }

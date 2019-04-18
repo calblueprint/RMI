@@ -25,7 +25,9 @@ module ApplicationHelper
       ),
       portfolios: portfolio,
       contacts: contacts.to_a,
-      categories: current_asset_manager.categories,
+      categories: ActiveModel::Serializer::CollectionSerializer.new(
+        Category.all, each_serializer: CategorySerializer
+      ),
       userType: current_asset_manager.class.name,
     }
   end

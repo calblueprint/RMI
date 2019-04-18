@@ -3,7 +3,7 @@ import React from 'react';
 import * as BuildingActions from '../actions/buildings';
 import { loadInitialState } from '../actions/initialState';
 import { getBuildingsByPortfolio } from '../selectors/buildingsSelector';
-import { getPortfolioName, getSelectedBuildingId, getSelectedCategoryId } from '../selectors/portfolioSelector';
+import { getPortfolioName, getSelectedBuildingId, getSelectedCategoryId } from '../selectors/portfoliosSelector';
 import { Link } from "react-router-dom";
 import Logo from "../rmi-logo.png";
 import { bindActionCreators } from 'redux';

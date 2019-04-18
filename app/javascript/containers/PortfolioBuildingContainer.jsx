@@ -9,20 +9,20 @@ import { questionDataPerCategory } from '../selectors/answersSelector';
 class PortfolioBuildingContainer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {userData: null};
+        this.state = {loginUserData: null};
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.selectedBuildingId !== this.props.selectedBuildingId) {
-          this.getUserData();
+          this.getLoginUserData();
         }
     }
 
-    async getUserData() {
+    async getLoginUserData() {
         let building_id = this.props.selectedBuildingId;
         try {
             let response = await get('/api/buildings/' + building_id + '/get_user_data');
-            this.setState({userData: response.data});
+            this.setState({loginUserData: response.data});
             return response.data;
         } catch (error) {
             return {};
@@ -51,7 +51,7 @@ class PortfolioBuildingContainer extends React.Component {
         let categoriesData = this.props.categoriesData
         return buildings.map((b) => {
           if (b.id === selectedBuildingId && selectedCategoryId) {
-            return (<CategoryDetailsContainer userData={this.state.userData}
+            return (<CategoryDetailsContainer loginUserData={this.state.loginUserData}
                                               categoryData={categoriesData[selectedCategoryId]}
                                               key={b.id}
                                               buildingId={b.id}

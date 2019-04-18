@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { viewBuildingDetails } from '../actions/portfolios';
+import { setActiveBuilding } from '../actions/portfolios';
 import { getPercentAnsweredForBuildingGroup } from '../selectors/answersSelector';
 import { getBuildingTypeNameById } from '../selectors/buildingTypesSelector';
 import { connect } from 'react-redux';
@@ -32,7 +32,7 @@ class PortfolioBuildingDetailsContainer extends React.Component {
       <div className="building__names">
       {this.props.buildings.map((building) => {
         return (<div  key={building.id}
-                      onClick={() => {this.props.clickAction(portfolioId, building.id)}}
+                      onClick={() => {this.props.setActiveBuilding(portfolioId, building.id)}}
                       className={this.isActive(building.id)}>
                 <span className={"dot " + this.getDotStatus(building.id)}></span>
                 {building.name}
@@ -60,8 +60,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    clickAction: (portfolioId, buildingId) => {
-      dispatch(viewBuildingDetails(portfolioId, buildingId));
+    setActiveBuilding: (portfolioId, buildingId) => {
+      dispatch(setActiveBuilding(portfolioId, buildingId));
     }
   };
 }
