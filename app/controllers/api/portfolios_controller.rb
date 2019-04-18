@@ -17,20 +17,16 @@ class Api::PortfoliosController < ApplicationController
       portfolio = current_asset_manager.portfolios.new(portfolio_params)
     elsif rmi_user_signed_in?
       asset_manager = AssetManager.find_by(email: portfolio_params[:email])
-      if asset_manager.nil?
+      if asset_manager?
         puts 'asset manager nil'
-        render_json_message(:forbidden, message: "Invalid Asset Manager Email")
+        render_json_message(:forbidden, message: "Invalid Asset Manager Email", errors: ["Invalid Asset Manager Email"])
         return
       else
-        puts '1'
         portfolio = asset_manager.portfolios.new(portfolio_params.except(:email).merge(:id => asset_manager.id))
       end
     else
-        puts '2'
       render_json_message(:forbidden, message: 'No asset manager or RMI admin is currently signed in')
     end
-        puts '3'
-
     if portfolio.save
         render_json_message(:ok, message: 'New portfolio created', data: portfolio)
     else

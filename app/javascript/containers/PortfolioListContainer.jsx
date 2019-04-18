@@ -89,12 +89,20 @@ class PortfolioListContainer extends React.Component {
             <form onSubmit={this.createPortfolio}>
               <label>
                 Portfoio Name
-                <input type="text" name="portfolio" />
+                <input type="text" name="portfolio" required="required"/>
               </label>
               <br/>
               <label>
                 Asset Manager Email
                 <input type="text" name="email" required="required"/>
+              </label>
+              <label>
+                Asset Manager First Name
+                <input type="text" name="first" required="required"/>
+              </label>
+              <label>
+                Asset Manager Last Name
+                <input type="text" name="last" required="required"/>
               </label>
               <input type="submit" value="Submit" />
             </form>
