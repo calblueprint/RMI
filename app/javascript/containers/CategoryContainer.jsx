@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewCategoryDetails } from '../actions/portfolios';
+import { getSelectedCategoryId } from '../selectors/portfolioSelector';
 
 
 class CategoryContainer extends React.Component { 
@@ -27,19 +28,27 @@ class CategoryContainer extends React.Component {
         }
     } 
 
-    onClick() {
-        this.props.clickAction(this.props.id, this.props.portfolio_id)
+    isActive(categoryId) {
+      console.log(categoryId)
+      console.log(this.props.selectedCategoryId)
+
+      if (this.props.selectedCategoryId == categoryId) {
+        console.log("active")
+        return "active"
+      }
     }
+
 
     render() {
         let categoryData = this.props.categoryData;
         let clickAction = this.props.clickAction;
         let id = this.props.id;
-        let portfolio_id = this.props.portfolio_id;
+        let portfolioId = this.props.portfolioId;
 
         return (
             <tr className='category_data'
-                onClick={() => {clickAction(id, portfolio_id)}}>
+                onClick={() => {clickAction(id, portfolioId)}}
+                className={this.isActive(categoryData.id)}>
                 <td className='category_name'>{categoryData.name}</td>
                 {this.categoryProgress(categoryData.answered, categoryData.total)}
                 <td className='delegation_info'>{this.categoryDelegations()}</td>  
@@ -49,13 +58,15 @@ class CategoryContainer extends React.Component {
 }
 
 CategoryContainer.propTypes = {
-    portfolio_id: PropTypes.string.isRequired,
+    portfolioId: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     categoryData: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {};
+function mapStateToProps(state, ownProps) {
+  return {
+    selectedCategoryId: getSelectedCategoryId(ownProps.portfolioId, state),
+  };
 }
 
 function mapDispatchToProps(dispatch) {

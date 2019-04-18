@@ -37,8 +37,8 @@ class PortfolioBuildingContainer extends React.Component {
         return buildings.map((b) => {
           if (b.id === selectedBuildingId) {
             return (<PortfolioBuildingInfoContainer key={b.id} 
-                                                    building_id={b.id} 
-                                                    portfolio_id={pId}
+                                                    buildingId={b.id} 
+                                                    portfolioId={pId}
                                                     categoriesData={categoriesData}>
                     </PortfolioBuildingInfoContainer>)
           }
@@ -54,10 +54,10 @@ class PortfolioBuildingContainer extends React.Component {
             return (<CategoryDetailsContainer userData={this.state.userData}
                                               categoryData={categoriesData[selectedCategoryId]}
                                               key={b.id}
-                                              building_id={b.id}
-                                              building_name={b.name}
-                                              portfolio_id={pId.id}
-                                              category_id={selectedCategoryId}>
+                                              buildingId={b.id}
+                                              buildingName={b.name}
+                                              portfolioId={pId.id}
+                                              categoryId={selectedCategoryId}>
                     </CategoryDetailsContainer>)
           }
         })

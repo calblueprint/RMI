@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PortfolioBuildingDetailsContainer from './PortfolioBuildingDetailsContainer';
 import PortfolioBuildingContainer from './PortfolioBuildingContainer';
+import { getUserType } from '../selectors/usersSelector';
 
 class PortfolioContainer extends React.Component {
 
@@ -27,6 +28,11 @@ class PortfolioContainer extends React.Component {
     return buildingTypesDic;
   }
 
+  addBuildingButton() {
+    if (this.props.userType == "RMIUser") {
+      return (<button className="btn btn--primary" >+ Add Building</button>)
+    }
+  }
   
   render() {
     let buildingByType = this.groupBuildingsByType();
@@ -51,6 +57,7 @@ class PortfolioContainer extends React.Component {
       </div>
       <div className="building__container">
         <div className="building__types">
+          {this.addBuildingButton()}
           {Object.keys(buildingByType).map((typeId, i) => {
             return (<PortfolioBuildingDetailsContainer  key={i}
                                                         portfolioId={portfolioId}
@@ -76,7 +83,8 @@ function mapStateToProps(state, ownProps) {
     portfolioName: getPortfolioName(ownProps.match.params.pId, state),
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     selectedBuildingId: getSelectedBuildingId(ownProps.match.params.pId, state), 
-    selectedCategoryId: getSelectedCategoryId(ownProps.match.params.pId, state)
+    selectedCategoryId: getSelectedCategoryId(ownProps.match.params.pId, state),
+    userType: getUserType(state),
   };
 }
 

@@ -37,7 +37,6 @@ class OptionsContainer extends React.Component {
       question_id: this.props.question_id,
       selected_option_id: optionId,
       text: value,
-      editor_email: this.props.editor_email
     };
   }
 
@@ -169,7 +168,6 @@ function mapStateToProps(state, ownProps) {
       ownProps.question_type,
       state
     ),
-    editor_email: getEmail(state)
   };
 }
 

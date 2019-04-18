@@ -232,6 +232,10 @@
 .building__names {
   cursor: pointer;
   
+  :hover {
+    background-color: rgba($primary, 0.05);
+  }
+
   div{
     border-radius: 7px;
     margin-top: 10px;
@@ -243,7 +247,7 @@
 
   .active {
     background-color: $primary;
-    // background-color: #216DFF; color in figma
+    // background-color: #216DFF; color in figma i think ethan added this as vibrant primary
     color: white;
   }
 }
@@ -275,11 +279,6 @@
   margin: 3%;
   display: flex;
   flex-direction: row;
-
-  .building_category_details {
-    width: 450px;
-
-  }
 }
 
 .building__details {
@@ -301,12 +300,10 @@
 }
 
 .building_category_details {
-  padding-left: 3%;
-  padding-top: 3%;
-
-  div {
-    line-height: 1.4;
-    padding-bottom: 20px;
+  > div > div {
+    width: 300px;
+    padding-left: 40px;
+    padding-top: 40px;
   }
 }
 
@@ -345,9 +342,12 @@
 
 
 // main table
+
+
 .portfolio_category_info {
   width: 100%;
   margin: 0px;
+  border-collapse: separate;
   
   .cat_names {
     margin-top: 20px;
@@ -357,6 +357,32 @@
       padding-left: 15px; 
       text-align: left;
     }
+  }
+
+  tr td:first-child { 
+    border-top-left-radius: 7px; 
+    border-bottom-left-radius: 7px;
+  }
+
+  tr td:last-child { 
+    border-top-right-radius: 7px; 
+    border-bottom-right-radius: 7px;
+  }
+
+  .active {
+    background: rgba($primary, 0.1);
+    border: 3px solid $primary;
+    border-radius: 7px;
+    border: solid 7px #000;
+  }
+  
+  tbody tr:hover {
+    background: rgba($primary, 0.05);
+    cursor: pointer;
+  }
+
+  .active:hover {
+    background: rgba($primary, 0.1);
   }
 }
 
@@ -376,4 +402,20 @@
   color: #A1A0A0;
   font-size: 16px;
   font-weight: 600;
+}
+
+.delegations_list {
+  > div{
+    padding-top: 5px;
+    padding-bottom: 15px;
+
+    > div {
+      padding-bottom: 5px;
+    }
+  }
+
+  .delegation_status {
+    display: flex;
+    justify-content: space-between;
+  }
 }

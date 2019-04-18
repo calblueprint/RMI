@@ -123,10 +123,12 @@ export function getDelegation(question, buildingId, state) {
 
 export function getDelegations(categoryQuestions, buildingId, state) {
   let delegations = [];
+  let delegationEmails = [];
   for (let i = 0; i < categoryQuestions.length; i++) {
     let question = categoryQuestions[i];
     let delegation = getDelegation(question, buildingId, state)
-    if (delegation) {
+    if (delegation && !delegationEmails.includes(delegation.email)) {
+      delegationEmails.push(delegation.email)
       delegations.push(delegation);
     }
   }

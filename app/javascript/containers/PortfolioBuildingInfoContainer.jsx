@@ -27,17 +27,17 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   mapCategorytoContainer() {
     let categoriesData = this.props.categoriesData;  
-    let pId = this.props.portfolio_id;  
+    let pId = this.props.portfolioId;  
     return Object.keys(categoriesData).map((id) => {
-      return (<CategoryContainer portfolio_id={pId} id={id} categoryData={categoriesData[id]} key={id}></CategoryContainer>)
+      return (<CategoryContainer portfolioId={pId} id={id} categoryData={categoriesData[id]} key={id}></CategoryContainer>)
     })
   }
 
   render() {
-    let building_id = this.props.building_id;
+    let buildingId = this.props.buildingId;
 
     return (
-      <div className='building__details' key={this.props.building_id}>
+      <div className='building__details' key={this.props.buildingId}>
         <div className="building_info">
           <div>
             <span className='small_header'>BUILDING</span>
@@ -47,9 +47,9 @@ class PortfolioBuildingInfoContainer extends React.Component {
           <div>
             <span className="building__link">
                 {/* should be changed to different button */}
-                <Link to={`/buildings/${this.props.building_id}`}>Assign Building</Link>
+                <Link to={`/buildings/${this.props.buildingId}`}>Assign Building</Link>
             </span>
-            <a href={`download/${building_id}`}>Export CSV</a>
+            <a href={`download/${buildingId}`}>Export CSV</a>
           </div>
           </div>
           <br></br>
@@ -71,15 +71,15 @@ class PortfolioBuildingInfoContainer extends React.Component {
 }
 
 PortfolioBuildingInfoContainer.propTypes = {
-  portfolio_id: PropTypes.number.isRequired,
-  building_id: PropTypes.number.isRequired,
+  portfolioId: PropTypes.number.isRequired,
+  buildingId: PropTypes.number.isRequired,
   categoriesData: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    name: getNameByBuildingId(ownProps.building_id, state),
-    buildingStatus: percentAnswered(ownProps.building_id, state),
+    name: getNameByBuildingId(ownProps.buildingId, state),
+    buildingStatus: percentAnswered(ownProps.buildingId, state),
   };
 }
 
