@@ -93,13 +93,10 @@ class PortfolioListContainer extends React.Component {
               </label>
               <br/>
               <label>
-                Asset Manager Email
-                <input type="text" name="email" required="required"/>
-              </label>
-              <label>
                 Asset Manager First Name
                 <input type="text" name="first" required="required"/>
               </label>
+              <br/>
               <label>
                 Asset Manager Last Name
                 <input type="text" name="last" required="required"/>
