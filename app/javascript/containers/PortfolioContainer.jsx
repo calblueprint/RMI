@@ -1,13 +1,10 @@
 import React from "react";
-import ReactModal from "react-modal";
 
 import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import {
-  createAnswer,
-  updateAnswer,
   addAnswers,
   EMPTY_ANSWER,
   DELETE_LOCAL_ANSWER
@@ -15,10 +12,11 @@ import {
 import Modal from "../components/Modal.jsx";
 import { getBuildingTypes } from "../selectors/buildingTypesSelector";
 import { addBuilding } from "../actions/buildings";
-import { post, patch } from "../fetch/requester";
+import { post } from "../fetch/requester";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { delegateQuestions } from "../utils/DelegationRequests";
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -29,8 +27,6 @@ class PortfolioContainer extends React.Component {
     };
     this.createBuilding = this.createBuilding.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
-    this.delegateQuestions = this.delegateQuestions.bind(this);
-    this.updateAnswers = this.updateAnswers.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
   }
 
@@ -38,6 +34,14 @@ class PortfolioContainer extends React.Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
+  /**
+   * Creates empty answers for each of the given questions.
+   * (When we first create a building, we need all answers to exist even if they aren't filled in,
+   * so that future delegations can be tied to an answer)
+   *
+   * If `email` is specified, this will also delegate all the questions to the user
+   * with that email address.
+   */
   async createAnswers(questions, buildingId, email, firstName, lastName) {
     let answers = [];
     for (let i = 0; i < questions.length; i++) {
@@ -56,47 +60,15 @@ class PortfolioContainer extends React.Component {
       const newAnswers = response.data;
       this.props.addAnswers(newAnswers, buildingId);
       if (email != "") {
-        this.delegateQuestions(
+        await delegateQuestions(
           newAnswers,
           buildingId,
           email,
           firstName,
-          lastName
+          lastName,
+          this.props.addAnswers
         );
       }
-    } catch (error) {}
-  }
-  async delegateQuestions(answers, buildingId, email, firstName, lastName) {
-    let delegations = [];
-    for (const answer of Object.values(answers)) {
-      let delegation = {
-        email: email,
-        first_name: firstName,
-        last_name: lastName,
-        answer_id: answer.id
-      };
-      delegations.push(delegation);
-    }
-    try {
-      let response = await post("/api/delegations", { delegations });
-      const answersToUpdate = response.data;
-      Object.values(answersToUpdate).forEach(a => {
-        a.delegation_email = email;
-        a.delegation_first_name = firstName;
-        a.delegation_last_name = lastName;
-        answersToUpdate[a.question_id] = a;
-      });
-      this.updateAnswers(Object.values(answersToUpdate), buildingId);
-    } catch (error) {}
-  }
-  async updateAnswers(answers, buildingId) {
-    try {
-      let response = await patch("/api/batch_update_answers", {
-        answers: answers,
-        answer: {}
-      });
-      const updatedAnswers = response.data;
-      this.props.addAnswers(updatedAnswers, buildingId);
     } catch (error) {}
   }
 
@@ -132,7 +104,7 @@ class PortfolioContainer extends React.Component {
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
-      this.createAnswers(questions, buildingId, email, firstName, lastName);
+      await this.createAnswers(questions, buildingId, email, firstName, lastName);
       this.props.history.push(`/buildings/${buildingId}`);
     } catch (error) {
       this.setState({ errors: error, showModal: true });
