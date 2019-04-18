@@ -2,6 +2,8 @@ import {
   ANSWER_FETCH_IN_PROGRESS,
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
+  ADD_ANSWERS,
+  ADD_DELEGATIONS,
   FETCH_IN_PROGRESS,
   PRE_FETCH_SAVE,
   FETCH_SUCCESS,
@@ -108,6 +110,16 @@ function answerFetchFailure(state, action) {
   };
 }
 
+/**
+ * Adds answers from batch creation
+ */
+export function addAnswers(state, action) {
+  return {
+    ...state,
+    ...action.answers
+  };
+}
+
 export function answers(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
@@ -121,6 +133,8 @@ export function answers(state = {}, action) {
       return answerFetchSuccess(state, action);
     case ANSWER_FETCH_FAILURE:
       return answerFetchFailure(state, action);
+    case ADD_ANSWERS || ADD_DELEGATIONS:
+      return addAnswers(state, action);
     default:
       return state;
   }
