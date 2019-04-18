@@ -7,25 +7,32 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { post } from "../fetch/requester";
 import { addBuildingType } from "../actions/building_type";
+import { addPortfolio } from "../actions/portfolios";
 
 class PortfolioListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false, 
-      errors: null
+      showModal: false,
+      errors: null,
+      mode: "building"
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.createBuildingType = this.createBuildingType.bind(this);
+    this.createPortfolio = this.createPortfolio.bind(this);
   }
 
-  toggleModal() {
-    this.setState({ errors: null, showModal: !this.state.showModal });
+  toggleModal(type) {
+    this.setState({
+      errors: null,
+      showModal: !this.state.showModal,
+      mode: type
+    });
   }
 
   async createBuildingType(event) {
     event.preventDefault();
-    const typeName = event.target.name.value;
+    const typeName = event.target.building.value;
     try {
       let response = await post("/api/building_types", {
         name: typeName,
@@ -36,7 +43,25 @@ class PortfolioListContainer extends React.Component {
       this.props.addBuildingType(buildingType);
       this.props.history.push(`/building_types/${buildingTypeId}`);
     } catch (error) {
-      this.setState({errors: error, showModal: true});
+      this.setState({ errors: error, showModal: true });
+    }
+  }
+
+  async createPortfolio(event) {
+    event.preventDefault();
+    const portfolioName = event.target.portfolio.value;
+    const assetManagerEmail = event.target.email.value;
+    try {
+      let response = await post("/api/portfolios", {
+        name: portfolioName,
+        email: assetManagerEmail
+      });
+      const portfolio = { ...response.data };
+      const portfolioId = portfolio.id;
+      this.props.addPortfolio(portfolio);
+      this.props.history.push(`/portfolios/${portfolioId}`);
+    } catch (error) {
+      this.setState({ errors: error, showModal: true });
     }
   }
 
@@ -49,16 +74,32 @@ class PortfolioListContainer extends React.Component {
         <input
           type="button"
           value="Create New Building Type"
-          onClick={this.toggleModal}
+          onClick={() => this.toggleModal("building")}
         />
-        <ReactModal isOpen={this.state.showModal}>
-          <form onSubmit={this.createBuildingType}>
-            <label>
-              Add Building Type
-              <input type="text" name="name" />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
+        <ReactModal isOpen={this.state.showModal} ariaHideApp={false}>
+          {this.state.mode === "building" ? (
+            <form onSubmit={this.createBuildingType}>
+              <label>
+                Add Building Type
+                <input type="text" name="building" />
+              </label>
+              <input type="submit" value="Submit" />
+            </form>
+          ) : (
+            <form onSubmit={this.createPortfolio}>
+              <label>
+                Portfoio Name
+                <input type="text" name="portfolio" />
+              </label>
+              <br/>
+              <label>
+                Asset Manager Email
+                <input type="text" name="email" required="required"/>
+              </label>
+              <input type="submit" value="Submit" />
+            </form>
+          )}
+
           <div>{this.state.errors}</div>
           <button onClick={this.toggleModal}>Close Modal</button>
         </ReactModal>
@@ -71,6 +112,11 @@ class PortfolioListContainer extends React.Component {
           );
         })}
         <h2>Portfolios</h2>
+        <input
+          type="button"
+          value="Create New Portfoio"
+          onClick={() => this.toggleModal("portfolio")}
+        />
         {Object.keys(portfolios).map(id => {
           return (
             <p key={id}>
@@ -96,7 +142,10 @@ function mapDispatchToProps(dispatch) {
     initActions: bindActionCreators({ loadInitialState }, dispatch),
     addBuildingType: buildingType => {
       dispatch(addBuildingType(buildingType));
-    }
+    },
+    addPortfolio: portfolio => {
+      dispatch(addPortfolio(portfolio))
+    },
   };
 }
 

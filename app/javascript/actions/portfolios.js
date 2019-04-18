@@ -3,7 +3,8 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
-  FETCH_SETTINGS
+  FETCH_SETTINGS,
+  ADD_PORTFOLIO
 } from '../constants';
 
 export async function fetchPortfolios(dispatch) {
@@ -28,4 +29,9 @@ export async function fetchPortfolios(dispatch) {
     });
   };
 };
+
+export function addPortfolio(portfolio) {
+  type: ADD_PORTFOLIO,
+  portfolio
+}
 

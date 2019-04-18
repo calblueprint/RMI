@@ -15,6 +15,7 @@ export const SAVE_BUILDING_TYPE = 'SAVE_BUILDING_TYPE';
 
 // Portfolio ActionTypes
 export const FETCH_PORTFOLIOS = 'FETCH_PORTFOLIOS';
+export const ADD_PORTFOLIO = 'ADD_PORTFOLIO';
 
 // Building ActionTypes
 export const ADD_BUILDING = 'ADD_BUILDING';
