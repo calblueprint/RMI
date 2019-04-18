@@ -21,9 +21,9 @@ class DelegationInfoContainer extends React.Component {
         let lastActive = this.props.delegation.lastActive;
         
         if (lastActive === undefined) {
-            return "Not opened yet"
+            return (<span>Unopened</span>)
         }
-        return (<Moment fromNow>{lastActive}</Moment>);
+        return (<span><Moment fromNow>{lastActive}</Moment></span>);
     }
 
     render() {
