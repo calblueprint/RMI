@@ -12,10 +12,10 @@ import {
   FETCH_SETTINGS
 } from '../constants';
 
-export function addBuilding(portfolioId) {
+export function addBuilding(building) {
   return {
     type: ADD_BUILDING,
-    portfolioId
+    building
   };
 }
 

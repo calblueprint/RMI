@@ -10,6 +10,17 @@ class Api::AnswersController < ApplicationController
     end
   end
 
+  def create_multiple
+    answers = {}
+    answers_params.each do |a|
+      answer = Answer.create(a)
+      answers[a[:question_id]] = answer
+    end
+    render_json_message(:ok, data: answers, message: 'New answers created')
+    rescue => e
+      render_json_message(:forbidden, errors: e.message)
+  end
+
   def update
     answer = Answer.find(params[:id])
     if answer.update(answer_params)
@@ -17,6 +28,18 @@ class Api::AnswersController < ApplicationController
     else
       render_json_message(:forbidden, data: answer, errors: answer.errors.full_messages)
     end
+  end
+
+  def update_multiple
+    answers = {}
+    answers_params.each do |a|
+      answer = Answer.find(a[:id])
+      answer.update(a)
+      answers[a[:question_id]] = answer
+    end
+    render_json_message(:ok, data: answers, message: 'Answers batch updated')
+    rescue => e
+      render_json_message(:forbidden, errors: e.message)
   end
 
   # Redirect user to download attachment
@@ -66,9 +89,35 @@ class Api::AnswersController < ApplicationController
             :selected_option_id,
             :building_id,
             :question_id,
-            :delegation_email,
             :delegation_first_name,
-            :delegation_last_name
+            :delegation_last_name,
+            :delegation_email,
+            :attachment_file_name,
+            :attachment_content_type,
+            :attachment_file_size,
+            :attachment_updated_at
           )
+  end
+
+  def answers_params
+    params.require(:answers).map! do |answer|
+      answer.permit(
+            :text,
+            :attachment,
+            :selected_option_id,
+            :building_id,
+            :question_id,
+            :delegation_first_name,
+            :delegation_last_name,
+            :delegation_email,
+            :attachment_file_name,
+            :attachment_content_type,
+            :attachment_file_size,
+            :attachment_updated_at,
+            :id, 
+            :created_at,
+            :updated_at
+          )
+    end
   end
 end

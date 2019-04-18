@@ -50,13 +50,13 @@ class PortfolioListContainer extends React.Component {
   async createPortfolio(event) {
     event.preventDefault();
     const portfolioName = event.target.portfolio.value;
-    const assetManagerEmail = event.target.email.value;
     try {
       let response = await post("/api/portfolios", {
         name: portfolioName,
-        email: assetManagerEmail
       });
       const portfolio = { ...response.data };
+      console.log('after api')
+      console.log(portfolio)
       const portfolioId = portfolio.id;
       this.props.addPortfolio(portfolio);
       this.props.history.push(`/portfolios/${portfolioId}`);

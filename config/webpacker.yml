@@ -56,7 +56,6 @@ development:
       aggregate_timeout: 300
       poll: 1000
 
-
 test:
   <<: *default
   compile: true
