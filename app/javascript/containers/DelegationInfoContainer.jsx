@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DelegationContactCard from "../components/DelegationContactCard";
+import Moment from 'react-moment';
 
 class DelegationInfoContainer extends React.Component {    
     makeDelegation(firstName, lastName, email) {
@@ -18,19 +19,21 @@ class DelegationInfoContainer extends React.Component {
     
     lastActive() {
         let lastActive = this.props.delegation.lastActive;
-
-        if (lastActive) {
-            return "Last opened on " + String(lastActive)
+        
+        if (lastActive === undefined) {
+            return "Not opened yet"
         }
-        return "Not opened yet"
+        return (<Moment fromNow>{lastActive}</Moment>);
     }
 
     render() {
         let delegation = this.props.delegation;
         return (<div>
                     {this.makeDelegation(delegation.firstName, delegation.lastName, delegation.email)}
-                    {this.lastActive()}
-                    <button>Remind</button>
+                    <div className='delegation_status'>
+                        {this.lastActive()}
+                        <button>Remind</button>
+                    </div>
                 </div>);
     }
 }

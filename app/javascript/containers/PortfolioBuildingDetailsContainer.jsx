@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { viewBuildingDetails } from '../actions/portfolios';
-import { getUserType } from '../selectors/usersSelector';
 import { getPercentAnsweredForBuildingGroup } from '../selectors/answersSelector';
 import { getBuildingTypeNameById } from '../selectors/buildingTypesSelector';
 import { connect } from 'react-redux';
@@ -13,12 +12,6 @@ class PortfolioBuildingDetailsContainer extends React.Component {
   isActive(buildingId) {
     if (this.props.selectedBuildingId == buildingId) {
       return "active"
-    }
-  }
-
-  addBuildingButton() {
-    if (this.props.userType == "AssetManager") {
-      return (<button>+ Add Building</button>)
     }
   }
 
@@ -45,7 +38,6 @@ class PortfolioBuildingDetailsContainer extends React.Component {
                 {building.name}
                 </div>)
       })}
-      {this.addBuildingButton()}
       </div>
     </div>);
   }
@@ -61,7 +53,6 @@ PortfolioBuildingDetailsContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     buildingTypeName: getBuildingTypeNameById(ownProps.buildingTypeId, state),
-    userType: getUserType(state),
     // dictionary with building id as the keys and the percent of answered questions as the value
     percentAnswered: getPercentAnsweredForBuildingGroup(ownProps.buildings, state)
   };

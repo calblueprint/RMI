@@ -51,7 +51,8 @@ function viewBuildingDetails(state, action) {
     ...state,
     [pId]: {
       ...state[pId],
-      selectedBuilding: viewedBuildingId
+      selected_building: viewedBuildingId,
+      selected_category: null,
     }
   };
 }
@@ -63,7 +64,7 @@ function viewCategoryDetails(state, action) {
     ...state,
     [pId]: {
       ...state[pId],
-      selectedCategory: viewedCategoryId
+      selected_category: viewedCategoryId
     }
   };
 }

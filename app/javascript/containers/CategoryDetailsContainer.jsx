@@ -28,7 +28,7 @@ class CategoryDetailsContainer extends React.Component {
     
     render() {
         let catName = this.props.category.name;
-        let buildingName = this.props.building_name;
+        let buildingName = this.props.buildingName;
 
         return (
             <div>
@@ -38,7 +38,7 @@ class CategoryDetailsContainer extends React.Component {
                     <p>for {buildingName}</p>
                     <br></br>
                     <span className='building__link'>
-                        <Link to={`/buildings/${this.props.building_id}/edit/${this.props.category_id}`}>Open {catName} Questions</Link>
+                        <Link to={`/buildings/${this.props.buildingId}/edit/${this.props.categoryId}`}>Open {catName} Questions</Link>
                     </span>   
                 </div>
                 <div className='delegations_list'>
@@ -51,16 +51,16 @@ class CategoryDetailsContainer extends React.Component {
 }
 
 CategoryDetailsContainer.propTypes = {
-    building_id: PropTypes.number.isRequired,
-    building_name: PropTypes.string.isRequired,
-    category_id: PropTypes.string.isRequired,
+    buildingId: PropTypes.number.isRequired,
+    buildingName: PropTypes.string.isRequired,
+    categoryId: PropTypes.string.isRequired,
     userData: PropTypes.object.isRequired,
     categoryData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-      category: getCategoryById(ownProps.category_id, state),
+      category: getCategoryById(ownProps.categoryId, state),
     };
   }
   

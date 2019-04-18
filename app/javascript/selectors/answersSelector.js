@@ -124,10 +124,12 @@ export function getDelegation(question, buildingId, state) {
 
 export function getDelegations(categoryQuestions, buildingId, state) {
   let delegations = [];
+  let delegationEmails = [];
   for (let i = 0; i < categoryQuestions.length; i++) {
     let question = categoryQuestions[i];
     let delegation = getDelegation(question, buildingId, state);
-    if (delegation) {
+    if (delegation && !delegationEmails.includes(delegation.email)) {
+      delegationEmails.push(delegation.email);
       delegations.push(delegation);
     }
   }
@@ -174,24 +176,3 @@ export function progressForBuildingsArray(buildings, state) {
   }
   return progressArray;
 }
-
-// export function questionDataPerCategory(buildingId, categoriesArray, state) {
-//   let catData = {};
-
-//   for (let category of categoriesArray) {
-//     const categoryQuestions = getAllActiveQuestionsForCategory(category.id, buildingId, state);
-//     const numUnanswered = getNumUnanswered(categoryQuestions, buildingId, state);
-//     const categoryAnswers = getAllActiveAnswersForCategory(category.id, buildingId, state);
-
-//     catData[category.id] = {
-//       id: category.id,
-//       name: category.name,
-//       answered: categoryQuestions.length - numUnanswered,
-//       total: categoryQuestions.length,
-//       delegations: getDelegations(categoryAnswers, state)
-//     };
-//   }
-//   console.log("catData");
-//   console.log(catData);
-//   return catData;
-// }
