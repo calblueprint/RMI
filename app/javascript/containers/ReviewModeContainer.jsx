@@ -52,15 +52,50 @@ class ReviewModeContainer extends React.Component {
 
   // called when delegation should be submitted
   // should synchronously submit delegations since user expects success
-  async submitDelegations(delegations) {
-    this.setState({ status_string: "Saving delegations!" });
-    try {
-      let response = await post("/api/delegations", { delegations });
-      this.setState({ status_string: "Delegations saved." });
-    } catch (error) {
-      this.setState({
-        status_string: "Saving delegations failed. Try again?"
+  async submitDelegation() {
+    var parentQuestionsForDelegations = this.props.questions.filter(
+      question => {
+        answer = this.props.getAnswer(question.id);
+        return answer && !answer.text && answer.delegation_email;
+      }
+    );
+
+    var delegations = [];
+    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
+      var question = parentQuestionsForDelegations[i];
+      var answer = this.props.getAnswer(question.id);
+      var allDependentQuestions = this.props.getPotentialDependentQuestions(
+        question
+      );
+      allDependentQuestions.push(question);
+
+      allDependentQuestions.map(currentQuestion => {
+        var currentAnswer = this.props.getAnswer(currentQuestion.id);
+        if (currentAnswer) {
+          var delegation = {
+            email: answer.delegation_email,
+            first_name: answer.delegation_first_name,
+            last_name: answer.delegation_last_name,
+            answer_id: currentAnswer.id
+          };
+          delegations.push(delegation);
+        }
       });
+    }
+    if (delegations.length == 0) {
+      this.setState({
+        status_string: "There were no delegations to be saved!"
+      });
+    } else {
+      this.setState({ status_string: "Saving delegations!" });
+      try {
+        let response = await post("/api/delegations", { delegations });
+        this.setState({ status_string: "Delegations saved." });
+      } catch (error) {
+        this.setState({
+          status_string: "Saving delegations failed. Try again?"
+        });
+      }
     }
   }
 
@@ -94,36 +129,6 @@ class ReviewModeContainer extends React.Component {
   }
 
   render() {
-    var parentQuestionsForDelegations = this.props.questions.filter(
-      question => {
-        answer = this.props.getAnswer(question.id);
-        return answer && !answer.text && answer.delegation_email;
-      }
-    );
-
-    var delegations = [];
-    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
-      var question = parentQuestionsForDelegations[i];
-      var answer = this.props.getAnswer(question.id);
-      var allDependentQuestions = this.props.getPotentialDependentQuestions(
-        question
-      );
-      allDependentQuestions.push(question);
-
-      allDependentQuestions.map(currentQuestion => {
-        var currentAnswer = this.props.getAnswer(currentQuestion.id);
-        if (currentAnswer) {
-          var delegation = {
-            email: answer.delegation_email,
-            first_name: answer.delegation_first_name,
-            last_name: answer.delegation_last_name,
-            answer_id: currentAnswer.id
-          };
-          delegations.push(delegation);
-        }
-      });
-    }
-    let empty = delegations.length == 0 ? true : false;
     return (
       <div>
         {this.populateQuestionStack(this.props.building, this.props.questions)}
@@ -131,17 +136,12 @@ class ReviewModeContainer extends React.Component {
           <button
             type="submit"
             value="Submit Form"
-            onClick={() => this.submitDelegations(delegations)}
+            onClick={e => this.submitDelegation()}
             className="next-button next-button--submit"
-            disabled={empty}
           >
             Submit Form
           </button>
-          <p>
-            {empty
-              ? "There are no delegations to be saved."
-              : this.state.status_string}
-          </p>
+          <p>{this.state.status_string}</p>
         </div>
       </div>
     );
