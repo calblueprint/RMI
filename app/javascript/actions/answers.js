@@ -7,10 +7,26 @@ import {
   ANSWER_FETCH_SUCCESS,
   ANSWER_FETCH_FAILURE,
   UPDATE_LOCAL_ANSWER,
-  DELETE_LOCAL_ANSWER,
-  REMOVE_ANSWER
+  ADD_ANSWERS,
+  ADD_DELEGATIONS,
+  REMOVE_ANSWER,
+  DELETE_LOCAL_ANSWER
 } from "../constants";
 import { post, postFile, patch, destroy } from "../fetch/requester";
+
+export const EMPTY_ANSWER = {
+  text: "",
+  building_id: -1,
+  question_id: -1,
+  selected_option_id: null,
+  attachment_file_name: "",
+  attachment_content_type: "",
+  attachment_file_size: "",
+  attachment_updated_at: "",
+  delegation_email: "",
+  delegation_first_name: "",
+  delegation_last_name: ""
+};
 
 function answerFetchInProgress(buildingId, answer) {
   return {
@@ -37,6 +53,14 @@ function answerFetchFailure(buildingId, questionId, error) {
     response: error,
     buildingId,
     questionId
+  };
+}
+
+export function addAnswers(answers, buildingId) {
+  return {
+    type: ADD_ANSWERS,
+    answers,
+    buildingId
   };
 }
 

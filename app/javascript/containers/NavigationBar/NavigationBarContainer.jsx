@@ -15,7 +15,7 @@ import CategoryContainer from "./CategoryContainer";
 import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
 import { getNumUnanswered } from "../../selectors/answersSelector";
 import { getQuestionsByCategory } from "../../utils/QuestionsFilter";
-import Logo from "../../rmi-logo.png";
+import Logo from "../../images/rmi-logo.png";
 
 class NavigationBarContainer extends React.Component {
   render() {
@@ -55,15 +55,23 @@ class NavigationBarContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   //The navigation system for categories and questions requires us to be in a building view
-  const buildingView = ownProps.match.params.entity == "buildings" && ownProps.match.params.id;
+  const buildingView =
+    ownProps.match.params.entity == "buildings" && ownProps.match.params.id;
   //gather questions for the building making sure we are in a building view and taking it from the id in the url
   const questions =
     buildingView && ownProps.match.params.id
       ? getQuestionsByBuilding(ownProps.match.params.id, state)
       : [];
   //likewise gathering the specific category from params of url
-  const categoryId = buildingView ? (ownProps.match.params.cId ? ownProps.match.params.cId : 'review_mode') : null;
-  const questionsByCategory = categoryId != 'review_mode' ? getQuestionsByCategory(categoryId, questions) : questions;
+  const categoryId = buildingView
+    ? ownProps.match.params.cId
+      ? ownProps.match.params.cId
+      : "review_mode"
+    : null;
+  const questionsByCategory =
+    categoryId != "review_mode"
+      ? getQuestionsByCategory(categoryId, questions)
+      : questions;
   //remaining questions is the number of questions for the category that we are viewing for a specific building
   //we check for the questions through answers of a building and a category requiring a check for the building id and
   //questions
