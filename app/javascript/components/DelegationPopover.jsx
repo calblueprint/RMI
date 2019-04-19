@@ -60,25 +60,27 @@ class DelegationPopover extends React.Component {
 
   render() {
     return (
-      <Popover position={Position.BOTTOM} minimal>
-        <button className="delegation__popover-btn">Assign contact</button>
-        {this.state.showNameInputs ? (
-          <DelegationNameInputs
-            handleContactInfoChange={this.handleContactInfoChange}
-            handleClickSaveContact={this.selectContact}
-          />
-        ) : (
-          <DelegationContactDropdown
-            handleClickCreateContact={() =>
-              this.setState({ showNameInputs: true })
-            }
-            handleContactInfoChange={this.handleContactInfoChange}
-            handleExistingContactSelect={this.selectContactByEmail}
-            toggleSelected={this.props.toggleSelected}
-            contacts={Object.values(this.filterContacts())}
-            email={this.state.email}
-          />
-        )}
+      <Popover position={Position.BOTTOM_LEFT} minimal>
+        <button className="delegation__popover-btn">Assign Contact</button>
+        <div className="delegation__popover-content">
+          {this.state.showNameInputs ? (
+            <DelegationNameInputs
+              handleContactInfoChange={this.handleContactInfoChange}
+              handleClickSaveContact={this.selectContact}
+            />
+          ) : (
+            <DelegationContactDropdown
+              handleClickCreateContact={() =>
+                this.setState({ showNameInputs: true })
+              }
+              handleContactInfoChange={this.handleContactInfoChange}
+              handleExistingContactSelect={this.selectContactByEmail}
+              toggleSelected={this.props.toggleSelected}
+              contacts={Object.values(this.filterContacts())}
+              email={this.state.email}
+            />
+          )}
+        </div>
       </Popover>
     );
   }
