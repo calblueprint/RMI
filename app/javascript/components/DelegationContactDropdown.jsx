@@ -4,12 +4,11 @@ import { Suggest } from "@blueprintjs/select";
 
 import validateEmail from "../utils/validateEmail";
 
-function DelegationContactSelector({
+function DelegationContactDropdown({
   email,
   handleClickCreateContact,
   handleContactInfoChange,
   handleExistingContactSelect,
-  handleDelegationCancel,
   toggleSelected,
   contacts
 }) {
@@ -35,7 +34,6 @@ function DelegationContactSelector({
 
   return (
     <div>
-      <p className="delegation__label">Handoff</p>
       <Suggest
         inputValueRenderer={contact => contact.email}
         itemRenderer={(contact, { handleClick, modifiers }) => {
@@ -63,14 +61,8 @@ function DelegationContactSelector({
         popoverProps={{ minimal: true }}
         noResults={noResultsFallback}
       />
-      <button
-        className="btn btn--secondary delegation__edit_btn"
-        onClick={handleDelegationCancel}
-      >
-        Answer Question
-      </button>
     </div>
   );
 }
 
-export default DelegationContactSelector;
+export default DelegationContactDropdown;
