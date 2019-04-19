@@ -44,6 +44,7 @@ function DelegationContactDropdown({
               key={contact.email}
               onClick={handleClick}
               text={`${contact.first_name} ${contact.last_name}`}
+              style={{ minWidth: "290px" }}
             />
           );
         }}
@@ -60,7 +61,9 @@ function DelegationContactDropdown({
           // autoFocus: true,
           style: { minWidth: "300px" }
         }}
-        popoverProps={{ minimal: true }}
+        popoverProps={{
+          minimal: true
+        }}
         noResults={noResultsFallback}
       />
     </div>
