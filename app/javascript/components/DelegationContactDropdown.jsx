@@ -58,9 +58,9 @@ function DelegationContactDropdown({
           onBlur: e => toggleSelected(),
           value: email,
           placeholder: "name@email.com",
-          // autoFocus: true,
           style: { minWidth: "300px" }
         }}
+        inputRef={ref => ref && ref.focus()}
         popoverProps={{
           minimal: true
         }}
