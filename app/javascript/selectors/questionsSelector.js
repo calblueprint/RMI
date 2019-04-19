@@ -11,6 +11,10 @@ export function getQuestionsByBuilding(buildingId, state) {
   });
 }
 
+export function getQuestionIdsByBuilding(buildingId, state) {
+  return state.buildings[buildingId].questions;
+}
+
 /**
  * Gets array of question objects for a buildingType by buildingType ID.
  * @param { number } buildingTypeId - the buildingType ID

@@ -7,6 +7,7 @@ import OptionsContainer from '../containers/OptionsContainer';
 const TRANSITION_DURATION = 0.4;
 
 function DependentQuestions({
+  allowedQuestionIds,
   answer,
   dependentQuestions,
   buildingId,
@@ -34,7 +35,7 @@ function DependentQuestions({
   return (
     <div className="questions__nested">
       {
-        allDependentQuestions.map((question, i) => {
+        allDependentQuestions.filter(question => allowedQuestionIds.includes(String(question.id))).map((question, i) => {
           const visibleQuestion = question.parent_option_id == selectedOption;
           const isActive = visibleQuestion && !parentIsHidden;
 
@@ -102,6 +103,7 @@ const transitionStyles = {
 };
 
 DependentQuestions.propTypes = {
+  allowedQuestionIds: PropTypes.array.isRequired,
   answer: PropTypes.shape({ // Optional - new questions can have no answer
 
   }),

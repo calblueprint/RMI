@@ -10,7 +10,7 @@ import DependentQuestions from '../components/DependentQuestions';
 
 import { connect } from 'react-redux';
 import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import { getDependentQuestionsForOptionIds } from '../selectors/questionsSelector';
+import {getDependentQuestionsForOptionIds, getQuestionIdsByBuilding} from '../selectors/questionsSelector';
 import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
@@ -129,6 +129,7 @@ class OptionsContainer extends React.Component {
       </div>
       {this.props.answer ?
         <DependentQuestions
+          allowedQuestionIds={this.props.allowedQuestionIds}
           answer={this.props.answer}
           dependentQuestions={this.props.dependentQuestions}
           buildingId={this.props.building_id}
@@ -143,8 +144,9 @@ class OptionsContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    allowedQuestionIds: getQuestionIdsByBuilding(ownProps.building_id, state),
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state)
+    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state),
   }
 }
 
