@@ -1,49 +1,175 @@
-import React from 'react';
+/**
+ * Mode that allows user to review all answers and delegations before submitting.
+ * ROUTE - /buildings/:bId/review
+ */
 
-import * as BuildingActions from '../actions/buildings';
-import { loadInitialState } from '../actions/initialState';
-import { getBuildingsByPortfolio } from '../selectors/buildingsSelector';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React from "react";
 
-class PortfolioContainer extends React.Component {
+import QuestionContainer from "./QuestionContainer";
+
+import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
+import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
+import { connect } from "react-redux";
+import { getQuestionsByBuilding } from "../selectors/questionsSelector";
+import { getQuestionsByCategory } from "../utils/QuestionsFilter";
+import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
+import CategoryHeader from "../components/CategoryHeader";
+
+import { post, patch } from "../fetch/requester";
+
+function mapCategorytoQuestions(categoryMap, categoryId, building) {
+  return categoryMap[categoryId].map(question => {
+    // Only display non-dependent questions initially
+    if (question.parent_option_id) {
+      //TODO: look at this later
+      // let filteredQuestion = categoryMap[categoryId].filter((pQuestion) => {
+      //   return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
+      // })[0];
+      // let option = building.answers[filteredQuestion.id].selected_option_id;
+      // if (option && option != question.parent_option_id) {
+      //   return null;
+      // }
+      return null;
+    }
+    return (
+      <QuestionContainer
+        mode="review"
+        key={question.id}
+        building_id={building.id}
+        {...question}
+      />
+    );
+  });
+}
+
+class ReviewModeContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status_string: "Delegations have not been saved yet."
+    };
+  }
+
+  // called when delegation should be submitted
+  // should synchronously submit delegations since user expects success
+  async submitDelegation() {
+    let delegations = this.getDelegations();
+    if (delegations.length == 0) {
+      this.setState({
+        status_string: "There were no delegations to be saved!"
+      });
+    } else {
+      this.setState({ status_string: "Saving delegations!" });
+      try {
+        let response = await post("/api/delegations", { delegations });
+        this.setState({ status_string: "Delegations saved." });
+      } catch (error) {
+        this.setState({
+          status_string: "Saving delegations failed. Try again?"
+        });
+      }
+    }
+  }
+
+  getDelegations() {
+    var parentQuestionsForDelegations = this.props.questions.filter(
+      question => {
+        answer = this.props.getAnswer(question.id);
+        return answer && !answer.text && answer.delegation_email;
+      }
+    );
+
+    var delegations = [];
+    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
+      var question = parentQuestionsForDelegations[i];
+      var answer = this.props.getAnswer(question.id);
+      var allDependentQuestions = this.props.getPotentialDependentQuestions(
+        question
+      );
+      allDependentQuestions.push(question);
+
+      allDependentQuestions.map(currentQuestion => {
+        var currentAnswer = this.props.getAnswer(currentQuestion.id);
+        if (currentAnswer) {
+          var delegation = {
+            email: answer.delegation_email,
+            first_name: answer.delegation_first_name,
+            last_name: answer.delegation_last_name,
+            answer_id: currentAnswer.id
+          };
+          delegations.push(delegation);
+        }
+      });
+    }
+    return delegations;
+  }
+
+  populateQuestionStack(building, questions) {
+    let categoryMap = new Map();
+    let count = 0;
+    let stack = [];
+    for (let category in this.props.categories) {
+      let stateCategory = this.props.categories[category];
+      count += 1;
+      categoryMap[stateCategory.id] = getQuestionsByCategory(
+        stateCategory.id,
+        questions
+      );
+      stack.push(
+        <CategoryHeader
+          category={stateCategory}
+          number={count}
+          buildingId={building.id}
+        />
+      );
+      stack = stack.concat(
+        <table cellSpacing="0">
+          <tbody>
+            {mapCategorytoQuestions(categoryMap, stateCategory.id, building)}
+          </tbody>
+        </table>
+      );
+    }
+    return stack;
+  }
+
   render() {
-    return (<div>
-      <h2>Portfolio</h2>
-      <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
-      <hr />
-      <div className="building__container">
-      {this.props.buildings.map(building => {
-        return (<div className="building__row" key={building.id}>
-            <div className="building__details">
-              <h3>{building.name}</h3>
-              <p>{building.address}</p>
-            </div>
-            <span className="building__link">
-              <Link to={`/buildings/${building.id}`}>Details</Link>
-            </span>
-        </div>)
-      })}
+    return (
+      <div>
+        {this.populateQuestionStack(this.props.building, this.props.questions)}
+        <div className="delegation">
+          <button
+            type="submit"
+            value="Submit Form"
+            onClick={e => this.submitDelegation()}
+            className="next-button next-button--submit"
+          >
+            Submit Form
+          </button>
+          <p>{this.state.status_string}</p>
+        </div>
       </div>
-    </div>);
+    );
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
-    buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state) 
+    getPotentialDependentQuestions: question =>
+      getPotentialDependentQuestions(question, state),
+    building: state.buildings[ownProps.building.id],
+    questions: getQuestionsByBuilding(ownProps.building.id, state),
+    getAnswer: questionId =>
+      getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
+    categories: getCategoriesForBuilding(ownProps.building.id, state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    buildingActions: bindActionCreators(BuildingActions, dispatch),
-    initActions: bindActionCreators({ loadInitialState }, dispatch)
-  };
+  return {};
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PortfolioContainer);
+)(ReviewModeContainer);
