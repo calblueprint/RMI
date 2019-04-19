@@ -7,6 +7,7 @@ class Api::DelegationsController < ApplicationController
     Delegation.transaction do
       # TODO: validate this user is currently the person delegated to
       # maybe easier to do in controller than cancancan?
+      three_days = 259200
       users_to_email = []
       answers = {}
       delegations_params.each do |delegation_params|
@@ -53,7 +54,7 @@ class Api::DelegationsController < ApplicationController
         delegation.save!
       end
       users_to_email.uniq.each do |u|
-        if u.last_email_received < u.last_sign_in_at || Time.now.utc - 259200 >= u.last_email_received 
+        if u.last_email_received < u.last_sign_in_at || Time.now.utc - three_days >= u.last_email_received 
           BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
         end
       end
