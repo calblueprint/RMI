@@ -18,16 +18,18 @@ const rootReducer = {
 };
 
 export default function reducerWithInitialState(reducer = rootReducer) {
+  const persistedReducer = persistCombineReducers(
+    {
+      key: "root",
+      storage
+    },
+    reducer
+  );
+
   return function wrappedReducer(state, action) {
     if (action.type === LOAD_INITIAL_STATE) {
       return { ...state, ...action };
     }
-    return persistCombineReducers(
-      {
-        key: "root",
-        storage
-      },
-      reducer
-    )(state, action);
+    return persistedReducer(state, action);
   };
 }
