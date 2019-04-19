@@ -54,7 +54,7 @@ class Api::DelegationsController < ApplicationController
         delegation.save!
       end
       users_to_email.uniq.each do |u|
-        if u.last_email_received < u.last_sign_in_at || Time.now.utc - three_days >= u.last_email_received 
+        if u.last_email_received.nil? || u.last_email_received < u.last_sign_in_at || Time.now.utc - three_days >= u.last_email_received 
           BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
         end
       end
