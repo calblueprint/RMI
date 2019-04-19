@@ -86,18 +86,8 @@ class PortfolioListContainer extends React.Component {
           ) : (
             <form onSubmit={this.createPortfolio}>
               <label>
-                Portfoio Name
+                Portfolio Name
                 <input type="text" name="portfolio" required="required"/>
-              </label>
-              <br/>
-              <label>
-                Asset Manager First Name
-                <input type="text" name="first" required="required"/>
-              </label>
-              <br/>
-              <label>
-                Asset Manager Last Name
-                <input type="text" name="last" required="required"/>
               </label>
               <input type="submit" value="Submit" />
             </form>
@@ -117,7 +107,7 @@ class PortfolioListContainer extends React.Component {
         <h2>Portfolios</h2>
         <input
           type="button"
-          value="Create New Portfoio"
+          value="Create New Portfolio"
           onClick={() => this.toggleModal("portfolio")}
         />
         {Object.keys(portfolios).map(id => {
