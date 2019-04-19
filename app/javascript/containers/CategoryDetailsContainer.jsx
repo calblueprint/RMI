@@ -5,6 +5,9 @@ import { getCategoryById } from '../selectors/categoriesSelector'
 import PropTypes from 'prop-types';
 import DelegationInfoContainer from './DelegationInfoContainer';
 
+/** Renders the main details for a specific category, 
+ * including the category name and building name
+ */
 class CategoryDetailsContainer extends React.Component {    
     delegationInfo() {
         let loginUserData = this.props.loginUserData;

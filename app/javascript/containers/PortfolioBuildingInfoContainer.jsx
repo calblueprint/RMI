@@ -6,6 +6,8 @@ import { getNameByBuildingId } from "../selectors/buildingsSelector";
 import CategoryContainer from './CategoryContainer';
 import { percentAnswered } from '../selectors/answersSelector';
 
+/** Renders the main information for the building, including the name and 
+ * the table containing the status of each category */
 class PortfolioBuildingInfoContainer extends React.Component {
 
   getStatusForBuilding() {

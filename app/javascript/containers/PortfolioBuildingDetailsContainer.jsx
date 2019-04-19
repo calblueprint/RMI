@@ -6,7 +6,8 @@ import { getBuildingTypeNameById } from '../selectors/buildingTypesSelector';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-
+/** Portfolio View sidebar- this renders a list of building names 
+ * which can be clicked to display more information */
 class PortfolioBuildingDetailsContainer extends React.Component { 
 
   isActive(buildingId) {
