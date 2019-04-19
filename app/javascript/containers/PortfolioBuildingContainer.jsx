@@ -6,6 +6,10 @@ import { get } from '../fetch/requester';
 import { connect } from "react-redux";
 import { questionDataPerCategory } from '../selectors/answersSelector';
 
+/* Renders the two main containers for the portfolio view according to the selected building
+and selected category and handles the GET request for the login times needed to see the last time
+another user was active.
+*/
 class PortfolioBuildingContainer extends React.Component {
     constructor(props) {
         super(props);

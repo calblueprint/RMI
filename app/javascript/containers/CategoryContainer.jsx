@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import { setActiveCategory } from "../actions/portfolios";
 import { getSelectedCategoryId } from "../selectors/portfoliosSelector";
 
+/** Renders the name, status, and a list of delegations for a specific category
+ * child of the PortfolioBuildingInfoContainer
+ */
 class CategoryContainer extends React.Component {
   categoryProgress(answered, total) {
     if (answered < total) {
