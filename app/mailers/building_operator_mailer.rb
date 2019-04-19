@@ -20,7 +20,7 @@ class BuildingOperatorMailer < ApplicationMailer
     @current_user = current_user
     @user.last_email_received = Time.now.utc
     @user.save
-    @url = edit_building_operator_password_url(@user, reset_password_token: raw)
+    @url = building_operator_session_url(@user)
     mail_to @user, subject: 'You have been assigned new building tasks'
   end
 
@@ -28,7 +28,7 @@ class BuildingOperatorMailer < ApplicationMailer
     @user = user
     @user.last_email_received = Time.now.utc
     @user.save
-    @url = edit_building_operator_password_url(@user, reset_password_token: raw)
+    @url = building_operator_session_url(@user)
     mail_to @user, subject: 'Reminder: Delegated Questions Pending!'
   end
 
