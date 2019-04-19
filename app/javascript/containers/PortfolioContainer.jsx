@@ -1,152 +1,148 @@
-/**
- * Mode that allows user to review all answers and delegations before submitting.
- * ROUTE - /buildings/:bId/review
- */
-
 import React from "react";
 
-import QuestionContainer from "./QuestionContainer";
-
+import * as BuildingActions from "../actions/buildings";
+import { loadInitialState } from "../actions/initialState";
+import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
+import {
+  addAnswers,
+  EMPTY_ANSWER,
+  DELETE_LOCAL_ANSWER
+} from "../actions/answers";
+import Modal from "../components/Modal.jsx";
+import { getBuildingTypes } from "../selectors/buildingTypesSelector";
+import { addBuilding } from "../actions/buildings";
+import { post } from "../fetch/requester";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getQuestionsByBuilding } from "../selectors/questionsSelector";
-import { getQuestionsByCategory } from "../utils/QuestionsFilter";
-import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
-import CategoryHeader from "../components/CategoryHeader";
+import { Link } from "react-router-dom";
+import { delegateQuestions } from "../utils/DelegationRequests";
 
-import { post, patch } from "../fetch/requester";
-
-function mapCategorytoQuestions(categoryMap, categoryId, building) {
-  return categoryMap[categoryId].map(question => {
-    // Only display non-dependent questions initially
-    if (question.parent_option_id) {
-      //TODO: look at this later
-      // let filteredQuestion = categoryMap[categoryId].filter((pQuestion) => {
-      //   return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
-      // })[0];
-      // let option = building.answers[filteredQuestion.id].selected_option_id;
-      // if (option && option != question.parent_option_id) {
-      //   return null;
-      // }
-      return null;
-    }
-    return (
-      <QuestionContainer
-        mode="review"
-        key={question.id}
-        building_id={building.id}
-        {...question}
-      />
-    );
-  });
-}
-
-class ReviewModeContainer extends React.Component {
+class PortfolioContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status_string: "Delegations have not been saved yet."
+      showModal: false,
+      errors: null
     };
+    this.createBuilding = this.createBuilding.bind(this);
+    this.createAnswers = this.createAnswers.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  // called when delegation should be submitted
-  // should synchronously submit delegations since user expects success
-  async submitDelegation() {
-    let delegations = this.getDelegations();
-    if (delegations.length == 0) {
-      this.setState({
-        status_string: "There were no delegations to be saved!"
-      });
-    } else {
-      this.setState({ status_string: "Saving delegations!" });
-      try {
-        let response = await post("/api/delegations", { delegations });
-        this.setState({ status_string: "Delegations saved." });
-      } catch (error) {
-        this.setState({
-          status_string: "Saving delegations failed. Try again?"
-        });
-      }
+  toggleModal() {
+    this.setState({ showModal: !this.state.showModal });
+  }
+
+  /**
+   * Creates empty answers for each of the given questions.
+   * (When we first create a building, we need all answers to exist even if they aren't filled in,
+   * so that future delegations can be tied to an answer)
+   *
+   * If `email` is specified, this will also delegate all the questions to the user
+   * with that email address.
+   */
+  async createAnswers(questions, buildingId, email, firstName, lastName) {
+    let answers = [];
+    for (let i = 0; i < questions.length; i++) {
+      let emptyAnswer = {
+        ...EMPTY_ANSWER,
+        building_id: buildingId,
+        question_id: questions[i]
+      };
+      answers.push(emptyAnswer);
     }
+    try {
+      let response = await post("/api/answers/create_multiple", {
+        answers: answers,
+        answer: {}
+      });
+      const newAnswers = response.data;
+      this.props.addAnswers(newAnswers, buildingId);
+      if (email != "") {
+        await delegateQuestions(
+          newAnswers,
+          buildingId,
+          email,
+          firstName,
+          lastName,
+          this.props.addAnswers
+        );
+      }
+    } catch (error) {}
   }
 
-  getDelegations() {
-    var parentQuestionsForDelegations = this.props.questions.filter(
-      question => {
-        answer = this.props.getAnswer(question.id);
-        return answer && !answer.text && answer.delegation_email;
-      }
+  async createBuilding(event) {
+    event.preventDefault();
+    const buildingName = event.target.name.value;
+    const email = event.target.email.value;
+    const buildingTypeId = document.getElementById("building").value;
+    const address = event.target.address.value;
+    const city = event.target.city.value;
+    const state = document.getElementById("state").value;
+    const zip = event.target.zip.value;
+    const firstName = event.target.first.value;
+    const lastName = event.target.last.value;
+    const questions = Object.values(
+      this.props.building_types[buildingTypeId].questions
     );
-
-    var delegations = [];
-    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
-      var question = parentQuestionsForDelegations[i];
-      var answer = this.props.getAnswer(question.id);
-      var allDependentQuestions = this.props.getPotentialDependentQuestions(
-        question
-      );
-      allDependentQuestions.push(question);
-
-      allDependentQuestions.map(currentQuestion => {
-        var currentAnswer = this.props.getAnswer(currentQuestion.id);
-        if (currentAnswer) {
-          var delegation = {
-            email: answer.delegation_email,
-            first_name: answer.delegation_first_name,
-            last_name: answer.delegation_last_name,
-            answer_id: currentAnswer.id
-          };
-          delegations.push(delegation);
-        }
-      });
+    const obj = {
+      name: buildingName,
+      building_type_id: buildingTypeId,
+      address: address,
+      city: city,
+      state: state,
+      zip: zip,
+      portfolio_id: this.props.match.params.pId
+    };
+    try {
+      let response = await post("/api/buildings", obj);
+      const building = {
+        ...response.data,
+        answers: {},
+        questions: questions
+      };
+      const buildingId = building.id;
+      this.props.addBuilding(building);
+      await this.createAnswers(questions, buildingId, email, firstName, lastName);
+      this.props.history.push(`/buildings/${buildingId}`);
+    } catch (error) {
+      this.setState({ errors: error, showModal: true });
     }
-    return delegations;
-  }
-
-  populateQuestionStack(building, questions) {
-    let categoryMap = new Map();
-    let count = 0;
-    let stack = [];
-    for (let category in this.props.categories) {
-      let stateCategory = this.props.categories[category];
-      count += 1;
-      categoryMap[stateCategory.id] = getQuestionsByCategory(
-        stateCategory.id,
-        questions
-      );
-      stack.push(
-        <CategoryHeader
-          category={stateCategory}
-          number={count}
-          buildingId={building.id}
-        />
-      );
-      stack = stack.concat(
-        <table cellSpacing="0">
-          <tbody>
-            {mapCategorytoQuestions(categoryMap, stateCategory.id, building)}
-          </tbody>
-        </table>
-      );
-    }
-    return stack;
   }
 
   render() {
     return (
       <div>
-        {this.populateQuestionStack(this.props.building, this.props.questions)}
-        <div className="delegation">
-          <button
-            type="submit"
-            value="Submit Form"
-            onClick={e => this.submitDelegation()}
-            className="next-button next-button--submit"
-          >
-            Submit Form
-          </button>
-          <p>{this.state.status_string}</p>
+        <h2>Portfolio</h2>
+        <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
+        <hr />
+        <input
+          type="button"
+          value="Create New Building"
+          onClick={this.toggleModal}
+        />
+        <Modal
+          {...this.props}
+          showModal={this.state.showModal}
+          errors={this.state.errors}
+          toggleModal={this.toggleModal}
+          createBuilding={this.createBuilding}
+        />
+        <div className="building__container">
+          {this.props.buildings.map(building => {
+            return (
+              <div className="building__row" key={building.id}>
+                <div className="building__details">
+                  <h3>{building.name}</h3>
+                  <p>{building.address}</p>
+                </div>
+                <span className="building__link">
+                  <Link to={`/buildings/${building.id}`}>Details</Link>
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -155,21 +151,27 @@ class ReviewModeContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    getPotentialDependentQuestions: question =>
-      getPotentialDependentQuestions(question, state),
-    building: state.buildings[ownProps.building.id],
-    questions: getQuestionsByBuilding(ownProps.building.id, state),
-    getAnswer: questionId =>
-      getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
-    categories: getCategoriesForBuilding(ownProps.building.id, state)
+    buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
+    building_types: getBuildingTypes(state),
+    getAnswer: (questionId, buildingId) =>
+      getAnswerForQuestionAndBuilding(questionId, buildingId, state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    buildingActions: bindActionCreators(BuildingActions, dispatch),
+    initActions: bindActionCreators({ loadInitialState }, dispatch),
+    addBuilding: building => {
+      dispatch(addBuilding(building));
+    },
+    addAnswers: (answers, buildingId) => {
+      dispatch(addAnswers(answers, buildingId));
+    }
+  };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReviewModeContainer);
+)(PortfolioContainer);
