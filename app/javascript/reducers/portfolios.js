@@ -1,7 +1,8 @@
 import {
   FETCH_PORTFOLIOS,
   FETCH_SUCCESS,
-  FETCH_FAILURE
+  FETCH_FAILURE,
+  ADD_PORTFOLIO
 } from '../constants';
 
 function fetchPortfolios(state, action) {
@@ -32,10 +33,20 @@ function fetchPortfolios(state, action) {
   }
 }
 
+function addPortfolio(state, action) {
+  const portfolio = action.portfolio;
+  const portfolioId = portfolio.id;
+  return {
+    ...state,
+    [portfolioId]: portfolio
+  }
+}
+
 export default function portfolios(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
     case FETCH_PORTFOLIOS: return fetchPortfolios(state, action);
+    case ADD_PORTFOLIO: return addPortfolio(state, action);
     default: return state;
   }
 }
