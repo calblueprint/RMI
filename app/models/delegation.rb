@@ -20,7 +20,7 @@ class Delegation < ApplicationRecord
   belongs_to :source, :class_name => 'BuildingOperator', :foreign_key => 'source_id', optional: true
   belongs_to :answer
 
-  enum status: %i[predelegated delegated active]
+  enum status: %i[predelegated delegated active completed]
 
   validates :status, presence: true
 
