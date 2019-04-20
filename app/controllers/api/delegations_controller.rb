@@ -32,6 +32,7 @@ class Api::DelegationsController < ApplicationController
         Delegation.where(
           answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
             # mark delegation on same answer_id for current_user as completed
+            # what if rmi_user delegates questions?
             if old_delegation.building_operator == current_user
               old_delegation.update(status: :completed)
             else

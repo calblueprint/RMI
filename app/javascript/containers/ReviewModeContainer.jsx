@@ -54,6 +54,7 @@ class ReviewModeContainer extends React.Component {
   // should synchronously submit delegations since user expects success
   async submitDelegation() {
     let delegations = this.getDelegations();
+    console.log(delegations)
     if (delegations.length == 0) {
       this.setState({
         status_string: "There were no delegations to be saved!"
@@ -63,6 +64,7 @@ class ReviewModeContainer extends React.Component {
       try {
         let response = await post("/api/delegations", { delegations });
         this.setState({ status_string: "Delegations saved." });
+        // this.updateDelegationStatus();
       } catch (error) {
         this.setState({
           status_string: "Saving delegations failed. Try again?"
@@ -80,6 +82,7 @@ class ReviewModeContainer extends React.Component {
     );
 
     var delegations = [];
+    var answered_questions = []
     for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
       var question = parentQuestionsForDelegations[i];
       var answer = this.props.getAnswer(question.id);
@@ -99,9 +102,13 @@ class ReviewModeContainer extends React.Component {
           };
           delegations.push(delegation);
         }
+        else {
+          // should we be collecting answered questions here? questions that 
+          answered_questions.push()
+        }
       });
     }
-    return delegations;
+    return delegations, answered_questions;
   }
 
   populateQuestionStack(building, questions) {
