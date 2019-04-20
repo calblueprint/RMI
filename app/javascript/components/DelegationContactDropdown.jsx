@@ -20,7 +20,10 @@ function DelegationContactDropdown({
         key={email}
         label={email}
         disabled={false}
-        onClick={e => handleClickCreateContact()}
+        onClick={(ev) => {
+          handleClickCreateContact();
+          ev.stopPropagation();
+        }}
       />
     );
   } else {
@@ -49,9 +52,9 @@ function DelegationContactDropdown({
           );
         }}
         items={contacts}
-        onItemSelect={(contact, e) =>
-          handleExistingContactSelect(contact.email)
-        }
+        onItemSelect={(contact) => {
+          handleExistingContactSelect(contact.email);
+        }}
         inputProps={{
           onChange: e => handleContactInfoChange("email", e.target.value),
           onFocus: e => toggleSelected(),
@@ -60,7 +63,6 @@ function DelegationContactDropdown({
           placeholder: "name@email.com",
           style: { minWidth: "300px" }
         }}
-        inputRef={ref => ref && ref.focus()}
         popoverProps={{
           minimal: true
         }}

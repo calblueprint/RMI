@@ -96,5 +96,11 @@ p.delegation__label {
 }
 
 .delegation__popover-content {
-  min-width: 300px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.delegation__name-inputs {
+  padding: 10px 20px;
 }

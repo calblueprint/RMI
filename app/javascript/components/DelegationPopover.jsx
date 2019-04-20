@@ -60,8 +60,15 @@ class DelegationPopover extends React.Component {
 
   render() {
     return (
-      <Popover position={Position.BOTTOM_LEFT} minimal>
-        <button className="delegation__popover-btn">Assign Contact</button>
+      <Popover
+        position={Position.BOTTOM_LEFT}
+        isOpen={this.state.popoverOpen}
+        onInteraction={nextState => {
+          this.setState({ popoverOpen: nextState });
+        }}
+        minimal
+      >
+        <button className="delegation__popover-btn">{this.props.label}</button>
         <div className="delegation__popover-content">
           {this.state.showNameInputs ? (
             <DelegationNameInputs
@@ -93,7 +100,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 DelegationPopover.defaultProps = {
-  toggleSelected: () => 0 /* no-op by default */
+  toggleSelected: () => 0 /* no-op by default */,
+  label: "Assign Contact"
 };
 
 export default connect(mapStateToProps)(DelegationPopover);
