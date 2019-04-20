@@ -19,7 +19,6 @@ import {
   removeLocalAnswer
 } from "../actions/answers";
 import { getDependentQuestionsForOptionIds, getQuestionIdsByBuilding } from '../selectors/questionsSelector';
-import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
   constructor(props) {

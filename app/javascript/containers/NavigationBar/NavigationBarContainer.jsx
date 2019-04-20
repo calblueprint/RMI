@@ -14,7 +14,7 @@ import {
 import CategoryContainer from "./CategoryContainer";
 import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
 import { getRemainingAnswersforCategory } from "../../selectors/answersSelector";
-import Logo from "../../rmi-logo.png";
+import Logo from "../../images/rmi-logo.png";
 
 class NavigationBarContainer extends React.Component {
   render() {
