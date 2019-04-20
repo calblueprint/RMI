@@ -43,14 +43,16 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
   } catch (error) {}
 }
 
-export async function delegateBuildingQuestions(buildingId, userDetails) {
+export async function delegateBuildingQuestions(buildingId, userDetails, state, callbackFn=null) {
   let answers = getAnswersForBuilding(buildingId, state);
   
-  delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+  await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+  callbackFn ? callbackFn() : null;
 }
 
-export async function delegateCategoryQuestions(categoryId, buildingId, userDetails) {
+export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, callbackFn=null) {
   let answers = getAnswersForCategoryAndBuilding(categoryId, buildingId, state);
 
-  delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+  await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+  callbackFn ? callbackFn() : null;
 }
