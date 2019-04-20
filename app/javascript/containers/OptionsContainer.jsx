@@ -98,7 +98,6 @@ class OptionsContainer extends React.Component {
 
   onClickHandoff(ev) {
     ev.preventDefault();
-    this.props.removeLocalAnswer(this.props.building_id, this.props.answer);
     this.props.onDelegationAdd();
   }
 

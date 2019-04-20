@@ -52,6 +52,7 @@ function removeLocalAnswer(state, action) {
     [answer.question_id]: {
       ...state[answer.question_id],
       text: "",
+      selected_option_id: null,
       attachment_file_name: ""
     }
   };

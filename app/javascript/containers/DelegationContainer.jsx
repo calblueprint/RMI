@@ -14,7 +14,12 @@ import {
   isValidAnswer,
   isDelegatedAnswer
 } from "../selectors/answersSelector";
-import { createAnswer, updateAnswer } from "../actions/answers";
+import { getContacts } from "../selectors/contactsSelector";
+import {
+  createAnswer,
+  updateAnswer,
+  removeLocalAnswer
+} from "../actions/answers";
 
 import validateEmail from "../utils/validateEmail";
 
@@ -98,6 +103,12 @@ class DelegationContainer extends React.Component {
           email={this.props.answer.delegation_email}
           handleClickChangeContact={() => {
             this.clearContact();
+            if (this.props.mode === "delegation") {
+              this.props.removeLocalAnswer(
+                this.props.answer.building_id,
+                this.props.answer
+              );
+            }
           }}
           handleClickRemoveContact={() => {
             this.clearContact();
@@ -170,6 +181,9 @@ function mapDispatchToProps(dispatch) {
     },
     updateAnswer: function(buildingId, answer) {
       return updateAnswer(buildingId, answer, dispatch);
+    },
+    removeLocalAnswer: function(buildingId, answer) {
+      return dispatch(removeLocalAnswer(buildingId, answer));
     }
   };
 }
