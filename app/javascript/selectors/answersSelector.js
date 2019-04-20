@@ -42,18 +42,6 @@ export function getNumAnswered(questions, buildingId, state) {
   }, 0);
 }
 
-export function getAllActiveAnswersForCategory(categoryId, buildingId, state) {
-  const answers = state.buildings[buildingId].answers;
-
-  let activeAnswers = [];
-  for (let key in answers) {
-    if (state.questions[answers[key].id].category_id === categoryId) {
-      activeAnswers.push(answers[key]);
-    }
-  }
-  return activeAnswers;
-}
-
 // is unanswered if there is no text and no delegation
 export function isUnansweredQuestion(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
