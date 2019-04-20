@@ -23,6 +23,11 @@ module ApplicationHelper
           portfolio.buildings, each_serializer: BuildingSerializer,
           scope: current_user.get_scope
       ),
+      building_types: ActiveModel::Serializer::CollectionSerializer.new(
+        BuildingType.where(id: portfolio.buildings.map{ |b| b.building_type_id }.uniq),
+        each_serializer: BuildingTypeSerializer,
+        scope: current_user.get_scope
+      ),
       portfolios: portfolio,
       contacts: contacts.to_a,
       categories: ActiveModel::Serializer::CollectionSerializer.new(
