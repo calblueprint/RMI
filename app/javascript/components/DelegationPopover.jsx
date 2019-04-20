@@ -66,6 +66,7 @@ class DelegationPopover extends React.Component {
         onInteraction={nextState => {
           this.setState({ popoverOpen: nextState });
         }}
+        onClose={() => this.setState({ showNameInputs: false })}
         minimal
       >
         <button className="delegation__popover-btn">{this.props.label}</button>
