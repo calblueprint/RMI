@@ -71,6 +71,18 @@ class Api::DelegationsController < ApplicationController
     render_json_message(:forbidden, errors: e.message)
   end
 
+  def set_completed
+    completed_delegations = {}
+    delegations_params.each do |delegation_param|
+      a = Answer.find(delegation_param[:answer_id], status: :active)
+      a.delegations.each do |delegation|
+        delegation.update(status: :completed)
+        completed_delegations[a.id] = delegation
+      end
+    end
+    return completed_delegations
+  end
+
   # access to delegation is done from endpoints related to questions
 
   private
