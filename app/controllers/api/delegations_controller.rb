@@ -1,5 +1,5 @@
 class Api::DelegationsController < ApplicationController
-
+  include ApplicationHelper
   # XXX: dependent questions are not automatically delegated, user should post
   # a batch that includes all dependent questions known
   def create
@@ -7,19 +7,25 @@ class Api::DelegationsController < ApplicationController
     Delegation.transaction do
       # TODO: validate this user is currently the person delegated to
       # maybe easier to do in controller than cancancan?
+      three_days = 259200
+      users_to_email = []
       answers = {}
       delegations_params.each do |delegation_params|
         operator = BuildingOperator.find_by(email: delegation_params[:email])
-        unless operator
+        if !operator.nil?
+          users_to_email.push(operator)
+        else 
           # if building operator doesn't exist, create it
           operator = BuildingOperator.new(
             email: delegation_params[:email],
             first_name: delegation_params[:first_name],
             last_name: delegation_params[:last_name],
             phone: "0000000000", # use this filler by default, should be replaced during first login
-            password: (0...15).map { (65 + rand(26)).chr }.join
+            password: (0...15).map { (65 + rand(26)).chr }.join,
+            last_sign_in_at: Time.utc(2000)
           )
           operator.save!
+          BuildingOperatorMailer.new_user_delegated_email(operator, current_user).deliver_now
         end
 
         # mark all other delegations on same answer_id delegated
@@ -46,6 +52,11 @@ class Api::DelegationsController < ApplicationController
         authorize! :create, delegation
 
         delegation.save!
+      end
+      users_to_email.uniq.each do |u|
+        if u.last_email_received.nil? || u.last_email_received < u.last_sign_in_at || Time.now.utc - three_days >= u.last_email_received 
+          BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
+        end
       end
       render_json_message(:ok, data: answers, message: 'New delegations created')
     end

@@ -39,12 +39,6 @@ class BuildingOperator < ApplicationRecord
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
   validates_uniqueness_of :email
 
-  # New building operator accounts are only created when an asset manager delegates a question to them,
-  # so send an onboarding email telling them they have new questions.
-  def send_onboarding_email
-    BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
-  end
-
   def building_types
     building_types = Set.new []
     buildings.each do |building|
@@ -134,6 +128,10 @@ class BuildingOperator < ApplicationRecord
 
   def questions
     questions_by_buildings(buildings.map { |b| b.id })
+  end
+
+  def remind
+    BuildingOperatorMailer.existing_user_reminder_email(self).deliver_now
   end
 
   def get_scope
