@@ -18,7 +18,7 @@ import CategoryHeader from '../components/CategoryHeader';
 import {post, patch} from '../fetch/requester';
 
 async function postDelegations(delegations) {
-  var body = {delegations};
+  let body = {delegations};
 
   try {
     let resp = await post('/api/delegations', body);
@@ -40,22 +40,22 @@ class ReviewModeContainer extends React.Component {
   // called when delegation should be submitted
   // should synchronously submit delegations since user expects success
   async submitDelegation() {
-    var parentQuestionsForDelegations = this.props.questions.filter((question) => {
-      answer = this.props.getAnswer(question.id);
+    let parentQuestionsForDelegations = this.props.questions.filter((question) => {
+      const answer = this.props.getAnswer(question.id);
       return answer && !answer.text && answer.delegation_email;
     });
 
-    var delegations = [];
-    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
-      var question = parentQuestionsForDelegations[i];
-      var answer = this.props.getAnswer(question.id);
-      var allDependentQuestions = this.props.getPotentialDependentQuestions(question);
+    let delegations = [];
+    for (let i = 0; i < parentQuestionsForDelegations.length; i++) {
+      let question = parentQuestionsForDelegations[i];
+      let answer = this.props.getAnswer(question.id);
+      let allDependentQuestions = this.props.getPotentialDependentQuestions(question);
       allDependentQuestions.push(question);
 
       allDependentQuestions.map((currentQuestion) => {
-        var currentAnswer = this.props.getAnswer(currentQuestion.id);
+        let currentAnswer = this.props.getAnswer(currentQuestion.id);
         if (currentAnswer) {
-          var delegation = {
+          let delegation = {
             email: answer.delegation_email,
             first_name: answer.delegation_first_name,
             last_name: answer.delegation_last_name,
@@ -68,7 +68,9 @@ class ReviewModeContainer extends React.Component {
     }
 
     this.setState({status_string: "Saving delegations!"});
-    var success = await postDelegations(delegations);
+    console.log("Submitting delegations:");
+    console.log(delegations);
+    let success = await postDelegations(delegations);
     if (success) {
       this.setState({status_string: "Delegations saved."});
     } else {

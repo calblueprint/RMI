@@ -21,12 +21,8 @@ class Api::DelegationsController < ApplicationController
           operator.save!
         end
 
-        # mark all other delegations on same answer_id delegated
-        Delegation.where(
-          answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
-            old_delegation.update(status: :delegated)
-        end
-
+        # Clear the temporary delegation fields on the answer
+        # (these are used to track in-progress but not submitted delegations)
         answer = Answer.find(delegation_params[:answer_id]);
         unless answer.has_no_delegation
           answer.delegation_email = ""
@@ -35,6 +31,7 @@ class Api::DelegationsController < ApplicationController
           answer.save!
         end
 
+        # Create the new delegation
         delegation = Delegation.new(
           answer: answer,
           source: current_building_operator,
@@ -42,9 +39,16 @@ class Api::DelegationsController < ApplicationController
           status: :active
         )
 
+        # Confirm that the user is allowed to delegate this question before saving it
         authorize! :create, delegation
-
         delegation.save!
+
+        # Once delegation is done, mark all other delegations on same answer_id delegated
+        Delegation.where(answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
+          if old_delegation != delegation
+            old_delegation.update(status: :delegated)
+          end
+        end
       end
       render_json_message(:ok, message: 'New delegations created')
     end
