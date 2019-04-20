@@ -28,6 +28,8 @@ class AssetManager < ApplicationRecord
 
   has_one :portfolio
 
+  after_create :send_onboarding_email
+
   validates :first_name, :last_name, presence: true
   # email validation with regex
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
@@ -77,6 +79,10 @@ class AssetManager < ApplicationRecord
       questions.merge(bt.questions)
     end
     questions
+  end
+
+  def send_onboarding_email
+    AssetManagerMailer.new_user_delegated_email(self).deliver_now
   end
 
   def get_scope

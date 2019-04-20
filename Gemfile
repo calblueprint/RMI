@@ -66,7 +66,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Opens email previews in browser instead of sending them
-  gem 'letter_opener'
+  gem 'letter_opener', :group => :development
   # adds gem for authorization cancancan
 
 end

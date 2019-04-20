@@ -1,16 +1,24 @@
-import React from 'react';
+import React from "react";
 
-import PropTypes from 'prop-types';
-import DropdownOption from '../components/DropdownOption';
-import RangeOption from '../components/RangeOption';
-import FileOption from '../components/FileOption';
-import FreeOption from '../components/FreeOption';
-import Status from '../components/Status';
-import DependentQuestions from '../components/DependentQuestions';
+import PropTypes from "prop-types";
+import DropdownOption from "../components/DropdownOption";
+import RangeOption from "../components/RangeOption";
+import FileOption from "../components/FileOption";
+import FreeOption from "../components/FreeOption";
+import Status from "../components/Status";
+import DependentQuestions from "../components/DependentQuestions";
 
-import { connect } from 'react-redux';
-import { getAnswerForQuestionAndBuilding } from '../selectors/answersSelector';
-import {getDependentQuestionsForOptionIds, getQuestionIdsByBuilding} from '../selectors/questionsSelector';
+import { connect } from "react-redux";
+import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
+import {
+  createAnswer,
+  uploadFile,
+  deleteFile,
+  updateAnswer,
+  updateLocalAnswer,
+  removeLocalAnswer
+} from "../actions/answers";
+import { getDependentQuestionsForOptionIds, getQuestionIdsByBuilding } from '../selectors/questionsSelector';
 import { createAnswer, uploadFile, deleteFile, updateAnswer, updateLocalAnswer } from '../actions/answers';
 
 class OptionsContainer extends React.Component {
@@ -42,6 +50,10 @@ class OptionsContainer extends React.Component {
    *                      for dropdown options, it's the text of the option that was selected.
    */
   onChange(optionId, value) {
+    if (!this.props.answer || this.props.answer.text === value) {
+      // No changes have been made
+      return;
+    }
     const answer = this.getAnswerData(optionId, value);
     this.props.updateLocalAnswer(this.props.building_id, answer);
   }
@@ -60,8 +72,7 @@ class OptionsContainer extends React.Component {
     // Dispatch an action to update answer in the database and in store
     if (!this.props.answer || !this.props.answer.id) {
       this.props.createAnswer(answer.building_id, answer);
-    }
-    else {
+    } else {
       answer.id = this.props.answer.id;
       this.props.updateAnswer(answer.building_id, answer);
     }
@@ -86,6 +97,12 @@ class OptionsContainer extends React.Component {
     }
   }
 
+  onClickHandoff(ev) {
+    ev.preventDefault();
+    this.props.removeLocalAnswer(this.props.building_id, this.props.answer);
+    this.props.onDelegationAdd();
+  }
+
   render() {
     const optionProps = {
       options: this.props.options,
@@ -104,7 +121,7 @@ class OptionsContainer extends React.Component {
         case "DropdownOption":
           return <DropdownOption {...optionProps} />;
         case "RangeOption":
-          optionProps['unit'] = this.props.unit;
+          optionProps["unit"] = this.props.unit;
           return <RangeOption {...optionProps} />;
         case "FileOption":
           return <FileOption {...optionProps} />;
@@ -124,6 +141,7 @@ class OptionsContainer extends React.Component {
       >
         <p>{this.props.text}</p>
         {optionsComponent}
+        <a onClick={this.onClickHandoff.bind(this)}>Handoff</a>
         <Status fetchObject={this.props.answer}
                 onRetry={this.onRetry.bind(this)} />
       </div>
@@ -146,19 +164,30 @@ function mapStateToProps(state, ownProps) {
   return {
     allowedQuestionIds: getQuestionIdsByBuilding(ownProps.building_id, state),
     answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
-    dependentQuestions: getDependentQuestionsForOptionIds(Object.keys(ownProps.options), ownProps.question_type, state),
-  }
+    dependentQuestions: getDependentQuestionsForOptionIds(
+      Object.keys(ownProps.options),
+      ownProps.question_type,
+      state
+    )
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createAnswer: (buildingId, answer) => createAnswer(buildingId, answer, dispatch),
-    uploadFile: (buildingId, questionId, file) => uploadFile(buildingId, questionId, file, dispatch),
-    deleteFile: (buildingId, answer) => deleteFile(buildingId, answer, dispatch),
+    createAnswer: (buildingId, answer) =>
+      createAnswer(buildingId, answer, dispatch),
+    uploadFile: (buildingId, questionId, file) =>
+      uploadFile(buildingId, questionId, file, dispatch),
+    deleteFile: (buildingId, answer) =>
+      deleteFile(buildingId, answer, dispatch),
     downloadFile: (url, fileName) => downloadFile(url, fileName),
-    updateAnswer: (buildingId, answer) => updateAnswer(buildingId, answer, dispatch),
-    updateLocalAnswer: (buildingId, answer) => dispatch(updateLocalAnswer(buildingId, answer))
-  }
+    updateAnswer: (buildingId, answer) =>
+      updateAnswer(buildingId, answer, dispatch),
+    updateLocalAnswer: (buildingId, answer) =>
+      dispatch(updateLocalAnswer(buildingId, answer)),
+    removeLocalAnswer: (buildingId, answer) =>
+      dispatch(removeLocalAnswer(buildingId, answer))
+  };
 }
 
 OptionsContainer.propTypes = {
@@ -167,8 +196,8 @@ OptionsContainer.propTypes = {
   question_type: PropTypes.string.isRequired,
   options: PropTypes.object.isRequired,
   dependentQuestions: PropTypes.object.isRequired,
-  answer: PropTypes.shape({ // Optional - new questions can have no answer
-
+  answer: PropTypes.shape({
+    // Optional - new questions can have no answer
   }),
   focusOnMount: PropTypes.bool.isRequired,
   parentIsHidden: PropTypes.bool.isRequired,
@@ -177,7 +206,7 @@ OptionsContainer.propTypes = {
 
 OptionsContainer.defaultProps = {
   focusOnMount: false,
-  parentIsHidden: false,
+  parentIsHidden: false
 };
 
 export default connect(
