@@ -1,4 +1,6 @@
 import { post } from "../fetch/requester";
+import { getAnswersForBuilding, getAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
+import { addAnswers } from "../actions/answers";
 
 /**
  * Assigns all questions to the user with the given email address.
@@ -39,4 +41,16 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
     });
     addAnswers(answersToUpdate, buildingId);
   } catch (error) {}
+}
+
+export async function delegateBuildingQuestions(buildingId, userDetails) {
+  let answers = getAnswersForBuilding(buildingId, state);
+  
+  delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+}
+
+export async function delegateCategoryQuestions(categoryId, buildingId, userDetails) {
+  let answers = getAnswersForCategoryAndBuilding(categoryId, buildingId, state);
+
+  delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
 }

@@ -4,6 +4,17 @@ import {
   getAllQuestionsByCategoryId
 } from "./questionsSelector";
 
+export function getAnswersForBuilding(buildingId, state) {
+  return state.buildings[buildingId].answers;
+}
+
+export function getAnswersForCategoryAndBuilding(categoryId, buildingId, state) {
+  let questions = getAllActiveQuestionsForCategory(categoryId, buildingId, state);
+  return answers = questions.map((q) => {
+    return state.buildings[buildingId].answers[q.id];
+  })
+}
+
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
   return state.buildings[buildingId].answers[questionId];
 }
