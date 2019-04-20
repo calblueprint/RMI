@@ -101,10 +101,10 @@ export function getAllActiveQuestionsForCategory(categoryId, buildingId, state) 
 
   // Get list of non-dependent questions for the current category
   // that were assigned to this user
-  const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {
-    return buildingQuestionIds.includes(questionId);
-  });
-
+  const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {	
+    return buildingQuestionIds.includes(questionId);	
+  });	
+  
   return getAllActiveQuestions(rootQuestions, buildingId, state);
 }
 

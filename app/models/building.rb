@@ -21,6 +21,7 @@ class Building < ApplicationRecord
   has_one :location
 
   has_many :answers
+  has_many :delegations, through: :answers
   has_many :building_assignments, foreign_key: :building_id, class_name: "BuildingOperatorAssignment"
   has_many :building_operators, through: :building_assignments, source: :building_operator
 
@@ -88,4 +89,7 @@ class Building < ApplicationRecord
   def questions
     building_type.questions
   end
+
+
+
 end
