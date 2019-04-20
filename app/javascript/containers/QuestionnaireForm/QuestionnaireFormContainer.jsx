@@ -56,30 +56,33 @@ class QuestionnaireFormContainer extends React.Component {
   }
 
   render() {
-    const categoryToggle = this.state.currentCategory
-      ? this.props.categoryList.map(category => {
-          const currentColor =
-            category.id == this.state.currentCategory.id
-              ? "red"
-              : "transparent";
-          return (
-            <div key={category.id}>
-              <button
+    const currentCategoryId = this.state.currentCategory
+      ? this.state.currentCategory.id
+      : null;
+
+    return (
+      <div className="questionnaire-form-container">
+        <div className="questionnaire-form-sidebar">
+          <h3>Questionnaire</h3>
+          <h1>{this.props.buildingType.name}</h1>
+          <div className="sidebar-category-container">
+            {this.props.categoryList.map(category => (
+              <div
+                key={category.id}
+                className={`sidebar-category-row ${
+                  category.id === currentCategoryId
+                    ? "sidebar-category-row-selected"
+                    : ""
+                }`}
                 onClick={e => this.toggleCategory(category)}
-                style={{ backgroundColor: currentColor }}
               >
                 {category.name}
-              </button>
-            </div>
-          );
-        })
-      : null;
-    return (
-      <div className={"questionnaire-form-container"}>
-        <div>
-          {categoryToggle}
+              </div>
+            ))}
+          </div>
           <button onClick={e => this.onNewCategory()}>New Category</button>
         </div>
+        <div className="questionnaire-form-spacer" />
         {this.state.currentCategory ? (
           <CategoryQuestionsContainer
             buildingType={this.props.buildingType}
