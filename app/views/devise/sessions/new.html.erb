@@ -1,6 +1,6 @@
 <!--Login page-->
 <div class="loginPageContainer">
-  <%= image_tag("rmi-logo.png", height: '64', width: '64')%>
+  `<img src="<%= asset_pack_path 'images/rmi-logo.png' %>" height=100 width=100 />`
   <h1 class="loginHeader">Rocky Mountain Institute</h1>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>

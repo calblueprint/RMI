@@ -1,7 +1,7 @@
 <!--Sign up page-->
 <div class="loginPageContainer">
-  <%= image_tag("rmi-logo.png", height: '64', width: '64')%>
-  <h1 class="loginHeader">Rocky Mountain Institute</h1>
+  `<img src="<%= asset_pack_path 'images/rmi-logo.png' %>" height=100 width=100 />`
+  <h1 class="loginHeader">Create an Account</h1>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= devise_error_messages! %>

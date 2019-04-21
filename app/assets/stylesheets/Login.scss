@@ -4,6 +4,7 @@
   font-size: 38px;
   text-align: center;
   color: $titleGrey;
+  margin-top: 10px;
 }
 
 .login-buttons-container {
@@ -42,11 +43,21 @@
   justify-content: center;
   height: 100vh;
   align-items: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
 }
 
 .pwd-reqs {
   font-size: 12px;
   color: $secondary;
+}
+
+.alert {
+  width: 100%;
+  position: absolute;
+  color: red;
+  text-align: center;
+}
+
+.notice {
+  margin: 0px;
+  position: absolute;
 }
