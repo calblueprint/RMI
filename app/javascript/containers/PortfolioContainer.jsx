@@ -166,9 +166,7 @@ class PortfolioContainer extends React.Component {
         />
         <div className="portfolio__header">
           <div>
-            <Link to="/">
-              <img src={Logo} draggable={false} />
-            </Link>
+            <Link to="/">{/* <img src={Logo} draggable={false} /> */}</Link>
           </div>
           <div>
             <span className="small_header">PORTFOLIO</span>
