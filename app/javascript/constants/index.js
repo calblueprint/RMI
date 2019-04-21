@@ -4,6 +4,8 @@ export const LOAD_INITIAL_STATE = "LOAD_INITIAL_STATE";
 export const ANSWER_FETCH_IN_PROGRESS = "ANSWER_FETCH_IN_PROGRESS";
 export const ANSWER_FETCH_SUCCESS = "ANSWER_FETCH_SUCCESS";
 export const ANSWER_FETCH_FAILURE = "ANSWER_FETCH_FAILURE";
+export const ADD_ANSWERS = "ADD_ANSWERS";
+export const ADD_DELEGATIONS = "ADD_DELEGATIONS";
 export const UPDATE_LOCAL_ANSWER = "UPDATE_LOCAL_ANSWER";
 export const DELETE_LOCAL_ANSWER = "DELETE_LOCAL_ANSWER";
 export const REMOVE_ANSWER = "REMOVE_ANSWER";
@@ -16,6 +18,9 @@ export const SAVE_BUILDING_TYPE = "SAVE_BUILDING_TYPE";
 
 // Portfolio ActionTypes
 export const FETCH_PORTFOLIOS = "FETCH_PORTFOLIOS";
+export const ADD_PORTFOLIO = "ADD_PORTFOLIO";
+export const SET_ACTIVE_BUILDING = "SET_ACTIVE_BUILDING";
+export const SET_ACTIVE_CATEGORY = "SET_ACTIVE_CATEGORY";
 
 // Building ActionTypes
 export const ADD_BUILDING = "ADD_BUILDING";
@@ -80,11 +85,11 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
 export const FETCH_IN_PROGRESS = "FETCH_IN_PROGRESS";
 export const FETCH_SETTINGS = {
-  credentials: "same-origin",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  }
+	credentials: "same-origin",
+	headers: {
+		Accept: "application/json",
+		"Content-Type": "application/json"
+	}
 };
 
 // Contact constants

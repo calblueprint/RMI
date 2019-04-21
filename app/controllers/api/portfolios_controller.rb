@@ -15,13 +15,15 @@ class Api::PortfoliosController < ApplicationController
   def create
     if asset_manager_signed_in?
       portfolio = current_asset_manager.portfolios.new(portfolio_params)
-      if portfolio.save
-        render_json_message(:ok, message: 'New portfolio created', data: portfolio)
-      else
-        render_json_message(:forbidden, data: portfolio, errors: portfolio.errors.full_messages)
-      end
+    elsif rmi_user_signed_in?
+      portfolio = Portfolio.new(portfolio_params)
     else
-      render_json_message(:forbidden, message: 'No asset manager is currently signed in')
+      render_json_message(:forbidden, message: 'No asset manager or RMI admin is currently signed in')
+    end
+    if portfolio.save
+        render_json_message(:ok, message: 'New portfolio created', data: portfolio)
+    else
+        render_json_message(:forbidden, data: portfolio, errors: portfolio.errors.full_messages)
     end
   end
 

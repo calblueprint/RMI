@@ -84,7 +84,7 @@ class CategoryQuestionsContainer extends React.Component {
     const select = this.props.category.new || false;
 
     return (
-      <div>
+      <div className="questionnaire-form-questions-container">
         <div>
           <CategoryDisplay
             category={this.props.category}
