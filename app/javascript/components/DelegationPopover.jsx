@@ -24,9 +24,10 @@ class DelegationPopover extends React.Component {
 
   selectContact = () => {
     const { email, firstName, lastName } = this.state;
-    this.setState({ popoverOpen: false }, () =>
-      this.props.onSelectedContact({ email, firstName, lastName })
-    );
+    this.setState({ popoverOpen: false }, () => {
+      this.setState({ email: "" });
+      this.props.onSelectedContact({email, firstName, lastName})
+    });
   };
 
   selectContactByEmail = email => {
