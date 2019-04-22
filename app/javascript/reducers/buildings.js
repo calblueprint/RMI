@@ -127,6 +127,6 @@ export default function buildings(state = {}, action) {
     case REMOVE_BUILDING: return removeBuilding(state, action);
     case CREATE_BUILDING: return saveBuilding(state, action);
     case UPDATE_BUILDING: return saveBuilding(state, action);
-    default: return tryAnswersReducer(state, action);
+    default: return state;
   }
 }

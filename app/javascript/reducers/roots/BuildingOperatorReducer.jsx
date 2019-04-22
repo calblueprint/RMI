@@ -3,10 +3,10 @@ import finishedBuildings from '../buildings';
 import contacts from '../contacts';
 
 export default {
-	finishedBuildings,
   buildings,
   contacts,
   questions: (state={}, action) => state,
   categories: (state={}, action) => state,
-  user: (state={}, action) => state
+  user: (state={}, action) => state,
+  finishedBuildings
 };
