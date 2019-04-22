@@ -6,11 +6,13 @@
 import React from "react";
 
 import QuestionContainer from "./QuestionContainer";
+import * as BuildingActions from "../actions/buildings";
 
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { removeBuilding } from "../actions/buildings"
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
 import { getQuestionsByCategory } from "../utils/QuestionsFilter";
 import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
@@ -82,8 +84,10 @@ class ReviewModeContainer extends React.Component {
         let response = await patch("/api/delegations/set_completed", { delegations });
         this.setState({ status_string: "Old Delegations updated!" });
         // this.updateDelegations(delegations_to_update);
-        this.removeBuilding(this.props.building.id)
+        this.props.removeBuilding(this.props.building.id)
+        this.props.history.push(`/buildings`);
       } catch (error) {
+        console.log(error)
         this.setState({
           status_string: "Updating delegations failed. Try again?"
         });
@@ -191,15 +195,17 @@ function mapStateToProps(state, ownProps) {
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: questionId =>
       getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
-    categories: getCategoriesForBuilding(ownProps.building.id, state),
-    removeBuilding: buildingId => {
-      dispatch(removeBuilding(buildingId));
-    }
+    categories: getCategoriesForBuilding(ownProps.building.id, state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    buildingActions: bindActionCreators(BuildingActions, dispatch),
+    removeBuilding: buildingId => {
+      dispatch(removeBuilding(buildingId));
+    }
+  };
 }
 
 export default connect(

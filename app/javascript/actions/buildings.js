@@ -27,10 +27,11 @@ export function editBuilding(id, updatedBuilding) {
   };
 }
 
-export function removeBuilding(id, dispatch) {
+export function removeBuilding(buildingId) {
+  console.log('made it to actions')
   return {
     type: REMOVE_BUILDING,
-    buildingId: id
+    buildingId: buildingId
   };
 }
 

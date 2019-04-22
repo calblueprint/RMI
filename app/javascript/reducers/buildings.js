@@ -37,12 +37,8 @@ function editBuilding(state, action) {
 }
 
 function removeBuilding(state, action) {
-  return Object.keys(state)
-    .filter(id => id !== action.buildingId)
-    .reduce((newState, id) => {
-      newState[id] = state[id];
-      return newState
-    }, {});
+  console.log('made it to reducer')
+  return {buildings: Object.keys(state).filter(building => building !== action.buildingId)}
 }
 
 function saveBuilding(state, action) {
