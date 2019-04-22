@@ -38,7 +38,17 @@ function editBuilding(state, action) {
 
 function removeBuilding(state, action) {
   console.log('made it to reducer')
-  return {buildings: Object.keys(state).filter(building => building !== action.buildingId)}
+  // const remainingState = Object.keys(state).filter(building => building !== action.buildingId)
+  // console.log(remainingState)
+  console.log(action.buildingId)
+  console.log(state)
+  console.log(Object.values(state))
+  console.log(action.buildingId == Object.values(state)[0])
+  console.log(Object.values(state).filter(building => building.id !== action.buildingId))
+  return Object.values(state).filter(building => building.id !== action.buildingId)
+  // return {remainingState};
+  // return {buildings: Object.keys(state).filter(building => building !== action.buildingId)}
+  // return state
 }
 
 function saveBuilding(state, action) {

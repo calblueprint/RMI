@@ -84,8 +84,8 @@ class ReviewModeContainer extends React.Component {
         let response = await patch("/api/delegations/set_completed", { delegations });
         this.setState({ status_string: "Old Delegations updated!" });
         // this.updateDelegations(delegations_to_update);
+        this.props.history.push(`/portfolios`);
         this.props.removeBuilding(this.props.building.id)
-        this.props.history.push(`/buildings`);
       } catch (error) {
         console.log(error)
         this.setState({
