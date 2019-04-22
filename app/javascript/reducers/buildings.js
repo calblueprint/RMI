@@ -45,7 +45,19 @@ function removeBuilding(state, action) {
   console.log(Object.values(state))
   console.log(action.buildingId == Object.values(state)[0])
   console.log(Object.values(state).filter(building => building.id !== action.buildingId))
-  return Object.values(state).filter(building => building.id !== action.buildingId)
+
+  // delete state[action.buildingId]
+  // return {
+  //   ...Object.values(state).filter(building => building.id !== action.buildingId)
+  // }
+  console.log(Object.keys(state).filter(id => parseInt(id) !== action.buildingId))
+  return Object.keys(state)
+    .filter(id => parseInt(id) !== action.buildingId)
+    .reduce((newState, id) => {
+      newState[id] = state[id];
+      return newState
+    }, {});
+  
   // return {remainingState};
   // return {buildings: Object.keys(state).filter(building => building !== action.buildingId)}
   // return state
