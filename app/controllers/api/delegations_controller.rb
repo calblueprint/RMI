@@ -42,7 +42,7 @@ class Api::DelegationsController < ApplicationController
 
         #current_user.delegations.where(answer_id: delegation_params[:answer_id], status: :active).update(status: :completed)
 
-        answer = Answer.find(delegation_params[:answer_id]);
+        answer = Answer.find(delegation_params[:answer_id])
         unless answer.has_no_delegation
           answer.delegation_email = ""
           answer.delegation_first_name = ""
@@ -75,13 +75,17 @@ class Api::DelegationsController < ApplicationController
   def set_completed
     completed_delegations = {}
     delegations_params.each do |delegation_param|
-      a = Answer.find(delegation_param[:answer_id], status: :active)
+      a = Answer.find(delegation_param[:answer_id])
       a.delegations.each do |delegation|
-        delegation.update(status: :completed)
-        completed_delegations[a.id] = delegation
+        if delegation.status == "active"
+          delegation.update(status: :completed)
+          completed_delegations[a.id] = delegation
+        end
       end
     end
-    return completed_delegations
+    render_json_message(:ok, data: completed_delegations, message: 'Delegations updated')
+    rescue => e
+      render_json_message(:forbidden, errors: e.message)
   end
 
   # access to delegation is done from endpoints related to questions

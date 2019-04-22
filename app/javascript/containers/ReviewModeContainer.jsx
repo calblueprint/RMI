@@ -9,6 +9,7 @@ import QuestionContainer from "./QuestionContainer";
 
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
+import { removeBuilding } from "../actions/buildings"
 import { connect } from "react-redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
 import { getQuestionsByCategory } from "../utils/QuestionsFilter";
@@ -54,17 +55,20 @@ class ReviewModeContainer extends React.Component {
   // should synchronously submit delegations since user expects success
   async submitDelegation() {
     let delegations = this.getDelegations();
-    console.log(delegations)
-    if (delegations.length == 0) {
+    let new_delegations = delegations['new_delegations'];
+    let delegations_to_update = delegations['answered_question_ids'];
+    console.log('submit')
+    console.log(delegations_to_update)
+    if (new_delegations.length == 0) {
       this.setState({
         status_string: "There were no delegations to be saved!"
       });
     } else {
       this.setState({ status_string: "Saving delegations!" });
       try {
-        let response = await post("/api/delegations", { delegations });
-        this.setState({ status_string: "Delegations saved." });
-        // this.updateDelegationStatus();
+        let response = await post("/api/delegations", { delegations: new_delegations });
+        this.setState({ status_string: "New Delegations saved." });
+        this.updateDelegations(delegations_to_update);
       } catch (error) {
         this.setState({
           status_string: "Saving delegations failed. Try again?"
@@ -73,16 +77,39 @@ class ReviewModeContainer extends React.Component {
     }
   }
 
-  getDelegations() {
-    var parentQuestionsForDelegations = this.props.questions.filter(
-      question => {
-        answer = this.props.getAnswer(question.id);
-        return answer && !answer.text && answer.delegation_email;
+  async updateDelegations(delegations) {
+    try {
+        let response = await patch("/api/delegations/set_completed", { delegations });
+        this.setState({ status_string: "Old Delegations updated!" });
+        // this.updateDelegations(delegations_to_update);
+        this.removeBuilding(this.props.building.id)
+      } catch (error) {
+        this.setState({
+          status_string: "Updating delegations failed. Try again?"
+        });
       }
-    );
+  }
+
+  getDelegations() {
+    let answered_question_ids = []
+    let parentQuestionsForDelegations = []
+    this.props.questions.forEach(question => {
+      let answer = this.props.getAnswer(question.id)
+      if (answer && !answer.text && answer.delegation_email) {
+        parentQuestionsForDelegations.push(question)
+      }
+      else {
+        answered_question_ids.push({answer_id: answer.id})
+      }
+    })
+    // var parentQuestionsForDelegations = this.props.questions.filter(
+    //   question => {
+    //     answer = this.props.getAnswer(question.id);
+    //     return answer && !answer.text && answer.delegation_email;
+    //   }
+    // );
 
     var delegations = [];
-    var answered_questions = []
     for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
       var question = parentQuestionsForDelegations[i];
       var answer = this.props.getAnswer(question.id);
@@ -102,13 +129,9 @@ class ReviewModeContainer extends React.Component {
           };
           delegations.push(delegation);
         }
-        else {
-          // should we be collecting answered questions here? questions that 
-          answered_questions.push()
-        }
       });
     }
-    return delegations, answered_questions;
+    return {new_delegations: delegations, answered_question_ids: answered_question_ids};
   }
 
   populateQuestionStack(building, questions) {
@@ -168,7 +191,10 @@ function mapStateToProps(state, ownProps) {
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: questionId =>
       getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
-    categories: getCategoriesForBuilding(ownProps.building.id, state)
+    categories: getCategoriesForBuilding(ownProps.building.id, state),
+    removeBuilding: buildingId => {
+      dispatch(removeBuilding(buildingId));
+    }
   };
 }
 

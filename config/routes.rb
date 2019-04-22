@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     # Can change route with:
     post 'answers/create_multiple', to: 'answers#create_multiple'
     patch 'batch_update_answers', to: 'answers#update_multiple'
+    patch 'delegations/set_completed', to: 'delegations#set_completed'
     patch 'questions/publish', to: 'questions#publish'
     delete 'answers/:id/attachment', to: 'answers#delete_file'
   end
