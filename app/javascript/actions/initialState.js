@@ -1,10 +1,11 @@
 import * as buildings from './buildings';
 import * as portfolios from './portfolios';
 import * as questions from './questions';
+import * as finishedBuildings from './finishedBuildings';
 
 import { LOAD_INITIAL_STATE } from '../constants';
 
-export default { buildings, portfolios, questions };
+export default { buildings, portfolios, questions, finishedBuildings };
 
 const toObjectByKey = (entities, key) => {
   return entities.reduce((result, entity) => {
@@ -77,6 +78,9 @@ const formatState = {
   },
   contacts: function(contacts) {
     return toObjectByKey(contacts, 'email');
+  },
+  finishedBuildings: function(buildings) {
+    return buildings
   }
 };
 

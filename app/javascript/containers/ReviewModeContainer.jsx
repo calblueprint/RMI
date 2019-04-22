@@ -11,6 +11,7 @@ import * as BuildingActions from "../actions/buildings";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { removeBuilding } from "../actions/buildings"
+import { addFinishedBuilding } from "../actions/finishedBuildings"
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
@@ -85,7 +86,9 @@ class ReviewModeContainer extends React.Component {
         this.setState({ status_string: "Old Delegations updated!" });
         // this.updateDelegations(delegations_to_update);
         this.props.history.push(`/portfolios`);
-        this.props.removeBuilding(this.props.building.id)
+        const building = this.props.building;
+        this.props.addFinishedBuilding(building)
+        this.props.removeBuilding(building.id)
       } catch (error) {
         console.log(error)
         this.setState({
@@ -204,6 +207,9 @@ function mapDispatchToProps(dispatch) {
     buildingActions: bindActionCreators(BuildingActions, dispatch),
     removeBuilding: buildingId => {
       dispatch(removeBuilding(buildingId));
+    },
+    addFinishedBuilding: buildingId => {
+      dispatch(addFinishedBuilding(buildingId));
     }
   };
 }
