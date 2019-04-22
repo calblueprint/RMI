@@ -1,4 +1,5 @@
 import buildings from '../buildings';
+import finishedBuildings from '../buildings';
 import contacts from '../contacts';
 
 export default {

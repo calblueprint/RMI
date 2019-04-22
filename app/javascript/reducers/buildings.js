@@ -1,5 +1,6 @@
 import {
   ADD_BUILDING,
+  ADD_FINISHED_BUILDING,
   EDIT_BUILDING,
   CREATE_BUILDING,
   UPDATE_BUILDING,
@@ -124,5 +125,14 @@ export default function buildings(state = {}, action) {
     case CREATE_BUILDING: return saveBuilding(state, action);
     case UPDATE_BUILDING: return saveBuilding(state, action);
     default: return tryAnswersReducer(state, action);
+  }
+}
+
+export default function finishedBuildings(state = {}, action) {
+  if (!action) return state;
+  switch (action.type) {
+    // Buildings
+    case ADD_FINISHED_BUILDING: return addFinishedBuilding(state, action);
+    default: return {};
   }
 }

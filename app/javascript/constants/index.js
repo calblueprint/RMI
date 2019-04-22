@@ -22,6 +22,7 @@ export const ADD_PORTFOLIO = 'ADD_PORTFOLIO';
 
 // Building ActionTypes
 export const ADD_BUILDING = "ADD_BUILDING";
+export const ADD_FINISHED_BUILDING = "ADD_FINISHED_BUILDING";
 export const EDIT_BUILDING = "EDIT_BUILDING";
 export const REMOVE_BUILDING = "REMOVE_BUILDING";
 
