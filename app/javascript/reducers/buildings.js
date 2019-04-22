@@ -104,6 +104,8 @@ function saveBuilding(state, action) {
 function tryAnswersReducer(state, action) {
   // Pass answer actions on to the answers reducer.
   // (action must have a buildingId to indicate which building the answers belong to)
+  console.log(action.buildingId)
+  console.log(state)
   if (action.buildingId) {
     return {
       ...state,

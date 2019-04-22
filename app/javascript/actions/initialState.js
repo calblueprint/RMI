@@ -79,8 +79,14 @@ const formatState = {
   contacts: function(contacts) {
     return toObjectByKey(contacts, 'email');
   },
-  finishedBuildings: function(buildings) {
-    return buildings
+  finishedBuildings: function(finishedBuildings) {
+    console.log('here in initial state')
+    return toObjectById(
+      mapFilterKeys(
+        finishedBuildings,
+        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip', 'questions']
+      )
+    );
   }
 };
 

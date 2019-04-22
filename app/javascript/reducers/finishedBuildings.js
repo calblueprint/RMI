@@ -16,6 +16,6 @@ export default function finishedBuildings(state = {}, action) {
   switch (action.type) {
     // Buildings
     case ADD_FINISHED_BUILDING: return addFinishedBuilding(state, action);
-    default: return {};
+    default: return state;
   }
 }
