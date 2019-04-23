@@ -85,7 +85,8 @@ class ReviewModeContainer extends React.Component {
         let response = await patch("/api/delegations/set_completed", { delegations });
         this.setState({ status_string: "Old Delegations updated!" });
         // this.updateDelegations(delegations_to_update);
-        this.props.history.push(`/portfolios`);
+        // need to change this to /portfolios for RMI users? different routes for different users after delegating
+        this.props.history.push(`/buildings`);
         const building = this.props.building;
         this.props.addFinishedBuilding(building)
         this.props.removeBuilding(building.id)

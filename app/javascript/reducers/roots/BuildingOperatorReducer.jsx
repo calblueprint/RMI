@@ -1,5 +1,5 @@
 import buildings from '../buildings';
-import finishedBuildings from '../buildings';
+import finishedBuildings from '../finishedBuildings';
 import contacts from '../contacts';
 
 export default {
@@ -8,5 +8,5 @@ export default {
   questions: (state={}, action) => state,
   categories: (state={}, action) => state,
   user: (state={}, action) => state,
-  finishedBuildings
+	finishedBuildings
 };

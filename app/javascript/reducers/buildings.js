@@ -1,6 +1,5 @@
 import {
   ADD_BUILDING,
-  ADD_FINISHED_BUILDING,
   EDIT_BUILDING,
   CREATE_BUILDING,
   UPDATE_BUILDING,
@@ -26,7 +25,6 @@ function addBuilding(state, action) {
   }
 }
 
-
 function editBuilding(state, action) {
   const id = action.buildingId;
   return {
@@ -39,30 +37,12 @@ function editBuilding(state, action) {
 }
 
 function removeBuilding(state, action) {
-  console.log('made it to reducer')
-  // const remainingState = Object.keys(state).filter(building => building !== action.buildingId)
-  // console.log(remainingState)
-  console.log(action.buildingId)
-  console.log(state)
-  console.log(Object.values(state))
-  console.log(action.buildingId == Object.values(state)[0])
-  console.log(Object.values(state).filter(building => building.id !== action.buildingId))
-
-  // delete state[action.buildingId]
-  // return {
-  //   ...Object.values(state).filter(building => building.id !== action.buildingId)
-  // }
-  console.log(Object.keys(state).filter(id => parseInt(id) !== action.buildingId))
   return Object.keys(state)
-    .filter(id => parseInt(id) !== action.buildingId)
+    .filter(id => id !== action.buildingId)
     .reduce((newState, id) => {
       newState[id] = state[id];
       return newState
     }, {});
-  
-  // return {remainingState};
-  // return {buildings: Object.keys(state).filter(building => building !== action.buildingId)}
-  // return state
 }
 
 function saveBuilding(state, action) {
@@ -104,8 +84,6 @@ function saveBuilding(state, action) {
 function tryAnswersReducer(state, action) {
   // Pass answer actions on to the answers reducer.
   // (action must have a buildingId to indicate which building the answers belong to)
-  console.log(action.buildingId)
-  console.log(state)
   if (action.buildingId) {
     return {
       ...state,
@@ -127,6 +105,6 @@ export default function buildings(state = {}, action) {
     case REMOVE_BUILDING: return removeBuilding(state, action);
     case CREATE_BUILDING: return saveBuilding(state, action);
     case UPDATE_BUILDING: return saveBuilding(state, action);
-    default: return state;
+    default: return tryAnswersReducer(state, action);
   }
 }
