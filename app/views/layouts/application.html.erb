@@ -5,6 +5,7 @@
     <%= csrf_meta_tags %>
 
     <%= javascript_include_tag('application.js') %>
+    <%= javascript_pack_tag "application" %>
     <script>
       window.INITIAL_STATE = <%= raw @state.to_json %>
     </script>

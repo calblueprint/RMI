@@ -42,6 +42,9 @@ gem 'faker', '~> 1.8.4'
 gem 'paperclip'
 gem 'aws-sdk-s3', '~> 1.24.1'
 
+# Error notifications
+gem 'toastr-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
