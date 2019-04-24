@@ -3,15 +3,21 @@ import React from 'react';
 import PortfolioContainer from '../containers/PortfolioContainer';
 import QuestionnaireRoutes from '../containers/QuestionnaireRoutes';
 import NavigationBarContainer from '../containers/NavigationBar/NavigationBarContainer';
+
 import CategoryRerouter from "../containers/CategoryRerouter";
 
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 
 class AssetManagerRoutes extends React.Component {
   render() {
     return (
       <div>
+        <div className="menu">
+          <Link to="/">
+          </Link>
+        </div>
+
         <Route path="/:entity?/:id?/:mode?/:cId?" component={NavigationBarContainer}/>
         <Switch>
           <Route path="/portfolios/:pId" component={PortfolioContainer}/>
