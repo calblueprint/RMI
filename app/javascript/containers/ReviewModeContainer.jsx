@@ -11,7 +11,6 @@ import * as BuildingActions from "../actions/buildings";
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { removeBuilding } from "../actions/buildings"
-import { addFinishedBuilding } from "../actions/finishedBuildings"
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
@@ -88,7 +87,6 @@ class ReviewModeContainer extends React.Component {
         // need to change this to /portfolios for RMI users? different routes for different users after delegating
         this.props.history.push(`/buildings`);
         const building = this.props.building;
-        this.props.addFinishedBuilding(building)
         this.props.removeBuilding(building.id)
       } catch (error) {
         console.log(error)
@@ -208,9 +206,6 @@ function mapDispatchToProps(dispatch) {
     buildingActions: bindActionCreators(BuildingActions, dispatch),
     removeBuilding: buildingId => {
       dispatch(removeBuilding(buildingId));
-    },
-    addFinishedBuilding: buildingId => {
-      dispatch(addFinishedBuilding(buildingId));
     }
   };
 }

@@ -5,7 +5,6 @@ import { LOAD_INITIAL_STATE } from '../constants';
 
 import questions from './questions';
 import buildings from './buildings';
-import finishedBuildings from './finishedBuildings';
 import portfolios from './portfolios';
 import contacts from './contacts';
 
@@ -13,8 +12,7 @@ const rootReducer = {
   questions,
   buildings,
   portfolios,
-  contacts,
-  finishedBuildings
+  contacts
 };
 
 export default function reducerWithInitialState(reducer = rootReducer) {
