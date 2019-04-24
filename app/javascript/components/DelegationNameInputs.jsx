@@ -5,7 +5,7 @@ function DelegationNameInputs({
   handleClickSaveContact
 }) {
   return (
-    <div>
+    <div className="delegation__name-inputs">
       <div>
         <p className="delegation__label">First name</p>
         <input
