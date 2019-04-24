@@ -1,19 +1,42 @@
 import {
   getAllActiveQuestions,
   getAllActiveQuestionsForCategory,
-  getAllQuestionsByCategoryId
+  getAllActiveQuestionIdsForCategory,
 } from "./questionsSelector";
 import { getCategoriesForBuilding } from "./categoriesSelector";
 
 export function getAnswersForBuilding(buildingId, state) {
-  return state.buildings[buildingId].answers;
+  let answers = state.buildings[buildingId].answers;
+  answers = Object.keys(answers).filter((id) => {
+    let email = answers[id].delegation_email;
+    let text = answers[id].text;
+    return !email && !text;
+  })
+  .reduce((newAnswers, id) => {
+    newAnswers[id] = answers[id];
+    return newAnswers
+  }, {});
+  return answers
 }
 
 export function getAnswersForCategoryAndBuilding(categoryId, buildingId, state) {
-  let questions = getAllActiveQuestionsForCategory(categoryId, buildingId, state);
-  return answers = questions.map((q) => {
-    return state.buildings[buildingId].answers[q.id];
+  const buildingQuestions = state.buildings[buildingId].questions;
+  let categoryQuestions = state.categories[categoryId].questions;
+  categoryQuestions = buildingQuestions.filter((id) => {
+    return categoryQuestions.includes(Number(id));
   })
+  
+  let answers = state.buildings[buildingId].answers;
+  answers = Object.keys(answers).filter((id) => {
+    let email = answers[id].delegation_email;
+    let text = answers[id].text;
+    return !email && !text && categoryQuestions.includes(id);
+  })
+  .reduce((newAnswers, id) => {
+    newAnswers[id] = answers[id];
+    return newAnswers
+  }, {});
+  return answers;
 }
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {

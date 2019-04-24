@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+
 import { setActiveCategory } from "../actions/portfolios";
 import { getSelectedCategoryId } from "../selectors/portfoliosSelector";
 
@@ -51,19 +52,20 @@ class CategoryContainer extends React.Component {
   }
 
   render() {
-    let { categoryData, setActiveCategory, id, portfolioId } = this.props;
+    let { categoryData, setActiveCategory, categoryId, portfolioId } = this.props;
 
     return (
       <tr
         className="category_data"
         onClick={() => {
-          setActiveCategory(id, portfolioId);
+          setActiveCategory(categoryId, portfolioId);
         }}
-        className={this.isActive(categoryData.id)}
+        className={this.isActive(categoryId)}
       >
         <td className="category_name">{categoryData.name}</td>
         {this.categoryProgress(categoryData.answered, categoryData.total)}
-        <td className="delegation_info">{this.categoryDelegations()}</td>
+        <td className="delegation_info">
+          {this.categoryDelegations()}</td>
       </tr>
     );
   }
@@ -71,13 +73,13 @@ class CategoryContainer extends React.Component {
 
 CategoryContainer.propTypes = {
   portfolioId: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  categoryId: PropTypes.string.isRequired,
   categoryData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    selectedCategoryId: getSelectedCategoryId(ownProps.portfolioId, state)
+    selectedCategoryId: getSelectedCategoryId(ownProps.portfolioId, state),
   };
 }
 

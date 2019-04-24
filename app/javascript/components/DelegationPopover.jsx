@@ -48,13 +48,15 @@ class DelegationPopover extends React.Component {
   };
 
   filterContacts() {
-    if (this.state.email) {
+    if (this.state.email && this.state.popoverOpen) {
       const query = this.state.email.toLowerCase();
       return this.props.contacts.filter(
-        contact =>
-          contact.email.toLowerCase().includes(query) ||
-          contact.first_name.toLowerCase().includes(query) ||
-          contact.last_name.toLowerCase().includes(query)
+        contact => {
+          (contact.email && contact.email.toLowerCase().includes(query)) ||
+          (contact.first_name && contact.first_name.toLowerCase().includes(query)) ||
+          (contact.last_name && contact.last_name.toLowerCase().includes(query))
+        }
+          
       );
     } else {
       return this.props.contacts;

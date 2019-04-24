@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getCategoryById } from '../selectors/categoriesSelector'
 import PropTypes from 'prop-types';
+
+import { addAnswers } from "../actions/answers";
+import { getCategoryById } from '../selectors/categoriesSelector'
+import { delegateCategoryQuestions } from '../utils/DelegationRequests';
+
 import DelegationInfoContainer from './DelegationInfoContainer';
+import DelegationPopover from "../components/DelegationPopover";
 
 /** Renders the main details for a specific category, 
  * including the category name and building name
@@ -32,7 +36,8 @@ class CategoryDetailsContainer extends React.Component {
     render() {
         let catName = this.props.category.name;
         let buildingName = this.props.buildingName;
-
+        let delegateQuestions = this.props.delegateQuestions;
+        
         return (
             <div>
                 <div>
@@ -40,9 +45,10 @@ class CategoryDetailsContainer extends React.Component {
                     <h2>{catName}</h2>
                     <p>for {buildingName}</p>
                     <br></br>
-                    <span className='building__link'>
-                        <Link to={`/buildings/${this.props.buildingId}/edit/${this.props.categoryId}`}>Open {catName} Questions</Link>
-                    </span>   
+                    <DelegationPopover
+                            label="Assign Category"
+                            onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
+                    />
                 </div>
                 <div className='delegations_list'>
                     <span className="small_header">PEOPLE</span>  
@@ -64,11 +70,15 @@ CategoryDetailsContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
     return {
       category: getCategoryById(ownProps.categoryId, state),
+      delegateQuestions: (userDetails, addAnswers) => delegateCategoryQuestions(ownProps.categoryId, ownProps.buildingId, userDetails, state, addAnswers)
     };
   }
   
 function mapDispatchToProps(dispatch) {
     return {
+        addAnswers: (answers, buildingId) => {
+            dispatch(addAnswers(answers, buildingId));
+        }
     };
 }
 

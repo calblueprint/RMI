@@ -133,3 +133,39 @@ export function getAllActiveQuestions(rootQuestions, buildingId, state) {
 
   return questions;
 }
+
+export function getAllActiveQuestionIdsForCategory(categoryId, buildingId, state) {
+  const buildingQuestionIds = state.buildings[buildingId].questions.map((id) => parseInt(id));
+
+  // Get list of non-dependent questions for the current category
+  // that were assigned to this user
+  const categoryQuestions = state.categories[categoryId].questions;
+  const rootIds = buildingQuestionIds.filter((questionId) => {
+      return categoryQuestions.includes(questionId);
+  })
+  
+  return getAllActiveQuestionIds(rootIds, buildingId, state);
+}
+
+export function getAllActiveQuestionIds(rootQuestions, buildingId, state) {
+  let questions = [];
+
+  for (let questionId of rootQuestions) {
+    const rootQuestion = state.questions[questionId];
+
+    if (rootQuestion) {
+      questions.push(questionId);
+
+      const answer = state.buildings[buildingId].answers[questionId];
+      if (answer && answer.selected_option_id) {
+        const dependents = getDependentQuestionsForOption(answer.selected_option_id,
+          rootQuestion.question_type, state);
+
+        questions.push(...getAllActiveQuestions(dependents, buildingId, state));
+      }
+    }
+  }
+  console.log("questions")
+  console.log(questions)
+  return questions;
+}
