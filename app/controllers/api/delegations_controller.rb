@@ -2,7 +2,7 @@ class Api::DelegationsController < ApplicationController
   include ApplicationHelper
   # XXX: dependent questions are not automatically delegated, user should post
   # a batch that includes all dependent questions known
-  def create
+  def creat
     # either all delegations are created, or none
     Delegation.transaction do
       # TODO: validate this user is currently the person delegated to
