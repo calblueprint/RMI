@@ -1,0 +1,176 @@
+$icon-font-path: "@blueprintjs/core/resources/icons";
+
+$primary: #6893FF;
+$secondary: #969696;
+$hover: #779ADF;
+$backgroundGray: #f4f4f4;
+$titleGrey: #494949;
+$inputBorder: 2px solid $secondary;
+$inputLabel: #A1A0A0;
+$inputFocused: #216DFF;
+
+$border-primary: 2px solid $primary;
+$background-primary: lighten($primary, 25);
+
+$param-font: Consolas 12px;
+
+body {
+  background-color: white;
+  font-family: BlinkMacSystemFont, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0px;
+}
+
+.btn {
+  border-radius: 3px;
+  padding: 5px 20px 5px 20px;
+  font-weight: 700;
+  font-size: 12pt;
+  border: none;
+  transition: 0.25s all;
+  position: relative;
+  cursor: pointer;
+}
+
+.btn::selection {
+  background: none;
+}
+
+.btn::after {
+  content: "";
+  border-radius: 3px;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 5px 15px $secondary;
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btn:hover::after {
+    opacity: 0.2;
+}
+
+.btn--primary {
+  background-color: $primary;
+  color: white;
+}
+
+.btn--primary:hover {
+  background-color: darken($primary, 5);
+  border: none;
+}
+
+.btn--secondary {
+  background-color: lighten($secondary, 30);
+  color: $secondary;
+}
+
+.btn--secondary:hover {
+  background-color: lighten($secondary, 27.5);
+  border: none;
+}
+
+.btn--neutral {
+  background-color: white;
+  color: $primary;
+  text-decoration: underline;
+  line-height: 3em;
+  padding: 20px;
+}
+
+.btn--neutral::after {
+  box-shadow: none;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0px 10px 0px;
+}
+.checkbox-label {
+  padding: 8px 8px 3px 3px;
+}
+
+input,
+textarea {
+  outline: none;
+  font-size: 14pt;
+  border: 2px solid $secondary;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+  background-color: white;
+}
+
+input:hover,
+textarea:hover {
+  border: 2px solid $hover;
+}
+
+input:focus,
+textarea:focus {
+  border: 2px solid $inputFocused;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: lighten($secondary, 27.5);
+}
+
+input:focus::-webkit-input-placeholder,
+textarea:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+input:focus:hover,
+textarea:focus:hover {
+  border: 2px solid $inputFocused;
+}
+
+label {
+  color: $inputLabel;
+}
+
+.input-label {
+  font-family: BlinkMacSystemFont, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: normal;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.field {
+  padding: 5px;
+}
+
+.actions {
+  padding: 5px;
+}
+
+input[type=checkbox] {
+  -webkit-appearance: none;
+  outline: none;
+  font-size: 14pt;
+  border: 2px solid $secondary;
+  border-radius: 5px;
+  background-color: white;
+  height: 27px;
+  width: 27px;
+  cursor: pointer;
+}
+
+input[type=checkbox]:hover {
+  border: 2px solid $hover;
+}
+
+input[type=checkbox]:checked {
+  background-color: $inputFocused;
+  border: 2px solid $secondary;
+}
+
+input[type=checkbox]:checked:hover {
+  border: 2px solid $hover;
+}

@@ -1,9 +1,5 @@
 @import "global";
 
-.building__container {
-
-}
-
 .building__row {
   width: 50%;
   margin-left: auto;
@@ -109,11 +105,13 @@
 }
 
 
-.questionaire-category-container {
+.questionnaire-category-container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
+  margin: 40px;
+
 }
 
 .vertical-bus-map {
@@ -196,4 +194,232 @@
     line-height: 40px;
     font-size: 16px;
     font-family: BlinkMacSystemFont;
+}
+
+
+// for portfolio view
+.portfolio__container {
+  position: relative;
+  top: -15px;
+  .portfolio__header {
+    padding: 3%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgba(33, 109, 255, 0.02);
+    height: 110px;
+
+    div {
+      padding-right: 30px; 
+      h2 {
+        font-size: 27px;
+      }
+    }
+  }
+
+}
+.building__types {
+  margin: 3% 0% 3% 3%;
+  width: 20%;
+  div {
+    padding-bottom: 30px;
+    h3 {
+    font-size: 24px;
+    }
+  }
+}
+
+.building__names {
+  cursor: pointer;
+  
+  :hover {
+    background-color: rgba($primary, 0.05);
+  }
+
+  div{
+    border-radius: 7px;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 200px;
+    vertical-align: middle;
+  }
+
+  .active {
+    background-color: $primary;
+    // background-color: #216DFF; color in figma i think ethan added this as vibrant primary
+    color: white;
+  }
+}
+
+.dot {
+  margin-right: 10px;
+  height: 14px;
+  width: 14px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+.dot.yellow {
+  background-color: #FFD028;
+}
+.dot.green {
+  background-color: #03CE17;
+}
+
+.building__container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.portfolio_building_container {
+  margin: 3%;
+  display: flex;
+  flex-direction: row;
+}
+
+.building__details {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 4px #ccc;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ccc;
+  border-radius: 12px;
+  padding: 40px;
+
+  > :first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;    
+  }
+}
+
+.building_category_details {
+  > div > div {
+    width: 300px;
+    padding-left: 40px;
+    padding-top: 40px;
+  }
+}
+
+.building_info {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  > :first-child {
+    width: 50%;
+  }
+
+  div {
+    font-size: 18px;
+    line-height: 1.4;
+    a {
+      padding-left: 20px;
+    }
+
+    h2 {
+      font-size: 30px;
+      font-weight: 600;
+    }
+  }
+}
+
+.building_category_container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0px 40px 40px 40px;
+}
+
+
+// main table
+.portfolio_category_info {
+  width: 100%;
+  margin: 0px;
+  border-collapse: collapse;
+
+  .cat_names {
+    margin-top: 20px;
+    height: 25px;
+
+    th {
+      padding-left: 15px; 
+      text-align: left;
+    }
+  }
+
+  tr td:first-child { 
+    border-top-left-radius: 7px; 
+    border-bottom-left-radius: 7px;
+  }
+
+  tr td:last-child { 
+    border-top-right-radius: 7px; 
+    border-bottom-right-radius: 7px;
+  }
+
+  .active {
+    background: rgba($primary, 0.1);
+  
+    td:first-child {
+      border-left: 5px solid #216dff;
+      border-radius: 0px;
+    }
+  }
+  
+  tbody tr:hover {
+    background: rgba($primary, 0.05);
+    cursor: pointer;
+  }
+
+  .active:hover {
+    background: rgba($primary, 0.1);
+  }
+}
+
+.category_data {
+  .category_name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .category_status, .delegation_info {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+.small_header {
+  color: #A1A0A0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.delegations_list {
+  > div{
+    padding-top: 5px;
+    padding-bottom: 15px;
+
+    > div {
+      padding-bottom: 5px;
+    }
+  }
+
+  .delegation_status {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      color: $secondary;
+    }
+  }
 }
