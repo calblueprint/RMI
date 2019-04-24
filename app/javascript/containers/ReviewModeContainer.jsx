@@ -86,7 +86,8 @@ class ReviewModeContainer extends React.Component {
       });
       this.setState({ status_string: "Old Delegations updated!" });
       // need to change this to /portfolios for RMI users? different routes for different users after delegating
-      this.props.history.push(`/portfolios`);
+      //TODO 4/23: Need to fix root routing so we don't have to do conditional routing here
+      this.props.history.push(`/`);
       this.props.removeBuilding(this.props.building.id);
     } catch (error) {
       this.setState({
