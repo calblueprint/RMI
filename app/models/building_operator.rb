@@ -26,7 +26,7 @@ class BuildingOperator < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  # after_create :send_onboarding_email
+  after_create :send_onboarding_email
 
   has_many :building_assignments, foreign_key: :building_operator_id, class_name: "BuildingOperatorAssignment"
   has_many :buildings, through: :building_assignments, source: :building
@@ -38,12 +38,6 @@ class BuildingOperator < ApplicationRecord
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :phone, :presence => true, :numericality => true, :length => { :minimum => 10, :maximum => 15}
   validates_uniqueness_of :email
-
-  # New building operator accounts are only created when an asset manager delegates a question to them,
-  # so send an onboarding email telling them they have new questions.
-  def send_onboarding_email
-    BuildingOperatorMailer.new_user_delegated_email(self).deliver_now
-  end
 
   def building_types
     building_types = Set.new []
@@ -134,5 +128,26 @@ class BuildingOperator < ApplicationRecord
 
   def questions
     questions_by_buildings(buildings.map { |b| b.id })
+  end
+
+  def remind
+    BuildingOperatorMailer.existing_user_reminder_email(self).deliver_now
+  end
+
+  def get_scope
+    {
+      user_id: id,
+      user_type: 'BuildingOperator',
+      questions: Question
+        .where(id: questions.map { |q| q.id }).load.to_a,
+      delegations: Delegation
+        .includes(answer: [:question, :building])
+        .where(
+          answer: Answer.where(building: buildings),
+          building_operator: self,
+          status: "active"
+        )
+        .load.to_a,
+      }
   end
 end

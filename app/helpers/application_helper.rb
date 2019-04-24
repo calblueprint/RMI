@@ -21,12 +21,18 @@ module ApplicationHelper
       user: current_asset_manager,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
           portfolio.buildings, each_serializer: BuildingSerializer,
-          scope: {user_id: current_asset_manager.id,
-                  user_type: 'AssetManager'}
+          scope: current_user.get_scope
+      ),
+      building_types: ActiveModel::Serializer::CollectionSerializer.new(
+        BuildingType.where(id: portfolio.buildings.map{ |b| b.building_type_id }.uniq),
+        each_serializer: BuildingTypeSerializer,
+        scope: current_user.get_scope
       ),
       portfolios: portfolio,
       contacts: contacts.to_a,
-      categories: current_asset_manager.categories,
+      categories: ActiveModel::Serializer::CollectionSerializer.new(
+        Category.all, each_serializer: CategorySerializer
+      ),
       userType: current_asset_manager.class.name,
     }
   end
@@ -58,24 +64,13 @@ module ApplicationHelper
       user: current_building_operator,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
        buildings, each_serializer: BuildingSerializer,
-       scope: {
-        user_id: current_building_operator.id,
-        user_type: 'BuildingOperator',
-        questions: Question
-          .where(id: current_building_operator.questions.map { |q| q.id }).load.to_a,
-        delegations: Delegation
-          .includes(answer: [:question, :building])
-          .where(
-            answer: Answer.where(building: buildings),
-            building_operator: current_building_operator,
-            status: "active"
-          )
-          .load.to_a,
-       }
+       scope: current_user.get_scope
       ),
       userType: 'BuildingOperator',
       contacts: contacts,
-      categories: current_building_operator.categories,
+      categories: ActiveModel::Serializer::CollectionSerializer.new(
+        current_building_operator.categories, each_serializer: CategorySerializer
+      ),
       userType: current_building_operator.class.name,
     }
   end
@@ -86,19 +81,27 @@ module ApplicationHelper
       portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         Building.all, each_serializer: BuildingSerializer,
-        scope: {user_id: current_rmi_user.id,
-                user_type: 'RmiUser'}
+        scope: current_user.get_scope
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer,
-        scope: {user_id: current_rmi_user.id,
-                user_type: 'RmiUser'}
+        scope: current_user.get_scope
       ),
       userType: 'RMIUser',
       categories: ActiveModel::Serializer::CollectionSerializer.new(
         Category.all, each_serializer: CategorySerializer
       )
     }
+  end
+
+  def current_user
+    if current_rmi_user
+      current_rmi_user
+    elsif current_building_operator
+      current_building_operator
+    else
+      current_asset_manager
+    end
   end
   # rubocop:enable AlignHash
 end

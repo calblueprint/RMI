@@ -1,9 +1,11 @@
 $icon-font-path: "@blueprintjs/core/resources/icons";
 
-$primary: #6893FF;
+$primary: #6893ff;
 $secondary: #969696;
 $backgroundGray: #f4f4f4;
+$tableGray: #d8d8d8;
 $inputBorder: 2px solid $secondary;
+$vibrantPrimary: #216dff;
 
 $border-primary: 2px solid $primary;
 $background-primary: lighten($primary, 25);
@@ -12,7 +14,8 @@ $param-font: Consolas 12px;
 
 body {
   background-color: white;
-  font-family: BlinkMacSystemFont, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: BlinkMacSystemFont, -apple-system, "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
   margin: 0px;
 }
 
@@ -49,7 +52,7 @@ input:focus {
 }
 
 .btn:hover::after {
-    opacity: 0.2;
+  opacity: 0.2;
 }
 
 .btn--primary {
@@ -69,7 +72,6 @@ input:focus {
 .btn--secondary:hover {
   background-color: lighten($secondary, 27.5);
 }
-
 
 *:focus {
   outline: transparent;

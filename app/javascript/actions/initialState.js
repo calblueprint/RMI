@@ -1,8 +1,9 @@
-import * as buildings from './buildings';
-import * as portfolios from './portfolios';
-import * as questions from './questions';
+import * as buildings from "./buildings";
+import * as portfolios from "./portfolios";
+import * as questions from "./questions";
 
-import { LOAD_INITIAL_STATE } from '../constants';
+import { LOAD_INITIAL_STATE } from "../constants";
+import { isDelegatedAnswer } from "../selectors/answersSelector";
 
 export default { buildings, portfolios, questions };
 
@@ -13,7 +14,7 @@ const toObjectByKey = (entities, key) => {
   }, {});
 };
 
-const toObjectById = (entities) => {
+const toObjectById = entities => {
   return toObjectByKey(entities, "id");
 };
 
@@ -34,14 +35,25 @@ const mapFilterKeys = (objs, keys) => {
 
 const formatState = {
   user: function(user) {
-      return filterKeys(user[0], ['id', 'email', 'first_name', 'last_name']);
+    return filterKeys(user[0], ["id", "email", "first_name", "last_name"]);
+  },
+  userType: function(userType) {
+    return userType[0];
   },
   buildings: function(buildings) {
     return toObjectById(
-      mapFilterKeys(
-        buildings,
-        ['id', 'name', 'answers', 'building_type_id', 'portfolio_id', 'address', 'city', 'state', 'zip', 'questions']
-      ).map((filteredBuilding) => {
+      mapFilterKeys(buildings, [
+        "id",
+        "name",
+        "answers",
+        "building_type_id",
+        "portfolio_id",
+        "address",
+        "city",
+        "state",
+        "zip",
+        "questions"
+      ]).map(filteredBuilding => {
         if (filteredBuilding.questions) {
           return {
             ...filteredBuilding,
@@ -55,8 +67,12 @@ const formatState = {
   },
   building_types: function(buildingTypes) {
     return toObjectById(
-      mapFilterKeys(buildingTypes, ['id', 'name', 'questions', 'categories'])
-      .map((filteredBuilding) => {
+      mapFilterKeys(buildingTypes, [
+        "id",
+        "name",
+        "questions",
+        "categories"
+      ]).map(filteredBuilding => {
         return {
           ...filteredBuilding,
           questions: Object.keys(filteredBuilding.questions)
@@ -65,49 +81,94 @@ const formatState = {
     );
   },
   categories: function(categories) {
-    return toObjectById(mapFilterKeys(categories, ['id', 'name', 'building_type_id', 'questions']));
+    return toObjectById(
+      mapFilterKeys(categories, [
+        "id",
+        "name",
+        "building_type_id",
+        "description",
+        "questions"
+      ])
+    );
   },
   portfolios: function(portfolios) {
     return toObjectById(
-      mapFilterKeys(
-        portfolios,
-        ['id', 'name', 'asset_manager_id']
-      )
+      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id"])
     );
   },
   contacts: function(contacts) {
-    return toObjectByKey(contacts, 'email');
+    return toObjectByKey(contacts, "email");
   }
 };
 
 export function loadInitialState(initialState) {
   const formatters = Object.keys(formatState);
-  const types = Object.keys(initialState).filter((type) => {
+  const types = Object.keys(initialState).filter(type => {
     return formatters.includes(type);
   });
 
-  let formattedState = types.map((type) => {
-    if (!Array.isArray(initialState[type])) {
-      initialState[type] = [initialState[type]];
-    }
+  let formattedState = types
+    .map(type => {
+      if (!Array.isArray(initialState[type])) {
+        initialState[type] = [initialState[type]];
+      }
 
-    let entity = initialState[type];
-    const stateFormatter = formatState[type];
+      let entity = initialState[type];
+      const stateFormatter = formatState[type];
 
-    return stateFormatter(entity);
-  }).reduce((result, shaped, index) => {
-    result[types[index]] = shaped;
-    return result;
-  }, {});
+      return stateFormatter(entity);
+    })
+    .reduce((result, shaped, index) => {
+      result[types[index]] = shaped;
+      return result;
+    }, {});
+  // Look for questions inside building_types
+  if (initialState.building_types) {
+    formattedState.questions = {};
+    initialState.building_types.forEach(building_type => {
+      formattedState = {
+        ...formattedState,
+        questions: {
+          ...formattedState.questions,
+          ...building_type.questions
+        }
+      };
+    });
+  }
   // Look for questions inside buildings
-  if (initialState.buildings) {
-    formattedState.questions = [];
-    initialState.buildings.forEach((building) => {
+  else if (initialState.buildings) {
+    formattedState.questions = {};
+    initialState.buildings.forEach(building => {
       formattedState = {
         ...formattedState,
         questions: {
           ...formattedState.questions,
           ...building.questions
+        }
+      };
+    });
+  }
+  // Look for contacts inside buildings
+  if (initialState.buildings) {
+    formattedState.contacts = {};
+    initialState.buildings.forEach(building => {
+      let contacts = [];
+      if (!building.answers) return;
+      Object.keys(building.answers).forEach(answerId => {
+        const answer = building.answers[answerId];
+        if (isDelegatedAnswer(answer)) {
+          contacts.push({
+            email: answer.delegation_email,
+            first_name: answer.delegation_first_name,
+            last_name: answer.delegation_last_name
+          });
+        }
+      });
+      formattedState = {
+        ...formattedState,
+        contacts: {
+          ...formattedState.contacts,
+          ...toObjectByKey(contacts, "email")
         }
       };
     });

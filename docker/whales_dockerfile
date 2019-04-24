@@ -4,7 +4,7 @@ ENV GEM_PATH=/gems
 ENV BUNDLE_PATH=/gems
 ENV GEM_HOME=/gems
 COPY . .
-RUN apk add --no-cache git python2
+RUN apk add --no-cache git python2 less
 RUN bundle install
 # RUN npm install
 CMD ["bundle", "exec", "rails", "server"]

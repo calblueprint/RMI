@@ -13,8 +13,9 @@ Rails.application.routes.draw do
       get 'download/:id' => :download, as: 'download'
     end
   end
+  
   namespace :api, defaults: { format: :json } do
-    resources :building_types, only: %i[show]
+    resources :building_types, only: %i[show create]
     resources :buildings, only: %i[show index create update]
     resources :answers, only: %i[show create update]
     resources :questions, only: %i[show create update destroy]
@@ -24,8 +25,11 @@ Rails.application.routes.draw do
     resources :range_options, only: %i[create update destroy]
     resources :categories, only: %i[create update show destroy]
     # Can change route with:
+    post 'answers/create_multiple', to: 'answers#create_multiple'
+    patch 'batch_update_answers', to: 'answers#update_multiple'
     patch 'questions/publish', to: 'questions#publish'
     delete 'answers/:id/attachment', to: 'answers#delete_file'
+    get 'buildings/:id/get_user_data', to: 'buildings#get_users_to_login_times' 
   end
 
   # Redirect everything else to the entry point for React;

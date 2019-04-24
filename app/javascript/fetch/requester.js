@@ -44,7 +44,7 @@ export async function patch(route, body) {
  *
  * @returns {Promise.<*>}   A promise that resolves to the JSON response if the request was successful.
  */
-async function doFetchRequest(route, method, body, ignoreContentType=false, toJson=true) {
+async function doFetchRequest(route, method, body=null, ignoreContentType=false, toJson=true) {
   let responseObj;
   const headers = {
     'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content

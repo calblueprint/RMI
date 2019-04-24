@@ -72,7 +72,7 @@ class CategoryQuestionsContainer extends React.Component {
 
   render() {
     const questions_display = this.props.questionList.map(question => {
-      if (!question.parent_option_id) {
+      if (question.parent_option_id === null) {
         return (
           <div key={question.id}>
             <QuestionContainer question={question} />
@@ -84,7 +84,7 @@ class CategoryQuestionsContainer extends React.Component {
     const select = this.props.category.new || false;
 
     return (
-      <div>
+      <div className="questionnaire-form-questions-container">
         <div>
           <CategoryDisplay
             category={this.props.category}
