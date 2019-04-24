@@ -105,6 +105,9 @@ const formatState = {
   },
   contacts: function(contacts) {
     return toObjectByKey(contacts, "email");
+  },
+  delegations: function(delegations) {
+    return toObjectByKey(delegations, "answer_id");
   }
 };
 

@@ -10,11 +10,12 @@ function DelegationContactCard({
   handleClickRemoveContact,
   showHeader = true,
   showChangeBtn = true,
-  showRemoveContactBtn = true
+  showRemoveContactBtn = true,
+  label = "Handing off question to"
 }) {
   return (
     <div>
-      {showHeader ? (<p className="delegation__label">Handing off question to</p>) : null}
+      {showHeader ? <p className="delegation__label">{label}</p> : null}
       <div className="delegation__card">
         <div className="delegation__card_info">
           <h3>
@@ -22,14 +23,16 @@ function DelegationContactCard({
           </h3>
           <p>{email}</p>
         </div>
-        {showHeader ? (<button
-          className="btn btn--secondary delegation__card_change"
-          type="button"
-          value="Change"
-          onClick={handleClickChangeContact}
-        >
-          Change
-        </button>) : null }
+        {showChangeBtn ? (
+          <button
+            className="btn btn--secondary delegation__card_change"
+            type="button"
+            value="Change"
+            onClick={handleClickChangeContact}
+          >
+            Change
+          </button>
+        ) : null}
         {showRemoveContactBtn ? (
           <button
             className="btn btn--danger"
@@ -38,7 +41,7 @@ function DelegationContactCard({
           >
             <FAIcon iconObj={closeIcon} />
           </button>
-        ) : null }
+        ) : null}
       </div>
     </div>
   );

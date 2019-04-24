@@ -8,13 +8,17 @@ import QuestionContainer from "./QuestionContainer";
 import * as ContactActions from "../actions/contacts";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { canEdit, getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
+
+import {
+  canEdit,
+  getDependentQuestionsForOptionIds
+} from "../selectors/questionsSelector";
+import { getActiveDelegationForAnswer } from "../selectors/delegationsSelector";
 import {
   getAnswerForQuestionAndBuilding,
   isValidAnswer,
   isDelegatedAnswer
 } from "../selectors/answersSelector";
-import { getContacts } from "../selectors/contactsSelector";
 import {
   createAnswer,
   updateAnswer,
@@ -86,16 +90,41 @@ class DelegationContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.canEdit ||
+    if (
+      !this.props.canEdit ||
       (isValidAnswer(this.props.answer) &&
-      !isDelegatedAnswer(this.props.answer) &&
-      this.props.mode === "delegation")
+        !isDelegatedAnswer(this.props.answer) &&
+        this.props.mode === "delegation")
     ) {
       return this.renderAnswered();
     }
 
     let delegationBlock;
-    if (this.state.finished) {
+    const { userType, activeDelegation } = this.props;
+    if (activeDelegation) {
+      if (
+        userType === "RMIUser" ||
+        userType === "AssetManager" ||
+        user.id !== activeDelegation.building_operator_id
+      ) {
+        // Already delegated
+        const {
+          first_name: firstName,
+          last_name: lastName,
+          email
+        } = activeDelegation.building_operator;
+        delegationBlock = (
+          <DelegationContactCard
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            label="Sent to"
+            showRemoveContactBtn={false}
+            showChangeBtn={false}
+          />
+        );
+      }
+    } else if (this.state.finished) {
       delegationBlock = (
         <DelegationContactCard
           firstName={this.props.answer.delegation_first_name}
@@ -154,22 +183,23 @@ class DelegationContainer extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  const answer = getAnswerForQuestionAndBuilding(
+    ownProps.question_id,
+    ownProps.building_id,
+    state
+  );
+
   return {
-    answer: getAnswerForQuestionAndBuilding(
-      ownProps.question_id,
-      ownProps.building_id,
-      state
-    ),
-    canEdit: canEdit(
-      ownProps.building_id,
-      ownProps.question_id,
-      state
-    ),
+    answer,
+    canEdit: canEdit(ownProps.building_id, ownProps.question_id, state),
+    activeDelegation: getActiveDelegationForAnswer(answer.id, state),
     dependentQuestions: getDependentQuestionsForOptionIds(
       Object.keys(ownProps.options),
       ownProps.question_type,
       state
-    )
+    ),
+    userType: state.userType,
+    user: state.user
   };
 }
 

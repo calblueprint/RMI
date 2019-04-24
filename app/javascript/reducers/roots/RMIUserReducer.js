@@ -13,5 +13,6 @@ export default {
   contacts,
   categories,
   user: (state = {}, action) => state,
-  userType: (state = {}, action) => state
+  userType: (state = {}, action) => state,
+  delegations: (state = {}, action) => state
 };

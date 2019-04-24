@@ -91,6 +91,9 @@ module ApplicationHelper
       userType: 'RMIUser',
       categories: ActiveModel::Serializer::CollectionSerializer.new(
         Category.all, each_serializer: CategorySerializer
+      ),
+      delegations: ActiveModel::Serializer::CollectionSerializer.new(
+        Delegation.where(status: :active), each_serializer: DelegationSerializer
       )
     }
   end
