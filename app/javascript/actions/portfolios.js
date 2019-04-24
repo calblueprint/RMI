@@ -4,7 +4,9 @@ import {
   FETCH_FAILURE,
   FETCH_IN_PROGRESS,
   FETCH_SETTINGS,
-  ADD_PORTFOLIO
+  ADD_PORTFOLIO,
+  SET_ACTIVE_CATEGORY,
+  SET_ACTIVE_BUILDING
 } from "../constants";
 
 export async function fetchPortfolios(dispatch) {
@@ -35,5 +37,21 @@ export function addPortfolio(portfolio) {
   return {
     type: ADD_PORTFOLIO,
     portfolio
+  };
+}
+
+export function setActiveBuilding(portfolioId, buildingId) {
+  return {
+    type: SET_ACTIVE_BUILDING,
+    portfolioId,
+    buildingId
+  };
+}
+
+export function setActiveCategory(categoryId, portfolioId) {
+  return {
+    type: SET_ACTIVE_CATEGORY,
+    portfolioId,
+    categoryId
   };
 }

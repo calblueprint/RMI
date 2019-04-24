@@ -55,7 +55,7 @@ p.delegation__label {
   margin-top: 10px;
 }
 
-.pt-input-group:not(.pt-active) {
+.delegation__popover-btn {
   &::after {
     content: "";
     border-radius: 3px;
@@ -75,22 +75,32 @@ p.delegation__label {
   }
 }
 
-.pt-input-group:not(.pt-active) > input {
+.delegation__popover-btn {
   background-color: $primary;
+  border: none;
   box-shadow: none;
   min-width: 100px;
   height: 40px;
-  // padding: 10px 30px 10px 30px !important;
+  padding: 10px 30px 10px 30px;
   position: relative;
+  border-radius: 3px;
 
-  &::placeholder {
-    color: white;
-    text-align: center;
-    font-weight: 500;
-    font-size: 11pt;
-  }
+  color: white;
+  text-align: center;
+  font-weight: 500;
+  font-size: 11pt;
 }
 
 .pt-menu-item.pt-intent-primary.pt-active {
   background-color: $primary;
+}
+
+.delegation__popover-content {
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.delegation__name-inputs {
+  padding: 10px 20px;
 }

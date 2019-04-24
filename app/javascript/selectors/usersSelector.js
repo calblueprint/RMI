@@ -9,3 +9,7 @@ export function getEmail(state) {
     return "";
   return state.user.email
 }
+
+export function getUserType(state) {
+  return state.userType;
+}
