@@ -44,7 +44,7 @@ gem 'aws-sdk-s3', '~> 1.24.1'
 
 # Error notifications
 gem 'toastr-rails'
-
+# jQuery for toastr
 gem 'jquery-rails'
 
 group :development, :test do
