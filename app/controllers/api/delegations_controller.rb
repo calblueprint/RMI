@@ -21,8 +21,7 @@ class Api::DelegationsController < ApplicationController
             first_name: delegation_params[:first_name],
             last_name: delegation_params[:last_name],
             phone: "0000000000", # use this filler by default, should be replaced during first login
-            password: (0...15).map { (65 + rand(26)).chr }.join,
-            last_sign_in_at: Time.utc(2000)
+            password: (0...15).map { (65 + rand(26)).chr }.join
           )
           operator.save!
           BuildingOperatorMailer.new_user_delegated_email(operator, current_user).deliver_now
