@@ -39,6 +39,10 @@ if (module.hot) {
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <div>
+    <div>
+    hello
+    </div>
+    <div>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <Router>
@@ -55,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </Router>
       </PersistGate>
     </Provider>
+    </div>
     </div>,
     document.body.appendChild(document.createElement('div')),
   )
