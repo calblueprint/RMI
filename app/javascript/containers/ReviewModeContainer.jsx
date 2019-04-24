@@ -10,7 +10,7 @@ import * as BuildingActions from "../actions/buildings";
 
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
-import { removeBuilding } from "../actions/buildings"
+import { removeBuilding } from "../actions/buildings";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
@@ -57,10 +57,8 @@ class ReviewModeContainer extends React.Component {
   // should synchronously submit delegations since user expects success
   async submitDelegation() {
     let delegations = this.getDelegations();
-    let new_delegations = delegations['new_delegations'];
-    let delegations_to_update = delegations['answered_question_ids'];
-    console.log('submit')
-    console.log(delegations_to_update)
+    let new_delegations = delegations["new_delegations"];
+    let delegations_to_update = delegations["answered_question_ids"];
     if (new_delegations.length == 0) {
       this.setState({
         status_string: "There were no delegations to be saved!"
@@ -68,7 +66,9 @@ class ReviewModeContainer extends React.Component {
     } else {
       this.setState({ status_string: "Saving delegations!" });
       try {
-        let response = await post("/api/delegations", { delegations: new_delegations });
+        let response = await post("/api/delegations", {
+          delegations: new_delegations
+        });
         this.setState({ status_string: "New Delegations saved." });
         this.updateDelegations(delegations_to_update);
       } catch (error) {
@@ -81,39 +81,31 @@ class ReviewModeContainer extends React.Component {
 
   async updateDelegations(delegations) {
     try {
-        let response = await patch("/api/delegations/set_completed", { delegations });
-        this.setState({ status_string: "Old Delegations updated!" });
-        // this.updateDelegations(delegations_to_update);
-        // need to change this to /portfolios for RMI users? different routes for different users after delegating
-        this.props.history.push(`/buildings`);
-        const building = this.props.building;
-        this.props.removeBuilding(building.id)
-      } catch (error) {
-        console.log(error)
-        this.setState({
-          status_string: "Updating delegations failed. Try again?"
-        });
-      }
+      let response = await patch("/api/delegations/set_completed", {
+        delegations
+      });
+      this.setState({ status_string: "Old Delegations updated!" });
+      // need to change this to /portfolios for RMI users? different routes for different users after delegating
+      this.props.history.push(`/buildings`);
+      this.props.removeBuilding(this.props.building);
+    } catch (error) {
+      this.setState({
+        status_string: "Updating delegations failed. Try again?"
+      });
+    }
   }
 
   getDelegations() {
-    let answered_question_ids = []
-    let parentQuestionsForDelegations = []
+    let answered_question_ids = [];
+    let parentQuestionsForDelegations = [];
     this.props.questions.forEach(question => {
-      let answer = this.props.getAnswer(question.id)
+      let answer = this.props.getAnswer(question.id);
       if (answer && !answer.text && answer.delegation_email) {
-        parentQuestionsForDelegations.push(question)
+        parentQuestionsForDelegations.push(question);
+      } else {
+        answered_question_ids.push({ answer_id: answer.id });
       }
-      else {
-        answered_question_ids.push({answer_id: answer.id})
-      }
-    })
-    // var parentQuestionsForDelegations = this.props.questions.filter(
-    //   question => {
-    //     answer = this.props.getAnswer(question.id);
-    //     return answer && !answer.text && answer.delegation_email;
-    //   }
-    // );
+    });
 
     var delegations = [];
     for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
@@ -137,7 +129,10 @@ class ReviewModeContainer extends React.Component {
         }
       });
     }
-    return {new_delegations: delegations, answered_question_ids: answered_question_ids};
+    return {
+      new_delegations: delegations,
+      answered_question_ids: answered_question_ids
+    };
   }
 
   populateQuestionStack(building, questions) {
