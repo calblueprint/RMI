@@ -1,16 +1,32 @@
-<h2>Forgot your password?</h2>
+<!--Forgot password page-->
+<div class="loginPageContainer">
+  `<img src="<%= asset_pack_path 'images/rmi-logo.png' %>" height=100 width=100 />`
+  <h1 class="loginHeader">Forgot Password</h1>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+    <div class="input-container">
+      <div class="field">
+        <%= f.label :email, class: "input-label" %><br />
+        <%= f.email_field :email, class: "input-box", placeholder: "email@rmi.org", autofocus: true %>
+      </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+      <div class="actions">
+        <%= f.submit "Send reset password instructions", class: "btn btn--primary primary-long-login-btn" %>
+      </div>
+      <div class="login-buttons-container">
+        <div class="actions">
+          <%- if controller_name != 'sessions' %>
+            <%= link_to "Log in", new_session_path(resource_name), class: "btn btn--neutral" %>
+          <% end -%>
+        </div>
+        <div class="actions">
+          <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+            <%= link_to "Sign up", new_registration_path(resource_name), class: "btn btn--neutral" %>
+          <% end -%>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { questionDataPerCategory, numUnanswered } from '../selectors/answersSelector';
@@ -28,7 +27,7 @@ class QuestionaireCategoryContainer extends React.Component {
   render() {
     var categoryData = this.props.categoryData;    
     return (
-      <div className='questionaire-category-container'>
+      <div className='questionnaire-category-container'>
           <br></br>
           <div className='vertical-bus-map'>
             <div className='vertical-line'></div>
@@ -60,7 +59,7 @@ QuestionaireCategoryContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
     return {
         // array containing an object for each category id, name, number of answered questions, and total questions
-        categoryData: questionDataPerCategory(ownProps.building_id, ownProps.categories, state),
+        categoryData: questionDataPerCategory(ownProps.building_id, state),
     };
   }
   

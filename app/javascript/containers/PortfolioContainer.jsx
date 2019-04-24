@@ -1,22 +1,29 @@
 import React from "react";
-
-import * as BuildingActions from "../actions/buildings";
-import { loadInitialState } from "../actions/initialState";
-import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
-import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import {
-  addAnswers,
-  EMPTY_ANSWER,
-  DELETE_LOCAL_ANSWER
-} from "../actions/answers";
-import Modal from "../components/Modal.jsx";
-import { getBuildingTypes } from "../selectors/buildingTypesSelector";
-import { addBuilding } from "../actions/buildings";
-import { post } from "../fetch/requester";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
+import * as BuildingActions from "../actions/buildings";
+import { loadInitialState } from "../actions/initialState";
+import { addBuilding } from "../actions/buildings";
+import { addAnswers, EMPTY_ANSWER } from "../actions/answers";
+
+import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
+import {
+  getPortfolioName,
+  getSelectedBuildingId,
+  getSelectedCategoryId
+} from "../selectors/portfoliosSelector";
+import { getBuildingTypes } from "../selectors/buildingTypesSelector";
+import { getUserType } from "../selectors/usersSelector";
+
+import Modal from "../components/Modal.jsx";
+import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
+import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
+
+import { post } from "../fetch/requester";
 import { delegateQuestions } from "../utils/DelegationRequests";
+import Logo from "../images/rmi-logo.png";
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -28,6 +35,20 @@ class PortfolioContainer extends React.Component {
     this.createBuilding = this.createBuilding.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  groupBuildingsByType() {
+    let buildingTypesDic = {};
+    let buildings = this.props.buildings;
+    for (let i = 0; i < buildings.length; i++) {
+      let id = buildings[i].building_type_id;
+      if (buildingTypesDic[id] == null) {
+        buildingTypesDic[id] = [buildings[i]];
+      } else {
+        buildingTypesDic[id].push(buildings[i]);
+      }
+    }
+    return buildingTypesDic;
   }
 
   toggleModal() {
@@ -104,24 +125,38 @@ class PortfolioContainer extends React.Component {
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
-      await this.createAnswers(questions, buildingId, email, firstName, lastName);
+      await this.createAnswers(
+        questions,
+        buildingId,
+        email,
+        firstName,
+        lastName
+      );
       this.props.history.push(`/buildings/${buildingId}`);
     } catch (error) {
       this.setState({ errors: error, showModal: true });
     }
   }
 
+  addBuildingButton() {
+    if (this.props.userType === "RMIUser") {
+      return (
+        <button className="btn btn--primary" onClick={this.toggleModal}>
+          + Add Building
+        </button>
+      );
+    }
+  }
+
   render() {
+    let buildingByType = this.groupBuildingsByType();
+    let portfolioId = this.props.match.params.pId;
+    let selectedBuildingId = this.props.selectedBuildingId;
+    let selectedCategoryId = this.props.selectedCategoryId;
+    let buildings = this.props.buildings;
+
     return (
-      <div>
-        <h2>Portfolio</h2>
-        <a href={`download/${this.props.match.params.pId}`}>Download as CSV</a>
-        <hr />
-        <input
-          type="button"
-          value="Create New Building"
-          onClick={this.toggleModal}
-        />
+      <div className="portfolio__container">
         <Modal
           {...this.props}
           showModal={this.state.showModal}
@@ -129,20 +164,37 @@ class PortfolioContainer extends React.Component {
           toggleModal={this.toggleModal}
           createBuilding={this.createBuilding}
         />
+        <div className="portfolio__header">
+          <div>
+            <Link to="/">{/* <img src={Logo} draggable={false} /> */}</Link>
+          </div>
+          <div>
+            <span className="small_header">PORTFOLIO</span>
+            <h2>{this.props.portfolioName}</h2>
+          </div>
+        </div>
         <div className="building__container">
-          {this.props.buildings.map(building => {
-            return (
-              <div className="building__row" key={building.id}>
-                <div className="building__details">
-                  <h3>{building.name}</h3>
-                  <p>{building.address}</p>
-                </div>
-                <span className="building__link">
-                  <Link to={`/buildings/${building.id}`}>Details</Link>
-                </span>
-              </div>
-            );
-          })}
+          <div className="building__types">
+            {this.addBuildingButton()}
+            {Object.keys(buildingByType).map((typeId, i) => {
+              return (
+                <PortfolioBuildingDetailsContainer
+                  key={i}
+                  portfolioId={portfolioId}
+                  buildings={buildingByType[typeId]}
+                  buildingTypeId={typeId}
+                  match={this.props.match}
+                  selectedBuildingId={selectedBuildingId}
+                />
+              );
+            })}
+          </div>
+          <PortfolioBuildingContainer
+            selectedBuildingId={selectedBuildingId}
+            selectedCategoryId={selectedCategoryId}
+            buildings={buildings}
+            portfolio_id={portfolioId}
+          />
         </div>
       </div>
     );
@@ -151,10 +203,12 @@ class PortfolioContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    portfolioName: getPortfolioName(ownProps.match.params.pId, state),
     buildings: getBuildingsByPortfolio(ownProps.match.params.pId, state),
     building_types: getBuildingTypes(state),
-    getAnswer: (questionId, buildingId) =>
-      getAnswerForQuestionAndBuilding(questionId, buildingId, state)
+    selectedBuildingId: getSelectedBuildingId(ownProps.match.params.pId, state),
+    selectedCategoryId: getSelectedCategoryId(ownProps.match.params.pId, state),
+    userType: getUserType(state)
   };
 }
 

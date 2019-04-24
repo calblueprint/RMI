@@ -1,8 +1,7 @@
 import React from "react";
 
-import DelegationNameInputs from "../components/DelegationNameInputs";
-import DelegationContactSelector from "../components/DelegationContactSelector";
 import DelegationContactCard from "../components/DelegationContactCard";
+import DelegationPopover from "../components/DelegationPopover";
 import QuestionContainer from "./QuestionContainer";
 
 import * as ContactActions from "../actions/contacts";
@@ -14,7 +13,6 @@ import {
   isValidAnswer,
   isDelegatedAnswer
 } from "../selectors/answersSelector";
-import { getContacts } from "../selectors/contactsSelector";
 import { createAnswer, updateAnswer } from "../actions/answers";
 
 import validateEmail from "../utils/validateEmail";
@@ -22,34 +20,12 @@ import validateEmail from "../utils/validateEmail";
 class DelegationContainer extends React.Component {
   constructor(props) {
     super(props);
-    if (this.props.answer) {
-      this.state = {
-        email: this.props.answer.delegation_email,
-        firstName: this.props.answer.delegation_first_name,
-        lastName: this.props.answer.delegation_last_name,
-        showNameInputs: false,
-        finished: validateEmail(this.props.answer.delegation_email),
-        selected: false
-      };
-    } else {
-      this.state = {
-        email: "",
-        firstName: "",
-        lastName: "",
-        showNameInputs: false,
-        finished: false,
-        selected: false
-      };
-    }
+    this.state = {
+      finished:
+        this.props.answer && validateEmail(this.props.answer.delegation_email),
+      selected: false
+    };
   }
-
-  componentDidMount() {
-    this.createOrUpdateContactsIfValid(null);
-  }
-
-  showNameInputs = () => {
-    this.setState({ showNameInputs: true });
-  };
 
   toggleSelected = () => {
     this.setState(state => {
@@ -57,14 +33,14 @@ class DelegationContainer extends React.Component {
     });
   };
 
-  updateAnswer() {
+  updateAnswer = ({ email, firstName, lastName }) => {
     // Need to keep answers up to date as during editing
     const answer = {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
-      delegation_email: this.state.email,
-      delegation_first_name: this.state.firstName,
-      delegation_last_name: this.state.lastName
+      delegation_email: email,
+      delegation_first_name: firstName,
+      delegation_last_name: lastName
     };
 
     if (!this.props.answer) {
@@ -73,83 +49,14 @@ class DelegationContainer extends React.Component {
       answer.id = this.props.answer.id;
       this.props.updateAnswer(answer.building_id, answer);
     }
-  }
+  };
 
-  clearContact() {
-    this.setState(
-      {
-        email: "",
-        firstName: "",
-        lastName: "",
-        showNameInputs: false,
-        finished: false
-      },
-      this.updateAnswer
-    );
-  }
-
-  saveContact = () => {
-    this.setState({ finished: true }, () => {
-      this.updateAnswer();
-      this.createOrUpdateContactsIfValid(null);
+  clearContact = () => {
+    this.updateAnswer({ email: "", firstName: "", lastName: "" });
+    this.setState({
+      finished: false
     });
   };
-
-  selectContactByEmail = email => {
-    const contact = this.props.contacts.find(
-      contact => contact.email === email
-    );
-    if (!contact) {
-      return;
-    }
-    this.setState(
-      {
-        email,
-        firstName: contact.first_name,
-        lastName: contact.last_name,
-        finished: true
-      },
-      this.updateAnswer
-    );
-  };
-
-  handleContactInfoChange = (key, value) => {
-    this.setState({ [key]: value });
-  };
-
-  // If email, firstname and lastname are valid pair, then
-  // this function should be called to update contacts stored
-  // in redux, and make it available in future references
-  createOrUpdateContactsIfValid(oldState) {
-    if (oldState && validateEmail(oldState.email)) {
-      this.props.contactActions.deleteContact(oldState.email);
-    }
-    if (
-      validateEmail(this.state.email) &&
-      this.state.firstName &&
-      this.state.lastName
-    ) {
-      this.props.contactActions.addContact(
-        this.state.email,
-        this.state.firstName,
-        this.state.lastName
-      );
-    }
-  }
-
-  filterContacts() {
-    if (this.state.email) {
-      const query = this.state.email.toLowerCase();
-      return this.props.contacts.filter(
-        contact =>
-          contact.email.toLowerCase().includes(query) ||
-          contact.first_name.toLowerCase().includes(query) ||
-          contact.last_name.toLowerCase().includes(query)
-      );
-    } else {
-      return this.props.contacts;
-    }
-  }
 
   renderAnswered() {
     const dependents = this.props.dependentQuestions[
@@ -185,9 +92,9 @@ class DelegationContainer extends React.Component {
     if (this.state.finished) {
       delegationBlock = (
         <DelegationContactCard
-          firstName={this.state.firstName}
-          lastName={this.state.lastName}
-          email={this.state.email}
+          firstName={this.props.answer.delegation_first_name}
+          lastName={this.props.answer.delegation_last_name}
+          email={this.props.answer.delegation_email}
           handleClickChangeContact={() => {
             this.clearContact();
           }}
@@ -198,24 +105,24 @@ class DelegationContainer extends React.Component {
           showRemoveContactBtn={this.props.mode !== "delegation"}
         />
       );
-    } else if (this.state.showNameInputs) {
-      delegationBlock = (
-        <DelegationNameInputs
-          handleContactInfoChange={this.handleContactInfoChange}
-          handleClickSaveContact={this.saveContact}
-        />
-      );
     } else {
       delegationBlock = (
-        <DelegationContactSelector
-          handleClickCreateContact={this.showNameInputs}
-          handleContactInfoChange={this.handleContactInfoChange}
-          handleExistingContactSelect={this.selectContactByEmail}
-          handleDelegationCancel={this.props.onDelegationCancel}
-          toggleSelected={this.toggleSelected}
-          contacts={Object.values(this.filterContacts())}
-          email={this.state.email}
-        />
+        <div>
+          <p className="delegation__label">Handoff</p>
+          <DelegationPopover
+            onOpen={this.clearContact}
+            onSelectedContact={contact => {
+              this.setState({ finished: true });
+              this.updateAnswer(contact);
+            }}
+          />
+          <button
+            className="btn btn--secondary delegation__edit_btn"
+            onClick={this.props.onDelegationCancel}
+          >
+            Answer Question
+          </button>
+        </div>
       );
     }
 
@@ -245,8 +152,7 @@ function mapStateToProps(state, ownProps) {
       Object.keys(ownProps.options),
       ownProps.question_type,
       state
-    ),
-    contacts: getContacts(state)
+    )
   };
 }
 
