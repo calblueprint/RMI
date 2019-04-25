@@ -14,7 +14,7 @@ class DelegationPopover extends React.Component {
       showNameInputs: false,
       email: "",
       firstName: "",
-      lastName: ""
+      lastName: "",
     };
   }
 
@@ -63,6 +63,12 @@ class DelegationPopover extends React.Component {
     }
   }
 
+  styleIfDisabled() {
+    if (this.props.disabled) {
+      return {"background-color": "#B2B2B2"}
+    }
+  }
+
   render() {
     return (
       <Popover
@@ -73,8 +79,9 @@ class DelegationPopover extends React.Component {
         }}
         onClose={() => this.setState({ showNameInputs: false })}
         minimal
+        disabled={this.props.disabled}
       >
-        <button className="delegation__popover-btn">{this.props.label}</button>
+        <button className="delegation__popover-btn" style={this.styleIfDisabled()}>{this.props.label}</button>
         <div className="delegation__popover-content">
           {this.state.showNameInputs ? (
             <DelegationNameInputs

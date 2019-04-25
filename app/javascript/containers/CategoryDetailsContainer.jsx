@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { addAnswers } from "../actions/answers";
+import { getAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
 import { getCategoryById } from '../selectors/categoriesSelector'
 import { delegateCategoryQuestions } from '../utils/DelegationRequests';
 
@@ -12,7 +13,14 @@ import DelegationPopover from "../components/DelegationPopover";
 /** Renders the main details for a specific category, 
  * including the category name and building name
  */
-class CategoryDetailsContainer extends React.Component {    
+class CategoryDetailsContainer extends React.Component { 
+
+    isDisabled() {
+        let answered = this.props.categoryData.answered;
+        let total = this.props.categoryData.total;
+        return answered === total;
+    }
+
     delegationInfo() {
         let loginUserData = this.props.loginUserData;
         let catData = this.props.categoryData;
@@ -32,7 +40,7 @@ class CategoryDetailsContainer extends React.Component {
         }
     }
     
-    
+
     render() {
         let catName = this.props.category.name;
         let buildingName = this.props.buildingName;
@@ -48,6 +56,7 @@ class CategoryDetailsContainer extends React.Component {
                     <DelegationPopover
                             label="Assign Category"
                             onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
+                            disabled={this.isDisabled()}
                     />
                 </div>
                 <div className='delegations_list'>

@@ -19,6 +19,10 @@ import linkIcon from "@fortawesome/fontawesome-free-solid/faExternalLinkAlt";
 /** Renders the main information for the building, including the name and
  * the table containing the status of each category */
 class PortfolioBuildingInfoContainer extends React.Component {
+  isDisabled() {
+    return this.props.buildingStatus === 1;
+  }
+
   getStatusForBuilding() {
     if (this.props.buildingStatus == 1) {
       return "Completed";
@@ -73,6 +77,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
             <DelegationPopover
                   label="Assign Building"
                   onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
+                  disabled={this.isDisabled()}
             />
             <button className="btn btn--neutral" href={`download/${buildingId}`}>Export CSV</button>
           </div>
