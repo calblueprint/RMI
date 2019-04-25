@@ -165,7 +165,5 @@ export function getAllActiveQuestionIds(rootQuestions, buildingId, state) {
       }
     }
   }
-  console.log("questions")
-  console.log(questions)
   return questions;
 }

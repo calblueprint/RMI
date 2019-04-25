@@ -23,7 +23,7 @@ export function getAnswersForCategoryAndBuilding(categoryId, buildingId, state) 
   const buildingQuestions = state.buildings[buildingId].questions;
   let categoryQuestions = state.categories[categoryId].questions;
   categoryQuestions = buildingQuestions.filter((id) => {
-    return categoryQuestions.includes(Number(id));
+    return categoryQuestions.includes(parseInt(id));
   })
   
   let answers = state.buildings[buildingId].answers;
@@ -31,8 +31,7 @@ export function getAnswersForCategoryAndBuilding(categoryId, buildingId, state) 
     let email = answers[id].delegation_email;
     let text = answers[id].text;
     return !email && !text && categoryQuestions.includes(id);
-  })
-  .reduce((newAnswers, id) => {
+  }).reduce((newAnswers, id) => {
     newAnswers[id] = answers[id];
     return newAnswers
   }, {});
