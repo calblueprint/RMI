@@ -45,9 +45,23 @@ class Api::BuildingsController < ApplicationController
     @building_operator.buildings << building
   end
 
+  def get_users_to_login_times
+    building = Building.find(params[:id])
+    building_operators = Set.new []
+    building.delegations.where(status: 'active').each do |delegation|
+      building_operators.add(delegation.building_operator)
+    end
+    users_to_login_times = {}
+    building_operators.each do |building_operator|
+      users_to_login_times[building_operator.email] = building_operator.last_sign_in_at
+    end
+    render_json_message(:ok, data: users_to_login_times, message: "Got login time data")
+  end
+
   private
 
   def building_params
     params.require(:building).permit(:name, :address, :city, :state, :zip, :portfolio_id, :building_type_id)
   end
+
 end

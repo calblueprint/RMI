@@ -36,7 +36,7 @@ class OptionsContainer extends React.Component {
       building_id: this.props.building_id,
       question_id: this.props.question_id,
       selected_option_id: optionId,
-      text: value
+      text: value,
     };
   }
 
@@ -167,7 +167,7 @@ function mapStateToProps(state, ownProps) {
       Object.keys(ownProps.options),
       ownProps.question_type,
       state
-    )
+    ),
   };
 }
 
