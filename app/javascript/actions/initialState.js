@@ -57,7 +57,7 @@ const formatState = {
         if (filteredBuilding.questions) {
           const questionIds = Object.keys(filteredBuilding.questions);
           const editable = questionIds.reduce((map, qId) => {
-            map[qId] = !!filteredBuilding.questions[qId]["can_edit"];
+            map[qId] = Boolean(filteredBuilding.questions[qId]["can_edit"]);
             return map;
           }, {});
 

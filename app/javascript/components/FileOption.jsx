@@ -32,15 +32,6 @@ class FileOption extends React.Component {
   }
 
   render() {
-    if (!this.props.editable) {
-      // TODO: how do we represent uneditable FileOptions?
-      // This might not actually be necessary because file uploads can never trigger any
-      // child questions, so we could just not render it at all
-      const dummy = () => {};
-      return <RangeOption editable={false} focusOnMount={false}
-                          onChange={dummy} onEnter={dummy} onLeave={dummy} onSave={dummy} options={{}}/>;
-    }
-
     const currentFileName = this.currentFileExists() ? this.props.answer.attachment_file_name : "";
     const currentFileLink = this.getFileLink();
 

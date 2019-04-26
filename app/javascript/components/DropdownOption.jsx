@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fontawesome from '@fortawesome/fontawesome';
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
@@ -52,17 +53,6 @@ class DropdownOption extends React.Component {
     this.props.onSave(optionId, text);
   }
 
-  getComponentStyle(currentValue, option) {
-    let style = "input__dropdown";
-    if (currentValue == option.id) {
-      style += " input__dropdown--selected";
-    }
-    if (!this.props.editable) {
-      style += " input__dropdown--disabled";
-    }
-    return style;
-  }
-
   render() {
     const currentValue = this.currentValue();
     const options = Object.values(this.props.options);
@@ -76,7 +66,13 @@ class DropdownOption extends React.Component {
           let props = {
             key: option.id,
             value: option.id,
-            className: this.getComponentStyle(currentValue, option),
+            className: classNames(
+              'input__dropdown',
+              {
+                "input__dropdown--selected": currentValue == option.id,
+                "input__dropdown--disabled": !this.props.editable
+              }
+            ),
             ref: (ref) => this.ref = i === 0 ? ref : this.ref
           };
           if (this.props.editable) {

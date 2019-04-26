@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ContentEditable from 'react-sane-contenteditable';
 import { debounce } from 'lodash';
@@ -49,17 +50,6 @@ class RangeOption extends React.Component {
     this.updateAnswer(null, num, force);
   }
 
-  getComponentStyle() {
-    let style = "input__range";
-    if (this.state.focused) {
-      style += " input__range--focused";
-    }
-    if (!this.props.editable) {
-      style += " input__range--disabled";
-    }
-    return style;
-  }
-
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
     let props = {
@@ -86,7 +76,13 @@ class RangeOption extends React.Component {
     }
     return (
       <div
-        className={this.getComponentStyle()}
+        className={classNames(
+          "input__range",
+          {
+            "input__range--focused": this.state.focused,
+            "input__range--disabled": !this.props.editable
+          }
+        )}
         onClick={(e) => this.ref.focus()}
       >
         <ContentEditable {...props} />
