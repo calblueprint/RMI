@@ -22,6 +22,7 @@ import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContain
 import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
 
 import { post } from "../fetch/requester";
+import  validateEmail  from "../utils/validateEmail";
 import { delegateQuestions } from "../utils/DelegationRequests";
 import Logo from "../images/rmi-logo.png";
 
@@ -97,6 +98,10 @@ class PortfolioContainer extends React.Component {
     event.preventDefault();
     const buildingName = event.target.name.value;
     const email = event.target.email.value;
+    if (!validateEmail(email)) {
+      this.setState({ errors: "Email is invalid", showModal: true });
+      return;
+    }
     const buildingTypeId = document.getElementById("building").value;
     const address = event.target.address.value;
     const city = event.target.city.value;
