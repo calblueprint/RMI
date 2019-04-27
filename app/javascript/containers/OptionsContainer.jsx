@@ -1,5 +1,5 @@
 import React from "react";
-
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import DropdownOption from "../components/DropdownOption";
 import RangeOption from "../components/RangeOption";
@@ -131,12 +131,13 @@ class OptionsContainer extends React.Component {
 
     return (<div className="question__block">
       <div
-        className={
-          `question \
-          ${this.state.selected ? 'question--selected' : '' } \
-          ${this.props.answer
-            && this.props.answer.error ? 'question--error' : ''}`
-        }
+        className={classNames(
+          "question",
+          {
+            "question--selected": this.state.selected,
+            "question--error": this.props.answer && this.props.answer.error
+          }
+        )}
       >
         <p>{this.props.text}</p>
         {optionsComponent}

@@ -17,17 +17,6 @@ import CategoryHeader from "../components/CategoryHeader";
 
 import { post, patch } from "../fetch/requester";
 
-async function postDelegations(delegations) {
-  let body = {delegations};
-
-  try {
-    let resp = await post('/api/delegations', body);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
 class ReviewModeContainer extends React.Component {
   constructor(props) {
     super(props);

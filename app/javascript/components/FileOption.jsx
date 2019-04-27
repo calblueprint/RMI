@@ -1,6 +1,5 @@
 import React from 'react';
 import { FETCH_IN_PROGRESS } from '../constants/index';
-import RangeOption from "./RangeOption";
 
 class FileOption extends React.Component {
   handleUpload(e) {
