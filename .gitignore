@@ -65,3 +65,6 @@ bower.json
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+
+config/storage.yml
+storage/

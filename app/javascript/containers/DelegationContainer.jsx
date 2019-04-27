@@ -2,12 +2,13 @@ import React from "react";
 
 import DelegationContactCard from "../components/DelegationContactCard";
 import DelegationPopover from "../components/DelegationPopover";
+
 import QuestionContainer from "./QuestionContainer";
 
 import * as ContactActions from "../actions/contacts";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
+import { canEdit, getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
 import {
   getAnswerForQuestionAndBuilding,
   isValidAnswer,
@@ -80,10 +81,10 @@ class DelegationContainer extends React.Component {
   }
 
   render() {
-    if (
-      isValidAnswer(this.props.answer) &&
+    if (!this.props.canEdit ||
+      (isValidAnswer(this.props.answer) &&
       !isDelegatedAnswer(this.props.answer) &&
-      this.props.mode === "delegation"
+      this.props.mode === "delegation")
     ) {
       return this.renderAnswered();
     }
@@ -146,6 +147,11 @@ function mapStateToProps(state, ownProps) {
     answer: getAnswerForQuestionAndBuilding(
       ownProps.question_id,
       ownProps.building_id,
+      state
+    ),
+    canEdit: canEdit(
+      ownProps.building_id,
+      ownProps.question_id,
       state
     ),
     dependentQuestions: getDependentQuestionsForOptionIds(

@@ -1,5 +1,5 @@
 import React from "react";
-
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import DropdownOption from "../components/DropdownOption";
 import RangeOption from "../components/RangeOption";
@@ -9,7 +9,7 @@ import Status from "../components/Status";
 import DependentQuestions from "../components/DependentQuestions";
 
 import { connect } from "react-redux";
-import { getDependentQuestionsForOptionIds } from "../selectors/questionsSelector";
+import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import {
   createAnswer,
   uploadFile,
@@ -18,6 +18,7 @@ import {
   updateLocalAnswer,
   removeLocalAnswer
 } from "../actions/answers";
+import { getDependentQuestionsForOptionIds, getQuestionIdsByBuilding } from '../selectors/questionsSelector';
 
 class OptionsContainer extends React.Component {
   constructor(props) {
@@ -111,7 +112,8 @@ class OptionsContainer extends React.Component {
       onFileDelete: this.onFileDelete.bind(this),
       onEnter: () => this.setState({ selected: true }),
       onLeave: () => this.setState({ selected: false }),
-      focusOnMount: this.props.focusOnMount
+      focusOnMount: this.props.focusOnMount,
+      editable: this.props.editableMap[this.props.question_id]
     };
     const optionsComponent = (() => {
       switch (this.props.question_type) {
@@ -127,41 +129,41 @@ class OptionsContainer extends React.Component {
       }
     })();
 
-    return (
-      <div className="question__block">
-        <div
-          className={`question \
-          ${this.state.selected ? "question--selected" : ""} \
-          ${
-            this.props.answer && this.props.answer.error
-              ? "question--error"
-              : ""
-          }`}
-        >
-          <p>{this.props.text}</p>
-          {optionsComponent}
-          <a onClick={this.onClickHandoff.bind(this)}>Handoff</a>
-          <Status
-            fetchObject={this.props.answer}
-            onRetry={this.onRetry.bind(this)}
-          />
-        </div>
-        {this.props.answer ? (
-          <DependentQuestions
-            answer={this.props.answer}
-            dependentQuestions={this.props.dependentQuestions}
-            buildingId={this.props.building_id}
-            parentIsHidden={this.props.parentIsHidden}
-            disableFocusOnMount={this.props.question_type == "RangeOption"}
-          />
-        ) : null}
+    return (<div className="question__block">
+      <div
+        className={classNames(
+          "question",
+          {
+            "question--selected": this.state.selected,
+            "question--error": this.props.answer && this.props.answer.error
+          }
+        )}
+      >
+        <p>{this.props.text}</p>
+        {optionsComponent}
+        <a onClick={this.onClickHandoff.bind(this)}>Handoff</a>
+        <Status fetchObject={this.props.answer}
+                onRetry={this.onRetry.bind(this)} />
       </div>
-    );
+      {this.props.answer ?
+        <DependentQuestions
+          allowedQuestionIds={this.props.allowedQuestionIds}
+          answer={this.props.answer}
+          dependentQuestions={this.props.dependentQuestions}
+          buildingId={this.props.building_id}
+          parentIsHidden={this.props.parentIsHidden}
+          disableFocusOnMount={this.props.question_type == "RangeOption"}
+          editableMap={this.props.editableMap}
+        />
+      : null}
+    </div>);
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
+    allowedQuestionIds: getQuestionIdsByBuilding(ownProps.building_id, state),
+    answer: getAnswerForQuestionAndBuilding(ownProps.question_id, ownProps.building_id, state),
     dependentQuestions: getDependentQuestionsForOptionIds(
       Object.keys(ownProps.options),
       ownProps.question_type,
