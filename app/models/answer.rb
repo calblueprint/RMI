@@ -28,9 +28,10 @@ class Answer < ApplicationRecord
   # files on S3 should be private and accessed via expiring_url
   has_attached_file :attachment,
     :storage => :s3,
-    :s3_permissions => :private
+    :s3_permissions => :private,
+    :validate_media_type => false
 
-  validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 2.megabytes
+  validates_with AttachmentSizeValidator, attributes: :attachment, less_than: 5.megabytes
   do_not_validate_attachment_file_type :attachment
 
   def has_no_delegation

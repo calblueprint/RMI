@@ -1,16 +1,14 @@
-import React from 'react'
-import {post} from '../../fetch/requester';
-import PropTypes from 'prop-types';
-import {generateTempId} from '../../utils/TemporaryObjectUtil';
-
+import React from "react";
+import { post } from "../../fetch/requester";
+import PropTypes from "prop-types";
+import { generateTempId } from "../../utils/TemporaryObjectUtil";
 
 class CreateQuestionButton extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state={
-      selectQType: false,
-    }
+    this.state = {
+      selectQType: false
+    };
   }
 
   /**
@@ -20,7 +18,7 @@ class CreateQuestionButton extends React.Component {
   async createQuestion(question) {
     this.props.questionFetchInProgress(question);
     try {
-      let response = await post('/api/questions', {'question': question});
+      let response = await post("/api/questions", { question: question });
       this.props.questionFetchSuccess(response.data);
       this.props.questionSetNew(response.data);
     } catch (error) {
@@ -34,64 +32,63 @@ class CreateQuestionButton extends React.Component {
    * @param {string} qType - question_type
    */
   selectQtype(qType) {
-    const newQ = {...this.props.tempQuestion, question_type: qType};
+    const newQ = { ...this.props.tempQuestion, question_type: qType };
     this.createQuestion(newQ);
-    this.setState({selectQType: false});
+    this.setState({ selectQType: false });
   }
-
 
   newQuestionTypeSelector() {
     const qTypesDisplay = {
-      'RangeOption': 'numeric',
-      'DropdownOption': 'dropdown',
-      'FreeOption': 'free response'};
+      RangeOption: "numeric",
+      DropdownOption: "dropdown",
+      FreeOption: "free response",
+      FileOption: "file upload"
+    };
     const options = Object.keys(qTypesDisplay).map((qType, index) => {
       return (
-        <option
-          value={qType}
-          key={index}
-        >
+        <option value={qType} key={index}>
           {qTypesDisplay[qType]}
         </option>
-      )
+      );
     });
     return (
-      <select
-        onChange={ e => this.selectQtype(e.target.value) }
-        value={1}
-      >
-        { options }
-        <option disabled value={1}>Select an Option</option>
+      <select onChange={e => this.selectQtype(e.target.value)} value={1}>
+        {options}
+        <option disabled value={1}>
+          Select an Option
+        </option>
       </select>
-    )
+    );
   }
 
   addQuestionButton() {
     return (
       <button
-        className={'new-question-button'}
-        onClick={e => this.setState({selectQType: true})}
+        className={"new-question-button"}
+        onClick={e => this.setState({ selectQType: true })}
       >
         Add Question
       </button>
-    )
+    );
   }
 
   render() {
-    return(
+    return (
       <div>
-        {this.state.selectQType ? this.newQuestionTypeSelector() : this.addQuestionButton()}
+        {this.state.selectQType
+          ? this.newQuestionTypeSelector()
+          : this.addQuestionButton()}
       </div>
-    )
+    );
   }
 }
 
-export default CreateQuestionButton
+export default CreateQuestionButton;
 
 CreateQuestionButton.propTypes = {
   tempQuestion: PropTypes.object.isRequired,
   questionFetchSuccess: PropTypes.func.isRequired,
   questionFetchFailure: PropTypes.func.isRequired,
   questionSetNew: PropTypes.func.isRequired,
-  questionFetchInProgress: PropTypes.func.isRequired,
+  questionFetchInProgress: PropTypes.func.isRequired
 };
