@@ -1,0 +1,24 @@
+@import "global";
+
+.building_type_details {
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ccc;
+  border-radius: 12px;
+  padding: 40px;
+
+  > :first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;    
+  }
+}
+
+.building-type_table tr:hover {
+  background: rgba($primary, 0.05);
+  cursor: pointer;
+  border: 5px solid red;
+ }

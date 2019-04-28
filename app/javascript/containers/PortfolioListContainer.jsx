@@ -52,7 +52,7 @@ class PortfolioListContainer extends React.Component {
     const portfolioName = event.target.portfolio.value;
     try {
       let response = await post("/api/portfolios", {
-        name: portfolioName,
+        name: portfolioName
       });
       const portfolio = { ...response.data };
       const portfolioId = portfolio.id;
@@ -68,12 +68,61 @@ class PortfolioListContainer extends React.Component {
     const building_types = this.props.building_types;
     return (
       <div>
-        <h2>Building Types</h2>
-        <input
-          type="button"
-          value="Create New Building Type"
-          onClick={() => this.toggleModal("building")}
-        />
+        <div className={"building_type_details"}>
+          <div>
+            <div>
+              <h2>Building Types</h2>
+              <button
+                className={"btn btn--primary"}
+                value="Create New Building Type"
+                onClick={() => this.toggleModal("building")}
+              >
+                +Create New Building Type
+              </button>
+              <table className="portfolio_category_info">
+                <tbody className="building_type_table">
+                  {Object.keys(building_types).map(id => {
+                    return (
+                      <tr key={id} className="category_data">
+                        <Link to={`/building_types/${id}`}>
+                          <td className="category_name">
+                            {building_types[id].name}
+                          </td>
+                        </Link>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className={""}>
+            <h2>Portfolios</h2>
+            <button
+              className={"btn btn--primary"}
+              value="Create New Portfolio"
+              onClick={() => this.toggleModal("portfolio")}
+            >
+              +Create New Portfolio
+            </button>
+            <table className="portfolio_category_info">
+              <tbody>
+                {Object.keys(portfolios).map(id => {
+                  return (
+                    <tr key={id} className="category_data">
+                      <td className="category_name">{portfolios[id].name}</td>
+                      <td className="category_status">
+                        <span className="dot yellow" />
+                        Waiting for Handoff
+                      </td>
+                      <Link to={`/portfolios/${id}`} />
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
         <ReactModal isOpen={this.state.showModal} ariaHideApp={false}>
           {this.state.mode === "building" ? (
             <form onSubmit={this.createBuildingType}>
@@ -87,7 +136,7 @@ class PortfolioListContainer extends React.Component {
             <form onSubmit={this.createPortfolio}>
               <label>
                 Portfolio Name
-                <input type="text" name="portfolio" required="required"/>
+                <input type="text" name="portfolio" required="required" />
               </label>
               <input type="submit" value="Submit" />
             </form>
@@ -96,28 +145,6 @@ class PortfolioListContainer extends React.Component {
           <div>{this.state.errors}</div>
           <button onClick={this.toggleModal}>Close Modal</button>
         </ReactModal>
-        {Object.keys(building_types).map(id => {
-          return (
-            <p key={id}>
-              {building_types[id].name}
-              <Link to={`/building_types/${id}`}>Edit</Link>
-            </p>
-          );
-        })}
-        <h2>Portfolios</h2>
-        <input
-          type="button"
-          value="Create New Portfolio"
-          onClick={() => this.toggleModal("portfolio")}
-        />
-        {Object.keys(portfolios).map(id => {
-          return (
-            <p key={id}>
-              {portfolios[id].name} |
-              <Link to={`/portfolios/${id}`}>Details</Link>
-            </p>
-          );
-        })}
       </div>
     );
   }
@@ -137,8 +164,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(addBuildingType(buildingType));
     },
     addPortfolio: portfolio => {
-      dispatch(addPortfolio(portfolio))
-    },
+      dispatch(addPortfolio(portfolio));
+    }
   };
 }
 

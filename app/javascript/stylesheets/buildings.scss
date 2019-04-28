@@ -372,13 +372,14 @@
   
     td:first-child {
       border-left: 5px solid #216dff;
-      border-radius: 0px;
     }
   }
   
   tbody tr:hover {
     background: rgba($primary, 0.05);
     cursor: pointer;
+    border-radius: 3px;
+    border: 2px solid $primary;
   }
 
   .active:hover {
