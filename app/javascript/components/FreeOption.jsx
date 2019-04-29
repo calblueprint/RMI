@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import { PAUSE_INTERVAL_BEFORE_SAVE } from '../constants/index';
@@ -26,8 +27,14 @@ class FreeOption extends React.Component {
 
   render() {
     return (
-      <div className="input__text">
+      <div className={classNames(
+        "input__text",
+        {
+          "input__text--disabled": !this.props.editable
+        }
+      )}>
         <textarea
+          disabled={!this.props.editable}
           value={this.props.answer ? this.props.answer.text : ""}
           onChange={(e) => this.onChange(e.target.value)}
           onFocus={(e) => this.props.onEnter()}

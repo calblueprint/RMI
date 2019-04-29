@@ -13,8 +13,7 @@ import {
 } from "../../selectors/categoriesSelector";
 import CategoryContainer from "./CategoryContainer";
 import { getQuestionsByBuilding } from "../../selectors/questionsSelector";
-import { getNumUnanswered } from "../../selectors/answersSelector";
-import { getQuestionsByCategory } from "../../utils/QuestionsFilter";
+import { getRemainingAnswersforCategory } from "../../selectors/answersSelector";
 import Logo from "../../images/rmi-logo.png";
 
 class NavigationBarContainer extends React.Component {
@@ -63,30 +62,13 @@ function mapStateToProps(state, ownProps) {
       ? getQuestionsByBuilding(ownProps.match.params.id, state)
       : [];
   //likewise gathering the specific category from params of url
-  const categoryId = buildingView
-    ? ownProps.match.params.cId
-      ? ownProps.match.params.cId
-      : "review_mode"
-    : null;
-  const questionsByCategory =
-    categoryId != "review_mode"
-      ? getQuestionsByCategory(categoryId, questions)
-      : questions;
-  //remaining questions is the number of questions for the category that we are viewing for a specific building
-  //we check for the questions through answers of a building and a category requiring a check for the building id and
-  //questions
-  let remainingQuestions;
-  if (!ownProps.match.params.id) {
-    remainingQuestions = null;
-  } else if (!questionsByCategory.length) {
-    remainingQuestions = 0;
-  } else {
-    remainingQuestions = getNumUnanswered(
-      questionsByCategory,
-      ownProps.match.params.id,
-      state
-    );
+  const categoryId = buildingView ? (ownProps.match.params.cId ? ownProps.match.params.cId : 'review_mode') : null;
+
+  let remainingQuestions = null;
+  if (buildingView && ownProps.match.params.id && categoryId !== 'review_mode') {
+    remainingQuestions = getRemainingAnswersforCategory(categoryId, ownProps.match.params.id, state);
   }
+
   //we check to see the category provided by the params of url (which should always happen through the category rerouter if we are in
   //a building view)
   let loadCategory;

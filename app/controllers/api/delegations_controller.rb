@@ -14,7 +14,7 @@ class Api::DelegationsController < ApplicationController
         operator = BuildingOperator.find_by(email: delegation_params[:email])
         if !operator.nil?
           users_to_email.push(operator)
-        else 
+        else
           # if building operator doesn't exist, create it
           operator = BuildingOperator.new(
             email: delegation_params[:email],
@@ -28,12 +28,8 @@ class Api::DelegationsController < ApplicationController
           BuildingOperatorMailer.new_user_delegated_email(operator, current_user).deliver_now
         end
 
-        # mark all other delegations on same answer_id delegated
-        Delegation.where(
-          answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
-            old_delegation.update(status: :delegated)
-        end
-
+        # Clear the temporary delegation fields on the answer
+        # (these are used to track in-progress but not submitted delegations)
         answer = Answer.find(delegation_params[:answer_id]);
         unless answer.has_no_delegation
           answer.delegation_email = ""
@@ -41,7 +37,10 @@ class Api::DelegationsController < ApplicationController
           answer.delegation_last_name = ""
           answer.save!
         end
+
         answers[answer[:question_id]] = answer
+
+        # Create the new delegation
         delegation = Delegation.new(
           answer: answer,
           source: current_building_operator,
@@ -49,15 +48,26 @@ class Api::DelegationsController < ApplicationController
           status: :active
         )
 
+        # Confirm that the user is allowed to delegate this question before saving it
         authorize! :create, delegation
-
         delegation.save!
+
+        # Once delegation is done, mark all other delegations on same answer_id delegated
+        Delegation.where(answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
+          if old_delegation != delegation
+            old_delegation.update(status: :delegated)
+          end
+        end
       end
+
+      # Send emails to all existing users who were assigned questions
       users_to_email.uniq.each do |u|
-        if u.last_email_received.nil? || u.last_email_received < u.last_sign_in_at || Time.now.utc - three_days >= u.last_email_received 
+
+        if u.last_email_received.nil? || u.last_email_received < u.last_sign_in_at || Time.now.utc - three_days >= u.last_email_received
           BuildingOperatorMailer.existing_user_delegated_email(u, current_user).deliver_now
         end
       end
+
       render_json_message(:ok, data: answers, message: 'New delegations created')
     end
   rescue => e
