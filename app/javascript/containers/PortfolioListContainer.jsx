@@ -1,13 +1,16 @@
 import React from "react";
 import ReactModal from "react-modal";
 
-import { loadInitialState } from "../actions/initialState";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { post } from "../fetch/requester";
+
+import { loadInitialState } from "../actions/initialState";
 import { addBuildingType } from "../actions/building_type";
 import { addPortfolio } from "../actions/portfolios";
+import { percentAnswered } from "../selectors/answersSelector";
+
+import { post } from "../fetch/requester";
 
 class PortfolioListContainer extends React.Component {
   constructor(props) {
@@ -160,7 +163,8 @@ class PortfolioListContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
-    building_types: state.building_types
+    building_types: state.building_types,
+    buildingStatus: percentAnswered(ownProps.buildingId, state)
   };
 }
 
