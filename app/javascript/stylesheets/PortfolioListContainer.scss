@@ -17,8 +17,23 @@
   }
 }
 
-.building-type_table tr:hover {
-  background: rgba($primary, 0.05);
-  cursor: pointer;
-  border: 5px solid red;
+
+ .portfolio_view_table {
+ 	width: 100%;
+  margin: 0px;
+  
+  tbody td {
+  	text-decoration: none;
+  	color: black;
+  }
+  tbody td:hover {
+  	text-decoration: none;
+  	color: black;
+  }
+  tbody td:hover {
+  	border: 2px solid $primary;
+    border-radius: 10px;
+    background: rgba($primary, 0.1);
+    cursor: pointer;
+  }
  }

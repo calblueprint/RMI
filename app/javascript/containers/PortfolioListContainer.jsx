@@ -79,13 +79,13 @@ class PortfolioListContainer extends React.Component {
               >
                 +Create New Building Type
               </button>
-              <table className="portfolio_category_info">
+              <table className="portfolio_view_table">
                 <tbody className="building_type_table">
                   {Object.keys(building_types).map(id => {
                     return (
-                      <tr key={id} className="category_data">
-                        <Link to={`/building_types/${id}`}>
-                          <td className="category_name">
+                      <tr key={id} className="">
+                        <Link style={{"textDecoration": "none"}} to={`/building_types/${id}`}>
+                          <td className="">
                             {building_types[id].name}
                           </td>
                         </Link>
