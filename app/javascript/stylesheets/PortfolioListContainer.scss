@@ -21,19 +21,27 @@
  .portfolio_view_table {
  	width: 100%;
   margin: 0px;
-  
-  tbody td {
-  	text-decoration: none;
-  	color: black;
+  border-collapse: collapse;
+
+  tr td:first-child { 
+    border-top-left-radius: 7px; 
+    border-bottom-left-radius: 7px;
   }
-  tbody td:hover {
-  	text-decoration: none;
-  	color: black;
-  }
-  tbody td:hover {
-  	border: 2px solid $primary;
-    border-radius: 10px;
-    background: rgba($primary, 0.1);
-    cursor: pointer;
+
+  tr td:last-child { 
+    border-top-right-radius: 7px; 
+    border-bottom-right-radius: 7px;
   }
  }
+
+ .table_data {
+  .field_name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .field_status {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}

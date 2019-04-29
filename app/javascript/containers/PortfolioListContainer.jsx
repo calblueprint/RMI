@@ -80,15 +80,16 @@ class PortfolioListContainer extends React.Component {
                 +Create New Building Type
               </button>
               <table className="portfolio_view_table">
-                <tbody className="building_type_table">
+                <tbody className="table_data">
                   {Object.keys(building_types).map(id => {
                     return (
                       <tr key={id} className="">
-                        <Link style={{"textDecoration": "none"}} to={`/building_types/${id}`}>
-                          <td className="">
-                            {building_types[id].name}
-                          </td>
-                        </Link>
+                        <td className="field_name">{building_types[id].name}</td>
+                        <td>
+                          <button className={"btn btn--secondary"}>
+                            <Link to={`/building_types/${id}`}>Edit Questions</Link>
+                          </button>
+                        </td>
                       </tr>
                     );
                   })}
@@ -105,18 +106,24 @@ class PortfolioListContainer extends React.Component {
             >
               +Create New Portfolio
             </button>
-            <table className="portfolio_category_info">
-              <tbody>
+            <table className="portfolio_view_table">
+              <tbody className="table_data">
                 {Object.keys(portfolios).map(id => {
                   return (
-                    <tr key={id} className="category_data">
-                      <td className="category_name">{portfolios[id].name}</td>
-                      <td className="category_status">
+                    //
+                    <tr key={id} className="">
+                      <td className="field_name">{portfolios[id].name}</td>
+                      <td className="field_status">
                         <span className="dot yellow" />
                         Waiting for Handoff
                       </td>
-                      <Link to={`/portfolios/${id}`} />
+                      <td>
+                        <button className={"btn btn--secondary"}>
+                          <Link to={`/portfolios/${id}`}>Details</Link>
+                        </button>
+                      </td>
                     </tr>
+                    //
                   );
                 })}
               </tbody>
