@@ -43,6 +43,7 @@ class QuestionContainer extends React.Component {
         focusOnMount={this.props.focusOnMount}
         parentIsHidden={this.props.parentIsHidden}
         onDelegationAdd={this.onDelegationAdd.bind(this)}
+        editableMap={this.props.editableMap}
       />
     );
   }
@@ -57,6 +58,7 @@ class QuestionContainer extends React.Component {
           building_id={this.props.building_id}
           question_type={this.props.question_type}
           options={this.props.options}
+          editableMap={this.props.editableMap}
         />
       </tr>
     );
@@ -74,6 +76,7 @@ class QuestionContainer extends React.Component {
           building_id={this.props.building_id}
           onDelegationRemove={this.onDelegationRemove.bind(this)}
           onDelegationCancel={this.onDelegationCancel.bind(this)}
+          editableMap={this.props.editableMap}
         />
       </div>
     );

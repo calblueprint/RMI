@@ -78,7 +78,8 @@ export function getNumAnswered(questions, buildingId, state) {
 // is unanswered if there is no text and no delegation
 export function isUnansweredQuestion(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
-  return !isValidAnswer(answer);
+  let isAssigned = state.buildings[buildingId].editable[question.id];
+  return isAssigned && !isValidAnswer(answer);
 }
 
 export function isValidAnswer(answer) {

@@ -7,11 +7,13 @@ import QuestionContainer from "../containers/QuestionContainer";
 const TRANSITION_DURATION = 0.4;
 
 function DependentQuestions({
+  allowedQuestionIds,
   answer,
   dependentQuestions,
   buildingId,
   parentIsHidden = false,
-  disableFocusOnMount = false
+  disableFocusOnMount = false,
+  editableMap
 }) {
   if (!answer) return null;
 
@@ -31,7 +33,7 @@ function DependentQuestions({
 
   return (
     <div className="questions__nested">
-      {allDependentQuestions.map((question, i) => {
+      {allDependentQuestions.filter(question => allowedQuestionIds.includes(String(question.id))).map((question, i) => {
         const visibleQuestion = question.parent_option_id == selectedOption;
         const isActive = visibleQuestion && !parentIsHidden;
 
@@ -58,6 +60,7 @@ function DependentQuestions({
                   }
                   parentIsHidden={!isActive}
                   {...question}
+                  editableMap={editableMap}
                 />
               </div>
             )}
@@ -98,6 +101,7 @@ const transitionStyles = {
 };
 
 DependentQuestions.propTypes = {
+  allowedQuestionIds: PropTypes.array.isRequired,
   answer: PropTypes.shape({
     // Optional - new questions can have no answer
   }),

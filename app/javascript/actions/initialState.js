@@ -55,9 +55,16 @@ const formatState = {
         "questions"
       ]).map(filteredBuilding => {
         if (filteredBuilding.questions) {
+          const questionIds = Object.keys(filteredBuilding.questions);
+          const editable = questionIds.reduce((map, qId) => {
+            map[qId] = Boolean(filteredBuilding.questions[qId]["can_edit"]);
+            return map;
+          }, {});
+
           return {
             ...filteredBuilding,
-            questions: Object.keys(filteredBuilding.questions)
+            questions: questionIds,
+            editable
           };
         } else {
           return filteredBuilding;
@@ -143,7 +150,13 @@ export function loadInitialState(initialState) {
         ...formattedState,
         questions: {
           ...formattedState.questions,
-          ...building.questions
+          ...Object.keys(building.questions).reduce((map, qId) => {
+            // Remove the "can_edit" property from each question, since this is
+            // only applicable for the building itself, and not the question overall
+            delete building.questions[qId]["can_edit"];
+            map[qId] = building.questions[qId];
+            return map;
+          }, {})
         }
       };
     });

@@ -103,6 +103,13 @@ textarea:focus,
   width: 100%;
 }
 
+.input__text--disabled textarea {
+  background-color: $disabledBgGray;
+  color: $disabledTextGray;
+  border: none;
+  disabled: true;
+}
+
 .input__range {
   display: inline-block;
   outline: none;
@@ -126,6 +133,13 @@ textarea:focus,
   }
 }
 
+.input__range--disabled {
+  background-color: $disabledBgGray;
+  color: $disabledTextGray;
+  pointer-events: none;
+  border: none;
+}
+
 .input__dropdown {
   min-width: 75px;
   padding: 7.5px 10px 7.5px 10px;
@@ -140,6 +154,12 @@ textarea:focus,
 .input__dropdown--selected {
   color: white;
   background-color: $primary;
+}
+
+.input__dropdown--disabled {
+  color: $disabledTextGray;
+  border: none;
+  background-color: $disabledBgGray;
 }
 
 .next-button {
