@@ -33,6 +33,15 @@ class PortfolioListContainer extends React.Component {
     });
   }
 
+  getPortfolioStatus(portfolioId) {
+    let portfolio = this.props.portfolios[portfolioId]
+    let progress = 0;
+    for (x )
+    return (
+      <span className="dot yellow" />
+        Waiting for Handoff
+      )
+  }
   async createBuildingType(event) {
     event.preventDefault();
     const typeName = event.target.building.value;
@@ -117,6 +126,7 @@ class PortfolioListContainer extends React.Component {
                     <tr key={id} className="">
                       <td className="field_name">{portfolios[id].name}</td>
                       <td className="field_status">
+                      {this.getPortfolioStatus()}
                         <span className="dot yellow" />
                         Waiting for Handoff
                       </td>
@@ -163,8 +173,8 @@ class PortfolioListContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
-    building_types: state.building_types,
-    buildingStatus: percentAnswered(ownProps.buildingId, state)
+    building_types: state.building_types
+    // buildingStatus: percentAnswered(ownProps.buildingId, state)
   };
 }
 
