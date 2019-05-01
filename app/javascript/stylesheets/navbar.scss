@@ -13,6 +13,7 @@
   img {
     max-width: 90px;
   }
+  margin-top: 10px;
 }
 
 .navbar__content {
@@ -184,5 +185,15 @@
   background-color: lighten(black, 20);
   margin: 0px 10px 0px 10px;
   padding: 0px;
-  // text-decoration: none;
+}
+
+.logout-btn {
+  border: none;
+  font-size: 14px;
+}
+
+.logout-btn:hover,
+.menulink:hover {
+  color: $primary;
+  cursor: pointer;
 }

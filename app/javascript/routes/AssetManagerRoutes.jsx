@@ -13,12 +13,7 @@ class AssetManagerRoutes extends React.Component {
   render() {
     return (
       <div>
-        <div className="menu">
-          <Link to="/">
-          </Link>
-        </div>
-
-        <Route path="/:entity?/:id?/:mode?/:cId?" component={NavigationBarContainer}/>
+        <Route path="/buildings/:id/:mode?/:cId?" component={NavigationBarContainer}/>
         <Switch>
           <Route path="/portfolios/:pId" component={PortfolioContainer}/>
 
