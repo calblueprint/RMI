@@ -10,7 +10,7 @@ class Api::DelegationsController < ApplicationController
       three_days = 259200
       users_to_email = []
       answers = {}
-      delegations = {}
+      delegations = []
       delegations_params.each do |delegation_params|
         operator = BuildingOperator.find_by(email: delegation_params[:email])
         if !operator.nil?
@@ -52,7 +52,7 @@ class Api::DelegationsController < ApplicationController
         # Confirm that the user is allowed to delegate this question before saving it
         authorize! :create, delegation
         delegation.save!
-        delegations[delegation.id] = delegation
+        delegations << delegation
 
         # Once delegation is done, mark all other delegations on same answer_id delegated
         Delegation.where(answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
@@ -70,7 +70,15 @@ class Api::DelegationsController < ApplicationController
         end
       end
 
-      render_json_message(:ok, data: { answers: answers, delegations: delegations }, message: 'New delegations created')
+      render_json_message(:ok,
+        data: {
+          answers: answers,
+          delegations: ActiveModel::Serializer::CollectionSerializer.new(
+            delegations, each_serializer: DelegationSerializer
+          )
+        },
+        message: 'New delegations created'
+      )
     end
   rescue => e
     render_json_message(:forbidden, errors: e.message)

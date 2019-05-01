@@ -33,7 +33,7 @@ function answerFetchInProgress(buildingId, answer) {
     type: ANSWER_FETCH_IN_PROGRESS,
     fetchStatus: FETCH_IN_PROGRESS,
     buildingId,
-    answer
+    answer: { ...EMPTY_ANSWER, ...answer }
   };
 }
 

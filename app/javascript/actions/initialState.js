@@ -7,14 +7,14 @@ import { isDelegatedAnswer } from "../selectors/answersSelector";
 
 export default { buildings, portfolios, questions };
 
-const toObjectByKey = (entities, key) => {
+export const toObjectByKey = (entities, key) => {
   return entities.reduce((result, entity) => {
     result[entity[key]] = entity;
     return result;
   }, {});
 };
 
-const toObjectById = entities => {
+export const toObjectById = entities => {
   return toObjectByKey(entities, "id");
 };
 
