@@ -1,4 +1,3 @@
-import { combineReducers } from "redux";
 import { persistCombineReducers } from "redux-persist";
 import storage from "redux-persist/es/storage";
 import { LOAD_INITIAL_STATE } from "../constants";
