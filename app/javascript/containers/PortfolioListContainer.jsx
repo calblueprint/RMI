@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 import { loadInitialState } from "../actions/initialState";
 import { addBuildingType } from "../actions/building_type";
 import { addPortfolio } from "../actions/portfolios";
-import { percentAnswered } from "../selectors/answersSelector";
-import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 
 import { post } from "../fetch/requester";
 
@@ -34,30 +32,6 @@ class PortfolioListContainer extends React.Component {
     });
   }
 
-  getPortfolioStatus(portfolioId) {
-    let portfolio = this.props.portfolios[portfolioId]
-    let progress = 0;
-    console.log(Object.values(this.props.buildings))
-    let buildings = Object.values(this.props.buildings).filter((building) => {
-      return building.portfolioId !== portfolioId;
-    })
-    let total = buildings.length;
-    for (let building in buildings) {
-      console.log(building)
-      progress += percentAnswered(building.id, this.props.state);
-    }
-    if (progress == total) {
-      return <span className="dot green">Completed</span>
-    }
-    else {
-      return <span className="dot yellow">In Progress</span>
-    }
-    
-    // return (
-    //   <span className="dot yellow" />
-    //     Waiting for Handoff
-    //   )
-  }
   async createBuildingType(event) {
     event.preventDefault();
     const typeName = event.target.building.value;
@@ -125,7 +99,7 @@ class PortfolioListContainer extends React.Component {
               </table>
             </div>
           </div>
-          <div className={""}>
+          <div>
             <h2>Portfolios</h2>
             <button
               className={"btn btn--primary"}
@@ -138,12 +112,8 @@ class PortfolioListContainer extends React.Component {
               <tbody className="table_data">
                 {Object.keys(portfolios).map(id => {
                   return (
-                    //
                     <tr key={id} className="">
                       <td className="field_name">{portfolios[id].name}</td>
-                      <td className="field_status">
-                      {this.getPortfolioStatus(id)}
-                      </td>
                       <td>
                         <button className={"btn btn--secondary"}>
                           <Link to={`/portfolios/${id}`}>Details</Link>
@@ -188,11 +158,7 @@ function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
     building_types: state.building_types,
-    buildings: state.buildings,
-    // state: state
-    buildingStatus: percentAnswered(ownProps.buildingId, state)
-    // portfolioStatus: getBuildingsByPortfolio()
-    // buildingStatus: percentAnswered(ownProps.buildingId, state)
+    buildings: state.buildings
   };
 }
 
