@@ -18,7 +18,7 @@ class DelegateModeContainer extends React.Component {
 
   buttonStyle() {
     if (this.props.numUnanswered > 0) {
-      return { "pointer-events": "none", "background-color": "#969696" };
+      return { pointerEvents: "none", backgroundColor: "#969696" };
     }
   }
 
@@ -43,7 +43,7 @@ class DelegateModeContainer extends React.Component {
         })}
         <Link
           style={this.buttonStyle()}
-          class="next-button"
+          className="next-button"
           to={this.findNextPage()}
         >
           <b>Next:</b> Review and Submit

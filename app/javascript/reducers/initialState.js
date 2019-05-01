@@ -27,7 +27,8 @@ export default function reducerWithInitialState(reducer = rootReducer) {
 
   return function wrappedReducer(state, action) {
     if (action.type === LOAD_INITIAL_STATE) {
-      return { ...state, ...action };
+      const { type, ...initialState } = action;
+      return { ...state, ...initialState };
     }
     return persistedReducer(state, action);
   };
