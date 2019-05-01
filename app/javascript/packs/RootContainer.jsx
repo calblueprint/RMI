@@ -31,6 +31,7 @@ const { store, persistor } = initializeStore(reducer);
 
 if (window.INITIAL_STATE) {
   store.dispatch(loadInitialState(window.INITIAL_STATE));
+  console.log(userType)
 }
 
 if (module.hot) {
