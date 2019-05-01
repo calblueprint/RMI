@@ -9,28 +9,27 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: white;    
+    background-color: white;
   }
 }
 
-
- .table_view {
- 	width: 100%;
+.table_view {
+  width: 100%;
   margin: 0px;
   border-collapse: collapse;
 
-  tr td:first-child { 
-    border-top-left-radius: 7px; 
+  tr td:first-child {
+    border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
   }
 
-  tr td:last-child { 
-    border-top-right-radius: 7px; 
+  tr td:last-child {
+    border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
   }
- }
+}
 
- .table_data {
+.table_data {
   .field_name {
     font-size: 16px;
     font-weight: 600;
