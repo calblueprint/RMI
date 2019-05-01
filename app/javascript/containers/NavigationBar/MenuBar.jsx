@@ -14,12 +14,14 @@ export default class MenuBar extends React.Component {
       }
     }
   }
-  
+
   getHomeRoute = () => {
     if (this.props.userType == "building_operator"){
       return "buildings"
+    } else if (this.props.userType == "rmi_user"){
+      return "portfolios"
     } else {
-      return ""
+
     }
   }
   render() {
