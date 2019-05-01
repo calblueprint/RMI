@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Popover, Position } from "@blueprintjs/core";
 
+import { addContact } from "../actions/contacts";
 import { getContacts } from "../selectors/contactsSelector";
 import DelegationNameInputs from "../components/DelegationNameInputs";
 import DelegationContactDropdown from "../components/DelegationContactDropdown";
@@ -24,9 +25,11 @@ class DelegationPopover extends React.Component {
 
   selectContact = () => {
     const { email, firstName, lastName } = this.state;
+    const lowercaseEmail = email.toLowerCase();
     this.setState({ popoverOpen: false }, () => {
       this.setState({ email: "" });
-      this.props.onSelectedContact({email, firstName, lastName})
+      this.props.onSelectedContact({email: lowercaseEmail, firstName, lastName})
+      this.props.addContact(firstName, lastName, lowercaseEmail);
     });
   };
 
@@ -52,7 +55,7 @@ class DelegationPopover extends React.Component {
       const query = this.state.email.toLowerCase();
       return this.props.contacts.filter(
         contact => {
-          (contact.email && contact.email.toLowerCase().includes(query)) ||
+          return (contact.email && contact.email.toLowerCase().includes(query)) ||
           (contact.first_name && contact.first_name.toLowerCase().includes(query)) ||
           (contact.last_name && contact.last_name.toLowerCase().includes(query))
         }
@@ -112,9 +115,17 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    addContact: (firsName, lastName, email) => {
+      dispatch(addContact(email, firsName, lastName))
+    }
+  }
+}
+
 DelegationPopover.defaultProps = {
   toggleSelected: () => 0 /* no-op by default */,
   label: "Assign Contact"
 };
 
-export default connect(mapStateToProps)(DelegationPopover);
+export default connect(mapStateToProps, mapDispatchToProps)(DelegationPopover);

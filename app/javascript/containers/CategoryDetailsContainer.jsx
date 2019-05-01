@@ -55,7 +55,7 @@ class CategoryDetailsContainer extends React.Component {
                     <br></br>
                     <DelegationPopover
                             label="Assign Category"
-                            onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
+                            onSelectedContact={(contact) => { console.log(contact); delegateQuestions(contact, this.props.addAnswers)}}
                             disabled={this.isDisabled()}
                     />
                 </div>

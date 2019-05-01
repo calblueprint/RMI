@@ -19,12 +19,14 @@ import { getAnswersForBuilding, getAnswersForCategoryAndBuilding } from "../sele
 export async function delegateQuestions(answers, buildingId, email, firstName, lastName, addAnswers) {
   let delegations = [];
   for (const answer of Object.values(answers)) {
+    console.log("EMAIL: - " + email);
     let delegation = {
       email: email,
       first_name: firstName,
       last_name: lastName,
       answer_id: answer.id
     };
+    console.log(delegation);
     delegations.push(delegation);
   }
   try {

@@ -53,7 +53,11 @@ class Api::BuildingsController < ApplicationController
     end
     users_to_login_times = {}
     building_operators.each do |building_operator|
-      users_to_login_times[building_operator.email] = building_operator.last_sign_in_at
+      if building_operator.last_sign_in_at < Time.utc(2005) 
+        users_to_login_times[building_operator.email] = nil;
+      else 
+        users_to_login_times[building_operator.email] = building_operator.last_sign_in_at
+      end
     end
     render_json_message(:ok, data: users_to_login_times, message: "Got login time data")
   end
