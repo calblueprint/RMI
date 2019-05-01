@@ -69,63 +69,62 @@ class PortfolioListContainer extends React.Component {
     const portfolios = this.props.portfolios;
     const building_types = this.props.building_types;
     return (
-      <div>
-        <div className={"building_type_details"}>
+      <div className="building_type_details">
+        <div>
           <div>
-            <div>
-              <h2>Building Types</h2>
-              <button
-                className={"btn btn--primary"}
-                value="Create New Building Type"
-                onClick={() => this.toggleModal("building")}
-              >
-                +Create New Building Type
-              </button>
-              <table className="portfolio_view_table">
-                <tbody className="table_data">
-                  {Object.keys(building_types).map(id => {
-                    return (
-                      <tr key={id} className="">
-                        <td className="field_name">{building_types[id].name}</td>
-                        <td>
-                          <button className={"btn btn--secondary"}>
-                            <Link to={`/building_types/${id}`}>Edit Questions</Link>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div>
-            <h2>Portfolios</h2>
+            <h2>Building Types</h2>
             <button
               className={"btn btn--primary"}
-              value="Create New Portfolio"
-              onClick={() => this.toggleModal("portfolio")}
+              value="Create New Building Type"
+              onClick={() => this.toggleModal("building")}
             >
-              +Create New Portfolio
+              +Create New Building Type
             </button>
             <table className="portfolio_view_table">
               <tbody className="table_data">
-                {Object.keys(portfolios).map(id => {
+                {Object.keys(building_types).map(id => {
                   return (
                     <tr key={id} className="">
-                      <td className="field_name">{portfolios[id].name}</td>
+                      <td className="field_name">{building_types[id].name}</td>
                       <td>
-                        <button className={"btn btn--secondary"}>
-                          <Link to={`/portfolios/${id}`}>Details</Link>
+                        <button className="btn btn--secondary">
+                          <Link to={`/building_types/${id}`}>
+                            Edit Questions
+                          </Link>
                         </button>
                       </td>
                     </tr>
-                    //
                   );
                 })}
               </tbody>
             </table>
           </div>
+        </div>
+        <div>
+          <h2>Portfolios</h2>
+          <button
+            className={"btn btn--primary"}
+            value="Create New Portfolio"
+            onClick={() => this.toggleModal("portfolio")}
+          >
+            +Create New Portfolio
+          </button>
+          <table className="portfolio_view_table">
+            <tbody className="table_data">
+              {Object.keys(portfolios).map(id => {
+                return (
+                  <tr key={id} className="">
+                    <td className="field_name">{portfolios[id].name}</td>
+                    <td>
+                      <button className={"btn btn--secondary"}>
+                        <Link to={`/portfolios/${id}`}>Details</Link>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
         <ReactModal isOpen={this.state.showModal} ariaHideApp={false}>
           {this.state.mode === "building" ? (
