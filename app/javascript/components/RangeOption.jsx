@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ContentEditable from 'react-sane-contenteditable';
 import { debounce } from 'lodash';
@@ -51,28 +52,40 @@ class RangeOption extends React.Component {
 
   render() {
     const currentValue = this.props.answer ? this.props.answer.text : "";
+    let props = {
+      onChange: () => 0,
+      innerRef: (ref) => this.ref = ref,
+      tagName: "span",
+      content: currentValue,
+      doNotUpdate: true
+    };
+    if (this.props.editable) {
+      props = {
+        ...props,
+        onKeyDown: (e, val) => this.onChange(val),
+        onFocus: (e) => {
+          this.setState({focused: true});
+          this.props.onEnter();
+        },
+        onBlur: (e) => {
+          this.onChange(e.target.innerText, true);
+          this.setState({focused: false});
+          this.props.onLeave();
+        }
+      };
+    }
     return (
       <div
-        className={`input__range ${this.state.focused ? 'input__range--focused' : ''}`}
+        className={classNames(
+          "input__range",
+          {
+            "input__range--focused": this.state.focused,
+            "input__range--disabled": !this.props.editable
+          }
+        )}
         onClick={(e) => this.ref.focus()}
       >
-        <ContentEditable
-          onChange={() => 0}
-          onKeyDown={(e, val) => this.onChange(val)}
-          onFocus={(e) => {
-            this.setState({ focused: true });
-            this.props.onEnter();
-          }}
-          onBlur={(e) => {
-            this.onChange(e.target.innerText, true);
-            this.setState({ focused: false });
-            this.props.onLeave();
-          }}
-          innerRef={(ref) => this.ref = ref}
-          tagName="span"
-          content={currentValue}
-          doNotUpdate={true}
-        />
+        <ContentEditable {...props} />
         <label>{this.props.unit}</label>
       </div>
     );

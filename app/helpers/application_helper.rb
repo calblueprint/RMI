@@ -21,7 +21,7 @@ module ApplicationHelper
       user: current_asset_manager,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
           portfolio.buildings, each_serializer: BuildingSerializer,
-          scope: current_user.get_scope
+          scope: current_user.get_scope(current_user)
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.where(id: portfolio.buildings.map{ |b| b.building_type_id }.uniq),
@@ -38,6 +38,7 @@ module ApplicationHelper
   end
 
   def building_op_initial_state
+    # TODO 3/28: not using building type serializer, so loadInitialState gets ALL the questions for that building type even if not delegated to this user
     # Initial state here
 
     # Need to manually load contacts first
@@ -64,7 +65,7 @@ module ApplicationHelper
       user: current_building_operator,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
        buildings, each_serializer: BuildingSerializer,
-       scope: current_user.get_scope
+       scope: current_user.get_building_scope(current_user)
       ),
       userType: 'BuildingOperator',
       contacts: contacts,
@@ -81,11 +82,11 @@ module ApplicationHelper
       portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         Building.all, each_serializer: BuildingSerializer,
-        scope: current_user.get_scope
+        scope: current_user.get_scope(current_user)
       ),
       building_types: ActiveModel::Serializer::CollectionSerializer.new(
         BuildingType.all, each_serializer: BuildingTypeSerializer,
-        scope: current_user.get_scope
+        scope: current_user.get_scope(current_user)
       ),
       userType: 'RMIUser',
       categories: ActiveModel::Serializer::CollectionSerializer.new(
