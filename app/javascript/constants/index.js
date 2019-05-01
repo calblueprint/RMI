@@ -76,6 +76,11 @@ export const CREATE_UNSAVED_OPTION = "CREATE_UNSAVED_OPTION";
 export const OPTION_FETCH_SUCCESS = "OPTION_FETCH_SUCCESS";
 export const OPTION_FETCH_FAILURE = "OPTION_FETCH_FAILURE";
 
+// Delegation ActionTypes
+export const DELEGATION_FETCH_IN_PROGRESS = "DELEGATION_FETCH_IN_PROGRESS";
+export const DELEGATION_FETCH_SUCCESS = "DELEGATION_FETCH_SUCCESS";
+export const DELEGATION_FETCH_FAILURE = "DELEGATION_FETCH_FAILURE";
+
 // Intermediate save constants
 export const PRE_FETCH_SAVE = "PRE_FETCH_SAVING";
 export const PAUSE_INTERVAL_BEFORE_SAVE = 1500;
@@ -85,11 +90,11 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
 export const FETCH_IN_PROGRESS = "FETCH_IN_PROGRESS";
 export const FETCH_SETTINGS = {
-	credentials: "same-origin",
-	headers: {
-		Accept: "application/json",
-		"Content-Type": "application/json"
-	}
+  credentials: "same-origin",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  }
 };
 
 // Contact constants

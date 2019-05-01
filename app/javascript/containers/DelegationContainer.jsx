@@ -192,7 +192,7 @@ function mapStateToProps(state, ownProps) {
   return {
     answer,
     canEdit: canEdit(ownProps.building_id, ownProps.question_id, state),
-    activeDelegation: getActiveDelegationForAnswer(answer.id, state),
+    activeDelegation: answer && getActiveDelegationForAnswer(answer.id, state),
     dependentQuestions: getDependentQuestionsForOptionIds(
       Object.keys(ownProps.options),
       ownProps.question_type,

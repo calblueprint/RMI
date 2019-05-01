@@ -7,10 +7,13 @@ import {
   SAVE_BUILDING,
   ASSIGN_BUILDING_OPERATOR,
   UNASSIGN_BUILDING_OPERATOR,
+  DELEGATION_FETCH_IN_PROGRESS,
+  DELEGATION_FETCH_SUCCESS,
+  DELEGATION_FETCH_FAILURE,
   FETCH_SUCCESS,
   FETCH_FAILURE
-} from '../constants';
-import { answers } from './answers';
+} from "../constants";
+import { answers } from "./answers";
 
 /////////////////////////////////////////////////////////////////
 // BUILDINGS ////////////////////////////////////////////////////
@@ -21,8 +24,8 @@ function addBuilding(state, action) {
   const buildingId = building.id;
   return {
     ...state,
-    [buildingId] : building
-  }
+    [buildingId]: building
+  };
 }
 
 function editBuilding(state, action) {
@@ -41,7 +44,7 @@ function removeBuilding(state, action) {
     .filter(id => id !== action.buildingId)
     .reduce((newState, id) => {
       newState[id] = state[id];
-      return newState
+      return newState;
     }, {});
 }
 
@@ -81,6 +84,30 @@ function saveBuilding(state, action) {
   };
 }
 
+function beforeFetchDelegation(state, action) {
+  const { buildingId } = action;
+  return {
+    ...state,
+    [buildingId]: {
+      ...state[buildingId],
+      fetchingDelegations: true
+    }
+  };
+}
+
+function afterFetchDelegation(state, action) {
+  const { buildingId, error } = action;
+
+  return {
+    ...state,
+    [buildingId]: {
+      ...state[buildingId],
+      fetchingDelegations: false,
+      error
+    }
+  };
+}
+
 function tryAnswersReducer(state, action) {
   // Pass answer actions on to the answers reducer.
   // (action must have a buildingId to indicate which building the answers belong to)
@@ -100,11 +127,23 @@ export default function buildings(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
     // Buildings
-    case ADD_BUILDING: return addBuilding(state, action);
-    case EDIT_BUILDING: return editBuilding(state, action);
-    case REMOVE_BUILDING: return removeBuilding(state, action);
-    case CREATE_BUILDING: return saveBuilding(state, action);
-    case UPDATE_BUILDING: return saveBuilding(state, action);
-    default: return tryAnswersReducer(state, action);
+    case ADD_BUILDING:
+      return addBuilding(state, action);
+    case EDIT_BUILDING:
+      return editBuilding(state, action);
+    case REMOVE_BUILDING:
+      return removeBuilding(state, action);
+    case CREATE_BUILDING:
+      return saveBuilding(state, action);
+    case UPDATE_BUILDING:
+      return saveBuilding(state, action);
+    case DELEGATION_FETCH_IN_PROGRESS:
+      return beforeFetchDelegation(state, action);
+    case DELEGATION_FETCH_SUCCESS:
+      return afterFetchDelegation(state, action);
+    case DELEGATION_FETCH_FAILURE:
+      return afterFetchDelegation(state, action);
+    default:
+      return tryAnswersReducer(state, action);
   }
 }
