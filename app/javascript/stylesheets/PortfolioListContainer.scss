@@ -1,6 +1,6 @@
 @import "global";
 
-.building_type_details {
+.tables_container {
   display: flex;
   flex-direction: column;
 
@@ -15,7 +15,7 @@
 }
 
 
- .portfolio_view_table {
+ .table_view {
  	width: 100%;
   margin: 0px;
   border-collapse: collapse;

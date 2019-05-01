@@ -69,7 +69,7 @@ class PortfolioListContainer extends React.Component {
     const portfolios = this.props.portfolios;
     const building_types = this.props.building_types;
     return (
-      <div className="building_type_details">
+      <div className="tables_container">
         <div>
           <div>
             <h2>Building Types</h2>
@@ -80,7 +80,7 @@ class PortfolioListContainer extends React.Component {
             >
               +Create New Building Type
             </button>
-            <table className="portfolio_view_table">
+            <table className="table_view">
               <tbody className="table_data">
                 {Object.keys(building_types).map(id => {
                   return (
@@ -109,7 +109,7 @@ class PortfolioListContainer extends React.Component {
           >
             +Create New Portfolio
           </button>
-          <table className="portfolio_view_table">
+          <table className="table_view">
             <tbody className="table_data">
               {Object.keys(portfolios).map(id => {
                 return (
@@ -156,8 +156,7 @@ class PortfolioListContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     portfolios: state.portfolios,
-    building_types: state.building_types,
-    buildings: state.buildings
+    building_types: state.building_types
   };
 }
 
