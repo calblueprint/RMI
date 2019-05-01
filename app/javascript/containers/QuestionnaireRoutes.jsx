@@ -11,7 +11,8 @@ class QuestionnaireRoutes extends React.Component {
   render() {
     const currentPath = this.props.match.url;
     const propsToPass = {
-      building: this.props.building
+      building: this.props.building,
+      editableMap: this.props.building.editable
     };
 
     return (

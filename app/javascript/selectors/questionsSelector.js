@@ -11,6 +11,10 @@ export function getQuestionsByBuilding(buildingId, state) {
   });
 }
 
+export function getQuestionIdsByBuilding(buildingId, state) {
+  return state.buildings[buildingId].questions;
+}
+
 /**
  * Gets array of question objects for a buildingType by buildingType ID.
  * @param { number } buildingTypeId - the buildingType ID
@@ -92,6 +96,10 @@ export function getQuestionsByCategoryId(categoryId, state) {
   });
 }
 
+export function canEdit(buildingId, questionId, state) {
+  return state.buildings[buildingId].editable[questionId];
+}
+
 /**
  * Returns a list of all active questions belonging to the given category id,
  * including any dependent questions
@@ -101,18 +109,35 @@ export function getAllActiveQuestionsForCategory(categoryId, buildingId, state) 
 
   // Get list of non-dependent questions for the current category
   // that were assigned to this user
-  const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {	
-    return buildingQuestionIds.includes(questionId);	
-  });	
-  
-  return getAllActiveQuestions(rootQuestions, buildingId, state);
+  const rootQuestions = state.categories[categoryId].questions.filter((questionId) => {
+    return buildingQuestionIds.includes(questionId) && state.questions[questionId].parent_option_id == null;
+  });
+
+  return getAllActiveQuestionsFromRoots(rootQuestions, buildingId, state);
+}
+
+/**
+ * Given an arbitrary list of question ids, returns a list of all active questions related to them.
+ *
+ * This means only root questions and any dependents that have been triggered by answers (whether or not
+ * those dependents actually show up in the list of questionIds provided).
+ */
+export function getAllActiveQuestions(questionIds, buildingId, state) {
+  const rootQuestions = questionIds.filter((questionId) => state.questions[questionId].parent_option_id == null);
+  return getAllActiveQuestionsFromRoots(rootQuestions, buildingId, state);
 }
 
 /**
  * Helper function: given a list of "root" (non-dependent) questions, recursively
  * finds all active questions in their chain(s).
+ *
+ * @param {Array} rootQuestions - an array of question ids
+ * @param {Number} buildingId   - id of the current building
+ * @param {Object} state        - state
+ *
+ * @returns a list of question objects that are currently active (displaying) in the questionnaire
  */
-export function getAllActiveQuestions(rootQuestions, buildingId, state) {
+function getAllActiveQuestionsFromRoots(rootQuestions, buildingId, state) {
   let questions = [];
 
   for (let questionId of rootQuestions) {
@@ -123,10 +148,10 @@ export function getAllActiveQuestions(rootQuestions, buildingId, state) {
 
       const answer = state.buildings[buildingId].answers[questionId];
       if (answer && answer.selected_option_id) {
-        const dependents = getDependentQuestionsForOption(answer.selected_option_id,
-          rootQuestion.question_type, state);
+        const dependentIds = getDependentQuestionsForOption(answer.selected_option_id,
+          rootQuestion.question_type, state).map((question) => question.id);
 
-        questions.push(...getAllActiveQuestions(dependents, buildingId, state));
+        questions.push(...getAllActiveQuestionsFromRoots(dependentIds, buildingId, state));
       }
     }
   }

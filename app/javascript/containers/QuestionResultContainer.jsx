@@ -30,7 +30,7 @@ class QuestionResultContainer extends React.Component {
     const result = (() => {
       switch (this.props.question_type) {
         case "DropdownOption":
-          return <p>{this.props.answer.selected_option_id}</p>;
+          return <p>{this.props.answer.text}</p>;
         case "RangeOption":
           return <p>{this.props.answer.text}</p>;
         case "file":

@@ -38,6 +38,7 @@ class AnswerModeContainer extends React.Component {
               key={question.id}
               building_id={this.props.building.id}
               {...question}
+              editableMap={this.props.editableMap}
             />
           );
         })}

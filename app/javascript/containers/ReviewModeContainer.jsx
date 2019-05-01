@@ -8,7 +8,7 @@ import React from "react";
 import QuestionContainer from "./QuestionContainer";
 
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
-import { getPotentialDependentQuestions } from "../selectors/questionsSelector";
+import { getAllActiveQuestionsForCategory, getPotentialDependentQuestions } from "../selectors/questionsSelector";
 import { connect } from "react-redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
 import { getQuestionsByCategory } from "../utils/QuestionsFilter";
@@ -16,31 +16,6 @@ import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
 import CategoryHeader from "../components/CategoryHeader";
 
 import { post, patch } from "../fetch/requester";
-
-function mapCategorytoQuestions(categoryMap, categoryId, building) {
-  return categoryMap[categoryId].map(question => {
-    // Only display non-dependent questions initially
-    if (question.parent_option_id) {
-      //TODO: look at this later
-      // let filteredQuestion = categoryMap[categoryId].filter((pQuestion) => {
-      //   return (Object.keys(pQuestion.options).map(i => parseInt(i)).includes(question.parent_option_id));
-      // })[0];
-      // let option = building.answers[filteredQuestion.id].selected_option_id;
-      // if (option && option != question.parent_option_id) {
-      //   return null;
-      // }
-      return null;
-    }
-    return (
-      <QuestionContainer
-        mode="review"
-        key={question.id}
-        building_id={building.id}
-        {...question}
-      />
-    );
-  });
-}
 
 class ReviewModeContainer extends React.Component {
   constructor(props) {
@@ -104,28 +79,42 @@ class ReviewModeContainer extends React.Component {
     return delegations;
   }
 
+  mapCategorytoQuestions(categoryId, building) {
+    const categoryQuestions = this.props.getActiveQuestionsForCategory(categoryId);
+    return categoryQuestions.map((question) => {
+      // Don't display non-editable questions
+      // (These weren't delegated to the current user, and are only there to show context
+      //  or to trigger a relevant follow-up question)
+      if (!this.props.editableMap[question.id]) {
+        return null;
+      }
+
+      return (
+        <QuestionContainer
+          mode="review"
+          key={question.id}
+          building_id={building.id}
+          {...question}
+        />
+      );
+    })
+  }
+
   populateQuestionStack(building, questions) {
-    let categoryMap = new Map();
     let count = 0;
     let stack = [];
     for (let category in this.props.categories) {
       let stateCategory = this.props.categories[category];
       count += 1;
-      categoryMap[stateCategory.id] = getQuestionsByCategory(
-        stateCategory.id,
-        questions
-      );
-      stack.push(
-        <CategoryHeader
-          category={stateCategory}
-          number={count}
-          buildingId={building.id}
-        />
-      );
+      stack.push(<CategoryHeader
+        category={stateCategory}
+        number={count}
+        buildingId={building.id}
+      />);
       stack = stack.concat(
         <table cellSpacing="0">
           <tbody>
-            {mapCategorytoQuestions(categoryMap, stateCategory.id, building)}
+          {this.mapCategorytoQuestions(stateCategory.id, building)}
           </tbody>
         </table>
       );
@@ -157,6 +146,8 @@ function mapStateToProps(state, ownProps) {
   return {
     getPotentialDependentQuestions: question =>
       getPotentialDependentQuestions(question, state),
+    getActiveQuestionsForCategory: (categoryId) => getAllActiveQuestionsForCategory(categoryId,
+                                                      ownProps.building.id, state),
     building: state.buildings[ownProps.building.id],
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: questionId =>

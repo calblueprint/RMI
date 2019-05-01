@@ -109,7 +109,7 @@ class PortfolioContainer extends React.Component {
     const zip = event.target.zip.value;
     const firstName = event.target.first.value;
     const lastName = event.target.last.value;
-    const questions = Object.values(
+    const questionIds = Object.values(
       this.props.building_types[buildingTypeId].questions
     );
     const obj = {
@@ -126,12 +126,20 @@ class PortfolioContainer extends React.Component {
       const building = {
         ...response.data,
         answers: {},
-        questions: questions
+        questions: questionIds,
+
+        // editable is used to limit write access on certain questions.
+        // Since only admins can create a new building, it's fine to just set all the questions
+        //   in the new building to editable for this user.
+        editable: questionIds.reduce((map, qId) => {
+          map[qId] = true;
+          return map;
+        }, {})
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
       await this.createAnswers(
-        questions,
+        questionIds,
         buildingId,
         email,
         firstName,
