@@ -7,6 +7,7 @@ import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { addBuilding } from "../actions/buildings";
 import { addAnswers, EMPTY_ANSWER } from "../actions/answers";
+import { delegateAllQuestions } from "../actions/delegations";
 
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import {
@@ -73,6 +74,8 @@ class PortfolioContainer extends React.Component {
       };
       answers.push(emptyAnswer);
     }
+
+    const { delegateAllQuestions } = this.props;
     try {
       let response = await post("/api/answers/create_multiple", {
         answers: answers,
@@ -81,13 +84,12 @@ class PortfolioContainer extends React.Component {
       const newAnswers = response.data;
       this.props.addAnswers(newAnswers, buildingId);
       if (email != "") {
-        await delegateQuestions(
+        await delegateAllQuestions(
           newAnswers,
           buildingId,
           email,
           firstName,
-          lastName,
-          this.props.addAnswers
+          lastName
         );
       }
     } catch (error) {}
@@ -229,7 +231,16 @@ function mapDispatchToProps(dispatch) {
     },
     addAnswers: (answers, buildingId) => {
       dispatch(addAnswers(answers, buildingId));
-    }
+    },
+    delegateAllQuestions: (answers, buildingId, email, firstName, lastName) =>
+      delegateAllQuestions(
+        answers,
+        buildingId,
+        email,
+        firstName,
+        lastName,
+        dispatch
+      )
   };
 }
 

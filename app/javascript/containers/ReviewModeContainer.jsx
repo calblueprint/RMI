@@ -42,7 +42,6 @@ class ReviewModeContainer extends React.Component {
       this.setState({ status_string: "Saving delegations!" });
       try {
         await delegateQuestions(answers);
-        // let response = await post("/api/delegations", { delegations });
         this.setState({ status_string: "Delegations saved." });
       } catch (error) {
         this.setState({
