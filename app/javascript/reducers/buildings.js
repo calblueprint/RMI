@@ -1,12 +1,12 @@
+import { persistReducer } from "redux-persist";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+import storage from "redux-persist/es/storage";
 import {
   ADD_BUILDING,
   EDIT_BUILDING,
   CREATE_BUILDING,
   UPDATE_BUILDING,
   REMOVE_BUILDING,
-  SAVE_BUILDING,
-  ASSIGN_BUILDING_OPERATOR,
-  UNASSIGN_BUILDING_OPERATOR,
   DELEGATION_FETCH_IN_PROGRESS,
   DELEGATION_FETCH_SUCCESS,
   DELEGATION_FETCH_FAILURE,
@@ -108,6 +108,24 @@ function afterFetchDelegation(state, action) {
   };
 }
 
+const persistedAnswerReducers = {};
+function getOrCreatePersistedAnswerReducer(buildingId) {
+  let persistedReducer = persistedAnswerReducers[buildingId];
+  if (persistedReducer) {
+    return persistedReducer;
+  }
+  persistedReducer = persistReducer(
+    {
+      key: `answers:${buildingId}`,
+      storage,
+      stateReconciler: autoMergeLevel2
+    },
+    answers
+  );
+  persistedAnswerReducers[buildingId] = persistedReducer;
+  return persistedReducer;
+}
+
 function tryAnswersReducer(state, action) {
   // Pass answer actions on to the answers reducer.
   // (action must have a buildingId to indicate which building the answers belong to)
@@ -116,7 +134,10 @@ function tryAnswersReducer(state, action) {
       ...state,
       [action.buildingId]: {
         ...state[action.buildingId],
-        answers: answers(state[action.buildingId].answers, action)
+        answers: getOrCreatePersistedAnswerReducer(action.buildingId)(
+          state[action.buildingId].answers,
+          action
+        )
       }
     };
   }

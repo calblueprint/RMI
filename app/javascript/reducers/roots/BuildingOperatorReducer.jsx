@@ -1,11 +1,13 @@
-import buildings from '../buildings';
-import contacts from '../contacts';
+import { combineReducers } from "redux";
 
-export default {
+import buildings from "../buildings";
+import contacts from "../contacts";
+
+export default combineReducers({
   buildings,
   contacts,
-  questions: (state={}, action) => state,
-  categories: (state={}, action) => state,
-  user: (state={}, action) => state,
-  userType: (state={}, action) => state
-};
+  questions: (state = {}, action) => state,
+  categories: (state = {}, action) => state,
+  user: (state = {}, action) => state,
+  userType: (state = {}, action) => state
+});

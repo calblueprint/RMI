@@ -1,24 +1,22 @@
-import 'babel-polyfill';
+import "babel-polyfill";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { initializeStore } from '../store';
+import { Provider } from "react-redux";
+import { initializeStore } from "../store";
 
-import { PersistGate } from 'redux-persist/es/integration/react'
 import {
   BrowserRouter as Router,
   Switch,
   Redirect,
   Route
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import withInitialState from '../reducers/initialState';
-import { loadInitialState } from '../actions/initialState';
+import withInitialState from "../reducers/initialState";
+import { loadInitialState } from "../actions/initialState";
 
-import '../stylesheets';
+import "../stylesheets";
 
 const { userType } = window.INITIAL_STATE;
 
@@ -36,11 +34,10 @@ if (module.hot) {
   module.hot.accept();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
     <div>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      <Provider store={store}>
         <Router>
           <Switch>
             {/* Remove trailing slash so we don't have to deal with it when appending nested routes */}
@@ -48,14 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
               exact
               strict
               path="*/"
-              render={({ match }) => (<Redirect to={match.url.slice(0, -1)} />)}
+              render={({ match }) => <Redirect to={match.url.slice(0, -1)} />}
             />
             <Routes />
           </Switch>
         </Router>
-      </PersistGate>
-    </Provider>
+      </Provider>
     </div>,
-    document.body.appendChild(document.createElement('div')),
-  )
+    document.body.appendChild(document.createElement("div"))
+  );
 });

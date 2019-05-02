@@ -1,3 +1,5 @@
+import { combineReducers } from "redux";
+
 import buildings from "../buildings";
 import portfolios from "../portfolios";
 import questions from "../questions";
@@ -6,7 +8,7 @@ import categories from "../categories";
 import contacts from "../contacts";
 import delegations from "../delegations";
 
-export default {
+export default combineReducers({
   buildings,
   portfolios,
   questions,
@@ -16,4 +18,4 @@ export default {
   user: (state = {}, action) => state,
   userType: (state = {}, action) => state,
   delegations
-};
+});
