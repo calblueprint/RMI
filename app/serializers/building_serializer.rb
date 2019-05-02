@@ -26,6 +26,10 @@ class BuildingSerializer < ActiveModel::Serializer
              :answers,
              :questions
 
+  def id
+    object.id.to_s
+  end
+
   # Answers are stored as a hash, where the key is the id of the corresponding QUESTION
   def answers
     object.answers.index_by(&:question_id)

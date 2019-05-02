@@ -15,6 +15,10 @@ class CategorySerializer < ActiveModel::Serializer
              :building_type_id,
              :questions
 
+  def id
+    object.id.to_s
+  end
+
   def questions
     object.questions.map { |q| q.id }
   end

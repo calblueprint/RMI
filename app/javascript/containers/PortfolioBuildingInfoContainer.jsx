@@ -83,9 +83,9 @@ class PortfolioBuildingInfoContainer extends React.Component {
 }
 
 PortfolioBuildingInfoContainer.propTypes = {
-  portfolioId: PropTypes.number.isRequired,
-  buildingId: PropTypes.number.isRequired,
-  categoriesData: PropTypes.array.isRequired
+  portfolioId: PropTypes.string.isRequired,
+  buildingId: PropTypes.string.isRequired,
+  categoriesData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {

@@ -14,6 +14,10 @@ class BuildingTypeSerializer < ActiveModel::Serializer
              :questions,
              :categories
 
+  def id
+    object.id.to_s
+  end
+
   # Questions are stored as a hash, where the key is the id and the value is the serialized question
   def questions
     _questions =

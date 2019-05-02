@@ -8,6 +8,10 @@ class DelegationSerializer < ActiveModel::Serializer
              :updated_at,
              :building_operator
 
+  def id
+    object.id.to_s
+  end
+
   def building_operator
     object.building_operator.as_json
   end
