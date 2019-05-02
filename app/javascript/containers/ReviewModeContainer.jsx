@@ -34,68 +34,58 @@ class ReviewModeContainer extends React.Component {
     let delegations = this.getDelegations();
     let new_delegations = delegations["new_delegations"];
     let delegations_to_update = delegations["answered_question_ids"];
-    if (new_delegations.length == 0) {
-      this.setState({
-        status_string: "There were no delegations to be saved!"
-      });
-    } else {
-      this.setState({ status_string: "Saving delegations!" });
-      try {
+
+
+    try {
+      if (new_delegations.length !== 0) {
+        this.setState({ status_string: "Saving delegations!" });
         let response = await post("/api/delegations", {
           delegations: new_delegations
         });
         this.setState({ status_string: "New Delegations saved." });
-        this.updateDelegations(delegations_to_update);
-      } catch (error) {
-        this.setState({
-          status_string: "Saving delegations failed. Try again?"
-        });
       }
-    }
-  }
+      if (delegations_to_update.length !== 0) {
+        await patch("/api/delegations/set_completed", {
+          delegations: delegations_to_update
+        });
+        this.setState({ status_string: "Completed answers saved." });
+      }
 
-  async updateDelegations(delegations) {
-    try {
-      let response = await patch("/api/delegations/set_completed", {
-        delegations
-      });
-      this.setState({ status_string: "Old Delegations updated!" });
-      // need to change this to /portfolios for RMI users? different routes for different users after delegating
       //TODO 4/23: Need to fix root routing so we don't have to do conditional routing here
       this.props.history.push(`/`);
       this.props.removeBuilding(this.props.building.id);
+
+      //TODO: toastr success notification
     } catch (error) {
       this.setState({
-        status_string: "Updating delegations failed. Try again?"
+        status_string: "Saving delegations failed. Try again?"
       });
+      //TODO: toastr failure
     }
   }
 
   getDelegations() {
-    let answered_question_ids = [];
     let parentQuestionsForDelegations = [];
     this.props.questions.forEach(question => {
       let answer = this.props.getAnswer(question.id);
       if (answer && !answer.text && answer.delegation_email) {
         parentQuestionsForDelegations.push(question);
-      } else {
-        answered_question_ids.push({ answer_id: answer.id });
       }
     });
 
-    var delegations = [];
-    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
-      var question = parentQuestionsForDelegations[i];
-      var answer = this.props.getAnswer(question.id);
-      var allDependentQuestions = this.props.getPotentialDependentQuestions(
+    let delegations = [];
+    for (let i = 0; i < parentQuestionsForDelegations.length; i++) {
+      let question = parentQuestionsForDelegations[i];
+      let answer = this.props.getAnswer(question.id);
+      let allDependentQuestions = this.props.getPotentialDependentQuestions(
         question
       );
       allDependentQuestions.push(question);
 
       allDependentQuestions.map(currentQuestion => {
-        var currentAnswer = this.props.getAnswer(currentQuestion.id);
+        let currentAnswer = this.props.getAnswer(currentQuestion.id);
         if (currentAnswer) {
-          var delegation = {
+          let delegation = {
             email: answer.delegation_email,
             first_name: answer.delegation_first_name,
             last_name: answer.delegation_last_name,
@@ -105,9 +95,20 @@ class ReviewModeContainer extends React.Component {
         }
       });
     }
+
+    const delegationIds = delegations.map(delegation => delegation.answer_id);
+
+    // List of ids for answers that were filled out by the user but not delegated.
+    // These still need to have their delegations marked as completed in the backend
+    const answeredQuestionIds = this.props.questions
+      .filter(question => this.props.editableMap[question.id])
+      .map(question => this.props.getAnswer(question.id))
+      .filter(answer => !delegationIds.includes(answer.id))
+      .map(answer => { return {answer_id: answer.id} });
+
     return {
       new_delegations: delegations,
-      answered_question_ids: answered_question_ids
+      answered_question_ids: answeredQuestionIds
     };
   }
 
