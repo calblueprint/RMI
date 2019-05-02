@@ -4,6 +4,10 @@ import {
   getAllQuestionsByCategoryId
 } from "./questionsSelector";
 import { getCategoriesForBuilding } from "./categoriesSelector";
+import {
+  getActiveDelegationForAnswer,
+  filterUniquePersonDelegations
+} from "./delegationsSelector";
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
   return state.buildings[buildingId].answers[questionId];
@@ -168,7 +172,18 @@ export function questionDataPerCategory(buildingId, state) {
       name: category.name,
       answered: categoryQuestions.length - numUnanswered,
       total: categoryQuestions.length,
-      delegations: getDelegations(categoryQuestions, buildingId, state)
+      delegations: filterUniquePersonDelegations(
+        categoryQuestions
+          .map(question => {
+            const answer = getAnswerForQuestionAndBuilding(
+              question.id,
+              buildingId,
+              state
+            );
+            return getActiveDelegationForAnswer(answer.id, state);
+          })
+          .filter(delegation => delegation !== null)
+      )
     };
   }
   return catData;

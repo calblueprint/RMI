@@ -12,35 +12,38 @@ class CategoryContainer extends React.Component {
     if (answered < total) {
       return (
         <td className="category_status">
-          <span className="dot yellow" />Waiting for Handoff
+          <span className="dot yellow" />
+          Waiting for Handoff
         </td>
       );
     }
     return (
       <td className="category_status">
-        <span className="dot green" />Handed Off
+        <span className="dot green" />
+        Handed Off
       </td>
     );
   }
 
   categoryDelegations() {
-    let delegations = this.props.categoryData.delegations;
-    switch (delegations.length) {
+    const [
+      firstDelegation,
+      secondDelegation,
+      ...otherDelegations
+    ] = this.props.categoryData.delegations;
+    switch (this.props.categoryData.delegations.length) {
       case 0:
         return <span>No one assigned yet</span>;
       case 1:
-        return delegations[0].email;
+        return firstDelegation.building_operator.email;
       case 2:
-        return delegations[0].email + " and " + delegations[1].email;
+        return `${firstDelegation.building_operator.email} and ${
+          secondDelegation.building_operator.email
+        }`;
       default:
-        return (
-          delegations[0].email +
-          ", " +
-          delegations[1].email +
-          ", and " +
-          (delegations.length - 2) +
-          " others"
-        );
+        return `${firstDelegation.building_operator.email}, ${
+          secondDelegation.building_operator.email
+        }, and ${otherDelegations.length} others`;
     }
   }
 

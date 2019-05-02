@@ -10,7 +10,7 @@ import QuestionContainer from "./QuestionContainer";
 import { delegateQuestions } from "../actions/delegations";
 import {
   getAnswerForQuestionAndBuilding,
-  isSentDelegatedAnswer
+  isPendingDelegatedAnswer
 } from "../selectors/answersSelector";
 import {
   getAllActiveQuestionsForCategory,
@@ -58,7 +58,7 @@ class ReviewModeContainer extends React.Component {
     var parentQuestionsForDelegations = this.props.questions.filter(
       question => {
         const answer = this.props.getAnswer(question.id);
-        return answer && !answer.text && answer.delegation_email;
+        return answer && isPendingDelegatedAnswer(answer);
       }
     );
 
@@ -73,10 +73,7 @@ class ReviewModeContainer extends React.Component {
 
       allDependentQuestions.map(currentQuestion => {
         var currentAnswer = this.props.getAnswer(currentQuestion.id);
-        if (
-          currentAnswer &&
-          !isSentDelegatedAnswer(currentAnswer, this.props.fullStore)
-        ) {
+        if (isPendingDelegatedAnswer(currentAnswer)) {
           answers[currentQuestion.id] = currentAnswer;
         }
       });
