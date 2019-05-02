@@ -67,14 +67,14 @@ input {
 
 .sidebar-category-row-selected {
   // border-radius: 5px;
-  border-left: 5px solid $vibrantPrimary;
-  background-color: rgba($vibrantPrimary, 0.1);
+  border-left: 5px solid $primary;
+  background-color: rgba($primary, 0.1);
   font-weight: 700;
   // color: white;
 }
 
 .sidebar-category-row-selected:hover {
-  background-color: rgba($vibrantPrimary, 0.1);
+  background-color: rgba($primary, 0.1);
   border-radius: 0;
   cursor: default;
 }
@@ -329,4 +329,15 @@ input {
     display: flex;
     transition: flex 400ms ease;
   }
+}
+
+.btn--handoff {
+  background-color: gainsboro;
+  color: $secondary;
+  text-decoration: none;
+}
+
+.btn--handoff:hover {
+  text-decoration: none;
+  color: $secondary;
 }

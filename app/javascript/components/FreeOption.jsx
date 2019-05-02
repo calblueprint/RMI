@@ -34,7 +34,7 @@ class FreeOption extends React.Component {
         }
       )}>
         <textarea
-          disabled={!this.props.editable}
+          // disabled={!this.props.editable}
           value={this.props.answer ? this.props.answer.text : ""}
           onChange={(e) => this.onChange(e.target.value)}
           onFocus={(e) => this.props.onEnter()}

@@ -93,20 +93,27 @@ input::-webkit-inner-spin-button {
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input:focus,
-textarea:focus,
-.input__range.input__range--focused {
-  border: 3px solid $primary;
+.input__range:hover {
+  border: 2px solid $hover;
+  cursor: text;
 }
 
+input:focus,
+.input__range.input__range--focused {
+  border: 2px solid $primary;
+  cursor: text;
+}
+
+
 .input__text textarea {
-  width: 100%;
+  width: 100%;  
 }
 
 .input__text--disabled textarea {
   background-color: $disabledBgGray;
   color: $disabledTextGray;
   border: none;
+  cursor: text;
   disabled: true;
 }
 
