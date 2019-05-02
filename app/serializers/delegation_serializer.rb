@@ -13,6 +13,6 @@ class DelegationSerializer < ActiveModel::Serializer
   end
 
   def building_operator
-    object.building_operator.as_json
+    object.building_operator.as_json(methods: :last_sign_in_at)
   end
 end

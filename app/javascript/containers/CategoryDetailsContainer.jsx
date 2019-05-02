@@ -10,17 +10,11 @@ import DelegationInfoContainer from "./DelegationInfoContainer";
  */
 class CategoryDetailsContainer extends React.Component {
   delegationInfo() {
-    let loginUserData = this.props.loginUserData;
     let catData = this.props.categoryData;
     let delegations = catData.delegations;
 
     if (delegations) {
       return delegations.map(d => {
-        let email = d.email;
-
-        if (loginUserData && loginUserData[email]) {
-          d.lastActive = loginUserData[email];
-        }
         return <DelegationInfoContainer delegation={d} key={d.id} />;
       });
     } else {
@@ -62,7 +56,6 @@ CategoryDetailsContainer.propTypes = {
   buildingId: PropTypes.string.isRequired,
   buildingName: PropTypes.string.isRequired,
   categoryId: PropTypes.string.isRequired,
-  loginUserData: PropTypes.object.isRequired,
   categoryData: PropTypes.object.isRequired
 };
 

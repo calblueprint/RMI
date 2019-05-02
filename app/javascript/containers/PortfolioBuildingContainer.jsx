@@ -11,30 +11,6 @@ and selected category and handles the GET request for the login times needed to 
 another user was active.
 */
 class PortfolioBuildingContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { loginUserData: null };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.selectedBuildingId !== this.props.selectedBuildingId) {
-      this.getLoginUserData();
-    }
-  }
-
-  async getLoginUserData() {
-    let building_id = this.props.selectedBuildingId;
-    try {
-      let response = await get(
-        "/api/buildings/" + building_id + "/get_user_data"
-      );
-      this.setState({ loginUserData: response.data });
-      return response.data;
-    } catch (error) {
-      return {};
-    }
-  }
-
   showSelectedBuilding(selectedBuildingId) {
     let buildings = this.props.buildings;
     let pId = this.props.portfolio_id;
@@ -62,7 +38,6 @@ class PortfolioBuildingContainer extends React.Component {
       if (b.id === selectedBuildingId && selectedCategoryId) {
         return (
           <CategoryDetailsContainer
-            loginUserData={this.state.loginUserData}
             categoryData={categoriesData[selectedCategoryId]}
             key={b.id}
             buildingId={b.id}

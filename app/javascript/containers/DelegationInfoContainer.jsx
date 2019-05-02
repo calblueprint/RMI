@@ -4,22 +4,14 @@ import DelegationContactCard from "../components/DelegationContactCard";
 import Moment from "react-moment";
 
 class DelegationInfoContainer extends React.Component {
-  lastActive() {
-    let lastActive = this.props.delegation.lastActive;
-
-    if (lastActive === undefined) {
-      return <span>Unopened</span>;
-    }
-    return (
-      <span>
-        <Moment fromNow>{lastActive}</Moment>
-      </span>
-    );
-  }
-
   render() {
     let {
-      building_operator: { email, first_name: firstName, last_name: lastName }
+      building_operator: {
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        last_sign_in_at: lastActive
+      }
     } = this.props.delegation;
     return (
       <div>
@@ -34,7 +26,13 @@ class DelegationInfoContainer extends React.Component {
           showRemoveContactBtn={false}
         />
         <div className="delegation_status">
-          {this.lastActive()}
+          {lastActive ? (
+            <span>
+              <Moment fromNow>{lastActive}</Moment>
+            </span>
+          ) : (
+            <span>Unopened</span>
+          )}
           <button>Remind</button>
         </div>
       </div>
