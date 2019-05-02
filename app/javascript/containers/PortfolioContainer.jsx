@@ -22,6 +22,7 @@ import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContain
 import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
 
 import { post } from "../fetch/requester";
+import  validateEmail  from "../utils/validateEmail";
 import { delegateQuestions } from "../utils/DelegationRequests";
 import Logo from "../images/rmi-logo.png";
 
@@ -97,6 +98,10 @@ class PortfolioContainer extends React.Component {
     event.preventDefault();
     const buildingName = event.target.name.value;
     const email = event.target.email.value;
+    if (!validateEmail(email)) {
+      this.setState({ errors: "Email is invalid", showModal: true });
+      return;
+    }
     const buildingTypeId = document.getElementById("building").value;
     const address = event.target.address.value;
     const city = event.target.city.value;
@@ -104,7 +109,7 @@ class PortfolioContainer extends React.Component {
     const zip = event.target.zip.value;
     const firstName = event.target.first.value;
     const lastName = event.target.last.value;
-    const questions = Object.values(
+    const questionIds = Object.values(
       this.props.building_types[buildingTypeId].questions
     );
     const obj = {
@@ -121,12 +126,20 @@ class PortfolioContainer extends React.Component {
       const building = {
         ...response.data,
         answers: {},
-        questions: questions
+        questions: questionIds,
+
+        // editable is used to limit write access on certain questions.
+        // Since only admins can create a new building, it's fine to just set all the questions
+        //   in the new building to editable for this user.
+        editable: questionIds.reduce((map, qId) => {
+          map[qId] = true;
+          return map;
+        }, {})
       };
       const buildingId = building.id;
       this.props.addBuilding(building);
       await this.createAnswers(
-        questions,
+        questionIds,
         buildingId,
         email,
         firstName,

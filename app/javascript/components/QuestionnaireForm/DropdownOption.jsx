@@ -29,13 +29,6 @@ class DropdownOption extends React.Component {
   }
 
   render () {
-    const color = randomColor({
-      luminosity: 'light',
-      hue:  'random',
-      seed: this.props.option.id,
-      format: 'rgba',
-      alpha: 0.5
-    });
     return(
       <div
         className={'option-display-block__counter'}
@@ -45,7 +38,6 @@ class DropdownOption extends React.Component {
         >
           <input
             // style={{backgroundColor: color}}
-
             type="text"
             defaultValue={this.props.option.text}
             onBlur={(e) => this.handleOnBlur(e.target.value)}

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fontawesome from '@fortawesome/fontawesome';
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
@@ -61,30 +62,40 @@ class DropdownOption extends React.Component {
           onMouseOver={(e) => this.props.onEnter()}
           onMouseOut={(e) => this.props.onLeave()}
         >
-        {options.map((option, i) => (
-          <button
-            key={option.id}
-            value={option.id}
-            onClick={(e) => this.onChange(e.target.value)}
-            onFocus={(e) => this.props.onEnter()}
-            onBlur={(e) => this.props.onLeave()}
-            className={`input__dropdown ${
-              currentValue == option.id ? 'input__dropdown--selected' : ''
-            }`}
-            ref={(ref) => this.ref = i === 0 ? ref : this.ref}
-          >
+        {options.map((option, i) => {
+          let props = {
+            key: option.id,
+            value: option.id,
+            className: classNames(
+              'input__dropdown',
+              {
+                "input__dropdown--selected": currentValue == option.id,
+                "input__dropdown--disabled": !this.props.editable
+              }
+            ),
+            ref: (ref) => this.ref = i === 0 ? ref : this.ref
+          };
+          if (this.props.editable) {
+            props = {
+              ...props,
+              onClick: (e) => this.onChange(e.target.value),
+              onFocus: (e) => this.props.onEnter(),
+              onBlur: (e) => this.props.onLeave()
+            };
+          }
+          return (<button {...props}>
             {option.text}
             {
               currentValue == option.id ?
-              <i
-                style={{ marginLeft: '10px' }}
-                dangerouslySetInnerHTML={{
-                  __html: fontawesome.icon(faCheck).html[0]
-                }}
-              /> : null
+                <i
+                  style={{ marginLeft: '10px' }}
+                  dangerouslySetInnerHTML={{
+                    __html: fontawesome.icon(faCheck).html[0]
+                  }}
+                /> : null
             }
-          </button>
-        ))}
+          </button>)
+        })}
         </div>
       );
     }
