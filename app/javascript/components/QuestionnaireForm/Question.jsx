@@ -1,18 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import InputValidation from '../InputValidation';
-import OptionsContainer from '../../containers/QuestionnaireForm/OptionsContainer';
-import ContentEditable from 'react-sane-contenteditable';
+import React from "react";
+import PropTypes from "prop-types";
+import InputValidation from "../InputValidation";
+import OptionsContainer from "../../containers/QuestionnaireForm/OptionsContainer";
+import ContentEditable from "react-sane-contenteditable";
+import FAIcon from "../FAIcon";
+import downIcon from "@fortawesome/fontawesome-free-solid/faCaretDown";
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       helperInput: !!this.props.question.helper_text,
-      unitInput: !!this.props.question.unit,
+      unitInput: !!this.props.question.unit
     };
   }
-  
+
   componentDidUpdate() {
     if (this.props.select) {
       this.questionInput.focus();
@@ -26,7 +28,7 @@ class Question extends React.Component {
    *                          in the form {attr: value}
    */
   handleOnBlur(args) {
-    this.props.handleOnBlur(this.props.question.id, args)
+    this.props.handleOnBlur(this.props.question.id, args);
   }
 
   /**
@@ -36,106 +38,97 @@ class Question extends React.Component {
    */
   onChange(args) {
     // this.questionInput.style.height= `${this.questionInput.scrollHeight}px`;
-    this.props.handleOnChange(this.props.question.id, args)
+    this.props.handleOnChange(this.props.question.id, args);
   }
 
   addButton(addText, state) {
     return (
-      <button
-        onClick={ (e) => this.setState({...this.state, ...state}) }
-      >
+      <button onClick={e => this.setState({ ...this.state, ...state })}>
         {addText}
       </button>
-    )
+    );
   }
 
   displayUnit() {
-    const rangeUnitButton = this.addButton("Add unit", {unitInput: true});
+    const rangeUnitButton = this.addButton("Add unit", { unitInput: true });
     const rangeUnit = (
       <input
         defaultValue={this.props.question.unit}
-        onBlur={(e) => this.handleOnBlur({unit: e.target.value})}
-        onChange={(e) => this.onChange({unit: e.target.value})}
+        onBlur={e => this.handleOnBlur({ unit: e.target.value })}
+        onChange={e => this.onChange({ unit: e.target.value })}
         placeholder={"Feet"}
       />
     );
 
-    if (this.props.question.question_type === 'RangeOption') {
-      return (this.state.unitInput? rangeUnit : rangeUnitButton)
+    if (this.props.question.question_type === "RangeOption") {
+      return this.state.unitInput ? rangeUnit : rangeUnitButton;
     }
   }
 
   render() {
-    const helperTextButton = this.addButton("+ Add Helper Text", {helperInput: true});
+    const helperTextButton = this.addButton("+ Add Helper Text", {
+      helperInput: true
+    });
 
     const helperTextInput = (
       <textarea
         placeholder={"Add supplemental information for this question"}
         defaultValue={this.props.question.helper_text}
-        onBlur={(e) => this.handleOnBlur({helper_text: e.target.value})}
-        onChange={(e) => this.onChange({helper_text: e.target.value})}
+        onBlur={e => this.handleOnBlur({ helper_text: e.target.value })}
+        onChange={e => this.onChange({ helper_text: e.target.value })}
       />
     );
 
     return (
-      <div
-
-      >
-        <div
-          className={'question_block'}
-        >
-          <input
-            className={'question_block__param'}
-            placeholder={"param1"}
-            defaultValue={this.props.question.parameter}
-            onBlur={(e) => this.handleOnBlur({parameter: e.target.value})}
-            onChange={(e) => this.onChange({parameter: e.target.value})}
-          />
-          <div
-            className={'question_block__body'}
-          >
-            <div
-              className={'question_block__body__main'}
-            >
-            <ContentEditable
-              onChange={() => 0}
-              onKeyDown={(e) => this.onChange({ text: e.target.innerText })}
-              onBlur={(e) => this.handleOnBlur({ text: e.target.innerText })}
-              innerRef={(ref) => this.questionInput = ref}
-              tagName="span"
-              content={this.props.question.text}
-              doNotUpdate={true}
+      <div>
+        <div className={"question_block"}>
+          <div className="question_block__meta">
+            <FAIcon iconObj={downIcon} />
+            <p className="question_block__meta-label">Export as</p>
+            <input
+              className={"question_block__param"}
+              placeholder={"param1"}
+              defaultValue={this.props.question.parameter}
+              onBlur={e => this.handleOnBlur({ parameter: e.target.value })}
+              onChange={e => this.onChange({ parameter: e.target.value })}
             />
+          </div>
+
+          <div className={"question_block__body"}>
+            <div className={"question_block__body__main"}>
+              <ContentEditable
+                onChange={() => 0}
+                onKeyDown={e => this.onChange({ text: e.target.innerText })}
+                onBlur={e => this.handleOnBlur({ text: e.target.innerText })}
+                innerRef={ref => (this.questionInput = ref)}
+                tagName="span"
+                content={this.props.question.text}
+                doNotUpdate={true}
+              />
               <div>
-                <OptionsContainer
-                  question={this.props.question}
-                />
+                <OptionsContainer question={this.props.question} />
               </div>
             </div>
-            <div
-              className={'question_block__body__support'}
-            >
-              { this.state.helperInput? helperTextInput : helperTextButton }
+            <div className={"question_block__body__support"}>
+              {this.state.helperInput ? helperTextInput : helperTextButton}
               {this.displayUnit()}
             </div>
           </div>
         </div>
 
         <div>
-          <InputValidation
-            errors={this.props.question.error}
-          />
+          <InputValidation errors={this.props.question.error} />
         </div>
       </div>
     );
   }
-};
+}
 
-export default Question
+export default Question;
 
 Question.propTypes = {
   handleOnBlur: PropTypes.func.isRequired,
   handleOnChange: PropTypes.func.isRequired,
   select: PropTypes.bool.isRequired,
-  question: PropTypes.object.isRequired,
+  question: PropTypes.object.isRequired
 };

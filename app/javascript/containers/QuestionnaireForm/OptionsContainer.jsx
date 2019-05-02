@@ -1,6 +1,6 @@
-import React from 'react';
-import DropdownOption from '../../components/QuestionnaireForm/DropdownOption';
-import RangeOption from '../../components/QuestionnaireForm/RangeOption';
+import React from "react";
+import DropdownOption from "../../components/QuestionnaireForm/DropdownOption";
+import RangeOption from "../../components/QuestionnaireForm/RangeOption";
 import {
   optionFetchInProgress,
   optionPreFetchSave,
@@ -8,16 +8,15 @@ import {
   optionFetchSuccess,
   optionFetchFailure,
   removeOption
-} from '../../actions/options';
-import { connect } from 'react-redux';
-import { patch, post } from '../../fetch/requester';
-import { generateTempId } from '../../utils/TemporaryObjectUtil';
-import PropTypes from 'prop-types';
-import { isEmptyText } from '../../utils/InputComponentUtil';
-import randomColor from 'randomcolor';
+} from "../../actions/options";
+import { connect } from "react-redux";
+import { patch, post } from "../../fetch/requester";
+import { generateTempId } from "../../utils/TemporaryObjectUtil";
+import PropTypes from "prop-types";
+import { isEmptyText } from "../../utils/InputComponentUtil";
+import randomColor from "randomcolor";
 
 class OptionsContainer extends React.Component {
-
   /**
    * Returns the correct Components/QuestionnaireForm/<option> component given question type
    * @param { string } questionType - question.question_type
@@ -25,9 +24,12 @@ class OptionsContainer extends React.Component {
    */
   getComponentName(questionType) {
     switch (questionType) {
-      case "DropdownOption": return DropdownOption;
-      case "RangeOption": return RangeOption;
-      default: return
+      case "DropdownOption":
+        return DropdownOption;
+      case "RangeOption":
+        return RangeOption;
+      default:
+        return;
     }
   }
 
@@ -48,12 +50,12 @@ class OptionsContainer extends React.Component {
    * @returns {string} url pattern for range or dropdown option.
    */
   optionUrl() {
-    if (this.props.question.question_type === 'RangeOption') {
-      return '/api/range_options';
-    } else if (this.props.question.question_type === 'DropdownOption') {
-      return '/api/dropdown_options';
+    if (this.props.question.question_type === "RangeOption") {
+      return "/api/range_options";
+    } else if (this.props.question.question_type === "DropdownOption") {
+      return "/api/dropdown_options";
     } else {
-      return
+      return;
     }
   }
 
@@ -63,9 +65,12 @@ class OptionsContainer extends React.Component {
    */
   optionKey() {
     switch (this.props.question.question_type) {
-      case "RangeOption": return 'range_option';
-      case "DropdownOption": return 'dropdown_option';
-      default: return null;
+      case "RangeOption":
+        return "range_option";
+      case "DropdownOption":
+        return "dropdown_option";
+      default:
+        return null;
     }
   }
 
@@ -75,12 +80,14 @@ class OptionsContainer extends React.Component {
    * @param { Object } args - any option parameters
    */
   async createOption(id, args) {
-    const newOption = {...this.props.question.options[id], ...args};
+    const newOption = { ...this.props.question.options[id], ...args };
     const tempOption = this.props.question.options[id];
     this.props.optionFetchInProgress(newOption);
 
     try {
-      let response = await post(this.optionUrl(), { [this.optionKey()]: newOption });
+      let response = await post(this.optionUrl(), {
+        [this.optionKey()]: newOption
+      });
       this.props.optionFetchSuccess(response.data);
       this.props.removeOption(tempOption);
     } catch (error) {
@@ -94,11 +101,12 @@ class OptionsContainer extends React.Component {
    * @param { Object } args - any option parameters
    */
   async updateOption(id, args) {
-    const updatedOption = {...this.props.question.options[id], ...args};
+    const updatedOption = { ...this.props.question.options[id], ...args };
     this.props.optionFetchInProgress(updatedOption);
     try {
-      let response = await patch(this.optionUrl() + '/' + updatedOption.id,
-        {[this.optionKey()]: updatedOption});
+      let response = await patch(this.optionUrl() + "/" + updatedOption.id, {
+        [this.optionKey()]: updatedOption
+      });
       this.props.optionFetchSuccess(response.data);
     } catch (error) {
       this.props.optionFetchFailure(error, updatedOption);
@@ -112,7 +120,7 @@ class OptionsContainer extends React.Component {
    * @param { string } args - any option parameters
    */
   handleOnChange(id, args) {
-    const updatedOption = {...this.props.question.options[id], ...args};
+    const updatedOption = { ...this.props.question.options[id], ...args };
     this.props.optionPreFetchSave(updatedOption);
   }
 
@@ -132,89 +140,85 @@ class OptionsContainer extends React.Component {
    * Returns an input box that when clicked, creates a new temp range or dropdown option
    * @returns {html} input box that triggers a new temp option when focused.
    */
-  newOptionPlaceholder () {
+  newOptionPlaceholder() {
     switch (this.props.question.question_type) {
       case "DropdownOption":
-        return(
-          <div
-            className={'option-display-block__counter'}
-          >
-            <div
-              className={'dropdown-input'}
-              onClick={e => this.onNewOption()}
-              style={{color: 'gray'}}
-            >
-              Add new dropdown option
-            </div>
-          </div>
+        return (
+          <a className="btn btn--neutral" onClick={e => this.onNewOption()}>
+            Add new dropdown option
+          </a>
         );
       case "RangeOption":
-        return(
-          <button
-            className={'add-option'}
-            onClick={e => this.onNewOption()}
-          >
+        return (
+          <button className="add-option" onClick={e => this.onNewOption()}>
             +Add
           </button>
         );
-      default: return null;
+      default:
+        return null;
     }
   }
 
-  render () {
+  render() {
     const question = this.props.question;
     const OptionType = this.getComponentName(question.question_type);
 
-    const OptionsDisplay = Object.keys(this.props.question.options).map((optionId) => {
-      const option = this.props.question.options[optionId];
-      const handleOnBlur = this.handleOnBlur(option);
-      const focus = option.temp || false;
-      const color = randomColor({
-        luminosity: 'light',
-        hue:  'random',
-        seed: option.id,
-        format: 'rgba',
-        alpha: 0.5
-      });
-      return (
-        <div key={option.id}
-        >
-          <OptionType
-            key={option.id}
-            option={option}
-            handleOnBlur={handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            focus={focus}
-          />
-        </div>
-      )
-    });
+    const OptionsDisplay = Object.keys(this.props.question.options).map(
+      (optionId, index) => {
+        const option = this.props.question.options[optionId];
+        const handleOnBlur = this.handleOnBlur(option);
+        const focus = option.temp || false;
 
-    return(
-      <div
-        className={'option-display-block'}
-      >
+        return (
+          <div key={option.id} style={{ width: "100%" }}>
+            {index === 0 && (
+              <p className="question_block__options-label">Options</p>
+            )}
+            <OptionType
+              key={option.id}
+              option={option}
+              handleOnBlur={handleOnBlur.bind(this)}
+              handleOnChange={this.handleOnChange.bind(this)}
+              focus={focus}
+            />
+          </div>
+        );
+      }
+    );
+
+    return (
+      <div className={"option-display-block"}>
         {OptionsDisplay}
         {this.newOptionPlaceholder()}
       </div>
-    )
+    );
   }
-
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    optionFetchInProgress: (option) => {dispatch(optionFetchInProgress(option))},
-    optionPreFetchSave: (option) => {dispatch(optionPreFetchSave(option))},
-    beforeCreateNewOption: (option) => {dispatch(beforeCreateNewOption(option))},
-    optionFetchSuccess: (response) => {dispatch(optionFetchSuccess(response))},
-    removeOption: (option) => {dispatch(removeOption(option))},
-    optionFetchFailure: (error, option) => {dispatch(optionFetchFailure(error, option))}
+    optionFetchInProgress: option => {
+      dispatch(optionFetchInProgress(option));
+    },
+    optionPreFetchSave: option => {
+      dispatch(optionPreFetchSave(option));
+    },
+    beforeCreateNewOption: option => {
+      dispatch(beforeCreateNewOption(option));
+    },
+    optionFetchSuccess: response => {
+      dispatch(optionFetchSuccess(response));
+    },
+    removeOption: option => {
+      dispatch(removeOption(option));
+    },
+    optionFetchFailure: (error, option) => {
+      dispatch(optionFetchFailure(error, option));
+    }
   };
 }
 
@@ -223,7 +227,6 @@ export default connect(
   mapDispatchToProps
 )(OptionsContainer);
 
-
 OptionsContainer.propTypes = {
-  question: PropTypes.object.isRequired,
+  question: PropTypes.object.isRequired
 };
