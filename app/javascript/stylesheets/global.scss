@@ -74,6 +74,12 @@ h1 {
   border: none;
 }
 
+.primary-btn-sizing {
+  border-radius: 5px;
+  width: 125px;
+  height: 45px;
+}
+
 .btn--secondary {
   background-color: lighten($secondary, 30);
   color: $secondary;

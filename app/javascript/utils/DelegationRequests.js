@@ -1,4 +1,5 @@
 import { post } from "../fetch/requester";
+import { getUnfinishedAnswersForBuilding, getUnfinishedAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
 
 /**
  * Assigns all questions to the user with the given email address.
@@ -26,6 +27,9 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
     };
     delegations.push(delegation);
   }
+  if (delegations.length === 0) {
+    return;
+  }
   try {
     let response = await post("/api/delegations", { delegations });
     const answersToUpdate = response.data;
@@ -39,4 +43,16 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
     });
     addAnswers(answersToUpdate, buildingId);
   } catch (error) {}
+}
+
+export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers) {
+  let answers = getUnfinishedAnswersForBuilding(buildingId, state);
+
+  await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+}
+
+export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, addAnswers) {
+  let answers = getUnfinishedAnswersForCategoryAndBuilding(categoryId, buildingId, state);
+
+  await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
 }

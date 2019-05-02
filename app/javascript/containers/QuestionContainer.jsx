@@ -8,7 +8,8 @@ import QuestionResultContainer from "./QuestionResultContainer";
 import DelegationContainer from "./DelegationContainer";
 import {
   getAnswerForQuestionAndBuilding,
-  isDelegatedAnswer
+  isDelegatedAnswer,
+  getAnswersForCategoryAndBuilding
 } from "../selectors/answersSelector";
 
 class QuestionContainer extends React.Component {

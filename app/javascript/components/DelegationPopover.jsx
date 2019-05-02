@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Popover, Position } from "@blueprintjs/core";
 
+import { addContact } from "../actions/contacts";
 import { getContacts } from "../selectors/contactsSelector";
 import DelegationNameInputs from "../components/DelegationNameInputs";
 import DelegationContactDropdown from "../components/DelegationContactDropdown";
@@ -14,7 +15,7 @@ class DelegationPopover extends React.Component {
       showNameInputs: false,
       email: "",
       firstName: "",
-      lastName: ""
+      lastName: "",
     };
   }
 
@@ -24,9 +25,11 @@ class DelegationPopover extends React.Component {
 
   selectContact = () => {
     const { email, firstName, lastName } = this.state;
+    const lowercaseEmail = email.toLowerCase();
     this.setState({ popoverOpen: false }, () => {
       this.setState({ email: "" });
-      this.props.onSelectedContact({email, firstName, lastName})
+      this.props.onSelectedContact({email: lowercaseEmail, firstName, lastName})
+      this.props.addContact(firstName, lastName, lowercaseEmail);
     });
   };
 
@@ -48,16 +51,24 @@ class DelegationPopover extends React.Component {
   };
 
   filterContacts() {
-    if (this.state.email) {
+    if (this.state.email && this.state.popoverOpen) {
       const query = this.state.email.toLowerCase();
       return this.props.contacts.filter(
-        contact =>
-          contact.email.toLowerCase().includes(query) ||
-          contact.first_name.toLowerCase().includes(query) ||
-          contact.last_name.toLowerCase().includes(query)
+        contact => {
+          return (contact.email && contact.email.toLowerCase().includes(query)) ||
+          (contact.first_name && contact.first_name.toLowerCase().includes(query)) ||
+          (contact.last_name && contact.last_name.toLowerCase().includes(query))
+        }
+          
       );
     } else {
       return this.props.contacts;
+    }
+  }
+
+  styleIfDisabled() {
+    if (this.props.disabled) {
+      return {"background-color": "#B2B2B2"}
     }
   }
 
@@ -71,8 +82,9 @@ class DelegationPopover extends React.Component {
         }}
         onClose={() => this.setState({ showNameInputs: false })}
         minimal
+        disabled={this.props.disabled}
       >
-        <button className="delegation__popover-btn">{this.props.label}</button>
+        <button className="delegation__popover-btn" style={this.styleIfDisabled()}>{this.props.label}</button>
         <div className="delegation__popover-content">
           {this.state.showNameInputs ? (
             <DelegationNameInputs
@@ -103,9 +115,17 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    addContact: (firsName, lastName, email) => {
+      dispatch(addContact(email, firsName, lastName))
+    }
+  }
+}
+
 DelegationPopover.defaultProps = {
   toggleSelected: () => 0 /* no-op by default */,
   label: "Assign Contact"
 };
 
-export default connect(mapStateToProps)(DelegationPopover);
+export default connect(mapStateToProps, mapDispatchToProps)(DelegationPopover);

@@ -1,9 +1,38 @@
 import {
   getAllActiveQuestions,
   getAllActiveQuestionsForCategory,
-  getAllQuestionsByCategoryId
+  getAllActiveQuestionIdsForCategory,
 } from "./questionsSelector";
 import { getCategoriesForBuilding } from "./categoriesSelector";
+
+export function getUnfinishedAnswersForBuilding(buildingId, state) {
+  let answers = state.buildings[buildingId].answers;
+  answers = Object.keys(answers).filter((id) => {
+    return !isValidAnswer(answers[id]);
+  })
+  .reduce((newAnswers, id) => {
+    newAnswers[id] = answers[id];
+    return newAnswers
+  }, {});
+  return answers
+}
+
+export function getUnfinishedAnswersForCategoryAndBuilding(categoryId, buildingId, state) {
+  const buildingQuestions = state.buildings[buildingId].questions;
+  let categoryQuestions = state.categories[categoryId].questions;
+  categoryQuestions = buildingQuestions.filter((id) => {
+    return categoryQuestions.includes(parseInt(id));
+  })
+  
+  let answers = state.buildings[buildingId].answers;
+  answers = Object.keys(answers).filter((id) => {
+    return !isValidAnswer(answers[id]) && categoryQuestions.includes(id);
+  }).reduce((newAnswers, id) => {
+    newAnswers[id] = answers[id];
+    return newAnswers
+  }, {});
+  return answers;
+}
 
 export function getAnswerForQuestionAndBuilding(questionId, buildingId, state) {
   return state.buildings[buildingId].answers[questionId];

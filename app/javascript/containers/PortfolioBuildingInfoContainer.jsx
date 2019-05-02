@@ -3,15 +3,26 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+import { addAnswers } from "../actions/answers";
+
 import { percentAnswered } from "../selectors/answersSelector";
 import { getNameByBuildingId } from "../selectors/buildingsSelector";
 
 import DelegationPopover from "../components/DelegationPopover";
 import CategoryContainer from "./CategoryContainer";
 
+import { delegateBuildingQuestions } from '../utils/DelegationRequests';
+
+import FAIcon from "../components/FAIcon";
+import linkIcon from "@fortawesome/fontawesome-free-solid/faExternalLinkAlt";
+
 /** Renders the main information for the building, including the name and
  * the table containing the status of each category */
 class PortfolioBuildingInfoContainer extends React.Component {
+  isDisabled() {
+    return this.props.buildingStatus === 1;
+  }
+
   getStatusForBuilding() {
     if (this.props.buildingStatus == 1) {
       return "Completed";
@@ -31,12 +42,12 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   mapCategorytoContainer() {
     let categoriesData = this.props.categoriesData;
-    let pId = this.props.portfolioId;
+    let pId = this.props.portfolioId;    
     return Object.keys(categoriesData).map(id => {
       return (
         <CategoryContainer
           portfolioId={pId}
-          id={id}
+          categoryId={id}
           categoryData={categoriesData[id]}
           key={id}
         />
@@ -46,24 +57,29 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   render() {
     let buildingId = this.props.buildingId;
-
+    let delegateQuestions = this.props.delegateQuestions
+    
     return (
       <div className="building__details" key={this.props.buildingId}>
         <div className="building_info">
           <div>
             <span className="small_header">BUILDING</span>
-            <h2>{this.props.name}</h2>
+            <h2>
+                <Link to={`/buildings/${this.props.buildingId}/`}>{
+                  this.props.name + " "}
+                  <FAIcon iconObj={linkIcon} style={{"position": "relative", "top": "-3px"}}/>
+                </Link>
+            </h2>
             <span className={"dot " + this.getDotStatusForBuilding()} />
             {this.getStatusForBuilding()}
           </div>
           <div>
-            <span className="building__link">
-              <DelegationPopover
-                label="Assign Building"
-                onSelectedContact={contact => contact}
-              />
-            </span>
-            <a href={`download/${buildingId}`}>Export CSV</a>
+            <DelegationPopover
+                  label="Assign Building"
+                  onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
+                  disabled={this.isDisabled()}
+            />
+            <button className="btn btn--neutral" href={`download/${buildingId}`}>Export CSV</button>
           </div>
         </div>
         <br />
@@ -91,12 +107,17 @@ PortfolioBuildingInfoContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     name: getNameByBuildingId(ownProps.buildingId, state),
-    buildingStatus: percentAnswered(ownProps.buildingId, state)
+    buildingStatus: percentAnswered(ownProps.buildingId, state),
+    delegateQuestions: (userDetails, addAnswers) => delegateBuildingQuestions(ownProps.buildingId, userDetails, state, addAnswers)
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    addAnswers: (answers, buildingId) => {
+      dispatch(addAnswers(answers, buildingId));
+    }
+  };
 }
 
 export default connect(
