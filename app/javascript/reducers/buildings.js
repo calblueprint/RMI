@@ -38,7 +38,7 @@ function editBuilding(state, action) {
 
 function removeBuilding(state, action) {
   return Object.keys(state)
-    .filter(id => id !== action.buildingId)
+    .filter(id => parseInt(id) !== action.buildingId)
     .reduce((newState, id) => {
       newState[id] = state[id];
       return newState
