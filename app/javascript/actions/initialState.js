@@ -3,7 +3,7 @@ import * as portfolios from "./portfolios";
 import * as questions from "./questions";
 
 import { LOAD_INITIAL_STATE } from "../constants";
-import { isDelegatedAnswer } from "../selectors/answersSelector";
+import { isPendingDelegatedAnswer } from "../selectors/answersSelector";
 
 export default { buildings, portfolios, questions };
 
@@ -172,7 +172,7 @@ export function loadInitialState(initialState) {
       if (!building.answers) return;
       Object.keys(building.answers).forEach(answerId => {
         const answer = building.answers[answerId];
-        if (isDelegatedAnswer(answer)) {
+        if (isPendingDelegatedAnswer(answer)) {
           contacts.push({
             email: answer.delegation_email,
             first_name: answer.delegation_first_name,

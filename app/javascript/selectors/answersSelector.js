@@ -46,7 +46,9 @@ export function getNumAnswered(questions, buildingId, state) {
 export function isUnansweredQuestion(question, buildingId, state) {
   let answer = state.buildings[buildingId].answers[question.id];
   let isAssigned = state.buildings[buildingId].editable[question.id];
-  return isAssigned && !isValidAnswer(answer);
+  return (
+    isAssigned && !(isValidAnswer(answer) || isDelegatedAnswer(answer, state))
+  );
 }
 
 export function isValidAnswer(answer) {
@@ -63,11 +65,27 @@ export function isValidAnswer(answer) {
 
 export function isDelegatedQuestion(question, buildingId, state) {
   let answer = getAnswerForQuestionAndBuilding(question.id, buildingId, state);
-  return isDelegatedAnswer(answer);
+  return isDelegatedAnswer(answer, state);
 }
 
-export function isDelegatedAnswer(answer) {
+export function isPendingDelegatedAnswer(answer) {
   if (answer && answer.delegation_email) {
+    return true;
+  }
+  return false;
+}
+
+export function isSentDelegatedAnswer(answer, state) {
+  if (answer && state.delegations[answer.id]) {
+    return true;
+  }
+  return false;
+}
+
+export function isDelegatedAnswer(answer, state) {
+  const isPendingDelegation = isPendingDelegatedAnswer(answer);
+  const isSentDelegation = isSentDelegatedAnswer(answer, state);
+  if (isPendingDelegation || isSentDelegation) {
     return true;
   }
   return false;

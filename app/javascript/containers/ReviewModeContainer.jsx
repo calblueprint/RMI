@@ -8,7 +8,10 @@ import React from "react";
 import QuestionContainer from "./QuestionContainer";
 
 import { delegateQuestions } from "../actions/delegations";
-import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
+import {
+  getAnswerForQuestionAndBuilding,
+  isSentDelegatedAnswer
+} from "../selectors/answersSelector";
 import {
   getAllActiveQuestionsForCategory,
   getPotentialDependentQuestions
@@ -70,7 +73,10 @@ class ReviewModeContainer extends React.Component {
 
       allDependentQuestions.map(currentQuestion => {
         var currentAnswer = this.props.getAnswer(currentQuestion.id);
-        if (currentAnswer) {
+        if (
+          currentAnswer &&
+          !isSentDelegatedAnswer(currentAnswer, this.props.fullStore)
+        ) {
           answers[currentQuestion.id] = currentAnswer;
         }
       });
@@ -155,7 +161,8 @@ function mapStateToProps(state, ownProps) {
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: questionId =>
       getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
-    categories: getCategoriesForBuilding(ownProps.building.id, state)
+    categories: getCategoriesForBuilding(ownProps.building.id, state),
+    fullStore: state
   };
 }
 

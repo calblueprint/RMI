@@ -23,7 +23,6 @@ import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContain
 import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
 
 import { post } from "../fetch/requester";
-import { delegateQuestions } from "../utils/DelegationRequests";
 import Logo from "../images/rmi-logo.png";
 
 class PortfolioContainer extends React.Component {

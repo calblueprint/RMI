@@ -93,7 +93,7 @@ class DelegationContainer extends React.Component {
     if (
       !this.props.canEdit ||
       (isValidAnswer(this.props.answer) &&
-        !isDelegatedAnswer(this.props.answer) &&
+        !isDelegatedAnswer(this.props.answer, this.props.fullStore) &&
         this.props.mode === "delegation")
     ) {
       return this.renderAnswered();
@@ -199,7 +199,8 @@ function mapStateToProps(state, ownProps) {
       state
     ),
     userType: state.userType,
-    user: state.user
+    user: state.user,
+    fullStore: state
   };
 }
 

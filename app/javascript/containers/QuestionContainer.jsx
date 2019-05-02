@@ -16,7 +16,8 @@ class QuestionContainer extends React.Component {
     super(props);
     this.state = {
       isDelegating:
-        this.props.mode === "delegation" || isDelegatedAnswer(this.props.answer)
+        this.props.mode === "delegation" ||
+        isDelegatedAnswer(this.props.answer, this.props.fullStore)
     };
   }
 
@@ -114,7 +115,7 @@ class QuestionContainer extends React.Component {
     if (
       this.props.mode === "delegation" ||
       this.state.isDelegating ||
-      isDelegatedAnswer(this.props.answer)
+      isDelegatedAnswer(this.props.answer, this.props.fullStore)
     ) {
       return this.renderDelegationMode();
     }
@@ -128,7 +129,8 @@ function mapStateToProps(state, ownProps) {
       ownProps.id,
       ownProps.building_id,
       state
-    )
+    ),
+    fullStore: state
   };
 }
 

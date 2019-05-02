@@ -82,7 +82,6 @@ export async function delegateQuestions(answers, buildingId, dispatch) {
       };
       delegationRequests.push(delegation);
     }
-    console.log(delegationRequests);
     let response = await post("/api/delegations", {
       delegations: delegationRequests
     });
