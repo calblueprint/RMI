@@ -5,12 +5,10 @@ import {
 } from "./questionsSelector";
 import { getCategoriesForBuilding } from "./categoriesSelector";
 
-export function getAnswersForBuilding(buildingId, state) {
+export function getUnfinishedAnswersForBuilding(buildingId, state) {
   let answers = state.buildings[buildingId].answers;
   answers = Object.keys(answers).filter((id) => {
-    let email = answers[id].delegation_email;
-    let text = answers[id].text;
-    return !email && !text;
+    return !isValidAnswer(answers[id]);
   })
   .reduce((newAnswers, id) => {
     newAnswers[id] = answers[id];
@@ -19,7 +17,7 @@ export function getAnswersForBuilding(buildingId, state) {
   return answers
 }
 
-export function getAnswersForCategoryAndBuilding(categoryId, buildingId, state) {
+export function getUnfinishedAnswersForCategoryAndBuilding(categoryId, buildingId, state) {
   const buildingQuestions = state.buildings[buildingId].questions;
   let categoryQuestions = state.categories[categoryId].questions;
   categoryQuestions = buildingQuestions.filter((id) => {
@@ -28,9 +26,7 @@ export function getAnswersForCategoryAndBuilding(categoryId, buildingId, state) 
   
   let answers = state.buildings[buildingId].answers;
   answers = Object.keys(answers).filter((id) => {
-    let email = answers[id].delegation_email;
-    let text = answers[id].text;
-    return !email && !text && categoryQuestions.includes(id);
+    return !isValidAnswer(answers[id]) && categoryQuestions.includes(id);
   }).reduce((newAnswers, id) => {
     newAnswers[id] = answers[id];
     return newAnswers

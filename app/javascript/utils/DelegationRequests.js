@@ -1,5 +1,5 @@
 import { post } from "../fetch/requester";
-import { getAnswersForBuilding, getAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
+import { getUnfinishedAnswersForBuilding, getUnfinishedAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
 
 /**
  * Assigns all questions to the user with the given email address.
@@ -19,15 +19,16 @@ import { getAnswersForBuilding, getAnswersForCategoryAndBuilding } from "../sele
 export async function delegateQuestions(answers, buildingId, email, firstName, lastName, addAnswers) {
   let delegations = [];
   for (const answer of Object.values(answers)) {
-    console.log("EMAIL: - " + email);
     let delegation = {
       email: email,
       first_name: firstName,
       last_name: lastName,
       answer_id: answer.id
     };
-    console.log(delegation);
     delegations.push(delegation);
+  }
+  if (delegations.length === 0) {
+    return;
   }
   try {
     let response = await post("/api/delegations", { delegations });
@@ -44,16 +45,14 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
   } catch (error) {}
 }
 
-export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers, callbackFn=null) {
-  let answers = getAnswersForBuilding(buildingId, state);
+export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers) {
+  let answers = getUnfinishedAnswersForBuilding(buildingId, state);
 
   await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
-  callbackFn ? callbackFn() : null;
 }
 
-export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, addAnswers, callbackFn=null) {
-  let answers = getAnswersForCategoryAndBuilding(categoryId, buildingId, state);
+export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, addAnswers) {
+  let answers = getUnfinishedAnswersForCategoryAndBuilding(categoryId, buildingId, state);
 
   await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
-  callbackFn ? callbackFn() : null;
 }
