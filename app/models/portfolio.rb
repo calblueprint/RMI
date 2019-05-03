@@ -10,7 +10,7 @@
 #
 
 class Portfolio < ApplicationRecord
-  has_many :asset_manager, optional: true
+  has_many :asset_managers
   has_many :buildings
 
   validates :name, presence: true, uniqueness: true
