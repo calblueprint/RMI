@@ -26,19 +26,26 @@ export default class MenuBar extends React.Component {
     }
   }
 
-  getBackButton() {
-    if (matchPath(this.props.location.pathname, '/buildings/:id') ||
-    matchPath(this.props.location.pathname, '/building_types')){
-
-    }
-  }
+  // getBackButton() {
+  //   if (matchPath(this.props.location.pathname, '/buildings/:id') ||
+  //   matchPath(this.props.location.pathname, '/building_types/:id')){
+  //     return (
+  //       <Link className="btn--neutral menulink" to={"/"+this.getHomeRoute()}>
+  //         Save and return Home
+  //       </Link>)
+  //   } else {
+  //       <Link className="btn--neutral menulink" to={"/"+this.getHomeRoute()}>
+  //         homeicon
+  //       </Link>)
+  //   }
+  // }
 
   render() {
     return (
     <div className="menu">
       {/*getBackButton()*/}
       <Link className="btn--neutral menulink" to={"/"+this.getHomeRoute()}>
-        Save and return Home
+        poop
       </Link>
       <button onClick={this.handleLogout} className="btn--neutral menulink logout-btn">
         Logout
