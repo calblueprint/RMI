@@ -79,7 +79,10 @@ module ApplicationHelper
   def rmi_user_initial_state
     {
       user: current_rmi_user,
-      portfolios: Portfolio.all,
+      portfolios: ActiveModel::Serializer::CollectionSerializer.new(
+        Portfolio.all, each_serializer: PortfolioSerializer,
+        scope: current_user.get_scope(current_user)
+      ),
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         Building.all, each_serializer: BuildingSerializer,
         scope: current_user.get_scope(current_user)
