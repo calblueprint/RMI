@@ -20,6 +20,7 @@ import { getUserType } from "../selectors/usersSelector";
 import Modal from "../components/Modal.jsx";
 import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
 import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
+import PortfolioOverviewContainer from "./PortfolioOverviewContainer";
 
 import { post } from "../fetch/requester";
 import  validateEmail  from "../utils/validateEmail";
@@ -205,6 +206,9 @@ class PortfolioContainer extends React.Component {
               );
             })}
           </div>
+          <PortfolioOverviewContainer
+            portfolio_id={portfolioId}
+          />
           <PortfolioBuildingContainer
             selectedBuildingId={selectedBuildingId}
             selectedCategoryId={selectedCategoryId}

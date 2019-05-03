@@ -6,15 +6,17 @@ import { get } from "../fetch/requester";
 import { connect } from "react-redux";
 import { questionDataPerCategory } from "../selectors/answersSelector";
  import DelegationContactCard from "../components/DelegationContactCard";
+ import DelegationPopover from "../components/DelegationPopover";
+ import getAssetManagerEmails from "../selectors/portfoliosSelector";
 
 /* Renders the two main containers for the portfolio view according to the selected building
 and selected category and handles the GET request for the login times needed to see the last time
 another user was active.
 */
-class PortfolioBuildingContainer extends React.Component {
+class PortfolioOverviewContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loginUserData: null };
+    this.state = { };
   }
 
 
@@ -50,15 +52,15 @@ class PortfolioBuildingContainer extends React.Component {
   }
 }
 
-PortfolioBuildingContainer.propTypes = {
+PortfolioOverviewContainer.propTypes = {
   portfolio_id: PropTypes.string.isRequired,
-  buildings: PropTypes.array.isRequired,
 
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    assetManagerEmails: questionDataPerCategory(ownProps.portfolio_id, state),
+    assetManagerEmails: ["test1@test.com", "test2@test.com"],
+    // assetManagerEmails: getAssetManagerEmails(ownProps.portfolio_id, state),
   };
 }
 

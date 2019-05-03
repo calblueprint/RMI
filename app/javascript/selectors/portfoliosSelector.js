@@ -9,3 +9,7 @@ export function getSelectedBuildingId(portfolioId, state) {
 export function getSelectedCategoryId(portfolioId, state) {
   return state.portfolios[portfolioId].selected_category
 }
+
+export function getAssetManagerEmails(portfolioId, state) {
+  return state.portfolios[portfolioId].asset_manager_emails
+}
