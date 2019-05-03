@@ -1,9 +1,5 @@
 import { post } from "../fetch/requester";
-<<<<<<< HEAD
-import { getAnswersForBuilding, getAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
-=======
 import { getUnfinishedAnswersForBuilding, getUnfinishedAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
->>>>>>> 01a492a1cef03604f1f4b2424ed57fa97ac19696
 
 /**
  * Assigns all questions to the user with the given email address.
@@ -51,20 +47,6 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
   } catch (error) {}
 }
 
-<<<<<<< HEAD
-export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers, callbackFn=null) {
-  let answers = getAnswersForBuilding(buildingId, state);
-
-  await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
-  callbackFn ? callbackFn() : null;
-}
-
-export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, addAnswers, callbackFn=null) {
-  let answers = getAnswersForCategoryAndBuilding(categoryId, buildingId, state);
-
-  await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
-  callbackFn ? callbackFn() : null;
-=======
 export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers) {
   let answers = getUnfinishedAnswersForBuilding(buildingId, state);
 
@@ -75,5 +57,4 @@ export async function delegateCategoryQuestions(categoryId, buildingId, userDeta
   let answers = getUnfinishedAnswersForCategoryAndBuilding(categoryId, buildingId, state);
 
   await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
->>>>>>> 01a492a1cef03604f1f4b2424ed57fa97ac19696
 }

@@ -15,6 +15,10 @@
   border-left: 3px solid $secondary;
   transition: transform 0.5s;
   transition: all 0.5s;
+
+  div {
+    padding-top: 10px;
+  }
 }
 
 .question > p {
@@ -28,7 +32,7 @@
 }
 
 .question--selected {
-  border-left: 3px solid $primary;
+  // border-left: 3px solid $primary;
   transform: translateX(5px);
 }
 
@@ -107,6 +111,7 @@ input:focus,
 
 .input__text textarea {
   width: 100%;  
+  max-width: 100%;
 }
 
 .input__text--disabled textarea {
@@ -128,7 +133,7 @@ input:focus,
 
   span {
     outline: none;
-    // min-width: 50px;
+    width: 100%;
     float: left;
     display: inline-block;
     margin-right: 5px;

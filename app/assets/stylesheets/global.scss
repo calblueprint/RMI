@@ -1,10 +1,11 @@
 $icon-font-path: "@blueprintjs/core/resources/icons";
 
-$primary: #216dff;
+$primary: #4C85FF;
 $secondary: #969696;
-$hover: #779ADF;
+$hover: rgba($primary, 0.6);
 $backgroundGray: #f4f4f4;
 $titleGrey: #494949;
+$tableGray: #d8d8d8;
 $inputBorder: 2px solid $secondary;
 $inputLabel: #A1A0A0;
 $inputFocused: #216DFF;
