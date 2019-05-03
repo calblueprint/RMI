@@ -100,7 +100,7 @@ const formatState = {
   },
   portfolios: function(portfolios) {
     return toObjectById(
-      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id"])
+      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id", "asset_manager_emails"])
     );
   },
   contacts: function(contacts) {

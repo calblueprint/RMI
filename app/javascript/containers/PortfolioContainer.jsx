@@ -188,6 +188,9 @@ class PortfolioContainer extends React.Component {
         </div>
         <div className="building__container">
           <div className="building__types">
+          <button className="btn btn--primary" onClick={() => {}}>
+          Portfolio Overview
+        </button>
             {this.addBuildingButton()}
             {Object.keys(buildingByType).map((typeId, i) => {
               return (
