@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import { getCategoryByBuildingTypeId } from "../../selectors/categoriesSelector";
 import { getBuildingType } from "../../selectors/buildingTypesSelector";
 import PropTypes from "prop-types";
@@ -15,6 +16,7 @@ import {
   categorySetNew
 } from "../../actions/categories";
 
+import SidebarCategory from "../../components/QuestionnaireForm/SidebarCategoryRow";
 import CategoryDisplay from "../../components/QuestionnaireForm/CategoryDisplay";
 
 class QuestionnaireFormContainer extends React.Component {
@@ -67,17 +69,12 @@ class QuestionnaireFormContainer extends React.Component {
           <h1>{this.props.buildingType.name}</h1>
           <div className="sidebar-category-container">
             {this.props.categoryList.map(category => (
-              <div
+              <SidebarCategory
                 key={category.id}
-                className={`sidebar-category-row ${
-                  category.id === currentCategoryId
-                    ? "sidebar-category-row-selected"
-                    : ""
-                }`}
-                onClick={e => this.toggleCategory(category)}
-              >
-                {category.name}
-              </div>
+                selected={category.id === currentCategoryId}
+                onSelectCategory={c => this.toggleCategory(c)}
+                category={category}
+              />
             ))}
           </div>
           <button onClick={e => this.onNewCategory()}>New Category</button>

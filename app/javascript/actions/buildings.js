@@ -1,5 +1,6 @@
 import {
   ADD_BUILDING,
+  ADD_FINISHED_BUILDING,
   EDIT_BUILDING,
   REMOVE_BUILDING,
   CREATE_BUILDING,
@@ -27,10 +28,10 @@ export function editBuilding(id, updatedBuilding) {
   };
 }
 
-export function removeBuilding(id, dispatch) {
+export function removeBuilding(buildingId) {
   return {
     type: REMOVE_BUILDING,
-    buildingId: id
+    buildingId: buildingId
   };
 }
 

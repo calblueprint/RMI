@@ -86,17 +86,6 @@ class CategoryQuestionsContainer extends React.Component {
     return (
       <div className="questionnaire-form-questions-container">
         <div>
-          <CategoryDisplay
-            category={this.props.category}
-            errors={this.props.category.error}
-            select={select}
-            handleOnBlur={this.handleOnBlur.bind(this)}
-            handleOnChange={this.handleOnChange.bind(this)}
-            key={this.props.category.id}
-          />
-        </div>
-        <h2>Questions for {this.props.category.name}</h2>
-        <div>
           {questions_display}
           <CreateQuestionButton
             tempQuestion={this.newTempQuestion()}

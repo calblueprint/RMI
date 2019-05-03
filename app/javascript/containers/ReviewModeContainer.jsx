@@ -6,10 +6,13 @@
 import React from "react";
 
 import QuestionContainer from "./QuestionContainer";
+import * as BuildingActions from "../actions/buildings";
 
 import { getAnswerForQuestionAndBuilding } from "../selectors/answersSelector";
 import { getAllActiveQuestionsForCategory, getPotentialDependentQuestions } from "../selectors/questionsSelector";
+import { removeBuilding } from "../actions/buildings";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { getQuestionsByBuilding } from "../selectors/questionsSelector";
 import { getQuestionsByCategory } from "../utils/QuestionsFilter";
 import { getCategoriesForBuilding } from "../selectors/categoriesSelector";
@@ -29,44 +32,60 @@ class ReviewModeContainer extends React.Component {
   // should synchronously submit delegations since user expects success
   async submitDelegation() {
     let delegations = this.getDelegations();
-    if (delegations.length == 0) {
-      this.setState({
-        status_string: "There were no delegations to be saved!"
-      });
-    } else {
-      this.setState({ status_string: "Saving delegations!" });
-      try {
-        let response = await post("/api/delegations", { delegations });
-        this.setState({ status_string: "Delegations saved." });
-      } catch (error) {
-        this.setState({
-          status_string: "Saving delegations failed. Try again?"
+    let new_delegations = delegations["new_delegations"];
+    let delegations_to_update = delegations["answered_question_ids"];
+
+
+    try {
+      if (new_delegations.length !== 0) {
+        this.setState({ status_string: "Saving delegations!" });
+        let response = await post("/api/delegations", {
+          delegations: new_delegations
         });
+        this.setState({ status_string: "New Delegations saved." });
       }
+      if (delegations_to_update.length !== 0) {
+        await patch("/api/delegations/set_completed", {
+          delegations: delegations_to_update
+        });
+        this.setState({ status_string: "Completed answers saved." });
+      }
+
+      //TODO 4/23: Need to fix root routing so we don't have to do conditional routing here
+      this.props.history.push(`/`);
+      this.props.removeBuilding(this.props.building.id);
+
+      //TODO: toastr success notification
+    } catch (error) {
+      this.setState({
+        status_string: "Saving delegations failed. Try again?"
+      });
+      //TODO: toastr failure
     }
   }
 
   getDelegations() {
-    var parentQuestionsForDelegations = this.props.questions.filter(
-      question => {
-        answer = this.props.getAnswer(question.id);
-        return answer && !answer.text && answer.delegation_email;
+    let parentQuestionsForDelegations = [];
+    this.props.questions.forEach(question => {
+      let answer = this.props.getAnswer(question.id);
+      if (answer && !answer.text && answer.delegation_email) {
+        parentQuestionsForDelegations.push(question);
       }
-    );
+    });
 
-    var delegations = [];
-    for (var i = 0; i < parentQuestionsForDelegations.length; i++) {
-      var question = parentQuestionsForDelegations[i];
-      var answer = this.props.getAnswer(question.id);
-      var allDependentQuestions = this.props.getPotentialDependentQuestions(
+    let delegations = [];
+    for (let i = 0; i < parentQuestionsForDelegations.length; i++) {
+      let question = parentQuestionsForDelegations[i];
+      let answer = this.props.getAnswer(question.id);
+      let allDependentQuestions = this.props.getPotentialDependentQuestions(
         question
       );
       allDependentQuestions.push(question);
 
       allDependentQuestions.map(currentQuestion => {
-        var currentAnswer = this.props.getAnswer(currentQuestion.id);
+        let currentAnswer = this.props.getAnswer(currentQuestion.id);
         if (currentAnswer) {
-          var delegation = {
+          let delegation = {
             email: answer.delegation_email,
             first_name: answer.delegation_first_name,
             last_name: answer.delegation_last_name,
@@ -76,7 +95,21 @@ class ReviewModeContainer extends React.Component {
         }
       });
     }
-    return delegations;
+
+    const delegationIds = delegations.map(delegation => delegation.answer_id);
+
+    // List of ids for answers that were filled out by the user but not delegated.
+    // These still need to have their delegations marked as completed in the backend
+    const answeredQuestionIds = this.props.questions
+      .filter(question => this.props.editableMap[question.id])
+      .map(question => this.props.getAnswer(question.id))
+      .filter(answer => !delegationIds.includes(answer.id))
+      .map(answer => { return {answer_id: answer.id} });
+
+    return {
+      new_delegations: delegations,
+      answered_question_ids: answeredQuestionIds
+    };
   }
 
   mapCategorytoQuestions(categoryId, building) {
@@ -157,7 +190,12 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    buildingActions: bindActionCreators(BuildingActions, dispatch),
+    removeBuilding: buildingId => {
+      dispatch(removeBuilding(buildingId));
+    }
+  };
 }
 
 export default connect(

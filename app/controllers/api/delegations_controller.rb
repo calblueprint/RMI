@@ -51,9 +51,11 @@ class Api::DelegationsController < ApplicationController
         authorize! :create, delegation
         delegation.save!
 
-        # Once delegation is done, mark all other delegations on same answer_id delegated
+        # Once delegation is done, mark all other delegations on same answer_id delegated (or completed)
         Delegation.where(answer_id: delegation_params[:answer_id], status: :active).each do |old_delegation|
-          if old_delegation != delegation
+          if old_delegation.building_operator == current_user
+            old_delegation.update(status: :completed)
+          elsif old_delegation != delegation
             old_delegation.update(status: :delegated)
           end
         end
@@ -71,6 +73,22 @@ class Api::DelegationsController < ApplicationController
     end
   rescue => e
     render_json_message(:forbidden, errors: e.message)
+  end
+
+  def set_completed
+    completed_delegations = {}
+    delegations_params.each do |delegation_param|
+      a = Answer.find(delegation_param[:answer_id])
+      a.delegations.each do |delegation|
+        if delegation.status == "active"
+          delegation.update(status: :completed)
+          completed_delegations[a.id] = delegation
+        end
+      end
+    end
+    render_json_message(:ok, data: completed_delegations, message: 'Delegations updated')
+    rescue => e
+      render_json_message(:forbidden, errors: e.message)
   end
 
   # access to delegation is done from endpoints related to questions

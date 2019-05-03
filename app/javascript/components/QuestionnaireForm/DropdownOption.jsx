@@ -1,11 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import InputValidation from '../InputValidation';
-import ContentEditable from 'react-sane-contenteditable';
-import randomColor from 'randomcolor';
+import React from "react";
+import PropTypes from "prop-types";
+import InputValidation from "../InputValidation";
+import ContentEditable from "react-sane-contenteditable";
 
 class DropdownOption extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
     if (this.props.focus) {
       this.optionInput.focus();
     }
@@ -17,7 +16,7 @@ class DropdownOption extends React.Component {
    * @param { string } text - the text of the dropdown option
    */
   handleOnBlur(text) {
-    this.props.handleOnBlur(this.props.option.id, { text })
+    this.props.handleOnBlur(this.props.option.id, { text });
   }
 
   /**
@@ -25,39 +24,34 @@ class DropdownOption extends React.Component {
    * @param { string } text - the text of the dropdown option
    */
   onChange(text) {
-    this.props.handleOnChange(this.props.option.id, { text })
+    this.props.handleOnChange(this.props.option.id, { text });
   }
 
-  render () {
-    return(
-      <div
-        className={'option-display-block__counter'}
-      >
-        <div
-          className={'dropdown-input'}
-        >
+  render() {
+    return (
+      <div className={"option-display-block__counter"}>
+        <div className={"dropdown-input"}>
           <input
-            // style={{backgroundColor: color}}
             type="text"
             defaultValue={this.props.option.text}
-            onBlur={(e) => this.handleOnBlur(e.target.value)}
-            onChange={(e) => this.onChange(e.target.value)}
+            onBlur={e => this.handleOnBlur(e.target.value)}
+            onChange={e => this.onChange(e.target.value)}
             placeholder={"New Dropdown Option"}
-            ref={(input) => { this.optionInput = input; }}
+            ref={input => {
+              this.optionInput = input;
+            }}
           />
         </div>
 
         <div>
-          <InputValidation
-            errors={this.props.option.error}
-          />
+          <InputValidation errors={this.props.option.error} />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default DropdownOption
+export default DropdownOption;
 
 DropdownOption.propTypes = {
   option: PropTypes.object.isRequired,

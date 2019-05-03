@@ -5,7 +5,9 @@
     <%= csrf_meta_tags %>
 
     <%= javascript_include_tag('application.js') %>
-    <%= stylesheet_link_tag    'application', media: 'all'  %>
+    <% if controller_name != "application" %>
+      <%= stylesheet_link_tag    'application', media: 'all'  %>
+    <% end %>
     <script>
       window.INITIAL_STATE = <%= raw @state.to_json %>
     </script>

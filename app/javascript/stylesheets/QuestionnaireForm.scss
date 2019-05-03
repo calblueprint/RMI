@@ -21,7 +21,6 @@ input {
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  // padding: 0 20px;
 }
 
 .questionnaire-form-spacer {
@@ -32,9 +31,6 @@ input {
   position: fixed;
   overflow: scroll;
   padding: 0 10px;
-
-  h1 {
-  }
 
   h3 {
     text-transform: uppercase;
@@ -56,21 +52,36 @@ input {
   padding: 10px 10px;
   font-size: 11pt;
   transition: 0.2s ease all;
-  // margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .edit-btn {
+    display: none;
+    color: $secondary;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .edit-btn > i:hover {
+    color: black;
+  }
 }
 
 .sidebar-category-row:hover {
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 5px;
   cursor: pointer;
+
+  .edit-btn {
+    display: inline;
+  }
 }
 
 .sidebar-category-row-selected {
-  // border-radius: 5px;
-  border-left: 5px solid $primary;
-  background-color: rgba($primary, 0.1);
+  border-left: 5px solid $vibrantPrimary;
+  background-color: rgba($vibrantPrimary, 0.1);
   font-weight: 700;
-  // color: white;
 }
 
 .sidebar-category-row-selected:hover {
@@ -81,55 +92,103 @@ input {
 
 .questionnaire-form-questions-container {
   flex: 4;
-  padding-left: 20px;
+  padding: 0 20px;
 }
 
 .mega-question-block {
-  border: $border-primary;
+  // border: $inputBorder;
   border-radius: 5px;
-  background-color: $background-primary;
+  // background-color: $background-primary;
   margin-top: 10px;
 }
 
 .question_block {
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  // padding: 5px;
 
   .question_block__param {
+    margin-left: 5px;
     font-size: 10pt;
     font-family: Consolas;
     width: auto;
-    margin-bottom: 5px;
+    padding-top: 6px; /* Small display hack to make them appear on same line: +1 px from 5 default */
     background-color: transparent;
     min-width: 150px;
     width: 20%;
     content-box: border-box;
     border: 2px solid transparent;
+    transition: none;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .question_block__param:hover {
+    border: $inputBorder;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
   }
 
   .question_block__param:focus {
-    border: $inputBorder;
-    border-radius: 5px;
+    border: $borderPrimary;
+    transition: 0.2s ease all;
+    // border-radius: 5px;
+    opacity: 1;
     background-color: white;
   }
+}
+
+.question_block__meta {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 0 10px;
+
+  > i {
+    margin-right: 5px;
+    cursor: pointer;
+    color: $titleGray;
+  }
+}
+
+.question_block__meta-label {
+  font-size: 8pt;
+  color: $titleGray;
+}
+
+.question_block__meta-label,
+.question_block__options-label {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.question_block__options-label {
+  font-size: 10pt;
+  margin-top: 10px;
+  color: $secondary;
 }
 
 .question_block__body {
   display: flex;
   flex-direction: row;
   content-box: border-box;
-  border: 2px solid transparent;
-  border-radius: 5px;
+  background-color: #f9f9f9;
+  // border: 2px solid transparent;
+  // border-radius: 5px;
 }
 
 .question_block__body__main {
-  background-color: white;
+  // background-color: white;
   border: 1px solid white;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  // border-top-left-radius: 5px;
+  // border-bottom-left-radius: 5px;
   flex: 4;
-  padding: 10px;
+  padding: 20px;
+
+  > span {
+    font-size: 12pt;
+  }
 
   textarea {
     width: 100%;
@@ -155,7 +214,7 @@ input {
   border-bottom-right-radius: 5px;
 
   button {
-    border: $border-primary;
+    border: $borderPrimary;
     border-radius: 2px;
     background-color: transparent;
     color: $primary;
@@ -166,8 +225,8 @@ input {
 }
 
 .dep-q-block {
-  margin-left: 40px;
-  background-color: $backgroundGray;
+  margin-left: 0px;
+  // background-color: $backgroundGray;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 10px;
@@ -180,8 +239,9 @@ input {
 }
 
 .dep-q-block__selected {
-  border-left: 3px solid $primary;
-  padding: 20px;
+  border-left: 2px solid $secondary;
+  margin: 10px 0;
+  padding-left: 10px;
 }
 
 .dep-q-block__option-display {
@@ -199,17 +259,25 @@ input {
   .dep-option-display-block {
     display: flex;
     flex-direction: row;
+    margin-left: -5px;
+
+    > i {
+      margin-right: 5px;
+      color: $secondary;
+    }
+
     * {
       align-self: center;
     }
   }
 
   .selected-option {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 7px;
-    padding-right: 7px;
-    background-color: $background-primary;
+    font-weight: 700;
+    // padding-top: 2px;
+    // padding-bottom: 2px;
+    // padding-left: 7px;
+    // padding-right: 7px;
+    // background-color: $background-primary;
     // border: 1px solid $primary;
     border-radius: 20px;
     margin-left: 5px;
@@ -219,20 +287,24 @@ input {
 .option-display-block {
   counter-reset: section;
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
-  padding-left: 5px;
+  margin-top: 5px;
 
   .option-display-block__counter {
     display: flex;
     flex-direction: row;
   }
 
-  .option-display-block__counter:before {
-    counter-increment: section;
-    content: counter(section);
-    font-size: 14px;
-    margin-right: 10px;
+  .btn--neutral {
+    font-size: 10pt;
+    height: 35px;
+    padding: 0;
+  }
+
+  .btn--neutral::after {
+    width: 100%;
   }
 
   button {
@@ -250,36 +322,13 @@ input {
 .dropdown-input {
   flex: 1;
   input {
-    border: 0;
-    border-radius: 0px;
-    padding: 0;
+    font-size: 10pt;
     display: inline-block;
     width: auto;
+    margin-bottom: 0;
+    min-width: 50%;
   }
-  border-bottom: 1px solid white;
-
-  input:focus {
-    border: 0;
-    background-color: white !important;
-    outline: 0;
-  }
-}
-
-.dropdown-input:after {
-  display: block;
-  content: "";
-  border-bottom: solid 2px $primary;
-  transform: scaleX(0);
-  transition: transform 250ms ease-in-out;
-}
-
-.dropdown-input:focus-within:after {
-  transform: scaleX(1);
-  transform-origin: 0% 50%;
-}
-
-.dropdown-input:hover {
-  border-bottom: 1px solid lightgray;
+  // border-bottom: 1px solid white;
 }
 
 .range-input {
