@@ -36,6 +36,29 @@ class Api::PortfoliosController < ApplicationController
     end
   end
 
+  def add_asset_manager
+    portfolio = Portfolio.find(params[:id])
+    asset_manager = AssetManager.find_by(params[:email])
+    if !asset_manager.nil?
+      asset_manager.portfolio = portfolio
+    else
+      asset_manager = AssetManager.new(
+        email: params[:email],
+        first_name: params[:first_name],
+        last_name: params[:last_name],
+        phone: "0000000000", # use this filler by default, should be replaced during first login
+        password: (0...15).map { (65 + rand(26)).chr }.join
+        )
+      asset_manager.portfolio = portfolio
+    end
+    if asset_manager.save
+      AssetManagerMailer.new_user_delegated_email(asset_manager, current_user).deliver_now
+      render_json_message(:ok, message: 'Asset manager added to portfolio', data: portfolio)
+    else
+      render_json_message(:forbidden, data: portfolio, errors: portfolio.errors.full_messages)
+    end
+  end
+
   private
 
   def portfolio_params
@@ -43,7 +66,10 @@ class Api::PortfoliosController < ApplicationController
           .permit(
               :name,
               :asset_manager,
-              :buildings
+              :buildings,
+              :email,
+              :first_name,
+              :last_name
           )
   end
 end
