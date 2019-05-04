@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { questionDataPerCategory } from "../selectors/answersSelector";
 import DelegationContactCard from "../components/DelegationContactCard";
 import DelegationPopover from "../components/DelegationPopover";
-import getAssetManagerEmails from "../selectors/portfoliosSelector";
+import { getAssetManagerEmails, getPortfolioName } from "../selectors/portfoliosSelector";
 import { addAssetManager } from "../actions/portfolios";
 
 
@@ -44,7 +44,7 @@ class PortfolioOverviewContainer extends React.Component {
           <div>
             <span className="small_header">Portfolio</span>
             <h2>
-              PORTFOLIO
+              {this.props.portfolioName}
             </h2>
           </div>
           <div>
@@ -56,6 +56,7 @@ class PortfolioOverviewContainer extends React.Component {
           </div>
         </div>
         <br />
+        <span className="small_header">Asset Managers</span>
         {this.props.assetManagerEmails.map((email) => {
           return (
             <div>
@@ -75,6 +76,7 @@ PortfolioOverviewContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
+    portfolioName: getPortfolioName(ownProps.portfolio_id, state),
     assetManagerEmails: ["test1@test.com", "test2@test.com"]
     // assetManagerEmails: getAssetManagerEmails(ownProps.portfolio_id, state),
   };
