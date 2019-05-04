@@ -21,6 +21,20 @@ class PortfolioOverviewContainer extends React.Component {
     this.state = { };
   }
 
+  async assignAssetManager(assetManager, portfolio) {
+    try {
+      let response = await post("/api/portfolios/add_asset_manager", {
+        id: portfolio.id,
+        first_name: assetManager.first_name,
+        last_name: assetManager.last_name,
+        email: assetManager.email
+      });
+      const updatedPortfolio = response.data;
+      this.props.addAssetManger(assetManager, portfolio.id);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   render() {
 
@@ -36,7 +50,7 @@ class PortfolioOverviewContainer extends React.Component {
           <div>
             <DelegationPopover
                   label="Add Asset Manager"
-                  onSelectedContact={(contact) => this.props.addAssetManager(contact, this.props.portfolio_id)}
+                  onSelectedContact={(contact) => this.assignAssetManager(contact, this.props.portfolio_id)}
                   // disabled={this.isDisabled()}
             />
           </div>
