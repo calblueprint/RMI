@@ -6,7 +6,8 @@ import {
   FETCH_SETTINGS,
   ADD_PORTFOLIO,
   SET_ACTIVE_CATEGORY,
-  SET_ACTIVE_BUILDING
+  SET_ACTIVE_BUILDING,
+  ADD_ASSET_MANAGER
 } from "../constants";
 
 export async function fetchPortfolios(dispatch) {
@@ -53,5 +54,13 @@ export function setActiveCategory(categoryId, portfolioId) {
     type: SET_ACTIVE_CATEGORY,
     portfolioId,
     categoryId
+  };
+}
+
+export function addAssetManager(email, portfolioId) {
+  return {
+    type: ADD_ASSET_MANAGER,
+    email,
+    portfolioId
   };
 }

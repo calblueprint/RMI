@@ -4,7 +4,8 @@ import {
   FETCH_FAILURE,
   ADD_PORTFOLIO,
   SET_ACTIVE_BUILDING,
-  SET_ACTIVE_CATEGORY
+  SET_ACTIVE_CATEGORY,
+  ADD_ASSET_MANAGER
 } from "../constants";
 
 function fetchPortfolios(state, action) {
@@ -65,6 +66,18 @@ function setActiveCategory(state, action) {
     [pId]: {
       ...state[pId],
       selected_category: viewedCategoryId
+    }
+  };
+}
+
+function addAssetManager(state, action) {
+  const pId = action.portfolioId;
+  const email = action.email
+  return {
+    ...state,
+    [pId]: {
+      ...state,
+      asset_manager_emails: [...state.asset_manager_emails, action.email]
     }
   };
 }
