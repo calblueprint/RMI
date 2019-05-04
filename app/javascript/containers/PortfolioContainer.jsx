@@ -185,6 +185,7 @@ class PortfolioContainer extends React.Component {
             <span className="small_header">PORTFOLIO</span>
             <h2>{this.props.portfolioName}</h2>
           </div>
+          <a className="btn btn--neutral" href={`download/${portfolioId}`} target="blank">Export CSV</a>
         </div>
         <div className="building__container">
           <div className="building__types">

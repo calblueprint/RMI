@@ -79,7 +79,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
                   onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
                   disabled={this.isDisabled()}
             />
-            <button className="btn btn--neutral" href={`download/${buildingId}`}>Export CSV</button>
+            
           </div>
         </div>
         <br />
