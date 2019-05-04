@@ -14,7 +14,7 @@ class RMIUserRoutes extends React.Component {
     return (
       <div>
         <Route
-          path="/:entity?/:id?/:mode?/:cId?"
+          path="/buildings/:id?/:mode?/:cId?"
           component={NavigationBarContainer}
         />
         <Switch>
