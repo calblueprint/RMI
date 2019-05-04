@@ -6,7 +6,7 @@
 import React from "react";
 
 import QuestionContainer from "./QuestionContainer";
-import { getQuestionsByBuilding } from "../selectors/questionsSelector";
+import { getQuestionsByBuilding, getAllQuestionsByCategory } from "../selectors/questionsSelector";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getNumUnansweredForBuilding } from "../selectors/answersSelector";
@@ -25,22 +25,27 @@ class DelegateModeContainer extends React.Component {
   render() {
     return (
       <div className="question__container">
-        {this.props.questions.map(question => {
+        {Object.keys(this.props.questionsByCategory).map(categoryName => {
           // It's left to DelegationContainer to decide whether this question
           // needs delegation, i.e. is unanswered
 
           // Only display non-dependent questions initially
-          if (!question.parent_option_id) {
-            return (
-              <QuestionContainer
-                mode="delegation"
-                key={`delegate_${question.id}`}
-                building_id={this.props.building.id}
-                {...question}
-              />
-            );
-          }
+          let questions = this.props.questionsByCategory[categoryName];
+          let questionContainers = questions.map(question => {
+            if (!question.parent_option_id) {
+              return (
+                  <QuestionContainer
+                  mode="delegation"
+                  key={`delegate_${question.id}`}
+                  building_id={this.props.building.id}
+                  {...question}
+                  />                
+              );
+            }
+          })
+          return (<div className="delegation--category"><h2>{categoryName}</h2>{questionContainers}<hr></hr></div>)
         })}
+          
         <Link
           style={this.buttonStyle()}
           class="next-button"
@@ -56,6 +61,7 @@ class DelegateModeContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     questions: getQuestionsByBuilding(ownProps.building.id, state),
+    questionsByCategory: getAllQuestionsByCategory(ownProps.building.id, state),
     numUnanswered: getNumUnansweredForBuilding(ownProps.building.id, state)
   };
 }

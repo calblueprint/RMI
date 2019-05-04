@@ -88,7 +88,8 @@ p.delegation__label {
   color: white;
   text-align: center;
   font-weight: 500;
-  font-size: 11pt;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .pt-menu-item.pt-intent-primary.pt-active {
@@ -103,4 +104,13 @@ p.delegation__label {
 
 .delegation__name-inputs {
   padding: 10px 20px;
+}
+
+.delegation--category {
+  margin-bottom: 40px;
+
+  h2 {
+    padding-bottom: 15px;
+    color: #182026;
+  }
 }

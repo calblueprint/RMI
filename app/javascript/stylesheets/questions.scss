@@ -16,8 +16,8 @@
   transition: transform 0.5s;
   transition: all 0.5s;
 
-  div {
-    padding-top: 10px;
+  button:focus {
+    outline: none;
   }
 }
 
@@ -32,7 +32,7 @@
 }
 
 .question--selected {
-  // border-left: 3px solid $primary;
+  border-left: 3px solid $primary;
   transform: translateX(5px);
 }
 
@@ -40,6 +40,16 @@
   animation: 1.5s ease error-pulse;
   animation-direction: alternate;
   animation-iteration-count: infinite;
+}
+
+.question--options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  div {
+    height: 100%;;
+  }
 }
 
 @keyframes error-pulse {
@@ -111,7 +121,9 @@ input:focus,
 
 .input__text textarea {
   width: 100%;  
-  max-width: 100%;
+  max-width: 500px;
+  max-height: 600px;
+  margin: 0px;
 }
 
 .input__text--disabled textarea {
@@ -161,6 +173,7 @@ input:focus,
   color: $primary;
   font-size: 14pt;
   transition: all 0.25s ease;
+  cursor: pointer;
 }
 
 .input__dropdown--selected {
@@ -172,6 +185,11 @@ input:focus,
   color: $disabledTextGray;
   border: none;
   background-color: $disabledBgGray;
+}
+
+.pt-input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .next-button {

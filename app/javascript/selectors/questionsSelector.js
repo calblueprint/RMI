@@ -1,3 +1,5 @@
+import { getCategoryNameById } from "./categoriesSelector";
+
 /**
  * Gets array of question objects for a building by building ID.
  * @param { number } buildingId - the building ID of the questionnaire
@@ -81,6 +83,24 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
       (child) => getPotentialDependentQuestions(child, state)
     ));
   }
+}
+
+/**
+ * Returns a dictionary where keys are the category name 
+ * and values are arrays of question objects 
+ */
+export function getAllQuestionsByCategory(buildingId, state) {
+    let questions = getQuestionsByBuilding(buildingId, state);
+    let questionsByCategory = {};
+    questions.map((q) => {
+      let categoryId = q.category_id;
+      let categoryName = getCategoryNameById(categoryId, state);
+      if (!(categoryName in questionsByCategory)) {
+        questionsByCategory[categoryName] = [];
+      }     
+      questionsByCategory[categoryName].push(q);
+    })
+    return questionsByCategory;
 }
 
 /**

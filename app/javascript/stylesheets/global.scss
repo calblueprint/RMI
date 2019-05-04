@@ -156,8 +156,10 @@ textarea:hover {
 input:focus,
 textarea:focus {
   background-color: white;
+  outline: none;
   border: $borderPrimary;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  // TODO see if this is ok
+  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 input::placeholder,

@@ -140,9 +140,11 @@ class OptionsContainer extends React.Component {
         )}
       >
         <p>{this.props.text}</p>
-        {optionsComponent}
-        <div><a onClick={this.onClickHandoff.bind(this)} 
-        className="btn btn--secondary">Handoff</a></div>
+        <div className="question--options">
+          {optionsComponent}
+          <div className="btn--handoff"><a onClick={this.onClickHandoff.bind(this)} 
+          className="btn btn--secondary">Handoff</a></div>
+        </div>
         <Status fetchObject={this.props.answer}
                 onRetry={this.onRetry.bind(this)} />
       </div>

@@ -381,12 +381,18 @@ input {
 }
 
 .btn--handoff {
-  background-color: gainsboro;
   color: $secondary;
-  text-decoration: none;
+  margin-left: 10px;
+  height: 100%;
+  
+  a {
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .btn--secondary:hover {
+    text-decoration: none;
+    color: $secondary;
+  }
 }
 
-.btn--handoff:hover {
-  text-decoration: none;
-  color: $secondary;
-}
