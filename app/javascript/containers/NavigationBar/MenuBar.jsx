@@ -21,15 +21,14 @@ class MenuBar extends React.Component {
   }
 
   getHomeRoute = () => {
-    console.log(this.props.userType)
-    console.log(typeof this.props.userType)
-    if (this.props.userType == "building_operator"){
+    if (String(this.props.userType) == "BuildingOperator"){
       return "buildings"
     } else if (String(this.props.userType) == "RMIUser"){
-      console.log("Rmi")
       return "portfolios"
-    } else {
+    } else if (String(this.props.userType) == "AssetManager"){
       return "portfolios/1"
+    } else {
+      return ""
     }
   }
 
@@ -37,12 +36,12 @@ class MenuBar extends React.Component {
     if (matchPath(this.props.location.pathname, '/buildings/:id') ||
     matchPath(this.props.location.pathname, '/building_types/:id')){
       return (
-        <Link className="btn--neutral menulink" to={"/"+this.getHomeRoute()}>
+        <Link className="menulink" to={"/"+this.getHomeRoute()}>
           <FAIcon iconObj={arrowLeft}/>
           <span className="linkmargins">Save and return Home</span>
         </Link>)
     } else {
-        return (<Link className="btn--neutral menulink" to={"/"+this.getHomeRoute()}>
+        return (<Link className="menulink" to={"/"+this.getHomeRoute()}>
           <FAIcon iconObj={homeIcon}/>
         </Link>)
     }
@@ -52,7 +51,7 @@ class MenuBar extends React.Component {
     return (
     <div className="menu">
       {this.getBackButton()}
-      <button onClick={this.handleLogout} className="btn--neutral menulink logout-btn">
+      <button onClick={this.handleLogout} className="menulink logout-btn">
         Logout
       </button>
     </div>

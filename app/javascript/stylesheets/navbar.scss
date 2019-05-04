@@ -185,6 +185,12 @@
   background-color: lighten(black, 20);
   margin: 0px 10px 0px 10px;
   padding: 0px;
+  text-decoration: underline;
+  line-height: 3em;
+}
+
+.menulink::after {
+  box-shadow: none;
 }
 
 .logout-btn {
