@@ -114,3 +114,33 @@ p.delegation__label {
     color: #182026;
   }
 }
+
+.delegation--confirmation--modal {
+  width: 600px;
+  background-color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: $inputBorder;
+  border-radius: 5px;
+  padding: 25px;
+  outline: none;
+
+  button {
+    margin: 15px 10px 0px 0px;
+    height: 40px;
+    width: 140px;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 32px;
+    padding-bottom: 5px;
+  }
+
+  p {
+    font-weight: normal;
+  }
+
+}

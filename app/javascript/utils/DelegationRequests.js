@@ -16,7 +16,7 @@ import { getUnfinishedAnswersForBuilding, getUnfinishedAnswersForCategoryAndBuil
  * @param addAnswers {function} - function to dispatch the appropriate Redux action adding all the
  *                                  updated answers to store once delegation is complete
  */
-export async function delegateQuestions(answers, buildingId, email, firstName, lastName, addAnswers) {
+export async function delegateQuestions(answers, buildingId, email, firstName, lastName, addAnswers, callbackFn=null) {
   let delegations = [];
   for (const answer of Object.values(answers)) {
     console.log("EMAIL: - " + email);
@@ -45,16 +45,27 @@ export async function delegateQuestions(answers, buildingId, email, firstName, l
     });
     addAnswers(answersToUpdate, buildingId);
   } catch (error) {}
+
+  if (callbackFn) {
+    callbackFn();
+  }
 }
 
-export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers) {
+export async function delegateBuildingQuestions(buildingId, userDetails, state, addAnswers, callbackFn=null) {
   let answers = getUnfinishedAnswersForBuilding(buildingId, state);
 
   await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+
+  if (callbackFn) {
+    callbackFn()
+  }
 }
 
-export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, addAnswers) {
+export async function delegateCategoryQuestions(categoryId, buildingId, userDetails, state, addAnswers, callbackFn=null) {
   let answers = getUnfinishedAnswersForCategoryAndBuilding(categoryId, buildingId, state);
 
   await delegateQuestions(answers, buildingId, userDetails.email, userDetails.firstName, userDetails.lastName, addAnswers);
+  if (callbackFn) {
+    callbackFn()
+  }
 }
