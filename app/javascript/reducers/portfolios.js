@@ -93,6 +93,8 @@ export default function portfolios(state = {}, action) {
       return setActiveBuilding(state, action);
     case SET_ACTIVE_CATEGORY:
       return setActiveCategory(state, action);
+    case ADD_ASSET_MANAGER:
+      return addAssetManager(state, action);
     default:
       return state;
   }

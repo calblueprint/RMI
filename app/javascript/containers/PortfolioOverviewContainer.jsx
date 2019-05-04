@@ -5,9 +5,11 @@ import CategoryDetailsContainer from "./CategoryDetailsContainer";
 import { get } from "../fetch/requester";
 import { connect } from "react-redux";
 import { questionDataPerCategory } from "../selectors/answersSelector";
- import DelegationContactCard from "../components/DelegationContactCard";
- import DelegationPopover from "../components/DelegationPopover";
- import getAssetManagerEmails from "../selectors/portfoliosSelector";
+import DelegationContactCard from "../components/DelegationContactCard";
+import DelegationPopover from "../components/DelegationPopover";
+import getAssetManagerEmails from "../selectors/portfoliosSelector";
+import { addAssetManager } from "../actions/portfolios";
+
 
 /* Renders the two main containers for the portfolio view according to the selected building
 and selected category and handles the GET request for the login times needed to see the last time
@@ -34,7 +36,7 @@ class PortfolioOverviewContainer extends React.Component {
           <div>
             <DelegationPopover
                   label="Add Asset Manager"
-                  // onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
+                  onSelectedContact={(contact) => this.props.addAssetManager(contact, this.props.portfolio_id)}
                   // disabled={this.isDisabled()}
             />
           </div>
@@ -59,13 +61,15 @@ PortfolioOverviewContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    assetManagerEmails: ["test1@test.com", "test2@test.com"],
+    assetManagerEmails: ["test1@test.com", "test2@test.com"]
     // assetManagerEmails: getAssetManagerEmails(ownProps.portfolio_id, state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    addAssetManager: (userDetails, portfolioId) => addAssetManager(userDetails, portfolioId, state)
+  };
 }
 
 export default connect(
