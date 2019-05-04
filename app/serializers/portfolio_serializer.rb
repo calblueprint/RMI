@@ -2,9 +2,13 @@ class PortfolioSerializer < ActiveModel::Serializer
   attributes :id
   			 :asset_manager_emails
   			 :name
-  			 :asset_managers
 
   def asset_manager_emails
-  	object.asset_managers.emails
+  	puts "emails!!!!!!!!"
+  	emails = []
+  	object.asset_managers.each do |a|
+  		emails.push(a.email)
+  	end
+  	emails
   end
 end
