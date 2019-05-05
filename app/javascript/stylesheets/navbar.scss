@@ -2,7 +2,6 @@
 
 .navbar {
   background-color: lighten($primary, 28.5);
-  margin-bottom: 15px;
 }
 
 .navbar__logo {
@@ -10,25 +9,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
 
   img {
     max-width: 90px;
   }
+  margin-top: 10px;
 }
 
 .navbar__content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 0px 40px 60px 40px;
   padding-left: 0px;
-  margin-top: -100px;
+  margin-bottom: 10px;
 }
 
 .navbar__category-container {
   // width: 80%;
-  flex: 5;
+  flex: 4;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 48%,
@@ -36,7 +35,7 @@
     $primary 52%,
     rgba(255, 255, 255, 0) 52%
   );
-  height: 250px;
+  height: 150px;
   display: flex;
   align-items: center;
   position: relative;
@@ -169,4 +168,43 @@
 .category--inactive .category__circle {
   background-color: lightgray;
   color: gray;
+}
+
+.menu {
+  height: 40px;
+  width:100%;
+  color: white;
+  background-color: lighten(black, 20);
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.menulink {
+  color: white;
+  background-color: lighten(black, 20);
+  margin: 0px 10px 0px 10px;
+  padding: 0px;
+  text-decoration: underline;
+  line-height: 3em;
+}
+
+.menulink::after {
+  box-shadow: none;
+}
+
+.logout-btn {
+  border: none;
+  font-size: 14px;
+}
+
+.logout-btn:hover,
+.menulink:hover {
+  color: $primary;
+  cursor: pointer;
+}
+
+.linkmargins {
+  margin-left: 10px;
 }

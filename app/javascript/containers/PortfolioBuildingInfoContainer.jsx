@@ -11,7 +11,7 @@ import { getNameByBuildingId } from "../selectors/buildingsSelector";
 import DelegationPopover from "../components/DelegationPopover";
 import CategoryContainer from "./CategoryContainer";
 
-import { delegateBuildingQuestions } from '../utils/DelegationRequests';
+import { delegateBuildingQuestions } from "../utils/DelegationRequests";
 
 import FAIcon from "../components/FAIcon";
 import linkIcon from "@fortawesome/fontawesome-free-solid/faExternalLinkAlt";
@@ -42,7 +42,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   mapCategorytoContainer() {
     let categoriesData = this.props.categoriesData;
-    let pId = this.props.portfolioId;    
+    let pId = this.props.portfolioId;
     return Object.keys(categoriesData).map(id => {
       return (
         <CategoryContainer
@@ -57,29 +57,40 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   render() {
     let buildingId = this.props.buildingId;
-    let delegateQuestions = this.props.delegateQuestions
-    
+    let delegateQuestions = this.props.delegateQuestions;
+
     return (
       <div className="building__details" key={this.props.buildingId}>
         <div className="building_info">
           <div>
             <span className="small_header">BUILDING</span>
             <h2>
-                <Link to={`/buildings/${this.props.buildingId}/`}>{
-                  this.props.name + " "}
-                  <FAIcon iconObj={linkIcon} style={{"position": "relative", "top": "-3px"}}/>
-                </Link>
+              <Link to={`/buildings/${this.props.buildingId}/`}>
+                {this.props.name + " "}
+                <FAIcon
+                  iconObj={linkIcon}
+                  style={{ position: "relative", top: "-3px" }}
+                />
+              </Link>
             </h2>
             <span className={"dot " + this.getDotStatusForBuilding()} />
             {this.getStatusForBuilding()}
           </div>
-          <div>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <DelegationPopover
-                  label="Assign Building"
-                  onSelectedContact={(contact) => delegateQuestions(contact, this.props.addAnswers)}
-                  disabled={this.isDisabled()}
+              label="Assign Building"
+              onSelectedContact={contact =>
+                delegateQuestions(contact, this.props.addAnswers)
+              }
+              disabled={this.isDisabled()}
             />
-            <button className="btn btn--neutral" href={`download/${buildingId}`}>Export CSV</button>
+            <button
+              style={{ marginLeft: "10px" }}
+              className="btn btn--neutral"
+              href={`download/${buildingId}`}
+            >
+              Export CSV
+            </button>
           </div>
         </div>
         <br />
@@ -108,7 +119,13 @@ function mapStateToProps(state, ownProps) {
   return {
     name: getNameByBuildingId(ownProps.buildingId, state),
     buildingStatus: percentAnswered(ownProps.buildingId, state),
-    delegateQuestions: (userDetails, addAnswers) => delegateBuildingQuestions(ownProps.buildingId, userDetails, state, addAnswers)
+    delegateQuestions: (userDetails, addAnswers) =>
+      delegateBuildingQuestions(
+        ownProps.buildingId,
+        userDetails,
+        state,
+        addAnswers
+      )
   };
 }
 

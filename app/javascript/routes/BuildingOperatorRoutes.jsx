@@ -12,7 +12,7 @@ class BuildingOperatorRoutes extends React.Component {
   render() {
     return (
       <div>
-        <Route path="/:entity?/:id?/:mode?/:cId?" component={NavigationBarContainer}/>
+        <Route path="/buildings/:id/:mode?/:cId?" component={NavigationBarContainer}/>
         <Switch>
           <Route exact path="/buildings" component={BuildingListContainer} />
 

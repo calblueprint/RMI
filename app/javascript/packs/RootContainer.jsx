@@ -19,6 +19,7 @@ import withInitialState from '../reducers/initialState';
 import { loadInitialState } from '../actions/initialState';
 
 import '../stylesheets';
+import MenuBar from '../containers/NavigationBar/MenuBar';
 
 const { userType } = window.INITIAL_STATE;
 
@@ -30,6 +31,7 @@ const { store, persistor } = initializeStore(reducer);
 
 if (window.INITIAL_STATE) {
   store.dispatch(loadInitialState(window.INITIAL_STATE));
+  console.log(userType)
 }
 
 if (module.hot) {
@@ -42,16 +44,19 @@ document.addEventListener('DOMContentLoaded', () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <Router>
-          <Switch>
-            {/* Remove trailing slash so we don't have to deal with it when appending nested routes */}
-            <Route
-              exact
-              strict
-              path="*/"
-              render={({ match }) => (<Redirect to={match.url.slice(0, -1)} />)}
-            />
-            <Routes />
-          </Switch>
+          <div>
+            <MenuBar userType={userType}/>
+            <Switch>
+              {/* Remove trailing slash so we don't have to deal with it when appending nested routes */}
+              <Route
+                exact
+                strict
+                path="*/"
+                render={({ match }) => (<Redirect to={match.url.slice(0, -1)} />)}
+              />
+              <Routes />
+            </Switch>
+          </div>
         </Router>
       </PersistGate>
     </Provider>
