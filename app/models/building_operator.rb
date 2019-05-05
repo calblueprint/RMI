@@ -132,10 +132,10 @@ class BuildingOperator < ApplicationRecord
     BuildingOperatorMailer.existing_user_reminder_email(self).deliver_now
   end
 
-  def get_delegations(current_building_operator)
+  def get_delegations
     Delegation.includes(answer: [:question, :building]).where(
       answer: Answer.where(building: buildings),
-      building_operator: current_building_operator,
+      building_operator: self,
       status: "active"
     )
       .load.to_a
@@ -143,7 +143,7 @@ class BuildingOperator < ApplicationRecord
 
   # TODO 4/1: Do we want to use this scope instead when serializing buildings?
   # This limits the questions (supposedly) to only the ones that have been delegated to the current user
-  def get_building_scope(current_building_operator)
+  def get_building_scope
     building_questions = {}
     buildings.each do |b|
       building_questions[b.id] = questions_by_buildings([b.id])
@@ -152,7 +152,7 @@ class BuildingOperator < ApplicationRecord
     {
       user_id: id,
       user_type: 'BuildingOperator',
-      delegations: get_delegations(current_building_operator),
+      delegations: get_delegations,
       questions: building_questions
     }
   end
@@ -161,9 +161,9 @@ class BuildingOperator < ApplicationRecord
     {
       user_id: id,
       user_type: 'BuildingOperator',
-      delegations: get_delegations(current_building_operator),
+      delegations: get_delegations,
       questions: Question
-                   .where(id: current_building_operator.questions.map { |q| q.id }).load.to_a,
+                   .where(id: self.questions.map { |q| q.id }).load.to_a,
     }
   end
 end
