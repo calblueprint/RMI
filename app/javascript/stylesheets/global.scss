@@ -144,7 +144,7 @@ textarea:active {
 }
 input:hover,
 textarea:hover {
-  border-color: desaturate($vibrantPrimary, 50);
+  border: 2px solid $hover;
 }
 
 input:focus,
@@ -223,4 +223,77 @@ input[type="checkbox"]:checked:hover {
 
 .blur-placeholder:focus {
   placeholder: none;
+}
+
+select {
+  width: 100%;
+  font-size: 14pt;
+  border: none;
+  background: transparent;
+
+  -webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	 -o-appearance: none;
+		appearance: none;
+}
+
+.select-wrapper {
+  border: 2px solid $secondary;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+  background: rgba($secondary, 0.1);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  transition: 0.2s ease all;
+
+  .down-arrow {
+    position: relative;
+    left: -20px;
+  }
+  
+}
+
+select:focus {
+  outline: none;
+}
+
+.modal {
+  width: 600px;
+  background-color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: $inputBorder;
+  border-radius: 5px;
+  padding: 25px;
+  outline: none;
+
+  h2 {
+    font-size: 32px;
+    padding-bottom: 5px;
+  }
+
+  h4 {
+    margin: 0;
+    padding-top: 10px;
+  }
+
+  button, .btn {
+    margin: 15px 10px 0px 0px;
+    height: 40px;
+    width: 140px;
+    font-weight: bold;
+  }
+
+  p {
+    font-weight: normal;
+  }
 }

@@ -114,8 +114,6 @@ class PortfolioBuildingInfoContainer extends React.Component {
 
   render() {
     let buildingId = this.props.buildingId;
-    let delegateQuestions = this.props.delegateQuestions;
-
 
     return (
       <div className="building__details" key={this.props.buildingId}>
@@ -135,7 +133,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
             {this.getStatusForBuilding()}
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <ReactModal className="delegation--confirmation--modal"
+            <ReactModal className="delegation--confirmation--modal modal"
                         isOpen={this.state.showModal}>
               <h2>Confirm Assignment</h2>
               <h4>{this.modalText()}</h4>
@@ -174,9 +172,9 @@ class PortfolioBuildingInfoContainer extends React.Component {
 }
 
 PortfolioBuildingInfoContainer.propTypes = {
-  portfolioId: PropTypes.number.isRequired,
+  portfolioId: PropTypes.string.isRequired,
   buildingId: PropTypes.number.isRequired,
-  categoriesData: PropTypes.array.isRequired
+  categoriesData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
