@@ -74,27 +74,29 @@ class PortfolioListContainer extends React.Component {
           value="Create New Building Type"
           onClick={() => this.toggleModal("building")}
         />
-        <ReactModal isOpen={this.state.showModal} ariaHideApp={false}>
+        <ReactModal className="modal" isOpen={this.state.showModal} ariaHideApp={false}>
           {this.state.mode === "building" ? (
             <form onSubmit={this.createBuildingType}>
+            <h2>New Building Type</h2>
               <label>
-                Add Building Type
+                <h4>Building Type Name</h4>
                 <input type="text" name="building" />
               </label>
-              <input type="submit" value="Submit" />
             </form>
           ) : (
             <form onSubmit={this.createPortfolio}>
+            <h2>New Portfolio</h2>
               <label>
-                Portfolio Name
+                <h4>Portfolio Name</h4>
                 <input type="text" name="portfolio" required="required"/>
               </label>
-              <input type="submit" value="Submit" />
             </form>
           )}
-
           <div>{this.state.errors}</div>
-          <button onClick={this.toggleModal}>Close Modal</button>
+          <input className="btn btn--primary" 
+                  type="submit" value="Submit" 
+                  onClick={this.toggleModal}/>
+          <button className="btn btn--secondary" onClick={this.toggleModal}>Cancel</button>
         </ReactModal>
         {Object.keys(building_types).map(id => {
           return (

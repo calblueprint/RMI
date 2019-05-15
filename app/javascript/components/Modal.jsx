@@ -11,22 +11,25 @@ class Modal extends React.Component {
 
 	render() {
 		return (
-			<ReactModal className="modal building-modal" isOpen={this.props.showModal}>
+			<ReactModal className="modal building--modal" isOpen={this.props.showModal}>
 				<form onSubmit={this.props.createBuilding}>
 				<h2>Add Building</h2>
 					<label>
-						<h4>Building Name</h4>
-						<input className="input__range" type="text" name="name" />
+						<div>
+							<h4>Building Name</h4>
+							<input type="text" name="name" />
+						</div>
 					</label>
 					<br />
 					<label>
-						<h4>Address</h4>
-						<input type="text" name="address" />
-					</label>
-					<br />
-					<label>
-						<h4>City</h4>
-						<input type="text" name="city" />
+						<div>
+							<h4>Address</h4>
+							<input type="text" name="address" />
+						</div>
+						<div>
+							<h4>City</h4>
+							<input type="text" name="city" />
+						</div>
 					</label>
 					<br />
 					<h4>Building Type</h4>
@@ -44,7 +47,7 @@ class Modal extends React.Component {
 						<FAIcon
 						className="down-arrow"
 						iconObj={downArrow}
-						style={{ position: "relative", top: "2px"}}
+						style={{ position: "relative", top: "2px", "pointer-events":"none"}}
 						/>
 						</div>
 					</label>
