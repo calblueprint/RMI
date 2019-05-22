@@ -73,6 +73,9 @@ class PortfolioListContainer extends React.Component {
         <div>
           <div>
             <h2>Building Types</h2>
+            <p><i>Each building type is associated with a fixed set of questions, which will be sent out
+              for all buildings of that type.</i></p>
+            <br/>
             <button
               className={"btn btn--primary"}
               value="Create New Building Type"
@@ -84,15 +87,9 @@ class PortfolioListContainer extends React.Component {
               <tbody className="table_data">
                 {Object.keys(building_types).map(id => {
                   return (
-                    <tr key={id} className="">
+                    <tr key={id} className="table_view--row"
+                        onClick={() => this.props.history.push(`/building_types/${id}`)}>
                       <td className="field_name">{building_types[id].name}</td>
-                      <td>
-                        <button className="btn btn--secondary">
-                          <Link to={`/building_types/${id}`}>
-                            Edit Questions
-                          </Link>
-                        </button>
-                      </td>
                     </tr>
                   );
                 })}
@@ -100,8 +97,11 @@ class PortfolioListContainer extends React.Component {
             </table>
           </div>
         </div>
-        <div>
+        <div class="portfolio-list">
           <h2>Portfolios</h2>
+          <p><i>Create a portfolio for each new project. Clients will only have access to data within
+            their project's portfolio.</i></p>
+          <br/>
           <button
             className={"btn btn--primary"}
             value="Create New Portfolio"
@@ -113,13 +113,9 @@ class PortfolioListContainer extends React.Component {
             <tbody className="table_data">
               {Object.keys(portfolios).map(id => {
                 return (
-                  <tr key={id} className="">
+                  <tr key={id} className="table_view--row"
+                      onClick={() => this.props.history.push(`/portfolios/${id}`)}>
                     <td className="field_name">{portfolios[id].name}</td>
-                    <td>
-                      <button className={"btn btn--secondary"}>
-                        <Link to={`/portfolios/${id}`}>Details</Link>
-                      </button>
-                    </td>
                   </tr>
                 );
               })}

@@ -1,6 +1,11 @@
 @import "global";
 
+.portfolio-list {
+  margin-top: 50px;
+}
+
 .tables_container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 40px;
@@ -27,6 +32,16 @@
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
   }
+}
+
+.table_view--row:hover {
+  background-color: lighten($primary, 25);
+  border-left: 6px solid $primary;
+  cursor: pointer;
+}
+
+.table_view--button {
+  float: right;
 }
 
 .table_data {
