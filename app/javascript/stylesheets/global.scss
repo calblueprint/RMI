@@ -300,6 +300,9 @@ select {
   p {
     font-weight: normal;
     color: $black;
-
+  }
+  label {
+    display: flex;
+    flex-direction: column;
   }
 }

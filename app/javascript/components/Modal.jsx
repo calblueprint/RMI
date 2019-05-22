@@ -15,23 +15,17 @@ class Modal extends React.Component {
 				<form onSubmit={this.props.createBuilding}>
 				<h2>Add Building</h2>
 					<label>
-						<div>
-							<h4>Building Name</h4>
-							<input type="text" name="name" />
-						</div>
+						<h4>Building Name</h4>
+						<input type="text" name="name" />
 					</label>
-					<br />
 					<label>
-						<div>
-							<h4>Address</h4>
-							<input type="text" name="address" />
-						</div>
-						<div>
-							<h4>City</h4>
-							<input type="text" name="city" />
-						</div>
+						<h4>Address</h4>
+						<input type="text" name="address" />	
 					</label>
-					<br />
+					<label>
+						<h4>City</h4>
+						<input type="text" name="city" />
+					</label>
 					<h4>Building Type</h4>
 					<label>
 						<div className="select-wrapper">
