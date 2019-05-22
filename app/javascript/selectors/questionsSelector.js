@@ -1,3 +1,5 @@
+import { getCategoryNameById } from "./categoriesSelector";
+
 /**
  * Gets array of question objects for a building by building ID.
  * @param { number } buildingId - the building ID of the questionnaire
@@ -84,6 +86,24 @@ export function getPotentialDependentQuestions(parentQuestion, state) {
 }
 
 /**
+ * Returns a dictionary where keys are the category name 
+ * and values are arrays of question objects 
+ */
+export function getAllQuestionsByCategory(buildingId, state) {
+    let questions = getQuestionsByBuilding(buildingId, state);
+    let questionsByCategory = {};
+    questions.map((q) => {
+      let categoryId = q.category_id;
+      let categoryName = getCategoryNameById(categoryId, state);
+      if (!(categoryName in questionsByCategory)) {
+        questionsByCategory[categoryName] = [];
+      }     
+      questionsByCategory[categoryName].push(q);
+    })
+    return questionsByCategory;
+}
+
+/**
  * Get an array of question objects given categoryID (non-dependent questions only)
  *
  * @param {Number} categoryId - id for category
@@ -156,5 +176,39 @@ function getAllActiveQuestionsFromRoots(rootQuestions, buildingId, state) {
     }
   }
 
+  return questions;
+}
+
+export function getAllActiveQuestionIdsForCategory(categoryId, buildingId, state) {
+  const buildingQuestionIds = state.buildings[buildingId].questions.map((id) => parseInt(id));
+
+  // Get list of non-dependent questions for the current category
+  // that were assigned to this user
+  const categoryQuestions = state.categories[categoryId].questions;
+  const rootIds = buildingQuestionIds.filter((questionId) => {
+      return categoryQuestions.includes(questionId);
+  })
+  
+  return getAllActiveQuestionIds(rootIds, buildingId, state);
+}
+
+export function getAllActiveQuestionIds(rootQuestions, buildingId, state) {
+  let questions = [];
+
+  for (let questionId of rootQuestions) {
+    const rootQuestion = state.questions[questionId];
+
+    if (rootQuestion) {
+      questions.push(questionId);
+
+      const answer = state.buildings[buildingId].answers[questionId];
+      if (answer && answer.selected_option_id) {
+        const dependents = getDependentQuestionsForOption(answer.selected_option_id,
+          rootQuestion.question_type, state);
+
+        questions.push(...getAllActiveQuestions(dependents, buildingId, state));
+      }
+    }
+  }
   return questions;
 }

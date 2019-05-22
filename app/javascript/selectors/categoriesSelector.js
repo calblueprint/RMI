@@ -49,3 +49,7 @@ export function getCategoryByBuildingTypeId(btId, state) {
 export function getCategoryById(cId, state) {
   return state.categories[cId];
 }
+
+export function getCategoryNameById(cId, state) {
+  return state.categories[cId].name;
+}

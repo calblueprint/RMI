@@ -24,7 +24,6 @@ import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
 import { post } from "../fetch/requester";
 import validateEmail from "../utils/validateEmail";
 import { delegateQuestions } from "../utils/DelegationRequests";
-import Logo from "../images/rmi-logo.png";
 
 class PortfolioContainer extends React.Component {
   constructor(props) {

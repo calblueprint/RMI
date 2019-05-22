@@ -85,7 +85,7 @@ input {
 }
 
 .sidebar-category-row-selected:hover {
-  background-color: rgba($vibrantPrimary, 0.1);
+  background-color: rgba($primary, 0.1);
   border-radius: 0;
   cursor: default;
 }
@@ -379,3 +379,20 @@ input {
     transition: flex 400ms ease;
   }
 }
+
+.btn--handoff {
+  color: $secondary;
+  margin-left: 10px;
+  height: 100%;
+  
+  a {
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .btn--secondary:hover {
+    text-decoration: none;
+    color: $secondary;
+  }
+}
+

@@ -15,6 +15,10 @@
   border-left: 3px solid $secondary;
   transition: transform 0.5s;
   transition: all 0.5s;
+
+  button:focus {
+    outline: none;
+  }
 }
 
 .question > p {
@@ -36,6 +40,16 @@
   animation: 1.5s ease error-pulse;
   animation-direction: alternate;
   animation-iteration-count: infinite;
+}
+
+.question--options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  div {
+    height: 100%;;
+  }
 }
 
 @keyframes error-pulse {
@@ -93,20 +107,30 @@ input::-webkit-inner-spin-button {
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input:focus,
-textarea:focus,
-.input__range.input__range--focused {
-  // border: 3px solid $primary;
+.input__range:hover {
+  border: 2px solid $hover;
+  cursor: text;
 }
 
+input:focus,
+.input__range.input__range--focused {
+  border: 2px solid $primary;
+  cursor: text;
+}
+
+
 .input__text textarea {
-  width: 100%;
+  width: 100%;  
+  max-width: 500px;
+  max-height: 600px;
+  margin: 0px;
 }
 
 .input__text--disabled textarea {
   background-color: $disabledBgGray;
   color: $disabledTextGray;
   border: none;
+  cursor: text;
   disabled: true;
 }
 
@@ -121,7 +145,7 @@ textarea:focus,
 
   span {
     outline: none;
-    // min-width: 50px;
+    width: 100%;
     float: left;
     display: inline-block;
     margin-right: 5px;
@@ -149,6 +173,7 @@ textarea:focus,
   color: $primary;
   font-size: 14pt;
   transition: all 0.25s ease;
+  cursor: pointer;
 }
 
 .input__dropdown--selected {
@@ -160,6 +185,11 @@ textarea:focus,
   color: $disabledTextGray;
   border: none;
   background-color: $disabledBgGray;
+}
+
+.pt-input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .next-button {

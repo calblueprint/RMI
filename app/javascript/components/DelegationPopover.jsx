@@ -19,6 +19,13 @@ class DelegationPopover extends React.Component {
     };
   }
 
+  onKeyDown(ev) {
+    // return key
+    if (!multiLine && ev.keyCode === 13) {
+      this.setState({popoverOpen: true})
+    }
+  }
+
   handleContactInfoChange = (key, value) => {
     this.setState({ [key]: value });
   };
@@ -84,7 +91,9 @@ class DelegationPopover extends React.Component {
         minimal
         disabled={this.props.disabled}
       >
-        <button className="delegation__popover-btn" style={this.styleIfDisabled()}>{this.props.label}</button>
+        <button onKeyDown={this.onKeyDown}
+                className="delegation__popover-btn" 
+                style={this.styleIfDisabled()}>{this.props.label}</button>
         <div className="delegation__popover-content">
           {this.state.showNameInputs ? (
             <DelegationNameInputs
