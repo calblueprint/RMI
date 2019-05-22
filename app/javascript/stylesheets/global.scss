@@ -224,3 +224,7 @@ input[type="checkbox"]:checked:hover {
 .blur-placeholder:focus {
   placeholder: none;
 }
+
+.pt-input-group .pt-input:not(:first-child) {
+  padding-left: 8px;
+}
