@@ -10,8 +10,6 @@
 #  building_type_id :integer
 #  address          :string
 #  city             :string
-#  state            :integer
-#  zip              :integer
 #
 
 class BuildingSerializer < ActiveModel::Serializer
@@ -21,8 +19,6 @@ class BuildingSerializer < ActiveModel::Serializer
              :building_type_id,
              :address,
              :city,
-             :state,
-             :zip,
              :answers,
              :questions
 

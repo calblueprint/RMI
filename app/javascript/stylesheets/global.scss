@@ -11,6 +11,7 @@ $inputLabel: #a1a0a0;
 $vibrantPrimary: #4C85FF;
 $disabledTextGray: #828282;
 $disabledBgGray: #c7c7c7;
+$black: #333;
 
 $borderPrimary: 2px solid $vibrantPrimary;
 $background-primary: lighten($primary, 25);
@@ -33,6 +34,13 @@ body {
   transition: 0.25s all;
   position: relative;
   cursor: pointer;
+}
+
+.btn:focus,
+.btn--primary:focus,
+.btn--secondary:focus,
+.btn--neutral:focus {
+  outline: none;
 }
 
 .btn::selection {
@@ -126,7 +134,8 @@ body {
 }
 
 input,
-textarea {
+textarea,
+select {
   outline: none;
   font-size: 14pt;
   border: 2px solid $secondary;
@@ -138,18 +147,24 @@ textarea {
   transition: 0.2s ease all;
 }
 
-input:active, 
+input:active,
 textarea:active {
   border: 2px solid transparent;
 }
 input:hover,
 textarea:hover {
-  border-color: desaturate($vibrantPrimary, 50);
+  border: 2px solid $hover;
 }
 
 input:focus,
 textarea:focus {
   background-color: white;
+  outline: none;
+  border: $borderPrimary;
+  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+select:focus {
   outline: none;
   border: $borderPrimary;
   // TODO see if this is ok
@@ -170,7 +185,9 @@ textarea:focus::-webkit-input-placeholder {
 }
 
 input:focus:hover,
-textarea:focus:hover {
+textarea:focus:hover,
+select:focus:hover {
+  outline: none;
   border: 2px solid $vibrantPrimary;
 }
 
@@ -227,4 +244,70 @@ input[type="checkbox"]:checked:hover {
 
 .pt-input-group .pt-input:not(:first-child) {
   padding-left: 8px;
+}
+select {
+  width: 230px;
+  font-size: 14pt;
+  background: rgba($secondary, 0.1);
+
+  -webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	 -o-appearance: none;
+}
+
+.select-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .down-arrow {
+    position: relative;
+    left: -30px;
+  }
+}
+
+.modal {
+  width: 600px;
+  background-color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid lighten($black, 20%);
+  border-radius: 5px;
+  padding: 25px;
+  outline: none;
+  z-index: 1;
+  h2 {
+    font-size: 32px;
+    padding-bottom: 5px;
+    color: $black;
+  }
+
+  h4 {
+    margin: 0;
+    padding: 10px 0px 0px 0px;
+    font-weight: 500;
+    color: $black;
+  }
+
+  input {
+    width: 230px;
+  }
+
+  button, .btn {
+    margin: 15px 10px 0px 0px;
+    height: 40px;
+    width: 140px;
+    font-weight: bold;
+  }
+
+  p {
+    font-weight: normal;
+    color: $black;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+  }
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_180457) do
+ActiveRecord::Schema.define(version: 2019_05_15_072734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_180457) do
     t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "portfolio_id"
     t.index ["email"], name: "index_asset_managers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_asset_managers_on_reset_password_token", unique: true
   end
@@ -100,8 +101,6 @@ ActiveRecord::Schema.define(version: 2019_04_24_180457) do
     t.bigint "building_type_id"
     t.string "address"
     t.string "city"
-    t.integer "state"
-    t.integer "zip"
     t.index ["building_type_id"], name: "index_buildings_on_building_type_id"
     t.index ["portfolio_id"], name: "index_buildings_on_portfolio_id"
   end

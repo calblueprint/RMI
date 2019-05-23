@@ -10,8 +10,6 @@
 #  building_type_id :integer
 #  address          :string
 #  city             :string
-#  state            :integer
-#  zip              :integer
 #
 
 class Building < ApplicationRecord
@@ -25,6 +23,7 @@ class Building < ApplicationRecord
   has_many :building_assignments, foreign_key: :building_id, class_name: "BuildingOperatorAssignment"
   has_many :building_operators, through: :building_assignments, source: :building_operator
 
+  # state field was removed from buildings
   enum state: %i[
     Alabama
     Alaska
@@ -84,7 +83,7 @@ class Building < ApplicationRecord
     Northern_Mariana_Islands
   ]
 
-  validates :name, :address, :city, :state, :zip, presence: true
+  validates :name, :address, :city, presence: true
 
   def questions
     building_type.questions
