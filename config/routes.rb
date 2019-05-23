@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :categories, only: %i[create update show destroy]
     # Can change route with:
     post 'answers/create_multiple', to: 'answers#create_multiple'
+    post 'portfolios/:id/add_asset_manager', to: 'portfolios#add_asset_manager'
     patch 'batch_update_answers', to: 'answers#update_multiple'
     patch 'delegations/set_completed', to: 'delegations#set_completed'
     patch 'questions/publish', to: 'questions#publish'

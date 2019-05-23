@@ -7,6 +7,7 @@ import * as BuildingActions from "../actions/buildings";
 import { loadInitialState } from "../actions/initialState";
 import { addBuilding } from "../actions/buildings";
 import { addAnswers, EMPTY_ANSWER } from "../actions/answers";
+import { setActiveBuilding } from "../actions/portfolios";
 
 import { getBuildingsByPortfolio } from "../selectors/buildingsSelector";
 import {
@@ -20,6 +21,7 @@ import { getUserType } from "../selectors/usersSelector";
 import Modal from "../components/Modal.jsx";
 import PortfolioBuildingDetailsContainer from "./PortfolioBuildingDetailsContainer";
 import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
+import PortfolioOverviewContainer from "./PortfolioOverviewContainer";
 
 import { post } from "../fetch/requester";
 import validateEmail from "../utils/validateEmail";
@@ -181,6 +183,9 @@ class PortfolioContainer extends React.Component {
             <div>
               <span className="small_header">PORTFOLIO</span>
               <h2>{this.props.portfolioName}</h2>
+              <button className="btn btn--primary overview-btn" onClick={() => {this.props.setActiveBuilding(portfolioId, 0)}}>
+                  Portfolio Overview
+              </button>
               {this.addBuildingButton()}
             </div>
             {Object.keys(buildingByType).map((typeId, i) => {
@@ -228,6 +233,9 @@ function mapDispatchToProps(dispatch) {
     },
     addAnswers: (answers, buildingId) => {
       dispatch(addAnswers(answers, buildingId));
+    },
+    setActiveBuilding: (portfolioId, buildingId) => {
+      dispatch(setActiveBuilding(portfolioId, buildingId));
     }
   };
 }
