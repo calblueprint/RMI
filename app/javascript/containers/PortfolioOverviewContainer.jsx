@@ -88,6 +88,7 @@ class PortfolioOverviewContainer extends React.Component {
             })}
           </div>
           <br />
+          <br />
           <span className="small_header">Progress</span>
           
           <h4>
@@ -100,6 +101,14 @@ class PortfolioOverviewContainer extends React.Component {
                   iconObj={buildingIcon}
             />
              Number of Total Buildings: {this.props.progress["total"]}</h4>
+          <br />
+          <a style={{ "width": "102px", "height": "20px" }}
+                  className="btn btn--neutral"
+                  href={`download/${this.props.portfolio_id}`}
+                  target="_"
+          >
+            Export CSV
+          </a>
         </div>
     );
   }

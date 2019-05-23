@@ -41,7 +41,10 @@ function addPortfolio(state, action) {
   const portfolioId = portfolio.id;
   return {
     ...state,
-    [portfolioId]: portfolio
+    [portfolioId]: {
+      ...portfolio,
+      asset_manager_contacts: []
+    }
   };
 }
 

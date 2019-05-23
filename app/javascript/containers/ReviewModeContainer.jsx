@@ -53,7 +53,9 @@ class ReviewModeContainer extends React.Component {
 
       //TODO 4/23: Need to fix root routing so we don't have to do conditional routing here
       this.props.history.push(`/`);
-      this.props.removeBuilding(this.props.building.id);
+      if (this.props.userType === "BuildingOperator") {
+        this.props.removeBuilding(this.props.building.id);
+      }
 
       //TODO: toastr success notification
     } catch (error) {
@@ -185,7 +187,8 @@ function mapStateToProps(state, ownProps) {
     questions: getQuestionsByBuilding(ownProps.building.id, state),
     getAnswer: questionId =>
       getAnswerForQuestionAndBuilding(questionId, ownProps.building.id, state),
-    categories: getCategoriesForBuilding(ownProps.building.id, state)
+    categories: getCategoriesForBuilding(ownProps.building.id, state),
+    userType: state.userType
   };
 }
 

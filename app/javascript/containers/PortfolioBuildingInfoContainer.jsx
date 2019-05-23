@@ -147,13 +147,6 @@ class PortfolioBuildingInfoContainer extends React.Component {
                   onSelectedContact={(c) => {this.onAssignBuildingClick(c)}}
                   disabled={this.isDisabled()}
             />
-            <button
-              style={{ marginLeft: "10px" }}
-              className="btn btn--neutral"
-              href={`download/${buildingId}`}
-            >
-              Export CSV
-            </button>
           </div>
         </div>
         <br />
