@@ -222,6 +222,7 @@
   width: 20%;
   max-height: 100vh;
   padding: 0 10px;
+  padding-left: 20px;
   padding-top: 20px;
   padding-bottom: 5%;
   overflow-y: scroll;
@@ -290,7 +291,12 @@
   margin: 3%;
   display: flex;
   flex-direction: row;
-  margin-left: 20%;
+  margin-left: 22%;
+  width: 100%;
+}
+
+.portfolio__selected-building {
+  width: 100%;
 }
 
 .building__details {
@@ -455,6 +461,8 @@
 }
 
 .portfolio__overview {
+  width: 100%;
+
   .small_header {
     padding-bottom: 8px;
   }

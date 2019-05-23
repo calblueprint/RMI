@@ -84,7 +84,7 @@ class Building < ApplicationRecord
     Northern_Mariana_Islands
   ]
 
-  validates :name, :address, :city, :state, :zip, presence: true
+  validates :name, :address, :city, presence: true
 
   def questions
     building_type.questions

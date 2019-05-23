@@ -72,12 +72,12 @@ function setActiveCategory(state, action) {
 
 function addAssetManager(state, action) {
   const pId = action.portfolioId;
-  const email = action.email
+  const contact = action.contact;
   return {
     ...state,
     [pId]: {
-      ...state,
-      asset_manager_emails: [...state.asset_manager_emails, action.email]
+      ...state[pId],
+      asset_manager_contacts: [...state[pId].asset_manager_contacts, action.contact]
     }
   };
 }

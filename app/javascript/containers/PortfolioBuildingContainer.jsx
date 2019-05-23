@@ -81,7 +81,7 @@ class PortfolioBuildingContainer extends React.Component {
         let selectedCategoryId = this.props.selectedCategoryId;
     
         return (<div className='portfolio_building_container'>
-            <div>{this.showSelectedBuilding(selectedBuildingId)}</div>
+            <div className="portfolio__selected-building">{this.showSelectedBuilding(selectedBuildingId)}</div>
             <div className='building_category_details'>{this.showSelectedCategory(selectedBuildingId, selectedCategoryId)}</div>
           </div>);
       }

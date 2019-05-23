@@ -57,10 +57,10 @@ export function setActiveCategory(categoryId, portfolioId) {
   };
 }
 
-export function addAssetManager(email, portfolioId) {
+export function addAssetManager(contact, portfolioId) {
   return {
     type: ADD_ASSET_MANAGER,
-    email,
+    contact,
     portfolioId
   };
 }

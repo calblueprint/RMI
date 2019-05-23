@@ -11,5 +11,5 @@ export function getSelectedCategoryId(portfolioId, state) {
 }
 
 export function getAssetManagerEmails(portfolioId, state) {
-  return state.portfolios[portfolioId].asset_manager_emails
+  return state.portfolios[portfolioId].asset_manager_contacts
 }

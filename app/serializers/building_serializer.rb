@@ -21,8 +21,8 @@ class BuildingSerializer < ActiveModel::Serializer
              :building_type_id,
              :address,
              :city,
-             :state,
-             :zip,
+             # :state,
+             # :zip,
              :answers,
              :questions
 

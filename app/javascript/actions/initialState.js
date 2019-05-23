@@ -102,7 +102,7 @@ const formatState = {
   portfolios: function(portfolios) {
     console.log(portfolios)
     let a = toObjectById(
-      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id", "asset_manager_emails"])
+      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id", "asset_manager_contacts"])
     );
     console.log(a)
     return a;

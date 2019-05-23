@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import PortfolioBuildingInfoContainer from "./PortfolioBuildingInfoContainer";
 import CategoryDetailsContainer from "./CategoryDetailsContainer";
-import { get } from "../fetch/requester";
+import { post } from "../fetch/requester";
 import { connect } from "react-redux";
 import { questionDataPerCategory } from "../selectors/answersSelector";
 import DelegationContactCard from "../components/DelegationContactCard";
@@ -27,16 +27,17 @@ class PortfolioOverviewContainer extends React.Component {
     this.state = { };
   }
 
-  async assignAssetManager(assetManager, portfolio) {
+  async assignAssetManager(assetManager) {
     try {
-      let response = await post("/api/portfolios/add_asset_manager", {
+      const portfolio = this.props.portfolio;
+      let response = await post("/api/portfolios/" + portfolio.id + "/add_asset_manager", {
         id: portfolio.id,
-        first_name: assetManager.first_name,
-        last_name: assetManager.last_name,
+        first_name: assetManager.firstName,
+        last_name: assetManager.lastName,
         email: assetManager.email
       });
       const updatedPortfolio = response.data;
-      this.props.addAssetManger(assetManager, portfolio.id);
+      this.props.addAssetManager(assetManager, portfolio.id);
     } catch (error) {
       console.log(error)
     }
@@ -67,15 +68,14 @@ class PortfolioOverviewContainer extends React.Component {
         <div className="building__details portfolio__overview">
           <div className="building_info">
             <div>
-              <span className="small_header">Portfolio</span>
               <h2>
-                {this.props.portfolioName}
+                Portfolio Overview
               </h2>
             </div>
             <div>
               <DelegationPopover
                     label="Add Asset Manager"
-                    onSelectedContact={(contact) => this.assignAssetManager(contact, this.props.portfolio_id)}
+                    onSelectedContact={(contact) => this.assignAssetManager(contact)}
                     // disabled={this.isDisabled()}
               />
             </div>
@@ -112,16 +112,17 @@ PortfolioOverviewContainer.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
+    portfolio: state.portfolios[ownProps.portfolio_id],
     portfolioName: getPortfolioName(ownProps.portfolio_id, state),
-    assetManagerContacts: [{email:"test@test.test", firstName:"divi", lastName:"test"}, {email:"test@test.test", firstName:"divi", lastName:"test"},  {email:"test@testtesettest.test", firstName:"divi", lastName:"test"},  {email:"test@test.test", firstName:"divi", lastName:"test"}],
-    // assetManagerContacts: getAssetManagerContacts(ownProps.portfolio_id, state),
+    // assetManagerContacts: [{email:"test@test.test", firstName:"divi", lastName:"test"}, {email:"test@test.test", firstName:"divi", lastName:"test"},  {email:"test@testtesettest.test", firstName:"divi", lastName:"test"},  {email:"test@test.test", firstName:"divi", lastName:"test"}],
+    assetManagerContacts: getAssetManagerEmails(ownProps.portfolio_id, state),
     progress: getProgressForPortfolio(ownProps.portfolio_id, state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addAssetManager: (userDetails, portfolioId) => addAssetManager(userDetails, portfolioId, state)
+    addAssetManager: (userDetails, portfolioId) => dispatch(addAssetManager(userDetails, portfolioId))
   };
 }
 
