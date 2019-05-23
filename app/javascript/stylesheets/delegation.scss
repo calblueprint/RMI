@@ -130,7 +130,21 @@ p.delegation__label {
   border-radius: 5px;
   padding: 25px;
   outline: none;
-  h4 {
+
+  button {
+    margin: 15px 10px 0px 0px;
+    height: 40px;
+    width: 140px;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 32px;
     padding-bottom: 5px;
   }
+
+  p {
+    font-weight: normal;
+  }
+
 }

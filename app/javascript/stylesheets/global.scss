@@ -36,7 +36,7 @@ body {
   cursor: pointer;
 }
 
-.btn:focus, 
+.btn:focus,
 .btn--primary:focus,
 .btn--secondary:focus,
 .btn--neutral:focus {
@@ -134,7 +134,7 @@ body {
 }
 
 input,
-textarea, 
+textarea,
 select {
   outline: none;
   font-size: 14pt;
@@ -147,7 +147,7 @@ select {
   transition: 0.2s ease all;
 }
 
-input:active, 
+input:active,
 textarea:active {
   border: 2px solid transparent;
 }
@@ -167,6 +167,8 @@ textarea:focus {
 select:focus {
   outline: none;
   border: $borderPrimary;
+  // TODO see if this is ok
+  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 input::placeholder,
@@ -240,8 +242,11 @@ input[type="checkbox"]:checked:hover {
   placeholder: none;
 }
 
+.pt-input-group .pt-input:not(:first-child) {
+  padding-left: 8px;
+}
 select {
-  width: 230px;  
+  width: 230px;
   font-size: 14pt;
   background: rgba($secondary, 0.1);
 

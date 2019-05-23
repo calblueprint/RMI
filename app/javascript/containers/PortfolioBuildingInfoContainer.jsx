@@ -115,6 +115,7 @@ class PortfolioBuildingInfoContainer extends React.Component {
   render() {
     let buildingId = this.props.buildingId;
 
+
     return (
       <div className="building__details" key={this.props.buildingId}>
         <div className="building_info">
