@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_072734) do
     t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "portfolio_id"
     t.index ["email"], name: "index_asset_managers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_asset_managers_on_reset_password_token", unique: true
   end

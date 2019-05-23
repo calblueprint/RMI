@@ -45,12 +45,13 @@ class Modal extends React.Component {
 						/>
 						</div>
 					</label>
-				</form>
 
-				<div>{this.props.errors}</div>
-				<input type="submit" value="Submit" className="btn btn--primary" onClick={this.props.toggleModal}/>
-						{/*TODO: Change so the input doesn't close until the form is submitted + doesn't exit if not submitted*/}
-				<button className="btn btn--secondary" onClick={this.props.toggleModal}>Cancel</button>
+					<div>{this.props.errors ? this.props.errors.map(error => <div style={{"color": "red"}}>{error}</div>) : null}</div>
+
+					<input type="submit" value="Submit" className="btn btn--primary"/>
+          {/*TODO: Change so the input doesn't close until the form is submitted + doesn't exit if not submitted*/}
+					<button className="btn btn--secondary" onClick={this.props.toggleModal}>Cancel</button>
+				</form>
 			</ReactModal>
 		);
 	}
