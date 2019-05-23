@@ -90,6 +90,10 @@ p.delegation__label {
   font-weight: 500;
   cursor: pointer;
   font-size: 16px;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .pt-menu-item.pt-intent-primary.pt-active {

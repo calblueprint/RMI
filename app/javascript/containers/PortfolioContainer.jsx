@@ -98,18 +98,18 @@ class PortfolioContainer extends React.Component {
   async createBuilding(event) {
     event.preventDefault();
     const buildingName = event.target.name.value;
-    const email = event.target.email.value;
-    if (!validateEmail(email)) {
-      this.setState({ errors: "Email is invalid", showModal: true });
-      return;
-    }
+    // const email = event.target.email.value;
+    // if (!validateEmail(email)) {
+    //   this.setState({ errors: "Email is invalid", showModal: true });
+    //   return;
+    // }
     const buildingTypeId = document.getElementById("building").value;
     const address = event.target.address.value;
     const city = event.target.city.value;
-    const state = document.getElementById("state").value;
-    const zip = event.target.zip.value;
-    const firstName = event.target.first.value;
-    const lastName = event.target.last.value;
+    // const state = document.getElementById("state").value;
+    // const zip = event.target.zip.value;
+    // const firstName = event.target.first.value;
+    // const lastName = event.target.last.value;
     const questionIds = Object.values(
       this.props.building_types[buildingTypeId].questions
     );
@@ -118,8 +118,8 @@ class PortfolioContainer extends React.Component {
       building_type_id: buildingTypeId,
       address: address,
       city: city,
-      state: state,
-      zip: zip,
+      // state: state,
+      // zip: zip,
       portfolio_id: this.props.match.params.pId
     };
     try {
@@ -142,11 +142,11 @@ class PortfolioContainer extends React.Component {
       await this.createAnswers(
         questionIds,
         buildingId,
-        email,
-        firstName,
-        lastName
+        "",
+        null,
+        null
       );
-      this.props.history.push(`/buildings/${buildingId}`);
+      this.toggleModal();
     } catch (error) {
       this.setState({ errors: error, showModal: true });
     }

@@ -55,7 +55,7 @@ PortfolioBuildingDetailsContainer.propTypes = {
   portfolioId: PropTypes.string.isRequired,
   buildings: PropTypes.array.isRequired,
   buildingTypeId: PropTypes.string.isRequired,
-  selectedBuildingId: PropTypes.string
+  selectedBuildingId: PropTypes.number
 };
 
 function mapStateToProps(state, ownProps) {

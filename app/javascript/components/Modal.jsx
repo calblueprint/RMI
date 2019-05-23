@@ -1,6 +1,8 @@
 import React from "react";
 import ReactModal from "react-modal";
 
+import FAIcon from "../components/FAIcon";
+import downArrow from "@fortawesome/fontawesome-free-solid/faChevronDown";
 import { states } from "../constants/states.js";
 class Modal extends React.Component {
 	constructor(props) {
@@ -9,59 +11,25 @@ class Modal extends React.Component {
 
 	render() {
 		return (
-			<ReactModal isOpen={this.props.showModal}>
+			<ReactModal className="modal building--modal" isOpen={this.props.showModal}>
 				<form onSubmit={this.props.createBuilding}>
+				<h2>Add Building</h2>
 					<label>
-						Building Name
+						<h4>Building Name</h4>
 						<input type="text" name="name" />
 					</label>
-					<br />
 					<label>
-						Email Address
-						<input type="text" name="email" />
+						<h4>Address</h4>
+						<input type="text" name="address" />	
 					</label>
-					<br />
 					<label>
-						First Name
-						<input type="text" name="first" />
-					</label>
-					<br />
-					<label>
-						Last Name
-						<input type="text" name="last" />
-					</label>
-					<br />
-					<label>
-						Address
-						<input type="text" name="address" />
-					</label>
-					<br />
-					<label>
-						City
+						<h4>City</h4>
 						<input type="text" name="city" />
 					</label>
-					<br />
+					<h4>Building Type</h4>
 					<label>
-						State
-						<select id="state">
-							{states.map(state => {
-								return (
-									<option type="text" value={state}>
-										{state}
-									</option>
-								);
-							})}
-						</select>
-					</label>
-					<br />
-					<label>
-						ZIP Code
-						<input type="number" name="zip" />
-					</label>
-					<br />
-					Building Type
-					<label>
-						<select id="building">
+						<div className="select-wrapper">
+						<select id="building" className="dropdown">
 							{Object.keys(this.props.building_types).map(building_type => {
 								return (
 									<option type="text" value={building_type}>
@@ -70,12 +38,20 @@ class Modal extends React.Component {
 								);
 							})}
 						</select>
+						<FAIcon
+						className="down-arrow"
+						iconObj={downArrow}
+						style={{ position: "relative", top: "2px", "pointer-events":"none"}}
+						/>
+						</div>
 					</label>
-					<input type="submit" value="Submit" />
-				</form>
 
-				<div>{this.props.errors}</div>
-				<button onClick={this.props.toggleModal}>Close Modal</button>
+					<div>{this.props.errors ? this.props.errors.map(error => <div style={{"color": "red"}}>{error}</div>) : null}</div>
+
+					<input type="submit" value="Submit" className="btn btn--primary"/>
+          {/*TODO: Change so the input doesn't close until the form is submitted + doesn't exit if not submitted*/}
+					<button className="btn btn--secondary" onClick={this.props.toggleModal}>Cancel</button>
+				</form>
 			</ReactModal>
 		);
 	}

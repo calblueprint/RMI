@@ -218,3 +218,17 @@ input:focus,
   color: white;
   box-shadow: 0 5px 15px $secondary;
 }
+
+.building--modal {
+  input {
+    margin-top: 2px;
+    display: inline-block;
+  }
+  label {
+    display: flex;
+    flex-direction: row;
+    div {
+      padding-right: 15px;
+    }
+  }
+}

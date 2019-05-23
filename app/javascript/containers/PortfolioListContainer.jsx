@@ -122,27 +122,36 @@ class PortfolioListContainer extends React.Component {
             </tbody>
           </table>
         </div>
-        <ReactModal isOpen={this.state.showModal} ariaHideApp={false}>
+        <ReactModal className="modal" isOpen={this.state.showModal} ariaHideApp={false}>
           {this.state.mode === "building" ? (
             <form onSubmit={this.createBuildingType}>
+            <h2>New Building Type</h2>
               <label>
-                Add Building Type
+                <h4>Building Type Name</h4>
                 <input type="text" name="building" />
               </label>
-              <input type="submit" value="Submit" />
+              <div>{this.state.errors ? this.state.errors.map(error =>
+                <div style={{"color": "red"}}>{error}</div>) : null}
+              </div>
+                <input className="btn btn--primary"
+                     type="submit" value="Submit" />
+              <button className="btn btn--secondary" onClick={this.toggleModal}>Cancel</button>
             </form>
           ) : (
             <form onSubmit={this.createPortfolio}>
+            <h2>New Portfolio</h2>
               <label>
-                Portfolio Name
+                <h4>Portfolio Name</h4>
                 <input type="text" name="portfolio" required="required" />
               </label>
-              <input type="submit" value="Submit" />
+              <div>{this.state.errors ? this.state.errors.map(error =>
+                <div style={{"color": "red"}}>{error}</div>) : null}
+              </div>
+              <input className="btn btn--primary"
+                     type="submit" value="Submit" />
+              <button className="btn btn--secondary" onClick={this.toggleModal}>Cancel</button>
             </form>
           )}
-
-          <div>{this.state.errors}</div>
-          <button onClick={this.toggleModal}>Close Modal</button>
         </ReactModal>
       </div>
     );
