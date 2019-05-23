@@ -18,6 +18,23 @@
   height: 45px;
 }
 
+.primary-user-btn {
+  border-radius: 5px;
+  width: 200px;
+  height: 45px;
+  margin-bottom: 15px;
+}
+
+.user-type-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .help-tip {
+    margin-left: 10px;
+  }
+}
+
 .primary-long-login-btn {
   width: 314px;
   height: 50px;
@@ -130,4 +147,13 @@
 .notice {
   margin: 0px;
   position: absolute;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.checkbox-label {
+  padding: 8px 8px 3px 3px;
 }
