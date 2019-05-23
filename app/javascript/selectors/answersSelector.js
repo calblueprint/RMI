@@ -4,6 +4,7 @@ import {
   getAllActiveQuestionIdsForCategory,
 } from "./questionsSelector";
 import { getCategoriesForBuilding } from "./categoriesSelector";
+import { getBuildingsByPortfolio } from "./buildingsSelector";
 
 export function getUnfinishedAnswersForBuilding(buildingId, state) {
   let answers = state.buildings[buildingId].answers;
@@ -127,6 +128,19 @@ export function getPercentAnsweredForBuildingGroup(buildings, state) {
     unanswered[buildings[i].id] = percentAnswered(buildings[i].id, state);
   }
   return unanswered;
+}
+
+export function getProgressForPortfolio(pId, state) {
+  let progress = {"unanswered": 0, "total": 0};
+  let buildings = getBuildingsByPortfolio(pId, state);
+  buildings.map((b) => {
+    let percent = percentAnswered(b.id, state);
+    if (percent !== 1) {
+      progress["unanswered"] += 1;
+    }
+    progress["total"] += 1
+  })
+  return progress;
 }
 
 export function getDelegation(question, buildingId, state) {

@@ -4,7 +4,8 @@ import {
   FETCH_FAILURE,
   ADD_PORTFOLIO,
   SET_ACTIVE_BUILDING,
-  SET_ACTIVE_CATEGORY
+  SET_ACTIVE_CATEGORY,
+  ADD_ASSET_MANAGER
 } from "../constants";
 
 function fetchPortfolios(state, action) {
@@ -69,6 +70,18 @@ function setActiveCategory(state, action) {
   };
 }
 
+function addAssetManager(state, action) {
+  const pId = action.portfolioId;
+  const contact = action.contact;
+  return {
+    ...state,
+    [pId]: {
+      ...state[pId],
+      asset_manager_contacts: [...state[pId].asset_manager_contacts, action.contact]
+    }
+  };
+}
+
 export default function portfolios(state = {}, action) {
   if (!action) return state;
   switch (action.type) {
@@ -80,6 +93,8 @@ export default function portfolios(state = {}, action) {
       return setActiveBuilding(state, action);
     case SET_ACTIVE_CATEGORY:
       return setActiveCategory(state, action);
+    case ADD_ASSET_MANAGER:
+      return addAssetManager(state, action);
     default:
       return state;
   }

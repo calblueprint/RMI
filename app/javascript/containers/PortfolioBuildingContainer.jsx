@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import PortfolioBuildingInfoContainer from './PortfolioBuildingInfoContainer';
 import CategoryDetailsContainer from './CategoryDetailsContainer';
+import PortfolioOverviewContainer from "./PortfolioOverviewContainer";
+
 import { get } from '../fetch/requester';
 import { connect } from "react-redux";
 import { questionDataPerCategory } from '../selectors/answersSelector';
@@ -38,6 +41,11 @@ class PortfolioBuildingContainer extends React.Component {
         let pId = this.props.portfolio_id;
         let categoriesData = this.props.categoriesData;
 
+        if (selectedBuildingId == 0) {
+          return (<PortfolioOverviewContainer
+              portfolio_id={pId}
+            />)
+        }
         return buildings.map((b) => {
           if (b.id === selectedBuildingId) {
             return (<PortfolioBuildingInfoContainer key={b.id} 
@@ -73,7 +81,7 @@ class PortfolioBuildingContainer extends React.Component {
         let selectedCategoryId = this.props.selectedCategoryId;
     
         return (<div className='portfolio_building_container'>
-            <div>{this.showSelectedBuilding(selectedBuildingId)}</div>
+            <div className="portfolio__selected-building">{this.showSelectedBuilding(selectedBuildingId)}</div>
             <div className='building_category_details'>{this.showSelectedCategory(selectedBuildingId, selectedCategoryId)}</div>
           </div>);
       }

@@ -26,7 +26,7 @@ class AssetManager < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_one :portfolio
+  belongs_to :portfolio, optional: true
 
   after_create :send_onboarding_email
 

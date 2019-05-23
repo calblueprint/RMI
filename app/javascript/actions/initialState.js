@@ -28,6 +28,7 @@ const filterKeys = (obj, keys) => {
 };
 
 const mapFilterKeys = (objs, keys) => {
+  console.log(objs)
   return objs.map(obj => {
     return filterKeys(obj, keys);
   });
@@ -99,9 +100,12 @@ const formatState = {
     );
   },
   portfolios: function(portfolios) {
-    return toObjectById(
-      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id"])
+    console.log(portfolios)
+    let a = toObjectById(
+      mapFilterKeys(portfolios, ["id", "name", "asset_manager_id", "asset_manager_contacts"])
     );
+    console.log(a)
+    return a;
   },
   contacts: function(contacts) {
     return toObjectByKey(contacts, "email");
