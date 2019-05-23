@@ -80,8 +80,7 @@ module ApplicationHelper
     puts "at rmiuser initial state"
     {
       user: current_rmi_user,
-      portfolios: Portfolio.all
-      ),
+      portfolios: Portfolio.all,
       buildings: ActiveModel::Serializer::CollectionSerializer.new(
         Building.all, each_serializer: BuildingSerializer,
         scope: current_user.get_scope

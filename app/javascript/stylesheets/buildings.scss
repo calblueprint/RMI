@@ -265,6 +265,8 @@
   margin-right: 10px;
   height: 14px;
   width: 14px;
+  min-height: 14px;
+  min-width: 14px;
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
@@ -450,4 +452,39 @@
 .export-button {
   font-size: 12px;
   color: $secondary;
+}
+
+.portfolio__overview {
+  .small_header {
+    padding-bottom: 8px;
+  }
+
+  .asset_manager_contacts {
+    min-width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+   
+    > div {
+      margin-left: 20px;
+      text-align: left;
+    }
+  }
+
+  h4 {
+    padding-left: 20px;
+
+    i {
+      padding-right: 15px;
+    }
+  }
+}
+
+.overview-btn {
+  min-height: 40px;
+  max-width: 210px;
+  margin: 10px 0px 15px 0px;
 }
