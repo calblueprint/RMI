@@ -13,7 +13,8 @@
   background-color: white;
   transition: background-color 0.5s;
 
-  h3, p {
+  h3,
+  p {
     margin: 0 0 0 0;
   }
 
@@ -39,7 +40,7 @@
 // for the building operator view
 .building_list_container {
   background-color: lighten($backgroundGray, 28.5);
-  position: absolute;
+  position: relative;
   top: 0px;
   left: 0px;
   h1 {
@@ -94,7 +95,6 @@
   }
 }
 
-
 .continue-link:hover {
   text-decoration: none;
   color: white;
@@ -104,14 +104,12 @@
   box-shadow: 0 5px 15px $secondary;
 }
 
-
 .questionnaire-category-container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
   margin: 40px;
-
 }
 
 .vertical-bus-map {
@@ -161,12 +159,12 @@
     height: 50px;
     width: 200px;
     font-size: 15pt;
-    display: table-cell; 
-    vertical-align: middle; 
-    text-align: center; 
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
     font-weight: 500;
     line-height: 50px;
-    text-align: start;     
+    text-align: start;
     small {
       font-size: 12px;
       font-weight: 400;
@@ -179,23 +177,22 @@
 }
 
 .notification-bar {
-    position: relative;
-    width: 400px;
-    height: 40px;
-    top: -45px;
-    left: -45px;
-    background: $primary;
-    text-align: center;
-    line-height: 2.5;
-    overflow: hidden;
-    color: white;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 40px;
-    font-size: 16px;
-    font-family: BlinkMacSystemFont;
+  position: relative;
+  width: 400px;
+  height: 40px;
+  top: -45px;
+  left: -45px;
+  background: $primary;
+  text-align: center;
+  line-height: 2.5;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 40px;
+  font-size: 16px;
+  font-family: BlinkMacSystemFont;
 }
-
 
 // for portfolio view
 .portfolio__container {
@@ -210,37 +207,50 @@
     height: 110px;
 
     div {
-      padding-right: 30px; 
+      padding-right: 30px;
       h2 {
         font-size: 27px;
       }
     }
   }
-
 }
 .building__types {
-  margin: 3% 0% 3% 3%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 40px;
   width: 20%;
-  div {
-    padding-bottom: 30px;
+  max-height: 100vh;
+  padding: 0 10px;
+  padding-top: 20px;
+  padding-bottom: 5%;
+  overflow-y: scroll;
+
+  > div {
+    margin-bottom: 30px;
+
     h3 {
-    font-size: 24px;
+      font-size: 20px;
     }
+  }
+
+  .btn--neutral {
+    height: 30px;
+    line-height: 0;
   }
 }
 
 .building__names {
   cursor: pointer;
-  
+
   :hover {
     background-color: rgba($primary, 0.05);
   }
 
-  div{
-    border-radius: 7px;
-    margin-top: 10px;
+  div {
+    justify-content: flex-start;
     padding: 10px;
-    font-size: 16px;
+    font-size: 12pt;
     font-weight: 200px;
     vertical-align: middle;
   }
@@ -262,10 +272,10 @@
 }
 
 .dot.yellow {
-  background-color: #FFD028;
+  background-color: #ffd028;
 }
 .dot.green {
-  background-color: #03CE17;
+  background-color: #03ce17;
 }
 
 .building__container {
@@ -278,6 +288,7 @@
   margin: 3%;
   display: flex;
   flex-direction: row;
+  margin-left: 20%;
 }
 
 .building__details {
@@ -289,12 +300,19 @@
   border-color: #ccc;
   border-radius: 12px;
   padding: 40px;
+  transition: 0.5s ease all;
 
   > :first-child {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: white;    
+    background-color: white;
+  }
+
+  .btn--neutral {
+    line-height: 0;
+    height: 30px;
+    font-size: 11pt;
   }
 }
 
@@ -344,7 +362,6 @@
   margin: 0px 40px 40px 40px;
 }
 
-
 // main table
 .portfolio_category_info {
   width: 100%;
@@ -356,32 +373,31 @@
     height: 25px;
 
     th {
-      padding-left: 15px; 
+      padding-left: 15px;
       text-align: left;
     }
   }
 
-  tr td:first-child { 
-    border-top-left-radius: 7px; 
+  tr td:first-child {
+    border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
     border-left: 5px solid transparent;
   }
 
-  tr td:last-child { 
-    border-top-right-radius: 7px; 
+  tr td:last-child {
+    border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
   }
 
   .active {
     background: rgba($primary, 0.1);
-  
+
     td:first-child {
       border-left: 5px solid #216dff;
       border-radius: 0px;
     }
-
   }
-  
+
   tbody tr:hover {
     background: rgba($primary, 0.05);
     cursor: pointer;
@@ -397,21 +413,22 @@
     font-size: 16px;
     font-weight: 600;
   }
-  
-  .category_status, .delegation_info {
+
+  .category_status,
+  .delegation_info {
     font-size: 16px;
     font-weight: 400;
   }
 }
 
 .small_header {
-  color: #A1A0A0;
-  font-size: 16px;
-  font-weight: 600;
+  color: #a1a0a0;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .delegations_list {
-  > div{
+  > div {
     padding-top: 5px;
     padding-bottom: 15px;
 

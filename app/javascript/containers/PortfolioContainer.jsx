@@ -23,9 +23,8 @@ import PortfolioBuildingContainer from "./PortfolioBuildingContainer";
 import PortfolioOverviewContainer from "./PortfolioOverviewContainer";
 
 import { post } from "../fetch/requester";
-import  validateEmail  from "../utils/validateEmail";
+import validateEmail from "../utils/validateEmail";
 import { delegateQuestions } from "../utils/DelegationRequests";
-import Logo from "../images/rmi-logo.png";
 
 class PortfolioContainer extends React.Component {
   constructor(props) {
@@ -155,7 +154,7 @@ class PortfolioContainer extends React.Component {
   addBuildingButton() {
     if (this.props.userType === "RMIUser") {
       return (
-        <button className="btn btn--primary" onClick={this.toggleModal}>
+        <button className="btn btn--neutral" onClick={this.toggleModal}>
           + Add Building
         </button>
       );
@@ -178,21 +177,17 @@ class PortfolioContainer extends React.Component {
           toggleModal={this.toggleModal}
           createBuilding={this.createBuilding}
         />
-        <div className="portfolio__header">
-          <div>
-            <Link to="/">{/* <img src={Logo} draggable={false} /> */}</Link>
-          </div>
-          <div>
-            <span className="small_header">PORTFOLIO</span>
-            <h2>{this.props.portfolioName}</h2>
-          </div>
-        </div>
         <div className="building__container">
           <div className="building__types">
           <button className="btn btn--primary" onClick={() => {}}>
           Portfolio Overview
         </button>
             {this.addBuildingButton()}
+            <div>
+              <span className="small_header">PORTFOLIO</span>
+              <h2>{this.props.portfolioName}</h2>
+              {this.addBuildingButton()}
+            </div>
             {Object.keys(buildingByType).map((typeId, i) => {
               return (
                 <PortfolioBuildingDetailsContainer

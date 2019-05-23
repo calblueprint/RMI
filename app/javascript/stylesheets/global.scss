@@ -1,15 +1,14 @@
 $icon-font-path: "@blueprintjs/core/resources/icons";
 
-$primary: #6893ff;
-
+$primary: #4C85FF;
 $secondary: #969696;
-$hover: #779adf;
+$hover: rgba($primary, 0.6);
 $backgroundGray: #f4f4f4;
 $tableGray: #d8d8d8;
 $titleGray: #494949;
 $inputBorder: 2px solid $secondary;
 $inputLabel: #a1a0a0;
-$vibrantPrimary: #216dff;
+$vibrantPrimary: #4C85FF;
 $disabledTextGray: #828282;
 $disabledBgGray: #c7c7c7;
 
@@ -23,12 +22,6 @@ body {
   font-family: BlinkMacSystemFont, -apple-system, "Helvetica Neue", Helvetica,
     Arial, sans-serif;
   margin: 0px;
-}
-
-h1 {
-  font-size: 38px;
-  text-align: center;
-  color: $titleGray;
 }
 
 .btn {
@@ -72,6 +65,12 @@ h1 {
 .btn--primary:hover {
   background-color: darken($vibrantPrimary, 10);
   border: none;
+}
+
+.primary-btn-sizing {
+  border-radius: 5px;
+  width: 125px;
+  height: 45px;
 }
 
 .primary-btn-sizing {
@@ -139,6 +138,10 @@ textarea {
   transition: 0.2s ease all;
 }
 
+input:active, 
+textarea:active {
+  border: 2px solid transparent;
+}
 input:hover,
 textarea:hover {
   border-color: desaturate($vibrantPrimary, 50);
@@ -147,8 +150,10 @@ textarea:hover {
 input:focus,
 textarea:focus {
   background-color: white;
+  outline: none;
   border: $borderPrimary;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  // TODO see if this is ok
+  // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 input::placeholder,
@@ -218,4 +223,8 @@ input[type="checkbox"]:checked:hover {
 
 .blur-placeholder:focus {
   placeholder: none;
+}
+
+.pt-input-group .pt-input:not(:first-child) {
+  padding-left: 8px;
 }

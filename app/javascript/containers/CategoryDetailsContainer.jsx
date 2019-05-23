@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ReactModal from "react-modal";
 
 import { addAnswers } from "../actions/answers";
-import { getAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
+import { getUnfinishedAnswersForCategoryAndBuilding } from "../selectors/answersSelector";
 import { getCategoryById } from '../selectors/categoriesSelector'
-import { delegateCategoryQuestions } from '../utils/DelegationRequests';
+import { delegateQuestions } from '../utils/DelegationRequests';
+import DelegationContactCard from "../components/DelegationContactCard";
 
 import DelegationInfoContainer from './DelegationInfoContainer';
 import DelegationPopover from "../components/DelegationPopover";
@@ -14,7 +16,20 @@ import DelegationPopover from "../components/DelegationPopover";
  * including the category name and building name
  */
 class CategoryDetailsContainer extends React.Component { 
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            showModal: false,
+            contact: null
+        };
+        this.toggleModal = this.toggleModal.bind(this);
+        this.performDelegation = this.performDelegation.bind(this); 
+    }
+    
+    toggleModal() {
+    this.setState({ showModal: !this.state.showModal });
+    }
+    
     isDisabled() {
         let answered = this.props.categoryData.answered;
         let total = this.props.categoryData.total;
@@ -40,11 +55,50 @@ class CategoryDetailsContainer extends React.Component {
         }
     }
     
+    onAssignBuildingClick(c) {
+        this.toggleModal()
+        this.setState({contact: c})
+    }
+    
+    performDelegation() {
+        let { answers, buildingId, addAnswers } = this.props;
+        let email = this.state.contact.email;
+        let firstName = this.state.contact.firstName;
+        let lastName = this.state.contact.lastName;
+    
+        delegateQuestions(answers, buildingId, email, firstName, lastName, addAnswers, this.toggleModal);
+    }
+    
+    modalText() {
+        let questionCount = Object.keys(this.props.answers).length;
+      return (questionCount <= 1) ? (<p>You are about to assign <span style={{"font-weight": "600"}}>{questionCount} question</span> to</p>)
+        : (<p>You are about to assign <span style={{"font-weight": "600"}}>{questionCount} questions</span> to</p>)
+    }
+    
+    
+    contactCard() {
+        let c = this.state.contact
+        if (c) {
+          let email = c.email;
+          let firstName = c.firstName;
+          let lastName = c.lastName;
+      
+          return <DelegationContactCard
+                  firstName={firstName}
+                  lastName={lastName}
+                  email={email}
+                  handleClickChangeContact={() => {}}
+                  handleClickRemoveContact={() => {}}
+                  showHeader={false}
+                  showChangeBtn={false}
+                  showRemoveContactBtn={false}
+          />
+        }
+    }
 
     render() {
         let catName = this.props.category.name;
         let buildingName = this.props.buildingName;
-        let delegateQuestions = this.props.delegateQuestions;
         
         return (
             <div>
@@ -53,9 +107,17 @@ class CategoryDetailsContainer extends React.Component {
                     <h2>{catName}</h2>
                     <p>for {buildingName}</p>
                     <br></br>
+                    <ReactModal  className="delegation--confirmation--modal"
+                                 isOpen={this.state.showModal}>
+                        <h2>Confirm Assignment</h2>
+                        <h4>{this.modalText()}</h4>
+                        {this.contactCard()}
+                        <button className="btn btn--primary" onClick={this.performDelegation}>Submit</button>
+                        <button className="btn btn--secondary" onClick={this.toggleModal}>Cancel</button>
+                    </ReactModal>
                     <DelegationPopover
                             label="Assign Category"
-                            onSelectedContact={(contact) => { console.log(contact); delegateQuestions(contact, this.props.addAnswers)}}
+                            onSelectedContact={(c) => {this.onAssignBuildingClick(c)}}
                             disabled={this.isDisabled()}
                     />
                 </div>
@@ -72,14 +134,14 @@ CategoryDetailsContainer.propTypes = {
     buildingId: PropTypes.number.isRequired,
     buildingName: PropTypes.string.isRequired,
     categoryId: PropTypes.string.isRequired,
-    loginUserData: PropTypes.object.isRequired,
+    loginUserData: PropTypes.object,
     categoryData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     return {
       category: getCategoryById(ownProps.categoryId, state),
-      delegateQuestions: (userDetails, addAnswers) => delegateCategoryQuestions(ownProps.categoryId, ownProps.buildingId, userDetails, state, addAnswers)
+      answers: getUnfinishedAnswersForCategoryAndBuilding(ownProps.categoryId, ownProps.buildingId, state)
     };
   }
   

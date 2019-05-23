@@ -1,0 +1,52 @@
+@import "global";
+
+.portfolio-list {
+  margin-top: 50px;
+}
+
+.tables_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+
+  > :first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: white;
+  }
+}
+
+.table_view {
+  width: 100%;
+  margin: 0px;
+  border-collapse: collapse;
+
+  tr td:first-child {
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+
+  tr td:last-child {
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }
+}
+
+.table_view--row:hover {
+  background-color: lighten($primary, 25);
+  border-left: 6px solid $primary;
+  cursor: pointer;
+}
+
+.table_view--button {
+  float: right;
+}
+
+.table_data {
+  .field_name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
