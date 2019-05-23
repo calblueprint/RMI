@@ -1,4 +1,23 @@
-<%= link_to 'asset_manager signin', new_asset_manager_session_path %></br>
-<%= link_to 'building_operator signin', new_building_operator_session_path %></br>
-<%= link_to 'rmi_user signin', new_rmi_user_session_path %></br>
+<div class="loginPageContainer">
+  `<img src="<%= asset_pack_path 'images/rmi-logo.png' %>" height=100 width=100 />`
+  <h1 class="loginHeader" style="margin-bottom: 10px">Rocky Mountain Institute</h1>
+  <p><i>Data Collection Platform</i></p>
+  <br/>
+  <div class="user-type-section">
+    <h3>Please select your user type.</h3>
+    <div class="help-tip">
+      <p><b>RMI Admin:</b> Administrators who need to manage an existing building project or create a new one.</p>
+      <p><b>Asset Manager:</b> Clients who own and manage a collection of buildings.</p>
+      <p><b>Building Operator:</b> Clients who need to fill out information about one or more buildings.</p>
+    </div>
+  </div>
 
+  <%= button_to "RMI Admin", new_rmi_user_session_path, method: :get,
+                class: "btn btn--primary primary-user-btn" %>
+
+  <%= button_to "Asset Manager", new_asset_manager_session_path, method: :get,
+                class: "btn btn--primary primary-user-btn" %>
+
+  <%= button_to "Building Operator", new_building_operator_session_path, method: :get,
+                class: "btn btn--primary primary-user-btn" %>
+</div>
