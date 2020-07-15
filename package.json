@@ -11,7 +11,7 @@
     "classnames": "^2.2.6",
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.7.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "moment": "^2.22.1",
     "polyfill": "^0.1.0",
     "postcss-smart-import": "^0.7.6",
